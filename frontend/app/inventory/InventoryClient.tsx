@@ -93,7 +93,7 @@ function InventoryContent({ initialVehicles = [] }: InventoryClientProps = {}) {
         <h1 className="section-h2" style={{ marginBottom: "0.5rem" }}>
           Choose per your preference
         </h1>
-        <p style={{ color: "#9ca3af", fontSize: "0.95rem" }}>
+        <p className="inventory-subtitle" style={{ fontSize: "0.95rem" }}>
           Browse all available luxury vehicles across our Kakrail and Gulshan showrooms.
         </p>
       </div>
@@ -171,55 +171,22 @@ function InventoryContent({ initialVehicles = [] }: InventoryClientProps = {}) {
                 key={car.id}
                 className="group inventory-card-box"
                 onClick={() => openCarModal(car)}
-                style={{
-                  background: "#101012",
-                  padding: "0.85rem",
-                  borderRadius: "10px",
-                  border: "1px solid rgba(255, 255, 255, 0.10)",
-                  cursor: "pointer",
-                  transition: "transform 0.25s ease, border-color 0.25s ease, box-shadow 0.25s ease",
-                }}
               >
-                <div
-                  className="portrait-image-wrapper"
-                  style={{ marginBottom: "0.65rem", position: "relative", background: "#111111" }}
-                >
+                <div className="portrait-image-wrapper">
                   <img src={car.image} alt={car.name} loading="lazy" />
                   <span className="card-branch-tag">{branch.short_name}</span>
                 </div>
-                <div
-                  style={{
-                    fontSize: "0.75rem",
-                    color: "rgba(255, 255, 255, 0.50)",
-                    textTransform: "uppercase",
-                    letterSpacing: "0.05em",
-                    marginBottom: "0.25rem",
-                  }}
-                >
+                <div className="card-car-meta">
                   {car.brand} • {car.year}
                 </div>
-                <h3 className="card-car-title" style={{ marginBottom: "0.5rem" }}>
+                <h3 className="card-car-title">
                   {car.name}
                 </h3>
-                <div
-                  style={{
-                    display: "flex",
-                    justifyContent: "space-between",
-                    alignItems: "center",
-                    borderTop: "1px solid rgba(255, 255, 255, 0.10)",
-                    paddingTop: "0.5rem",
-                  }}
-                >
-                  <span
-                    style={{
-                      fontSize: "0.85rem",
-                      color: "#e5e7eb",
-                      fontWeight: 600,
-                    }}
-                  >
+                <div className="card-car-footer">
+                  <span className="card-car-mileage">
                     {car.mileage}
                   </span>
-                  <span style={{ fontSize: "0.8rem", color: "rgba(255, 255, 255, 0.50)" }}>
+                  <span className="card-car-fuel">
                     {car.fuel_type}
                   </span>
                 </div>
@@ -227,23 +194,11 @@ function InventoryContent({ initialVehicles = [] }: InventoryClientProps = {}) {
             );
           })
         ) : (
-          <div
-            style={{
-              gridColumn: "1 / -1",
-              textAlign: "center",
-              padding: "4rem 1rem",
-            }}
-          >
-            <h3
-              style={{
-                fontSize: "1.25rem",
-                color: "#fff",
-                marginBottom: "0.5rem",
-              }}
-            >
+          <div className="inventory-empty-state" style={{ gridColumn: "1 / -1", textAlign: "center", padding: "4rem 1rem" }}>
+            <h3 style={{ fontSize: "1.25rem", marginBottom: "0.5rem" }}>
               No vehicles found
             </h3>
-            <p style={{ color: "#9ca3af", marginBottom: "1.5rem" }}>
+            <p style={{ marginBottom: "1.5rem" }}>
               Try resetting your filters or search keyword.
             </p>
             <button

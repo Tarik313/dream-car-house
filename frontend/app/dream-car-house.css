@@ -1764,6 +1764,49 @@ button {
   color: #0a0f1d !important;
 }
 
+[data-theme="light"] .preference-subtext {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .highlight-pill-card {
+  background: #ffffff !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .highlight-pill-card:hover {
+  border-color: #d97706 !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12) !important;
+  transform: translateY(-2px) !important;
+}
+
+[data-theme="light"] .highlight-pill-content h4 {
+  color: #0a0f1d !important;
+}
+
+[data-theme="light"] .highlight-pill-content p {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .preference-all-link {
+  background: #ffffff !important;
+  border: 1.5px solid rgba(148, 163, 184, 0.45) !important;
+  color: #0f172a !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.08) !important;
+}
+
+[data-theme="light"] .preference-all-link:hover {
+  background: #0f172a !important;
+  border-color: #0f172a !important;
+  color: #ffffff !important;
+  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.18) !important;
+  transform: translateY(-2px) !important;
+}
+
+[data-theme="light"] .preference-all-link svg {
+  stroke: currentColor !important;
+}
+
 /* ================= EXPERIENCE PILLARS (DAY MODE) ================= */
 [data-theme="light"] .experience-section {
   background: #e8edf3 !important;
@@ -8825,3 +8868,125 @@ button {
 
 
 
+
+
+/* ================= INVENTORY PAGE STYLES (DARK & DAY MODE) ================= */
+.inventory-card-box {
+  background: #101012;
+  padding: 0.85rem;
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  cursor: pointer;
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.25s ease, box-shadow 0.25s ease !important;
+}
+
+.inventory-card-box .portrait-image-wrapper {
+  margin-bottom: 0.65rem;
+  position: relative;
+  background: #111111;
+  border-radius: 8px;
+  overflow: hidden;
+}
+
+.inventory-card-box .card-car-meta {
+  font-size: 0.75rem;
+  color: rgba(255, 255, 255, 0.50);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-bottom: 0.25rem;
+}
+
+.inventory-card-box .card-car-title {
+  margin-bottom: 0.5rem;
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+.inventory-card-box .card-car-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.10);
+  padding-top: 0.5rem;
+}
+
+.inventory-card-box .card-car-mileage {
+  font-size: 0.85rem;
+  color: #e5e7eb;
+  font-weight: 600;
+}
+
+.inventory-card-box .card-car-fuel {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.50);
+}
+
+.inventory-subtitle {
+  color: #9ca3af;
+}
+
+.inventory-empty-state h3 {
+  color: #ffffff;
+}
+
+.inventory-empty-state p {
+  color: #9ca3af;
+}
+
+[data-theme="light"] .inventory-page-wrap {
+  background: #e8edf3 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .inventory-page-wrap .section-h2 {
+  color: #0a0f1d !important;
+}
+
+[data-theme="light"] .inventory-subtitle {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .inventory-card-box {
+  background: #ffffff !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.07) !important;
+}
+
+[data-theme="light"] .inventory-card-box:hover {
+  transform: translateY(-4px) !important;
+  border-color: #d97706 !important;
+  box-shadow: 0 12px 30px rgba(15, 23, 42, 0.14) !important;
+}
+
+[data-theme="light"] .inventory-card-box .portrait-image-wrapper {
+  background: #f1f5f9 !important;
+}
+
+[data-theme="light"] .inventory-card-box .card-car-meta {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .inventory-card-box .card-car-title {
+  color: #0a0f1d !important;
+}
+
+[data-theme="light"] .inventory-card-box .card-car-footer {
+  border-top: 1px solid rgba(148, 163, 184, 0.25) !important;
+}
+
+[data-theme="light"] .inventory-card-box .card-car-mileage {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .inventory-card-box .card-car-fuel {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .inventory-empty-state h3 {
+  color: #0a0f1d !important;
+}
+
+[data-theme="light"] .inventory-empty-state p {
+  color: #475569 !important;
+}
