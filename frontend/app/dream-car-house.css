@@ -2826,15 +2826,16 @@ button {
 }
 
 .pref-car-title {
-  font-size: 1.15rem;
-  font-weight: 600;
-  color: #f4f1ec;
-  line-height: 1.3;
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #ffffff;
+  line-height: 1.25;
   margin: 0;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  letter-spacing: -0.01em;
+  letter-spacing: -0.015em;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.7);
 }
 
 .pref-car-meta {
@@ -2866,7 +2867,7 @@ button {
 
 .pref-spec-label {
   font-size: 0.62rem;
-  color: rgba(230, 207, 163, 0.60);
+  color: #bdaea0;
   text-transform: uppercase;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -2874,7 +2875,7 @@ button {
 
 .pref-spec-val {
   font-size: 0.8125rem;
-  color: #f0e2ce;
+  color: #bdaea0;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -2893,11 +2894,13 @@ button {
 }
 
 .pref-price-val {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #e6cfa3;
+  font-family: var(--font-playfair, "Playfair Display"), "Cinzel", Georgia, "Times New Roman", serif;
+  font-size: 1.35rem;
+  font-weight: 500;
+  color: #e5cf9b;
   line-height: 1;
-  letter-spacing: -0.015em;
+  letter-spacing: 0.01em;
+  font-variant-numeric: lining-nums;
 }
 
 .pref-card-actions {
@@ -9048,7 +9051,7 @@ button {
 }
 
 [data-theme="light"] .pref-car-title {
-  color: #111827 !important;
+  color: #090d16 !important;
   text-shadow: none !important;
 }
 
@@ -9062,11 +9065,11 @@ button {
 }
 
 [data-theme="light"] .pref-spec-label {
-  color: #854d0e !important;
+  color: #786f66 !important;
 }
 
 [data-theme="light"] .pref-spec-val {
-  color: #451a03 !important;
+  color: #786f66 !important;
 }
 
 [data-theme="light"] .pref-price-row {
@@ -9074,7 +9077,7 @@ button {
 }
 
 [data-theme="light"] .pref-price-val {
-  color: #b45309 !important;
+  color: #9a6523 !important;
 }
 
 [data-theme="light"] .pref-inspect-btn-mini {
