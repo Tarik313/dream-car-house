@@ -2,24 +2,35 @@
 
 import React from "react";
 import { Vehicle } from "@/lib/showroomData";
+import { PublicVehicle } from "@/lib/types";
 import { useUI } from "@/lib/UIContext";
 
 interface VehicleCardProps {
-  car: Vehicle;
+  car: Vehicle | PublicVehicle;
   layout?: "grid" | "carousel";
 }
 
-function formatPrice(price?: string | null, isCallForPrice?: boolean): string {
-  if (isCallForPrice || !price) return "Call for Price";
+function formatPrice(price?: string | number | null, isCallForPrice?: boolean): string {
+  if (isCallForPrice || price === null || price === undefined) return "Call for Price";
+  
   const s = String(price).trim();
-  if (!s || s.toLowerCase().includes("call")) return "Call for Price";
-  if (s.toUpperCase().startsWith("BDT")) return s;
-  return `BDT ${s}`;
+  if (!s || s.toLowerCase().includes("call") || s === "0") return "Call for Price";
+  
+  let numStr = s;
+  if (numStr.toUpperCase().startsWith("BDT")) {
+    numStr = numStr.substring(3).trim();
+  }
+  
+  const num = parseFloat(numStr.replace(/,/g, ""));
+  if (!isNaN(num) && num > 0) {
+    return `BDT ${Math.round(num).toLocaleString("en-IN")}`;
+  }
+  
+  return s.toUpperCase().startsWith("BDT") ? s : `BDT ${s}`;
 }
 
 export default function VehicleCard({ car }: VehicleCardProps) {
   const { openCarModal } = useUI();
-  const isBrandNew = car.car_type === "BRAND_NEW";
 
   const waMessage = encodeURIComponent(
     `Hello DREAM CAR HOUSE, I am inquiring about the ${car.name} (${car.year}).`
@@ -43,7 +54,7 @@ export default function VehicleCard({ car }: VehicleCardProps) {
   return (
     <article
       className="pref-car-card group"
-      onClick={() => openCarModal(car)}
+      onClick={() => openCarModal(car as unknown as Vehicle)}
       style={{ cursor: "pointer" }}
     >
       <div className="pref-car-img-wrap">
@@ -54,9 +65,6 @@ export default function VehicleCard({ car }: VehicleCardProps) {
           className="pref-car-img"
         />
         <div className="pref-img-gradient" />
-        <span className="pref-car-badge-studio">
-          {isBrandNew ? "Brand-new" : "Pre-owned"}
-        </span>
         <span className="pref-branch-tag">
           <svg
             width="10"
@@ -94,14 +102,6 @@ export default function VehicleCard({ car }: VehicleCardProps) {
         <div className="pref-price-row" onClick={(e) => e.stopPropagation()}>
           <span className="pref-price-val">{displayPrice}</span>
           <div className="pref-card-actions">
-            <button
-              type="button"
-              className="pref-inspect-btn-mini"
-              onClick={() => openCarModal(car)}
-              aria-label={`Inspect ${car.name}`}
-            >
-              Inspect
-            </button>
             <a
               href={waUrl}
               target="_blank"
