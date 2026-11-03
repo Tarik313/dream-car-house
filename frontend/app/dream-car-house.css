@@ -2866,7 +2866,7 @@ button {
 
 .pref-spec-label {
   font-size: 0.62rem;
-  color: rgba(255, 255, 255, 0.45);
+  color: rgba(230, 207, 163, 0.60);
   text-transform: uppercase;
   font-weight: 500;
   letter-spacing: 0.06em;
@@ -2874,7 +2874,7 @@ button {
 
 .pref-spec-val {
   font-size: 0.8125rem;
-  color: #f4f1ec;
+  color: #f0e2ce;
   font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
@@ -9062,11 +9062,11 @@ button {
 }
 
 [data-theme="light"] .pref-spec-label {
-  color: #64748b !important;
+  color: #854d0e !important;
 }
 
 [data-theme="light"] .pref-spec-val {
-  color: #0f172a !important;
+  color: #451a03 !important;
 }
 
 [data-theme="light"] .pref-price-row {
