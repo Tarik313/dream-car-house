@@ -49,11 +49,17 @@ export default function VehicleCard({ car }: VehicleCardProps) {
       </div>
 
       <div className="pref-car-body">
-        <div className="pref-car-meta">
-          {car.brand} • {car.year}
-        </div>
-        <h3 className="pref-car-title">{car.name}</h3>
+        {/* 1st Line: Main Car Title in Brilliant Eye-Catching Silver */}
+        <h3 className="pref-car-title" title={car.name}>
+          {car.name}
+        </h3>
 
+        {/* 2nd Line: Model Year & Brand Subtitle Underneath */}
+        <div className="pref-car-meta">
+          {car.year} Model • {car.brand}
+        </div>
+
+        {/* 3rd Row: Warm Luxury Engine, Mileage & Fuel Details */}
         <div className="pref-specs-row">
           <div className="pref-spec-item">
             <span className="pref-spec-label">Engine</span>
