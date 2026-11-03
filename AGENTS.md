@@ -52,3 +52,4 @@ Whenever implementing a new feature or modifying an existing one, strictly follo
   - Dashboard form submission and database persistence.
   - Frontend website SSR rendering and browser client behavior.
 - **Zero Tolerances for Mismatches:** Inspect and resolve any TypeScript errors, missing prop warnings, or payload mismatches before considering any task done.
+

@@ -59,6 +59,8 @@ from .views import (
     VisualChroniclesItemDetailView,
     VipSanctuarySectionManagementView,
     AboutSectionManagementView,
+    ShowroomStoryListCreateView,
+    ShowroomStoryDetailView,
 )
 
 
@@ -177,6 +179,10 @@ urlpatterns = [
 
     # About Us Page Section (home.AboutSection)
     path("about-us/", AboutSectionManagementView.as_view(), name="about_us"),
+
+    # Showroom Stories (home.ShowroomStory)
+    path("stories/", ShowroomStoryListCreateView.as_view(), name="story_list_create"),
+    path("stories/<int:pk>/", ShowroomStoryDetailView.as_view(), name="story_detail"),
 ]
 
 

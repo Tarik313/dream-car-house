@@ -4,7 +4,6 @@ import React, { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUI } from "@/lib/UIContext";
-import { playNextSupercarSound, SupercarSoundProfile } from "@/lib/audioEngine";
 import type { PublicSiteSettings } from "@/lib/types";
 
 export default function Header({ settings }: { settings?: PublicSiteSettings } = {}) {
@@ -12,41 +11,36 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
   const [isScrolled, setIsScrolled] = useState(false);
   const [isHidden, setIsHidden] = useState(false);
   const [isSpinning, setIsSpinning] = useState(false);
-  const [activeSoundBadge, setActiveSoundBadge] = useState<SupercarSoundProfile | null>(null);
 
   const brandName = settings?.name || "DREAM CAR HOUSE";
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
-    let ticking = false;
     const handleScroll = () => {
-      if (!ticking) {
-        window.requestAnimationFrame(() => {
-          const currentY = window.scrollY;
+      const currentScrollY = window.scrollY;
 
-          // Background blur threshold
-          setIsScrolled(currentY > 20);
-
-          // Smart Direction-Aware Scroll:
-          // 1. Always visible near top of page
-          if (currentY < 70) {
-            setIsHidden(false);
-          } else if (currentY > lastScrollYRef.current + 8) {
-            // Scrolling down -> smoothly tuck away to maximize car viewing space
-            setIsHidden(true);
-          } else if (currentY < lastScrollYRef.current - 6) {
-            // Scrolling up -> immediately reveal header for effortless navigation
-            setIsHidden(false);
-          }
-
-          lastScrollYRef.current = currentY;
-          ticking = false;
-        });
-        ticking = true;
+      // Add background blur / border after 50px
+      if (currentScrollY > 50) {
+        setIsScrolled(true);
+      } else {
+        setIsScrolled(false);
       }
+
+      // Hide header on scroll down, show on scroll up (after 120px)
+      if (currentScrollY > 120) {
+        if (currentScrollY > lastScrollYRef.current + 5) {
+          setIsHidden(true); // scrolling down
+        } else if (currentScrollY < lastScrollYRef.current - 5) {
+          setIsHidden(false); // scrolling up
+        }
+      } else {
+        setIsHidden(false);
+      }
+
+      lastScrollYRef.current = currentScrollY;
     };
+
     window.addEventListener("scroll", handleScroll, { passive: true });
-    handleScroll();
     return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
@@ -59,10 +53,6 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
       return;
     }
 
-    // Play next iconic supercar sound in rotation (Porsche -> Ferrari -> Bugatti)
-    const profile = playNextSupercarSound();
-    setActiveSoundBadge(profile);
-
     // Trigger 1440° burnout spin animation
     setIsSpinning(true);
 
@@ -71,11 +61,6 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
       setIsSpinning(false);
       openDrawer();
     }, 1150);
-
-    // Auto-dismiss HUD sound badge after 3 seconds
-    setTimeout(() => {
-      setActiveSoundBadge(null);
-    }, 3000);
   };
 
   const shouldHide = isHidden && !isDrawerOpen && !isStoriesOpen;
@@ -114,88 +99,115 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
                       <stop offset="50%" stopColor="#cbd5e1" />
                       <stop offset="100%" stopColor="#94a3b8" />
                     </linearGradient>
-                    <radialGradient id="steerHubGrad" cx="50%" cy="50%" r="50%">
-                      <stop offset="0%" stopColor="#334155" />
-                      <stop offset="70%" stopColor="#0f172a" />
-                      <stop offset="100%" stopColor="#000000" />
-                    </radialGradient>
                   </defs>
 
-                  {/* Left & Right Paddle Shifters (behind wheel) */}
-                  <path d="M12 34 C8 41 8 51 12 60 L17 58 C14 51 14 43 17 36 Z" fill="#cbd5e1" opacity="0.95" />
-                  <text x="12.5" y="49" fill="#0f172a" fontSize="7.5" fontWeight="900" fontFamily="sans-serif">-</text>
+                  {/* Outer Steering Rim */}
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="44"
+                    stroke="url(#steerRimGrad)"
+                    strokeWidth="9"
+                    strokeDasharray="4 2"
+                  />
+                  {/* Inner Rim Accent */}
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="37"
+                    stroke="#0f172a"
+                    strokeWidth="2.5"
+                  />
+                  {/* Central Boss / Horn Plate */}
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="15"
+                    fill="#020617"
+                    stroke="#d4af37"
+                    strokeWidth="1.8"
+                  />
+                  <circle
+                    cx="50"
+                    cy="50"
+                    r="11"
+                    fill="none"
+                    stroke="#475569"
+                    strokeWidth="1"
+                  />
+                  <circle cx="50" cy="50" r="4.5" fill="#d4af37" />
 
-                  <path d="M88 34 C92 41 92 51 88 60 L83 58 C86 51 86 43 83 36 Z" fill="#cbd5e1" opacity="0.95" />
-                  <text x="84" y="49" fill="#0f172a" fontSize="7.5" fontWeight="900" fontFamily="sans-serif">+</text>
-
-                  {/* Outer Steering Wheel Rim (Sport Grip) */}
-                  <circle cx="50" cy="50" r="41" stroke="url(#steerRimGrad)" strokeWidth="9.5" />
-                  <circle cx="50" cy="50" r="45.5" stroke="rgba(255,255,255,0.4)" strokeWidth="0.8" fill="none" />
-                  <circle cx="50" cy="50" r="36" stroke="rgba(0,0,0,0.9)" strokeWidth="1.2" fill="none" />
-
-                  {/* 12 O'Clock Racing Center Alignment Stripe */}
-                  <path d="M46.5 4.5 A45.5 45.5 0 0 1 53.5 4.5 L52.8 14 A36 36 0 0 0 47.2 14 Z" fill="#facc15" />
-
-                  {/* 3-Spoke Architecture */}
-                  {/* Left Horizontal Spoke */}
-                  <path d="M36 46 L14 46 C14 53 15 55 16 56 L36 54 Z" fill="url(#steerSpokeGrad)" />
-                  <rect x="20" y="47.5" width="9" height="3.5" rx="1.5" fill="#0f172a" stroke="rgba(255,255,255,0.4)" strokeWidth="0.6" />
-
-                  {/* Right Horizontal Spoke */}
-                  <path d="M64 46 L86 46 C86 53 85 55 84 56 L64 54 Z" fill="url(#steerSpokeGrad)" />
-                  <rect x="71" y="47.5" width="9" height="3.5" rx="1.5" fill="#0f172a" stroke="rgba(255,255,255,0.4)" strokeWidth="0.6" />
-
-                  {/* Bottom Vertical Spoke (Twin Blade Skeleton) */}
-                  <path d="M45.5 63 L43.5 86 C47 87 53 87 56.5 86 L54.5 63 Z" fill="url(#steerSpokeGrad)" />
-                  <circle cx="50" cy="74.5" r="3" fill="#090d16" />
-
-                  {/* Center Hub Bezel & Golden Star Crest */}
-                  <circle cx="50" cy="50" r="15" fill="url(#steerHubGrad)" stroke="#facc15" strokeWidth="1.8" />
-                  <circle cx="50" cy="50" r="11" fill="#0a0e17" stroke="rgba(255,255,255,0.2)" strokeWidth="0.8" />
-                  
-                  {/* Star Crest */}
-                  <path d="M50 43.5 L51.8 48.2 L56.5 50 L51.8 51.8 L50 56.5 L48.2 51.8 L43.5 50 L48.2 48.2 Z" fill="#facc15" />
-
-                  {/* Ferrari-style Manettino Drive Mode Dial */}
-                  <circle cx="61.5" cy="59.5" r="3.2" fill="#ef4444" stroke="#ffffff" strokeWidth="0.8" />
+                  {/* 3 Ergonomic Steering Spokes */}
+                  {/* Left Spoke */}
+                  <path
+                    d="M35 50 L10 50"
+                    stroke="url(#steerSpokeGrad)"
+                    strokeWidth="4.5"
+                    strokeLinecap="round"
+                  />
+                  {/* Right Spoke */}
+                  <path
+                    d="M65 50 L90 50"
+                    stroke="url(#steerSpokeGrad)"
+                    strokeWidth="4.5"
+                    strokeLinecap="round"
+                  />
+                  {/* Bottom Center Spoke */}
+                  <path
+                    d="M50 65 L50 90"
+                    stroke="url(#steerSpokeGrad)"
+                    strokeWidth="5"
+                    strokeLinecap="round"
+                  />
                 </svg>
               </div>
+            </div>
+            <div className="story-btn-text-col">
+              <span className="story-btn-label">STORIES</span>
+              <span className="story-btn-sub">LIVE</span>
             </div>
           </button>
         </div>
 
-        {/* Center Logo (Strictly Centered) */}
-        <div className="header-logo">
-          <Link href="/" className="header-logo-link" aria-label={`${brandName} Homepage`}>
-            <Image
-              src="/assets/dch-logo.webp"
-              alt={`${brandName} Logo`}
-              width={1020}
-              height={350}
-              className="header-brand-logo-img"
-              priority
-              unoptimized
-            />
+        {/* Center: Brand Identity Logo */}
+        <div className="header-logo-container">
+          <Link href="/" className="header-logo-link" aria-label={`${brandName} Home`}>
+            <div className="header-brand-wrap">
+              <div className="header-brand-title">
+                {brandName.includes(" ") ? (
+                  <>
+                    <span className="brand-word-1">{brandName.split(" ")[0]}</span>
+                    <span className="brand-word-rest">
+                      {brandName.substring(brandName.split(" ")[0].length)}
+                    </span>
+                  </>
+                ) : (
+                  <span>{brandName}</span>
+                )}
+              </div>
+              <span className="header-brand-badge">
+                SHOWROOM • KAKRAIL &amp; GULSHAN
+              </span>
+            </div>
           </Link>
         </div>
 
-        {/* Right Corner: Theme Toggle & 3D Wheel Menu Trigger */}
-        <div className="header-right-group">
-          {/* Day / Night Smooth Luxury Toggle (Icon-Only Luxury Orb) */}
+        {/* Right: Theme Toggle & Burnout Alloy Wheel Menu Button */}
+        <div className="header-right-actions">
+          {/* Subtle VIP Theme Toggle (Dark / Light) */}
           <button
             type="button"
+            className="theme-toggle-btn"
             onClick={toggleTheme}
-            className={`header-theme-toggle ${theme === "dark" ? "mode-dark" : "mode-light"}`}
-            aria-label={theme === "dark" ? "Switch to Day Mode" : "Switch to Night Mode"}
-            title={theme === "dark" ? "Switch to Day Mode (সূর্য)" : "Switch to Night Mode (চাঁদ)"}
-            id="header-theme-btn"
+            title={theme === "light" ? "Switch to Cinematic Dark Mode" : "Switch to Executive Light Mode"}
+            aria-label="Toggle Visual Theme"
           >
-            {theme === "dark" ? (
-              <svg className="theme-icon moon-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-3.37.73A8.15 8.15 0 0 1 9.08 5.49a8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05z" />
+            {theme === "light" ? (
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" />
               </svg>
             ) : (
-              <svg className="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                 <circle cx="12" cy="12" r="5" />
                 <line x1="12" y1="1" x2="12" y2="3" />
                 <line x1="12" y1="21" x2="12" y2="23" />
@@ -209,46 +221,45 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
             )}
           </button>
 
-          {/* 3D Photorealistic Supercar Wheel Trigger */}
-          <div style={{ position: "relative" }}>
+          {/* Burnout Alloy Wheel Nav Launcher */}
+          <div className="burnout-wheel-wrapper">
             <button
-              className={`header-wheel-trigger ${isSpinning ? "wheel-spinning" : ""} ${isDrawerOpen ? "menu-active" : ""}`}
-              id="header-menu-btn"
+              className={`burnout-wheel-btn ${isSpinning ? "wheel-burnout-active" : ""} ${
+                isDrawerOpen ? "wheel-open-state" : ""
+              }`}
+              id="header-menu-wheel-btn"
               onClick={handleWheelClick}
-              aria-label="Open Luxury Showroom Menu"
-              title="Click to Spin Wheel & Launch Supercar Menu"
+              title={isDrawerOpen ? "Close VIP Navigation" : "Explore VIP Navigation Menu"}
+              aria-label={isDrawerOpen ? "Close Menu" : "Open Navigation"}
             >
-              <div className="wheel-disc-wrapper">
+              {/* Ceramic Disc Brake Calliper Glow */}
+              <div className="brake-caliper-glow"></div>
+
+              {/* Alloy Wheel Rim Graphic */}
+              <div className="alloy-wheel-disc">
                 <Image
                   src="/assets/supercar_wheel.png"
-                  alt="Supercar Forged Wheel"
-                  width={54}
-                  height={54}
-                  className="realistic-wheel-img"
+                  alt="Alloy Wheel Nav"
+                  width={46}
+                  height={46}
                   priority
+                  className="alloy-wheel-img"
+                  onError={(e) => {
+                    // Fallback to stylized SVG if PNG is unavailable
+                    (e.target as HTMLElement).style.display = "none";
+                  }}
                 />
-                <div className="wheel-light-sweep"></div>
               </div>
-            </button>
 
-            {/* Luxury Supercar Sound HUD Badge Toast */}
-            {activeSoundBadge && (
-              <div
-                className="wheel-sound-hud-toast"
-                style={{
-                  borderColor: `${activeSoundBadge.accentColor}55`,
-                  boxShadow: `0 12px 28px rgba(0, 0, 0, 0.95), 0 0 16px ${activeSoundBadge.accentColor}33`,
-                }}
-              >
-                <span className="sound-hud-icon">{activeSoundBadge.icon}</span>
-                <div className="sound-hud-info">
-                  <span className="sound-hud-marque" style={{ color: activeSoundBadge.accentColor }}>
-                    {activeSoundBadge.marque} • {activeSoundBadge.model}
-                  </span>
-                  <span className="sound-hud-tagline">{activeSoundBadge.tagline}</span>
+              {/* Burnout Smoke Particle Rings */}
+              {isSpinning && (
+                <div className="burnout-smoke-emitter">
+                  <span className="smoke-ring smoke-ring-1"></span>
+                  <span className="smoke-ring smoke-ring-2"></span>
+                  <span className="smoke-ring smoke-ring-3"></span>
                 </div>
-              </div>
-            )}
+              )}
+            </button>
           </div>
         </div>
       </div>

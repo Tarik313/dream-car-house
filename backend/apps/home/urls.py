@@ -6,7 +6,7 @@ from apps.home.views import (
     PublicShowroomBranchListAPIView, PublicPreferenceSectionAPIView,
     PublicConsultationSectionAPIView, PublicExperienceSectionAPIView,
     PublicVisualChroniclesSectionAPIView, PublicVipSanctuarySectionAPIView,
-    PublicAboutSectionAPIView,
+    PublicAboutSectionAPIView, PublicShowroomStoryListAPIView,
 )
 
 app_name = 'home'
@@ -28,6 +28,5 @@ urlpatterns = [
     path('visual-chronicles/', PublicVisualChroniclesSectionAPIView.as_view(), name='visual_chronicles'),
     path('vip-sanctuary/', PublicVipSanctuarySectionAPIView.as_view(), name='vip_sanctuary'),
     path('about/', PublicAboutSectionAPIView.as_view(), name='about_section'),
+    path('stories/', PublicShowroomStoryListAPIView.as_view(), name='stories'),
 ]
-
-

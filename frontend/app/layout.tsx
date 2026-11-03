@@ -7,7 +7,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ModalContainer from "@/components/ModalContainer";
 
-import { fetchLayoutData } from "@/lib/server/api";
+import { fetchLayoutData, getShowroomStoriesSSR } from "@/lib/server/api";
 import type { PublicSiteSettings, PublicShowroomBranch, PublicVehicle } from "@/lib/types";
 
 const poppins = Poppins({
@@ -113,6 +113,7 @@ export default async function RootLayout({
   }
 
   const { settings, branches, featuredVehicles } = layoutData;
+  const stories = await getShowroomStoriesSSR();
 
   const autoDealerSchema = {
     "@context": "https://schema.org",
@@ -149,6 +150,7 @@ export default async function RootLayout({
             settings={settings}
             branches={branches}
             featuredVehicles={featuredVehicles}
+            stories={stories}
           />
         </UIProvider>
       </body>

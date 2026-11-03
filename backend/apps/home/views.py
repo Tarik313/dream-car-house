@@ -360,3 +360,13 @@ class PublicAboutSectionAPIView(APIView):
 
 
 
+
+
+from apps.home.models.showroom_story_model import ShowroomStory
+from apps.home.serializers import PublicShowroomStorySerializer
+
+class PublicShowroomStoryListAPIView(APIView):
+    def get(self, request, format=None):
+        stories = ShowroomStory.objects.filter(is_active=True).order_by("order", "-created_at")
+        serializer = PublicShowroomStorySerializer(stories, many=True, context={"request": request})
+        return Response({"success": True, "data": serializer.data}, status=status.HTTP_200_OK)

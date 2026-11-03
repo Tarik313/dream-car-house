@@ -374,3 +374,22 @@ export interface PublicAboutSection {
 }
 
 
+
+export interface PublicShowroomStory {
+  id: number;
+  title: string;
+  tag: string;
+  subtitle: string;
+  price_note: string;
+  media_type: "image" | "video";
+  media_url: string;
+  cta_text: string;
+  cta_link: string;
+  whatsapp_message: string;
+  brand: string;
+  accent_color: string;
+  order: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+}

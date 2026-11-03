@@ -1833,3 +1833,41 @@ class AboutSectionManagementSerializer(serializers.ModelSerializer, OptimizedIma
 
 
 
+
+
+from apps.home.models.showroom_story_model import ShowroomStory
+
+class ShowroomStoryManagementSerializer(serializers.ModelSerializer, OptimizedImageSerializerMixin):
+    resolved_media_url = serializers.SerializerMethodField()
+
+    class Meta:
+        model = ShowroomStory
+        fields = [
+            "id",
+            "title",
+            "tag",
+            "subtitle",
+            "price_note",
+            "media_type",
+            "media_file",
+            "media_url",
+            "resolved_media_url",
+            "cta_text",
+            "cta_link",
+            "whatsapp_message",
+            "brand",
+            "accent_color",
+            "order",
+            "is_active",
+            "created_at",
+            "updated_at",
+        ]
+        read_only_fields = ["id", "resolved_media_url", "created_at", "updated_at"]
+
+    def get_resolved_media_url(self, obj):
+        if obj.media_file:
+            request = self.context.get("request")
+            if request:
+                return request.build_absolute_uri(obj.media_file.url)
+            return obj.media_file.url
+        return obj.media_url or ""

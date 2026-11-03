@@ -8,16 +8,23 @@ import VideoModal from "./VideoModal";
 import GalleryLightbox from "./GalleryLightbox";
 import CompareModal from "./CompareModal";
 import ShowroomStories from "./ShowroomStories";
-import type { PublicSiteSettings, PublicShowroomBranch, PublicVehicle } from "@/lib/types";
+import type {
+  PublicSiteSettings,
+  PublicShowroomBranch,
+  PublicVehicle,
+  PublicShowroomStory,
+} from "@/lib/types";
 
 export default function ModalContainer({
   settings,
   branches,
   featuredVehicles,
+  stories,
 }: {
   settings?: PublicSiteSettings;
   branches?: PublicShowroomBranch[];
   featuredVehicles?: PublicVehicle[];
+  stories?: PublicShowroomStory[];
 }) {
   return (
     <>
@@ -27,7 +34,7 @@ export default function ModalContainer({
       <VideoModal settings={settings} branches={branches} />
       <GalleryLightbox />
       <CompareModal initialVehicles={featuredVehicles} />
-      <ShowroomStories settings={settings} vehicles={featuredVehicles} />
+      <ShowroomStories settings={settings} vehicles={featuredVehicles} stories={stories} />
     </>
   );
 }

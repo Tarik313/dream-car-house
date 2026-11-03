@@ -2,135 +2,48 @@
 
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useUI } from "@/lib/UIContext";
-import { playNextSupercarSound } from "@/lib/audioEngine";
+import type { PublicShowroomStory, PublicSiteSettings } from "@/lib/types";
 
-export interface ShowroomStoryItem {
-  id: string;
-  tag: string;
-  title: string;
-  subtitle: string;
-  priceNote: string;
-  image: string;
-  ctaText: string;
-  ctaLink: string;
-  whatsappMessage: string;
-  timeAgo: string;
-  brand: string;
-  accentColor: string;
-}
-
-const SHOWROOM_STORIES: ShowroomStoryItem[] = [
-  {
-    id: "g580",
-    tag: "NEW ARRIVAL • KAKRAIL SHOWROOM",
-    title: "2025 Mercedes-Benz G 580 EQ",
-    subtitle: "1,164 Nm Torque • 4 Individual Electric Motors • Bespoke Nappa Leather",
-    priceNote: "Available in Showroom",
-    image: "https://images.unsplash.com/photo-1520050206274-a1ae44613e6d?auto=format&fit=crop&w=1600&q=85",
-    ctaText: "Inspect Vehicle",
-    ctaLink: "/cars/mercedes-benz-g-580-2025-black",
-    whatsappMessage: "Hello Dream Car House, I want to inquire about the Mercedes-Benz G 580 from your Showroom Story.",
-    timeAgo: "2h ago",
-    brand: "Mercedes-Benz",
-    accentColor: "#38bdf8",
-  },
-  {
-    id: "lc250",
-    tag: "FLAGSHIP 4WD • GULSHAN AVENUE",
-    title: "2024 Land Cruiser 250 First Edition",
-    subtitle: "2400cc Turbo Hybrid • Full-Time 4WD with Torsen Differential • Rigid Chassis",
-    priceNote: "Immediate Delivery (5,000 km)",
-    image: "https://images.unsplash.com/photo-1594502184342-2e12f877aa73?auto=format&fit=crop&w=1600&q=85",
-    ctaText: "Inspect Vehicle",
-    ctaLink: "/cars/toyota-land-cruiser-250-2024-black-5000km",
-    whatsappMessage: "Hello Dream Car House, I want to inquire about the Land Cruiser 250 from your Showroom Story.",
-    timeAgo: "4h ago",
-    brand: "Toyota",
-    accentColor: "#ef4444",
-  },
-  {
-    id: "x7",
-    tag: "VIP ALLOCATION • GULSHAN LOUNGE",
-    title: "BMW X7 xDrive40i M-Sport Package",
-    subtitle: "Sky Lounge Panoramic LED Roof • 6-Seater Executive Lounge • 3000cc TwinPower Turbo",
-    priceNote: "Brand New Condition (13,000 km)",
-    image: "https://images.unsplash.com/photo-1580273916550-e323be2ae537?auto=format&fit=crop&w=1600&q=85",
-    ctaText: "Inspect Vehicle",
-    ctaLink: "/cars/bmw-x7-xdrive40i-2022-black-13000km",
-    whatsappMessage: "Hello Dream Car House, I want to inquire about the BMW X7 M-Sport from your Showroom Story.",
-    timeAgo: "6h ago",
-    brand: "BMW",
-    accentColor: "#3b82f6",
-  },
-  {
-    id: "lx600",
-    tag: "PRESTIGE COLLECTION • KAKRAIL",
-    title: "2023 Lexus LX 600 Ultra Luxury",
-    subtitle: "4-Seater Ottoman VIP Suite • 48° Reclining Rear Massage Seats • 3.5L Twin-Turbo V6",
-    priceNote: "Prestige Spec • Call for Price",
-    image: "https://images.unsplash.com/photo-1549399542-7e3f8b79c341?auto=format&fit=crop&w=1600&q=85",
-    ctaText: "Explore Collection",
-    ctaLink: "/inventory?brand=Lexus",
-    whatsappMessage: "Hello Dream Car House, I saw the Lexus LX 600 in your Stories. What is the current price?",
-    timeAgo: "9h ago",
-    brand: "Lexus",
-    accentColor: "#f59e0b",
-  },
-  {
-    id: "bespoke",
-    tag: "CONCIERGE • BESPOKE IMPORT",
-    title: "Direct Japan & European Custom Order",
-    subtitle: "Order any Rolls-Royce, Porsche GT3, or Maybach spec with white-glove import & registration",
-    priceNote: "VIP Concierge Service",
-    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1600&q=85",
-    ctaText: "Connect to Consult",
-    ctaLink: "/contact",
-    whatsappMessage: "Hello Dream Car House, I want to consult about custom importing a bespoke luxury car.",
-    timeAgo: "12h ago",
-    brand: "DREAM CAR HOUSE",
-    accentColor: "#10b981",
-  },
-];
-
-const STORY_DURATION_MS = 5200; // 5.2 seconds per story slide
+const DEFAULT_STORY_DURATION_MS = 6000; // 6 seconds for image slides
 
 export default function ShowroomStories({
   settings,
-  vehicles,
+  stories = [],
 }: {
-  settings?: unknown;
+  settings?: PublicSiteSettings;
   vehicles?: unknown;
+  stories?: PublicShowroomStory[];
 } = {}) {
   const { isStoriesOpen, closeStories } = useUI();
   const router = useRouter();
 
+  // Active list of stories from SSR backend
+  const activeStories = stories && stories.length > 0 ? stories : [];
+
   const [currentIndex, setCurrentIndex] = useState(0);
   const [progress, setProgress] = useState(0); // 0 to 100
   const [isPaused, setIsPaused] = useState(false);
-  const [isMuted, setIsMuted] = useState(false);
+  const [isMuted, setIsMuted] = useState(true); // Muted by default for executive discretion
 
   const timerRef = useRef<NodeJS.Timeout | null>(null);
   const startTimeRef = useRef<number>(Date.now());
   const elapsedBeforePauseRef = useRef<number>(0);
+  const videoRef = useRef<HTMLVideoElement | null>(null);
 
   // Advance to next story
   const nextStory = useCallback(() => {
-    if (currentIndex < SHOWROOM_STORIES.length - 1) {
+    if (currentIndex < activeStories.length - 1) {
       setCurrentIndex((prev) => prev + 1);
       setProgress(0);
       elapsedBeforePauseRef.current = 0;
       startTimeRef.current = Date.now();
-      if (!isMuted) {
-        playNextSupercarSound();
-      }
     } else {
-      // Loop or close stories when all finished
+      // Finished all stories
       closeStories();
     }
-  }, [currentIndex, isMuted, closeStories]);
+  }, [currentIndex, activeStories.length, closeStories]);
 
   // Go to previous story
   const prevStory = useCallback(() => {
@@ -146,9 +59,19 @@ export default function ShowroomStories({
     }
   }, [currentIndex]);
 
-  // Handle active progress bar timing
+  const current = activeStories[currentIndex];
+  const isVideo = current?.media_type === "video";
+
+  // Sync video audio element whenever isMuted changes
   useEffect(() => {
-    if (!isStoriesOpen) {
+    if (videoRef.current) {
+      videoRef.current.muted = isMuted;
+    }
+  }, [isMuted]);
+
+  // Handle active progress bar timing for image slides (or fallback if video duration not ready)
+  useEffect(() => {
+    if (!isStoriesOpen || activeStories.length === 0) {
       setCurrentIndex(0);
       setProgress(0);
       setIsPaused(false);
@@ -157,18 +80,32 @@ export default function ShowroomStories({
     }
 
     if (isPaused) {
+      if (videoRef.current && !videoRef.current.paused) {
+        videoRef.current.pause();
+      }
       return;
     }
 
+    // If it's a video, the video element's own timeupdate event will sync progress
+    if (isVideo) {
+      if (videoRef.current && videoRef.current.paused) {
+        videoRef.current.play().catch(() => {
+          // Browser autoplay restriction fallback
+        });
+      }
+      return;
+    }
+
+    // For images, use timer
     const interval = 40; // 40ms tick for 60fps smoothness
     const timer = setInterval(() => {
       const now = Date.now();
       const totalElapsed = elapsedBeforePauseRef.current + (now - startTimeRef.current);
-      const newProgress = Math.min(100, (totalElapsed / STORY_DURATION_MS) * 100);
+      const newProgress = Math.min(100, (totalElapsed / DEFAULT_STORY_DURATION_MS) * 100);
 
       setProgress(newProgress);
 
-      if (totalElapsed >= STORY_DURATION_MS) {
+      if (totalElapsed >= DEFAULT_STORY_DURATION_MS) {
         clearInterval(timer);
         nextStory();
       }
@@ -177,20 +114,27 @@ export default function ShowroomStories({
     timerRef.current = timer;
 
     return () => clearInterval(timer);
-  }, [isStoriesOpen, isPaused, currentIndex, nextStory]);
+  }, [isStoriesOpen, isPaused, currentIndex, nextStory, isVideo, activeStories.length]);
 
-  // Play sound on initial open
-  useEffect(() => {
-    if (isStoriesOpen && !isMuted) {
-      playNextSupercarSound();
+  // Handle video progress updates
+  const handleVideoTimeUpdate = () => {
+    if (videoRef.current && !isPaused) {
+      const dur = videoRef.current.duration;
+      const cur = videoRef.current.currentTime;
+      if (dur > 0) {
+        setProgress(Math.min(100, (cur / dur) * 100));
+      }
     }
-  }, [isStoriesOpen]);
+  };
 
   // Hold to pause handlers
   const handleHoldStart = () => {
     if (!isPaused) {
       elapsedBeforePauseRef.current += Date.now() - startTimeRef.current;
       setIsPaused(true);
+      if (videoRef.current) {
+        videoRef.current.pause();
+      }
     }
   };
 
@@ -198,6 +142,9 @@ export default function ShowroomStories({
     if (isPaused) {
       startTimeRef.current = Date.now();
       setIsPaused(false);
+      if (videoRef.current) {
+        videoRef.current.play().catch(() => {});
+      }
     }
   };
 
@@ -219,9 +166,10 @@ export default function ShowroomStories({
     router.push(link);
   };
 
-  if (!isStoriesOpen) return null;
+  if (!isStoriesOpen || activeStories.length === 0 || !current) return null;
 
-  const current = SHOWROOM_STORIES[currentIndex];
+  const rawWhatsapp = settings?.whatsapp || settings?.hotline || "8801615121312";
+  const cleanWhatsapp = rawWhatsapp.replace(/[^0-9]/g, "");
 
   return (
     <div className="stories-modal-backdrop" id="stories-modal-backdrop" onClick={closeStories}>
@@ -236,7 +184,7 @@ export default function ShowroomStories({
       >
         {/* Story Progress Bars */}
         <div className="story-progress-strip">
-          {SHOWROOM_STORIES.map((item, idx) => {
+          {activeStories.map((item, idx) => {
             let fillPct = 0;
             if (idx < currentIndex) fillPct = 100;
             else if (idx === currentIndex) fillPct = progress;
@@ -247,7 +195,7 @@ export default function ShowroomStories({
                   className="story-progress-fill"
                   style={{
                     width: `${fillPct}%`,
-                    backgroundColor: idx === currentIndex ? item.accentColor : "#ffffff",
+                    backgroundColor: idx === currentIndex ? item.accent_color || "#38bdf8" : "#ffffff",
                   }}
                 />
               </div>
@@ -263,10 +211,12 @@ export default function ShowroomStories({
             </div>
             <div>
               <div className="story-account-name-row">
-                <span className="story-account-title">DREAM CAR HOUSE</span>
+                <span className="story-account-title">{settings?.name || "DREAM CAR HOUSE"}</span>
                 <span className="story-verified-check">✓</span>
               </div>
-              <span className="story-timestamp">{current.timeAgo} • VIP Showroom Live</span>
+              <span className="story-timestamp">
+                {isVideo ? "Cinematic Video Reel" : "VIP Showroom Spotlight"}
+              </span>
             </div>
           </div>
 
@@ -274,30 +224,40 @@ export default function ShowroomStories({
             {/* Pause Indicator */}
             {isPaused && <span className="story-pause-badge">PAUSED</span>}
 
-            {/* Sound Toggle Button */}
-            <button
-              type="button"
-              className="story-icon-btn"
-              onClick={(e) => {
-                e.stopPropagation();
-                setIsMuted(!isMuted);
-              }}
-              title={isMuted ? "Unmute Engine Audio" : "Mute Engine Audio"}
-              aria-label="Toggle Story Audio"
-            >
-              {isMuted ? (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M11 5L6 9H2v6h4l5 4V5z"/>
-                  <line x1="23" y1="9" x2="17" y2="15"/>
-                  <line x1="17" y1="9" x2="23" y2="15"/>
-                </svg>
-              ) : (
-                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
-                  <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
-                </svg>
-              )}
-            </button>
+            {/* Sound Toggle Button (Available for Video Reels) */}
+            {isVideo && (
+              <button
+                type="button"
+                className="story-icon-btn"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  const nextMuted = !isMuted;
+                  setIsMuted(nextMuted);
+                  if (videoRef.current) {
+                    videoRef.current.muted = nextMuted;
+                  }
+                }}
+                title={isMuted ? "Unmute Engine Audio" : "Mute Engine Audio"}
+                aria-label="Toggle Story Audio"
+                style={{
+                  background: isMuted ? "rgba(0,0,0,0.6)" : "rgba(56, 189, 248, 0.3)",
+                  border: isMuted ? "1px solid rgba(255,255,255,0.2)" : "1px solid #38bdf8",
+                }}
+              >
+                {isMuted ? (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <path d="M11 5L6 9H2v6h4l5 4V5z"/>
+                    <line x1="23" y1="9" x2="17" y2="15"/>
+                    <line x1="17" y1="9" x2="23" y2="15"/>
+                  </svg>
+                ) : (
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2">
+                    <polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon>
+                    <path d="M19.07 4.93a10 10 0 0 1 0 14.14M15.54 8.46a5 5 0 0 1 0 7.07"></path>
+                  </svg>
+                )}
+              </button>
+            )}
 
             {/* Close Button */}
             <button
@@ -318,17 +278,39 @@ export default function ShowroomStories({
           </div>
         </div>
 
-        {/* Story Media / Image Area */}
+        {/* Story Media Area (Hybrid: Video or Image) */}
         <div className="story-media-area" onClick={handleStoryTap}>
-          <Image
-            key={current.id}
-            src={current.image}
-            alt={current.title}
-            fill
-            className="story-bg-image"
-            priority
-            sizes="(max-width: 768px) 100vw, 450px"
-          />
+          {isVideo ? (
+            <video
+              ref={videoRef}
+              key={current.id}
+              src={current.media_url}
+              autoPlay
+              playsInline
+              muted={isMuted}
+              onTimeUpdate={handleVideoTimeUpdate}
+              onEnded={nextStory}
+              className="story-bg-video"
+              style={{
+                width: "100%",
+                height: "100%",
+                objectFit: "cover",
+                position: "absolute",
+                top: 0,
+                left: 0,
+              }}
+            />
+          ) : (
+            <Image
+              key={current.id}
+              src={current.media_url}
+              alt={current.title}
+              fill
+              className="story-bg-image"
+              priority
+              sizes="(max-width: 768px) 100vw, 450px"
+            />
+          )}
 
           {/* Vignette Gradients */}
           <div className="story-vignette-top"></div>
@@ -344,22 +326,22 @@ export default function ShowroomStories({
           <div
             className="story-tag-pill"
             style={{
-              backgroundColor: `${current.accentColor}22`,
-              borderColor: `${current.accentColor}66`,
-              color: current.accentColor,
+              backgroundColor: `${current.accent_color || "#38bdf8"}22`,
+              borderColor: `${current.accent_color || "#38bdf8"}66`,
+              color: current.accent_color || "#38bdf8",
             }}
           >
-            <span className="story-tag-pulse" style={{ backgroundColor: current.accentColor }}></span>
-            <span>{current.tag}</span>
+            <span className="story-tag-pulse" style={{ backgroundColor: current.accent_color || "#38bdf8" }}></span>
+            <span>{current.tag || "SHOWROOM SPOTLIGHT"}</span>
           </div>
 
           <h3 className="story-headline">{current.title}</h3>
-          <p className="story-subheadline">{current.subtitle}</p>
+          {current.subtitle && <p className="story-subheadline">{current.subtitle}</p>}
 
           <div className="story-meta-row">
-            <span className="story-price-pill">{current.priceNote}</span>
+            <span className="story-price-pill">{current.price_note || current.brand || "Available"}</span>
             <span className="story-slide-counter">
-              Story {currentIndex + 1} of {SHOWROOM_STORIES.length}
+              Story {currentIndex + 1} of {activeStories.length}
             </span>
           </div>
 
@@ -370,10 +352,10 @@ export default function ShowroomStories({
               className="story-primary-cta"
               onClick={(e) => {
                 e.stopPropagation();
-                handleCtaClick(current.ctaLink);
+                handleCtaClick(current.cta_link || "/inventory");
               }}
             >
-              <span>{current.ctaText}</span>
+              <span>{current.cta_text || "Inspect Vehicle"}</span>
               <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
                 <line x1="5" y1="12" x2="19" y2="12"></line>
                 <polyline points="12 5 19 12 12 19"></polyline>
@@ -381,7 +363,7 @@ export default function ShowroomStories({
             </button>
 
             <a
-              href={`https://wa.me/8801615121312?text=${encodeURIComponent(current.whatsappMessage)}`}
+              href={`https://wa.me/${cleanWhatsapp}?text=${encodeURIComponent(current.whatsapp_message || "Hello Dream Car House, I want to inquire about this vehicle.")}`}
               target="_blank"
               rel="noopener noreferrer"
               className="story-whatsapp-cta"

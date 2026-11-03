@@ -28,6 +28,7 @@ import {
   Sliders,
   Camera,
   Crown,
+  Film,
 } from "lucide-react";
 import { navigation } from "@/lib/navigation";
 import type { DashboardUser } from "@/lib/types";
@@ -58,6 +59,8 @@ function getNavIcon(href: string): ReactNode {
       return <Users size={18} />;
     case "/workspace/content/sliders":
       return <Clapperboard size={18} />;
+    case "/workspace/content/stories":
+      return <Film size={18} />;
     case "/workspace/content/preferences":
       return <Sliders size={18} />;
     case "/workspace/content/consultation":

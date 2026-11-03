@@ -77,3 +77,12 @@ class AboutSectionAdmin(admin.ModelAdmin):
     list_editable = ['is_active']
 
 
+
+from apps.home.models import ShowroomStory
+
+@admin.register(ShowroomStory)
+class ShowroomStoryAdmin(admin.ModelAdmin):
+    list_display = ['title', 'brand', 'media_type', 'order', 'is_active', 'updated_at']
+    list_filter = ['media_type', 'is_active', 'brand']
+    search_fields = ['title', 'tag', 'subtitle', 'brand']
+    list_editable = ['order', 'is_active']

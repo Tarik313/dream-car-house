@@ -1082,3 +1082,27 @@ export function buildMetadataFromSEO(
     },
   };
 }
+
+
+import type { PublicShowroomStory } from "@/lib/types";
+
+export const getShowroomStoriesSSR = cache(async (): Promise<PublicShowroomStory[]> => {
+  try {
+    const origin = getBackendOrigin();
+    const res = await fetch(`${origin}/api/v1/home/stories/`, {
+      next: { revalidate: 60, tags: ["showroom-stories"] },
+    });
+    if (!res.ok) {
+      console.warn(`[getShowroomStoriesSSR] Failed with HTTP ${res.status}`);
+      return [];
+    }
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      return json.data as PublicShowroomStory[];
+    }
+    return [];
+  } catch (err) {
+    console.warn("[getShowroomStoriesSSR] Network or fetch error:", err);
+    return [];
+  }
+});

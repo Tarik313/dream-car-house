@@ -2562,3 +2562,53 @@ class AboutSectionManagementView(DashboardBaseAPIView):
 
 
 
+
+
+from apps.home.models.showroom_story_model import ShowroomStory
+from apps.dashboard_api.serializers import ShowroomStoryManagementSerializer
+
+class ShowroomStoryListCreateView(DashboardBaseAPIView):
+    permission_classes = (IsActiveStaff, DashboardModelPermission)
+    model = ShowroomStory
+
+    def get(self, request):
+        qs = ShowroomStory.objects.all().order_by("order", "-created_at")
+        serializer = ShowroomStoryManagementSerializer(qs, many=True, context={"request": request})
+        return Response({"success": True, "data": serializer.data})
+
+    def post(self, request):
+        serializer = ShowroomStoryManagementSerializer(data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        story = serializer.save()
+        return Response(
+            {"success": True, "data": ShowroomStoryManagementSerializer(story, context={"request": request}).data},
+            status=status.HTTP_201_CREATED,
+        )
+
+
+class ShowroomStoryDetailView(DashboardBaseAPIView):
+    permission_classes = (IsActiveStaff, DashboardModelPermission)
+    model = ShowroomStory
+
+    def get(self, request, pk):
+        story = get_object_or_404(ShowroomStory, pk=pk)
+        return Response({"success": True, "data": ShowroomStoryManagementSerializer(story, context={"request": request}).data})
+
+    def patch(self, request, pk):
+        story = get_object_or_404(ShowroomStory, pk=pk)
+        serializer = ShowroomStoryManagementSerializer(story, data=request.data, partial=True, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        updated = serializer.save()
+        return Response({"success": True, "data": ShowroomStoryManagementSerializer(updated, context={"request": request}).data})
+
+    def put(self, request, pk):
+        story = get_object_or_404(ShowroomStory, pk=pk)
+        serializer = ShowroomStoryManagementSerializer(story, data=request.data, context={"request": request})
+        serializer.is_valid(raise_exception=True)
+        updated = serializer.save()
+        return Response({"success": True, "data": ShowroomStoryManagementSerializer(updated, context={"request": request}).data})
+
+    def delete(self, request, pk):
+        story = get_object_or_404(ShowroomStory, pk=pk)
+        story.delete()
+        return Response({"success": True, "message": "Showroom story deleted successfully."}, status=status.HTTP_200_OK)

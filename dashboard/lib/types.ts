@@ -665,3 +665,24 @@ export type AboutSectionItem = {
 
 
 
+
+export type ShowroomStoryItem = {
+  id: number;
+  title: string;
+  tag: string;
+  subtitle: string;
+  price_note: string;
+  media_type: "image" | "video";
+  media_file: string | null;
+  media_url: string;
+  resolved_media_url?: string;
+  cta_text: string;
+  cta_link: string;
+  whatsapp_message: string;
+  brand: string;
+  accent_color: string;
+  order: number;
+  is_active: boolean;
+  created_at?: string;
+  updated_at?: string;
+};
