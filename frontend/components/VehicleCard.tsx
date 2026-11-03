@@ -58,9 +58,9 @@ export default function VehicleCard({ car }: VehicleCardProps) {
           {car.name}
         </h3>
 
-        {/* Year & Model Subtitle */}
+        {/* Model Year */}
         <p className="pref-car-meta">
-          {car.year} {car.brand ? `• ${car.brand}` : ""}
+          {car.year}
         </p>
 
         {/* Minimalist Specs Strip with Hairline Divider */}
