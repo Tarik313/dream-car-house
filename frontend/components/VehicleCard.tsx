@@ -12,20 +12,20 @@ interface VehicleCardProps {
 
 function formatPrice(price?: string | number | null, isCallForPrice?: boolean): string {
   if (isCallForPrice || price === null || price === undefined) return "Call for Price";
-  
+
   const s = String(price).trim();
   if (!s || s.toLowerCase().includes("call") || s === "0") return "Call for Price";
-  
+
   let numStr = s;
   if (numStr.toUpperCase().startsWith("BDT")) {
     numStr = numStr.substring(3).trim();
   }
-  
+
   const num = parseFloat(numStr.replace(/,/g, ""));
   if (!isNaN(num) && num > 0) {
     return `BDT ${Math.round(num).toLocaleString("en-IN")}`;
   }
-  
+
   return s.toUpperCase().startsWith("BDT") ? s : `BDT ${s}`;
 }
 
@@ -44,10 +44,10 @@ export default function VehicleCard({ car }: VehicleCardProps) {
     (car.branch_id === "gulshan"
       ? "Gulshan Branch"
       : car.branch_id === "kakrail"
-      ? "Kakrail Branch"
-      : car.branch_id === "Banani"
-      ? "Banani Branch"
-      : car.branch_name || "");
+        ? "Kakrail Branch"
+        : car.branch_id === "Banani"
+          ? "Banani Branch"
+          : car.branch_name || "");
 
   return (
     <article
