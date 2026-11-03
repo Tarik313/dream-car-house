@@ -40,16 +40,14 @@ export default function VehicleCard({ car }: VehicleCardProps) {
   const displayPrice = formatPrice(car.price, car.is_call_for_price);
 
   const branchLabel =
-    car.branch_id === "gulshan"
-      ? "Gulshan Avenue"
+    car.branch?.short_name ||
+    (car.branch_id === "gulshan"
+      ? "Gulshan Branch"
       : car.branch_id === "kakrail"
-      ? "Kakrail Flagship"
-      : car.branch_name || "Flagship Showroom";
-
-  const specsParts = [car.engine_capacity, car.mileage, car.fuel_type].filter(
-    (val): val is string => Boolean(val && typeof val === "string" && val.trim().length > 0)
-  );
-  const specsLine = specsParts.length > 0 ? specsParts.join(" · ") : "Certified Showroom Unit";
+      ? "Kakrail Branch"
+      : car.branch_id === "Banani"
+      ? "Banani Branch"
+      : car.branch_name || "");
 
   return (
     <article
@@ -65,21 +63,23 @@ export default function VehicleCard({ car }: VehicleCardProps) {
           className="pref-car-img"
         />
         <div className="pref-img-gradient" />
-        <span className="pref-branch-tag">
-          <svg
-            width="10"
-            height="10"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.2"
-            aria-hidden="true"
-          >
-            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-            <circle cx="12" cy="10" r="3" />
-          </svg>
-          {branchLabel}
-        </span>
+        {branchLabel ? (
+          <span className="pref-branch-tag">
+            <svg
+              width="10"
+              height="10"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2.2"
+              aria-hidden="true"
+            >
+              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+              <circle cx="12" cy="10" r="3" />
+            </svg>
+            {branchLabel}
+          </span>
+        ) : null}
       </div>
 
       <div className="pref-car-body">
@@ -93,9 +93,26 @@ export default function VehicleCard({ car }: VehicleCardProps) {
           {car.year}
         </p>
 
-        {/* Minimalist Specs Strip with Hairline Divider */}
-        <div className="pref-specs-strip" title={specsLine}>
-          {specsLine}
+        {/* Minimalist 3-Column Specs Pod with Clean Headings */}
+        <div className="pref-specs-row">
+          <div className="pref-spec-item">
+            <span className="pref-spec-label">Engine</span>
+            <span className="pref-spec-val" title={car.engine_capacity || "—"}>
+              {car.engine_capacity || "—"}
+            </span>
+          </div>
+          <div className="pref-spec-item">
+            <span className="pref-spec-label">Mileage</span>
+            <span className="pref-spec-val" title={car.mileage || "—"}>
+              {car.mileage || "—"}
+            </span>
+          </div>
+          <div className="pref-spec-item">
+            <span className="pref-spec-label">Fuel</span>
+            <span className="pref-spec-val" title={car.fuel_type || "—"}>
+              {car.fuel_type || "—"}
+            </span>
+          </div>
         </div>
 
         {/* Price & Action Row with Hairline Divider */}

@@ -2845,19 +2845,41 @@ button {
   font-weight: 400;
 }
 
-.pref-specs-strip {
-  margin-top: 1rem;
-  min-height: 28px;
+.pref-specs-row {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
   border-top: 1px solid rgba(255, 255, 255, 0.10);
-  padding-top: 0.75rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-  font-size: 11px;
-  line-height: 1.4;
-  letter-spacing: 0.04em;
-  color: rgba(255, 255, 255, 0.5);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.10);
+  padding: 0.65rem 0.2rem;
+  margin-top: 0.85rem;
+  margin-bottom: 0.25rem;
+  text-align: left;
+}
+
+.pref-spec-item {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.pref-spec-label {
+  font-size: 0.62rem;
+  color: rgba(255, 255, 255, 0.45);
+  text-transform: uppercase;
+  font-weight: 500;
+  letter-spacing: 0.06em;
+}
+
+.pref-spec-val {
+  font-size: 0.8125rem;
+  color: #f4f1ec;
+  font-weight: 500;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: -0.01em;
 }
 
 .pref-price-row {
@@ -9034,9 +9056,17 @@ button {
   color: #6b7280 !important;
 }
 
-[data-theme="light"] .pref-specs-strip {
+[data-theme="light"] .pref-specs-row {
   border-top-color: rgba(0, 0, 0, 0.08) !important;
-  color: #6b7280 !important;
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .pref-spec-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .pref-spec-val {
+  color: #0f172a !important;
 }
 
 [data-theme="light"] .pref-price-row {
