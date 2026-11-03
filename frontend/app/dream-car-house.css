@@ -2797,6 +2797,27 @@ button {
   font-weight: 500;
 }
 
+.pref-branch-tag {
+  position: absolute;
+  top: 10px;
+  right: 10px;
+  background: rgba(10, 12, 16, 0.78);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f1f5f9;
+  font-size: 0.68rem;
+  font-weight: 500;
+  letter-spacing: 0.03em;
+  padding: 3px 8px;
+  border-radius: 4px;
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  z-index: 2;
+  pointer-events: none;
+}
+
 .pref-car-body {
   display: flex;
   flex: 1;
@@ -9041,4 +9062,11 @@ button {
 [data-theme="light"] .pref-wa-btn-studio {
   background: rgba(37, 211, 102, 0.08) !important;
   border-color: rgba(37, 211, 102, 0.3) !important;
+}
+
+[data-theme="light"] .pref-branch-tag {
+  background: rgba(255, 255, 255, 0.88) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  color: #0f172a !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08) !important;
 }

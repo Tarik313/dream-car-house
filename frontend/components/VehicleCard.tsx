@@ -28,6 +28,13 @@ export default function VehicleCard({ car }: VehicleCardProps) {
 
   const displayPrice = formatPrice(car.price, car.is_call_for_price);
 
+  const branchLabel =
+    car.branch_id === "gulshan"
+      ? "Gulshan Avenue"
+      : car.branch_id === "kakrail"
+      ? "Kakrail Flagship"
+      : car.branch_name || "Flagship Showroom";
+
   const specsParts = [car.engine_capacity, car.mileage, car.fuel_type].filter(
     (val): val is string => Boolean(val && typeof val === "string" && val.trim().length > 0)
   );
@@ -49,6 +56,21 @@ export default function VehicleCard({ car }: VehicleCardProps) {
         <div className="pref-img-gradient" />
         <span className="pref-car-badge-studio">
           {isBrandNew ? "Brand-new" : "Pre-owned"}
+        </span>
+        <span className="pref-branch-tag">
+          <svg
+            width="10"
+            height="10"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            strokeWidth="2.2"
+            aria-hidden="true"
+          >
+            <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+            <circle cx="12" cy="10" r="3" />
+          </svg>
+          {branchLabel}
         </span>
       </div>
 
