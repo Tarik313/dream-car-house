@@ -10207,7 +10207,22 @@ button {
 
 .dch-spec-cell .spec-label {
   color: #948b83;
-  font-weight: 500;
+  font-weight: 700;
+  font-size: 0.74rem;
+  text-transform: uppercase;
+  letter-spacing: 0.75px;
+}
+
+.dch-section-subtext {
+  font-size: 0.82rem;
+  color: #948b83;
+  margin-top: 0.35rem;
+  margin-bottom: 0;
+  line-height: 1.55;
+}
+
+[data-theme="light"] .dch-section-subtext {
+  color: #64748b !important;
 }
 
 .dch-spec-cell .spec-value {

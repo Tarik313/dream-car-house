@@ -397,97 +397,101 @@ export default function VehicleDetailClient({
             </div>
           </div>
 
-          {/* Specifications Matrix with BEG headings + Auction Grade + Enhanced parameters */}
+          {/* Specifications Matrix with COMPREHENSIVE TECHNICAL MATRIX + BEG headings in ALL CAPS */}
           <section className="dch-specs-matrix-section">
             <div className="dch-section-heading-wrap">
-              <h2 className="dch-section-title">Specification</h2>
+              <span className="dch-section-eyebrow">OFFICIAL VEHICLE BLUEPRINT</span>
+              <h2 className="dch-section-title">COMPREHENSIVE TECHNICAL MATRIX</h2>
+              <p className="dch-section-subtext">
+                Detailed factory engineering data, certified physical inspection grades, and authentic showroom provenance records.
+              </p>
             </div>
 
             <div className="dch-full-specs-table-card">
               <div className="dch-full-specs-grid">
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Brand</span>
+                  <span className="spec-label">BRAND</span>
                   <span className="spec-value">{car.brand}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Model</span>
+                  <span className="spec-label">MODEL</span>
                   <span className="spec-value">{car.model || car.name}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Reg. year</span>
+                  <span className="spec-label">REG. YEAR</span>
                   <span className="spec-value">{car.year}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Mileage</span>
+                  <span className="spec-label">MILEAGE</span>
                   <span className="spec-value">{car.mileage || (isBrandNew ? "0 km (Zero Meter)" : "Verified Genuine")}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Engine (CC)</span>
+                  <span className="spec-label">ENGINE (CC)</span>
                   <span className="spec-value">{car.engine_capacity || "—"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Transmission</span>
+                  <span className="spec-label">TRANSMISSION</span>
                   <span className="spec-value">{car.transmission || "Automatic"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Fuel type</span>
+                  <span className="spec-label">FUEL TYPE</span>
                   <span className="spec-value">{car.fuel_type || "Petrol"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Drive type</span>
+                  <span className="spec-label">DRIVE TYPE</span>
                   <span className="spec-value">{car.drivetrain || "AWD"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Wheel</span>
+                  <span className="spec-label">WHEEL</span>
                   <span className="spec-value">{car.wheel_base || "19–21 Inch"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Exterior</span>
+                  <span className="spec-label">EXTERIOR</span>
                   <span className="spec-value">{car.color || "Obsidian Metallic"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Body style</span>
+                  <span className="spec-label">BODY STYLE</span>
                   <span className="spec-value">{car.body_style || "SUV"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Condition</span>
+                  <span className="spec-label">CONDITION</span>
                   <span className="spec-value highlight-gold">
                     {isBrandNew ? "BRAND NEW" : (car.condition || "PRE-OWNED")}
                   </span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Auction Grade</span>
+                  <span className="spec-label">AUCTION GRADE</span>
                   <span className="spec-value highlight-green">
                     {isBrandNew ? "Grade S • Factory Fresh" : "Grade 4.5 / 5.0 Point"}
                   </span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Reg. Number</span>
+                  <span className="spec-label">REG. NUMBER</span>
                   <span className="spec-value">
                     {car.registration_number || (isBrandNew ? "Unregistered (First Owner)" : "Dhaka Metro Registered")}
                   </span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Showroom</span>
+                  <span className="spec-label">SHOWROOM</span>
                   <span className="spec-value">{branch.name}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Availability</span>
+                  <span className="spec-label">AVAILABILITY</span>
                   <span className="spec-value highlight-green">
                     {car.registered || "In Stock • Physically Available"}
                   </span>
@@ -544,8 +548,11 @@ export default function VehicleDetailClient({
           {/* Editorial Description & Atelier Story */}
           <section className="dch-editorial-section">
             <div className="dch-section-heading-wrap">
-              <span className="dch-section-eyebrow">CURATED PROVENANCE</span>
-              <h2 className="dch-section-title">Atelier Overview & Vehicle Story</h2>
+              <span className="dch-section-eyebrow">EDITORIAL PROVENANCE</span>
+              <h2 className="dch-section-title">DESCRIPTION & ATELIER STORY</h2>
+              <p className="dch-section-subtext">
+                Comprehensive vehicle overview, handcrafted cabin finishes, and exclusive showroom pedigree.
+              </p>
             </div>
             <div className="dch-editorial-card">
               {car.description && car.description.includes("<") && car.description.includes(">") ? (
@@ -564,7 +571,10 @@ export default function VehicleDetailClient({
             <section className="dch-video-walkaround-section">
               <div className="dch-section-heading-wrap">
                 <span className="dch-section-eyebrow">CINEMATIC PRESENTATION</span>
-                <h2 className="dch-section-title">Official Video Walkaround</h2>
+                <h2 className="dch-section-title">OFFICIAL VIDEO WALKAROUND</h2>
+                <p className="dch-section-subtext">
+                  High-definition visual tour, engine exhaust acoustic notes, and cockpit walkthrough.
+                </p>
               </div>
               <div className="dch-video-container">
                 <iframe
@@ -588,7 +598,10 @@ export default function VehicleDetailClient({
           <section className="dch-financing-calculator-section" id="financing-calculator">
             <div className="dch-section-heading-wrap">
               <span className="dch-section-eyebrow">FINANCING & AUTO LOAN ADVISORY</span>
-              <h2 className="dch-section-title">Estimated Monthly Installment (EMI)</h2>
+              <h2 className="dch-section-title">ESTIMATED MONTHLY INSTALLMENT (EMI)</h2>
+              <p className="dch-section-subtext">
+                Transparent auto loan structuring tailored for premier private banking partners in Bangladesh.
+              </p>
             </div>
 
             <div className="dch-calculator-card">
@@ -885,7 +898,10 @@ export default function VehicleDetailClient({
         <section className="dch-related-automobiles-section">
           <div className="dch-section-heading-wrap">
             <span className="dch-section-eyebrow">CURATED RECOMMENDATIONS</span>
-            <h2 className="dch-section-title">Similar Luxury Automobiles</h2>
+            <h2 className="dch-section-title">SIMILAR LUXURY AUTOMOBILES</h2>
+            <p className="dch-section-subtext">
+              Explore handpicked alternative allocations sharing comparable engineering and prestige.
+            </p>
           </div>
 
           <div className="preference-showcase-grid">
