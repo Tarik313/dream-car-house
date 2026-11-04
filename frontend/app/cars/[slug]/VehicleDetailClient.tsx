@@ -177,7 +177,7 @@ export default function VehicleDetailClient({
   const waUrl = `https://wa.me/${waPhone}?text=${waMessage}`;
 
   return (
-    <div className="dch-car-detail-page max-w-7xl">
+    <div className="dch-car-detail-page max-w-[1680px] w-full mx-auto">
       {/* 1. Breadcrumbs & Top Navigation */}
       <nav aria-label="Breadcrumb" className="dch-breadcrumbs">
         <Link href="/" className="dch-crumb-link">
@@ -400,7 +400,6 @@ export default function VehicleDetailClient({
           {/* Specifications Matrix with COMPREHENSIVE TECHNICAL MATRIX + BEG headings in ALL CAPS */}
           <section className="dch-specs-matrix-section">
             <div className="dch-section-heading-wrap">
-              <span className="dch-section-eyebrow">OFFICIAL VEHICLE BLUEPRINT</span>
               <h2 className="dch-section-title">COMPREHENSIVE TECHNICAL MATRIX</h2>
               <p className="dch-section-subtext">
                 Detailed factory engineering data, certified physical inspection grades, and authentic showroom provenance records.
@@ -548,7 +547,6 @@ export default function VehicleDetailClient({
           {/* Editorial Description & Atelier Story */}
           <section className="dch-editorial-section">
             <div className="dch-section-heading-wrap">
-              <span className="dch-section-eyebrow">EDITORIAL PROVENANCE</span>
               <h2 className="dch-section-title">DESCRIPTION & ATELIER STORY</h2>
               <p className="dch-section-subtext">
                 Comprehensive vehicle overview, handcrafted cabin finishes, and exclusive showroom pedigree.
@@ -570,7 +568,6 @@ export default function VehicleDetailClient({
           {car.youtube && (
             <section className="dch-video-walkaround-section">
               <div className="dch-section-heading-wrap">
-                <span className="dch-section-eyebrow">CINEMATIC PRESENTATION</span>
                 <h2 className="dch-section-title">OFFICIAL VIDEO WALKAROUND</h2>
                 <p className="dch-section-subtext">
                   High-definition visual tour, engine exhaust acoustic notes, and cockpit walkthrough.
@@ -597,7 +594,6 @@ export default function VehicleDetailClient({
           {/* Interactive Financing & EMI Calculator */}
           <section className="dch-financing-calculator-section" id="financing-calculator">
             <div className="dch-section-heading-wrap">
-              <span className="dch-section-eyebrow">FINANCING & AUTO LOAN ADVISORY</span>
               <h2 className="dch-section-title">ESTIMATED MONTHLY INSTALLMENT (EMI)</h2>
               <p className="dch-section-subtext">
                 Transparent auto loan structuring tailored for premier private banking partners in Bangladesh.
@@ -897,7 +893,6 @@ export default function VehicleDetailClient({
       {relatedCars.length > 0 && (
         <section className="dch-related-automobiles-section">
           <div className="dch-section-heading-wrap">
-            <span className="dch-section-eyebrow">CURATED RECOMMENDATIONS</span>
             <h2 className="dch-section-title">SIMILAR LUXURY AUTOMOBILES</h2>
             <p className="dch-section-subtext">
               Explore handpicked alternative allocations sharing comparable engineering and prestige.
