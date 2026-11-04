@@ -363,46 +363,42 @@ export default function VehicleDetailClient({
         )}
       </section>
 
-      {/* 3. Below Gallery Main Content & Sticky Pricing Suite */}
+      {/* 3. Car Title & Quick Specifications Bar across the top */}
+      <div className="dch-vehicle-headline-box">
+        <h1 className="dch-car-main-title">{car.name}</h1>
+
+        <p className="dch-car-subtitle">
+          {car.brand.toUpperCase()}{car.year ? ` • REGISTRATION ${car.year}` : ""}
+        </p>
+      </div>
+
+      {/* Quick Specifications Bar (Clean, Minimal, No Captions) */}
+      <div className="dch-quick-stats-row">
+        <div className="dch-quick-stat-card">
+          <span className="dch-stat-label">ENGINE DISPLACEMENT</span>
+          <span className="dch-stat-val">{car.engine_capacity || "—"}</span>
+        </div>
+
+        <div className="dch-quick-stat-card">
+          <span className="dch-stat-label">ODOMETER MILEAGE</span>
+          <span className="dch-stat-val">{car.mileage || (isBrandNew ? "0 km" : "—")}</span>
+        </div>
+
+        <div className="dch-quick-stat-card">
+          <span className="dch-stat-label">FUEL ARCHITECTURE</span>
+          <span className="dch-stat-val">{car.fuel_type || "Petrol"}</span>
+        </div>
+
+        <div className="dch-quick-stat-card">
+          <span className="dch-stat-label">TRANSMISSION</span>
+          <span className="dch-stat-val">{car.transmission || "Automatic"}</span>
+        </div>
+      </div>
+
+      {/* 4. Balanced 2-Column Suite: Left (Engineering Blueprint & Story) vs Right (Valuation, Auction, Financing & Showroom) */}
       <div className="dch-vehicle-content-grid">
-        {/* Left Column: Comprehensive Specifications & Editorial Details (~66%) */}
+        {/* Left Column: Comprehensive Specifications & Editorial Details */}
         <div className="dch-vehicle-main-col">
-          {/* Header & Title */}
-          <div className="dch-vehicle-headline-box">
-            <h1 className="dch-car-main-title">{car.name}</h1>
-
-            <p className="dch-car-subtitle">
-              {car.brand.toUpperCase()}{car.year ? ` • REGISTRATION ${car.year}` : ""}
-            </p>
-          </div>
-
-          {/* Quick Specifications Bar (4 Prominent Luxury Stat Blocks) */}
-          <div className="dch-quick-stats-row">
-            <div className="dch-quick-stat-card">
-              <span className="dch-stat-label">ENGINE DISPLACEMENT</span>
-              <span className="dch-stat-val">{car.engine_capacity || "—"}</span>
-              <span className="dch-stat-caption">Factory Specification</span>
-            </div>
-
-            <div className="dch-quick-stat-card">
-              <span className="dch-stat-label">ODOMETER MILEAGE</span>
-              <span className="dch-stat-val">{car.mileage || (isBrandNew ? "0 km" : "—")}</span>
-              <span className="dch-stat-caption">Verified Genuine</span>
-            </div>
-
-            <div className="dch-quick-stat-card">
-              <span className="dch-stat-label">FUEL ARCHITECTURE</span>
-              <span className="dch-stat-val">{car.fuel_type || "Petrol"}</span>
-              <span className="dch-stat-caption">Direct Injection</span>
-            </div>
-
-            <div className="dch-quick-stat-card">
-              <span className="dch-stat-label">TRANSMISSION</span>
-              <span className="dch-stat-val">{car.transmission || "Automatic"}</span>
-              <span className="dch-stat-caption">Smooth Shift Tiptronic</span>
-            </div>
-          </div>
-
           {/* Specifications Matrix with COMPREHENSIVE TECHNICAL MATRIX + 4 Bespoke Chapters */}
           <section className="dch-specs-matrix-section">
             <div className="dch-section-heading-wrap">
@@ -529,51 +525,6 @@ export default function VehicleDetailClient({
             </div>
           </section>
 
-          {/* Auction Sheet & Quality Provenance Trust Card */}
-          <section className="dch-auction-sheet-section">
-            <div className="dch-auction-sheet-card">
-              <div className="dch-auction-left">
-                <div className="dch-auction-badge-icon">
-                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    <polyline points="9 12 11 14 15 10" />
-                  </svg>
-                </div>
-                <div>
-                  <div className="dch-auction-title-row">
-                    <h3 className="dch-auction-heading">Verified Auction Sheet & Technical Inspection</h3>
-                    <span className="dch-auction-score-pill">
-                      {isBrandNew ? "GRADE S • 100% FACTORY FRESH" : "GRADE 4.5 / 5.0 • POINT VERIFIED"}
-                    </span>
-                  </div>
-                  <p className="dch-auction-desc">
-                    Every vehicle at DREAM CAR HOUSE comes with authentic international auction manifest verification, genuine odometer certification, and our comprehensive 150+ point physical inspection report.
-                  </p>
-                </div>
-              </div>
-
-              <div className="dch-auction-actions">
-                <a
-                  href={`https://wa.me/${waPhone}?text=${encodeURIComponent(
-                    `Hello DREAM CAR HOUSE, I would like to inspect the official Verified Auction Sheet and 150+ Point Inspection Report for the ${car.name} (${car.year}).`
-                  )}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="dch-auction-req-btn"
-                >
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" />
-                    <line x1="16" y1="17" x2="8" y2="17" />
-                    <polyline points="10 9 9 9 8 9" />
-                  </svg>
-                  <span>Request Auction Sheet (PDF)</span>
-                </a>
-              </div>
-            </div>
-          </section>
-
           {/* Editorial Description & Atelier Story */}
           <section className="dch-editorial-section">
             <div className="dch-section-heading-wrap">
@@ -612,165 +563,11 @@ export default function VehicleDetailClient({
               />
             </div>
           </section>
-
-          {/* Interactive Financing & EMI Calculator */}
-          <section className="dch-financing-calculator-section" id="financing-calculator">
-            <div className="dch-section-heading-wrap">
-              <h2 className="dch-section-title">ESTIMATED MONTHLY INSTALLMENT (EMI)</h2>
-              <p className="dch-section-subtext">
-                Transparent auto loan structuring tailored for premier private banking partners in Bangladesh.
-              </p>
-            </div>
-
-            <div className="dch-calculator-card">
-              <div className="dch-calc-inputs-grid">
-                {/* Down Payment Slider */}
-                <div className="dch-calc-control-group">
-                  <div className="dch-calc-label-row">
-                    <label htmlFor="down-payment-range">Down Payment</label>
-                    <span className="dch-calc-value-badge">{downPaymentPercent}%</span>
-                  </div>
-                  <input
-                    id="down-payment-range"
-                    type="range"
-                    min="15"
-                    max="60"
-                    step="5"
-                    value={downPaymentPercent}
-                    onChange={(e) => setDownPaymentPercent(parseInt(e.target.value, 10))}
-                    className="dch-slider"
-                  />
-                  <div className="dch-calc-sub-amount">
-                    {numericPrice
-                      ? `~BDT ${Math.round((numericPrice * downPaymentPercent) / 100).toLocaleString("en-IN")}`
-                      : "Customizable upon private negotiation"}
-                  </div>
-                </div>
-
-                {/* Tenure Selector */}
-                <div className="dch-calc-control-group">
-                  <div className="dch-calc-label-row">
-                    <span>Loan Duration</span>
-                    <span className="dch-calc-value-badge">{loanTenureMonths} Months ({loanTenureMonths / 12} Yrs)</span>
-                  </div>
-                  <div className="dch-tenure-pills-row">
-                    {[12, 24, 36, 48, 60].map((months) => (
-                      <button
-                        key={months}
-                        type="button"
-                        className={`dch-tenure-pill ${loanTenureMonths === months ? "is-selected" : ""}`}
-                        onClick={() => setLoanTenureMonths(months)}
-                      >
-                        {months}m
-                      </button>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Interest Rate */}
-                <div className="dch-calc-control-group">
-                  <div className="dch-calc-label-row">
-                    <span>Bank Interest Rate</span>
-                    <span className="dch-calc-value-badge">{interestRate}% p.a.</span>
-                  </div>
-                  <input
-                    type="range"
-                    min="7"
-                    max="14"
-                    step="0.5"
-                    value={interestRate}
-                    onChange={(e) => setInterestRate(parseFloat(e.target.value))}
-                    className="dch-slider"
-                  />
-                  <div className="dch-calc-sub-amount">Standard Bangladesh Auto Loan Benchmark</div>
-                </div>
-              </div>
-
-              {/* Calculated EMI Display */}
-              <div className="dch-calc-result-box">
-                <div className="dch-result-meta">
-                  <span className="dch-result-label">ESTIMATED MONTHLY INSTALLMENT</span>
-                  <div className="dch-result-emi-val">
-                    {calculatedEmi ? (
-                      <>
-                        <span className="emi-currency">BDT</span> {calculatedEmi.toLocaleString("en-IN")}
-                        <span className="emi-period"> / month</span>
-                      </>
-                    ) : (
-                      "Contact Financial Concierge"
-                    )}
-                  </div>
-                  <p className="dch-result-disclaimer">
-                    Calculated for standard banking partner allocations. Subject to credit verification.
-                  </p>
-                </div>
-
-                <button
-                  type="button"
-                  className="dch-calc-apply-btn"
-                  onClick={() =>
-                    openAppointmentModal({
-                      carName: car.name,
-                      carYear: car.year,
-                      branchId: car.branch_id,
-                    })
-                  }
-                >
-                  <span>Apply for Loan Advisory</span>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
-              </div>
-            </div>
-          </section>
-
-          {/* Showroom Physical Branch Allocation Box */}
-          <section className="dch-branch-visiting-section">
-            <div className="dch-branch-card">
-              <div className="dch-branch-card-header">
-                <div className="dch-branch-pin-icon">
-                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.2">
-                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-                    <circle cx="12" cy="10" r="3" />
-                  </svg>
-                </div>
-                <div>
-                  <span className="dch-branch-eyebrow">PHYSICAL SHOWROOM ALLOCATION</span>
-                  <h3 className="dch-branch-title">{branch.name}</h3>
-                  <p className="dch-branch-addr">{branch.address}</p>
-                </div>
-              </div>
-
-              <div className="dch-branch-card-footer">
-                <div className="dch-branch-hours-item">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                    <circle cx="12" cy="12" r="10" />
-                    <polyline points="12 6 12 12 16 14" />
-                  </svg>
-                  <span>{branch.hours}</span>
-                </div>
-
-                {branch.map_link && (
-                  <a
-                    href={branch.map_link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="dch-branch-directions-link"
-                  >
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                      <polygon points="3 11 22 2 13 21 11 13 3 11" />
-                    </svg>
-                    <span>Get Showroom Directions</span>
-                  </a>
-                )}
-              </div>
-            </div>
-          </section>
         </div>
 
-        {/* Right Column: Sticky Pricing & Concierge Action Sidebar (~34%) */}
+        {/* Right Column: Valuation Suite, Verified Auction Sheet, EMI Calculator & Showroom Allocation */}
         <aside className="dch-vehicle-sidebar-col">
+          {/* 1. Showroom Valuation & VIP Concierge Suite */}
           <div className="dch-sticky-pricing-card">
             {/* Showroom Valuation Box */}
             <div className="dch-sidebar-pricing-box">
@@ -908,6 +705,206 @@ export default function VehicleDetailClient({
               </div>
             </div>
           </div>
+
+          {/* 2. Verified Auction Sheet & Technical Inspection */}
+          <section className="dch-auction-sheet-section">
+            <div className="dch-auction-sheet-card">
+              <div className="dch-auction-left">
+                <div className="dch-auction-badge-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <polyline points="9 12 11 14 15 10" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="dch-auction-title-row">
+                    <h3 className="dch-auction-heading">Verified Auction Sheet & Technical Inspection</h3>
+                    <span className="dch-auction-score-pill">
+                      {isBrandNew ? "GRADE S • 100% FACTORY FRESH" : "GRADE 4.5 / 5.0 • POINT VERIFIED"}
+                    </span>
+                  </div>
+                  <p className="dch-auction-desc">
+                    Every vehicle at DREAM CAR HOUSE comes with authentic international auction manifest verification, genuine odometer certification, and our comprehensive 150+ point physical inspection report.
+                  </p>
+                </div>
+              </div>
+
+              <div className="dch-auction-actions">
+                <a
+                  href={`https://wa.me/${waPhone}?text=${encodeURIComponent(
+                    `Hello DREAM CAR HOUSE, I would like to inspect the official Verified Auction Sheet and 150+ Point Inspection Report for the ${car.name} (${car.year}).`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dch-auction-req-btn"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
+                  <span>Request Auction Sheet (PDF)</span>
+                </a>
+              </div>
+            </div>
+          </section>
+
+          {/* 3. Interactive Financing & EMI Calculator */}
+          <section className="dch-financing-calculator-section" id="financing-calculator">
+            <div className="dch-section-heading-wrap">
+              <h2 className="dch-section-title">ESTIMATED MONTHLY INSTALLMENT (EMI)</h2>
+              <p className="dch-section-subtext">
+                Transparent auto loan structuring tailored for premier private banking partners in Bangladesh.
+              </p>
+            </div>
+
+            <div className="dch-calculator-card">
+              <div className="dch-calc-inputs-grid">
+                {/* Down Payment Slider */}
+                <div className="dch-calc-control-group">
+                  <div className="dch-calc-label-row">
+                    <label htmlFor="down-payment-range">Down Payment</label>
+                    <span className="dch-calc-value-badge">{downPaymentPercent}%</span>
+                  </div>
+                  <input
+                    id="down-payment-range"
+                    type="range"
+                    min="15"
+                    max="60"
+                    step="5"
+                    value={downPaymentPercent}
+                    onChange={(e) => setDownPaymentPercent(parseInt(e.target.value, 10))}
+                    className="dch-slider"
+                  />
+                  <div className="dch-calc-sub-amount">
+                    {numericPrice
+                      ? `~BDT ${Math.round((numericPrice * downPaymentPercent) / 100).toLocaleString("en-IN")}`
+                      : "Customizable upon private negotiation"}
+                  </div>
+                </div>
+
+                {/* Tenure Selector */}
+                <div className="dch-calc-control-group">
+                  <div className="dch-calc-label-row">
+                    <span>Loan Duration</span>
+                    <span className="dch-calc-value-badge">{loanTenureMonths} Months ({loanTenureMonths / 12} Yrs)</span>
+                  </div>
+                  <div className="dch-tenure-pills-row">
+                    {[12, 24, 36, 48, 60].map((months) => (
+                      <button
+                        key={months}
+                        type="button"
+                        className={`dch-tenure-pill ${loanTenureMonths === months ? "is-selected" : ""}`}
+                        onClick={() => setLoanTenureMonths(months)}
+                      >
+                        {months}m
+                      </button>
+                    ))}
+                  </div>
+                </div>
+
+                {/* Interest Rate */}
+                <div className="dch-calc-control-group">
+                  <div className="dch-calc-label-row">
+                    <span>Bank Interest Rate</span>
+                    <span className="dch-calc-value-badge">{interestRate}% p.a.</span>
+                  </div>
+                  <input
+                    type="range"
+                    min="7"
+                    max="14"
+                    step="0.5"
+                    value={interestRate}
+                    onChange={(e) => setInterestRate(parseFloat(e.target.value))}
+                    className="dch-slider"
+                  />
+                  <div className="dch-calc-sub-amount">Standard Bangladesh Auto Loan Benchmark</div>
+                </div>
+              </div>
+
+              {/* Calculated EMI Display */}
+              <div className="dch-calc-result-box">
+                <div className="dch-result-meta">
+                  <span className="dch-result-label">ESTIMATED MONTHLY INSTALLMENT</span>
+                  <div className="dch-result-emi-val">
+                    {calculatedEmi ? (
+                      <>
+                        <span className="emi-currency">BDT</span> {calculatedEmi.toLocaleString("en-IN")}
+                        <span className="emi-period"> / month</span>
+                      </>
+                    ) : (
+                      "Contact Financial Concierge"
+                    )}
+                  </div>
+                  <p className="dch-result-disclaimer">
+                    Calculated for standard banking partner allocations. Subject to credit verification.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  className="dch-calc-apply-btn"
+                  onClick={() =>
+                    openAppointmentModal({
+                      carName: car.name,
+                      carYear: car.year,
+                      branchId: car.branch_id,
+                    })
+                  }
+                >
+                  <span>Apply for Loan Advisory</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
+            </div>
+          </section>
+
+          {/* 4. Physical Showroom Pavilion Allocation */}
+          <section className="dch-branch-visiting-section">
+            <div className="dch-branch-card">
+              <div className="dch-branch-card-header">
+                <div className="dch-branch-pin-icon">
+                  <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#22c55e" strokeWidth="2.2">
+                    <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                    <circle cx="12" cy="10" r="3" />
+                  </svg>
+                </div>
+                <div>
+                  <span className="dch-branch-eyebrow">PHYSICAL SHOWROOM ALLOCATION</span>
+                  <h3 className="dch-branch-title">{branch.name}</h3>
+                  <p className="dch-branch-addr">{branch.address}</p>
+                </div>
+              </div>
+
+              <div className="dch-branch-card-footer">
+                <div className="dch-branch-hours-item">
+                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <polyline points="12 6 12 12 16 14" />
+                  </svg>
+                  <span>{branch.hours}</span>
+                </div>
+
+                {branch.map_link && (
+                  <a
+                    href={branch.map_link}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="dch-branch-directions-link"
+                  >
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                    </svg>
+                    <span>Get Showroom Directions</span>
+                  </a>
+                )}
+              </div>
+            </div>
+          </section>
         </aside>
       </div>
 
