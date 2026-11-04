@@ -78,11 +78,11 @@ button {
   border-bottom: 1px solid transparent;
   box-shadow: none;
   transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
-              background 0.35s ease, 
-              border-color 0.35s ease, 
-              box-shadow 0.35s ease,
-              backdrop-filter 0.35s ease,
-              -webkit-backdrop-filter 0.35s ease;
+    background 0.35s ease,
+    border-color 0.35s ease,
+    box-shadow 0.35s ease,
+    backdrop-filter 0.35s ease,
+    -webkit-backdrop-filter 0.35s ease;
   pointer-events: none;
   will-change: transform;
 }
@@ -154,6 +154,7 @@ button {
   0% {
     filter: drop-shadow(0 0 4px rgba(234, 179, 8, 0.5));
   }
+
   100% {
     filter: drop-shadow(0 0 12px rgba(239, 68, 68, 0.85));
   }
@@ -195,6 +196,7 @@ button {
     width: 38px !important;
     height: 38px !important;
   }
+
   .steering-wheel-icon {
     width: 23px !important;
     height: 23px !important;
@@ -280,6 +282,7 @@ button {
     height: 36px;
     max-width: 150px;
   }
+
   .logo-text {
     font-size: 1.15rem;
     letter-spacing: 2px;
@@ -390,8 +393,13 @@ button {
 }
 
 @keyframes wheelCruiseSpin {
-  0% { transform: rotate(0deg); }
-  100% { transform: rotate(360deg); }
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
 }
 
 /* 2. Click Burnout: Rapid High-Speed Spin with Acceleration (1440 deg over 1.2s) */
@@ -411,17 +419,48 @@ button {
 }
 
 @keyframes burnoutFrictionPulse {
-  0% { transform: scale(1) rotate(0deg); opacity: 0.85; }
-  50% { transform: scale(1.3) rotate(180deg); opacity: 1; filter: drop-shadow(0 0 10px #ffffff); }
-  100% { transform: scale(1.5) rotate(360deg); opacity: 0; }
+  0% {
+    transform: scale(1) rotate(0deg);
+    opacity: 0.85;
+  }
+
+  50% {
+    transform: scale(1.3) rotate(180deg);
+    opacity: 1;
+    filter: drop-shadow(0 0 10px #ffffff);
+  }
+
+  100% {
+    transform: scale(1.5) rotate(360deg);
+    opacity: 0;
+  }
 }
 
 @keyframes wheelBurnoutSpin {
-  0% { transform: rotate(0deg) scale(1); filter: brightness(1); }
-  20% { transform: rotate(360deg) scale(1.15); filter: brightness(1.4) drop-shadow(0 0 20px #ffffff); }
-  55% { transform: rotate(1000deg) scale(1.12); filter: brightness(1.3) drop-shadow(0 0 25px rgba(255, 255, 255, 0.9)); }
-  85% { transform: rotate(1360deg) scale(1.05); filter: brightness(1.1); }
-  100% { transform: rotate(1440deg) scale(1); filter: brightness(1); }
+  0% {
+    transform: rotate(0deg) scale(1);
+    filter: brightness(1);
+  }
+
+  20% {
+    transform: rotate(360deg) scale(1.15);
+    filter: brightness(1.4) drop-shadow(0 0 20px #ffffff);
+  }
+
+  55% {
+    transform: rotate(1000deg) scale(1.12);
+    filter: brightness(1.3) drop-shadow(0 0 25px rgba(255, 255, 255, 0.9));
+  }
+
+  85% {
+    transform: rotate(1360deg) scale(1.05);
+    filter: brightness(1.1);
+  }
+
+  100% {
+    transform: rotate(1440deg) scale(1);
+    filter: brightness(1);
+  }
 }
 
 /* ================= Supercar Sound Engine HUD Toast ================= */
@@ -449,6 +488,7 @@ button {
     opacity: 0;
     transform: translateY(-10px) scale(0.9);
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -487,9 +527,11 @@ button {
     right: -10px;
     padding: 0.45rem 0.9rem 0.45rem 0.75rem;
   }
+
   .sound-hud-marque {
     font-size: 0.68rem;
   }
+
   .sound-hud-tagline {
     font-size: 0.6rem;
   }
@@ -589,25 +631,65 @@ button {
 }
 
 @keyframes beamIgnition {
-  0% { left: -100%; opacity: 0; }
-  35% { opacity: 1; }
-  100% { left: 220%; opacity: 0; }
+  0% {
+    left: -100%;
+    opacity: 0;
+  }
+
+  35% {
+    opacity: 1;
+  }
+
+  100% {
+    left: 220%;
+    opacity: 0;
+  }
 }
 
 /* Staggered Cascade Motion for Menu Items */
 @keyframes menuItemCascade {
-  0% { opacity: 0; transform: translateX(35px); }
-  100% { opacity: 1; transform: translateX(0); }
+  0% {
+    opacity: 0;
+    transform: translateX(35px);
+  }
+
+  100% {
+    opacity: 1;
+    transform: translateX(0);
+  }
 }
 
-.nav-drawer.open .drawer-nav-list li:nth-child(1) .drawer-nav-item { animation: menuItemCascade 0.35s 0.08s ease both; }
-.nav-drawer.open .drawer-nav-list li:nth-child(2) .drawer-nav-item { animation: menuItemCascade 0.35s 0.14s ease both; }
-.nav-drawer.open .drawer-nav-list li:nth-child(3) .drawer-nav-item { animation: menuItemCascade 0.35s 0.20s ease both; }
-.nav-drawer.open .drawer-nav-list li:nth-child(4) .drawer-nav-item { animation: menuItemCascade 0.35s 0.26s ease both; }
-.nav-drawer.open .drawer-nav-list li:nth-child(5) .drawer-nav-item { animation: menuItemCascade 0.35s 0.32s ease both; }
-.nav-drawer.open .drawer-nav-list li:nth-child(6) .drawer-nav-item { animation: menuItemCascade 0.35s 0.38s ease both; }
-.nav-drawer.open .drawer-nav-list li:nth-child(7) .drawer-nav-item { animation: menuItemCascade 0.35s 0.44s ease both; }
-.nav-drawer.open .drawer-nav-list li:nth-child(8) .drawer-nav-item { animation: menuItemCascade 0.35s 0.50s ease both; }
+.nav-drawer.open .drawer-nav-list li:nth-child(1) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.08s ease both;
+}
+
+.nav-drawer.open .drawer-nav-list li:nth-child(2) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.14s ease both;
+}
+
+.nav-drawer.open .drawer-nav-list li:nth-child(3) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.20s ease both;
+}
+
+.nav-drawer.open .drawer-nav-list li:nth-child(4) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.26s ease both;
+}
+
+.nav-drawer.open .drawer-nav-list li:nth-child(5) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.32s ease both;
+}
+
+.nav-drawer.open .drawer-nav-list li:nth-child(6) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.38s ease both;
+}
+
+.nav-drawer.open .drawer-nav-list li:nth-child(7) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.44s ease both;
+}
+
+.nav-drawer.open .drawer-nav-list li:nth-child(8) .drawer-nav-item {
+  animation: menuItemCascade 0.35s 0.50s ease both;
+}
 
 .supercar-banner-overlay {
   position: absolute;
@@ -637,8 +719,15 @@ button {
 }
 
 @keyframes crestGlow {
-  0% { transform: scale(1); filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6)); }
-  100% { transform: scale(1.1); filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.95)); }
+  0% {
+    transform: scale(1);
+    filter: drop-shadow(0 0 6px rgba(255, 255, 255, 0.6));
+  }
+
+  100% {
+    transform: scale(1.1);
+    filter: drop-shadow(0 0 14px rgba(255, 255, 255, 0.95));
+  }
 }
 
 .drawer-logo-text {
@@ -978,34 +1067,42 @@ button {
   .header {
     padding: 0.85rem 1rem !important;
   }
+
   .header.header-scrolled {
     padding: 0.85rem 1rem !important;
   }
+
   .logo-text {
     font-size: 1.05rem;
     letter-spacing: 1.5px;
   }
+
   .header-ai-btn {
     width: 38px;
     height: 38px;
   }
+
   .header-wheel-trigger {
     width: 44px;
     height: 44px;
   }
+
   .wheel-disc-wrapper {
     width: 44px !important;
     height: 44px !important;
   }
+
   .realistic-wheel-img {
     width: 40px !important;
     height: 40px !important;
   }
+
   .nav-drawer {
     width: 100% !important;
     max-width: 100vw !important;
     padding: 0 !important;
   }
+
   .drawer-close-btn {
     top: 0.85rem;
     right: 0.85rem;
@@ -1014,27 +1111,34 @@ button {
     background: rgba(10, 12, 16, 0.95);
     border: 1.5px solid rgba(255, 255, 255, 0.4);
   }
+
   .drawer-supercar-banner {
     height: 165px;
   }
+
   .drawer-nav-container {
     padding: 1.25rem 1rem;
   }
+
   .drawer-nav-item {
     padding: 0.75rem 0.85rem !important;
     gap: 0.75rem !important;
   }
+
   .drawer-item-title {
     font-size: 0.88rem !important;
     letter-spacing: 0.03em !important;
   }
+
   .drawer-item-icon {
     width: 34px !important;
     height: 34px !important;
   }
+
   .drawer-marques-section {
     padding: 1rem 1rem 0.25rem 1rem;
   }
+
   .drawer-concierge-footer {
     padding: 1.25rem 1rem;
   }
@@ -1045,6 +1149,7 @@ button {
     font-size: 0.8rem !important;
     letter-spacing: 0.02em !important;
   }
+
   .drawer-nav-item {
     padding: 0.65rem 0.65rem !important;
     gap: 0.5rem !important;
@@ -1171,6 +1276,7 @@ button {
     min-height: 440px;
     height: 65vh;
   }
+
   .hero-bg-image {
     object-position: 65% center;
   }
@@ -1234,8 +1340,17 @@ button {
 }
 
 @keyframes pulseGlow {
-  0%, 100% { transform: scale(1); opacity: 1; }
-  50% { transform: scale(1.3); opacity: 0.7; }
+
+  0%,
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.3);
+    opacity: 0.7;
+  }
 }
 
 .eyebrow-text {
@@ -1513,8 +1628,15 @@ button {
 }
 
 @keyframes bounceDown {
-  0%, 100% { transform: translateY(0); }
-  50% { transform: translateY(3px); }
+
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+
+  50% {
+    transform: translateY(3px);
+  }
 }
 
 /* ================= GLOBAL LIGHT THEME (LIQUID PLATINUM & SATIN SILVER LUXURY DAY MODE) ================= */
@@ -2587,10 +2709,12 @@ button {
     padding: 2.5rem 1rem !important;
     overflow: hidden;
   }
+
   .preference-header-wrap {
     gap: 1.25rem;
     width: 100%;
   }
+
   .segment-switcher {
     display: flex;
     width: 100%;
@@ -2598,6 +2722,7 @@ button {
     padding: 4px;
     gap: 4px;
   }
+
   .segment-btn {
     flex: 1;
     justify-content: center;
@@ -2608,10 +2733,12 @@ button {
     text-align: center;
     gap: 4px;
   }
+
   .segment-label {
     line-height: 1.2;
     font-size: 0.74rem;
   }
+
   .segment-count {
     font-size: 0.68rem;
     padding: 1px 5px;
@@ -2729,6 +2856,7 @@ button {
     opacity: 0;
     transform: translateY(8px);
   }
+
   to {
     opacity: 1;
     transform: translateY(0);
@@ -3015,7 +3143,7 @@ button {
   position: absolute;
   inset: 0;
   pointer-events: none;
-  background: 
+  background:
     linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px) 0 0 / 24px 100%,
     linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px) 0 0 / 100% 24px;
 }
@@ -3067,11 +3195,11 @@ button {
   justify-content: center;
   cursor: pointer;
   backdrop-filter: blur(8px);
-  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1), 
-              border-color 0.3s ease, 
-              box-shadow 0.3s ease, 
-              opacity 0.4s ease, 
-              filter 0.4s ease;
+  transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+    border-color 0.3s ease,
+    box-shadow 0.3s ease,
+    opacity 0.4s ease,
+    filter 0.4s ease;
   user-select: none;
   position: relative;
   box-sizing: border-box;
@@ -3152,11 +3280,13 @@ button {
     transform: translateY(16px) scale(0.65);
     filter: brightness(2.4) drop-shadow(0 0 20px rgba(255, 255, 255, 0.8));
   }
+
   60% {
     opacity: 1;
     transform: translateY(-3px) scale(1.08);
     filter: brightness(1.5) drop-shadow(0 0 12px rgba(255, 255, 255, 0.5));
   }
+
   100% {
     opacity: 1;
     transform: translateY(0) scale(1);
@@ -3198,6 +3328,7 @@ button {
   .brand-runway-row {
     gap: 0.6rem;
   }
+
   .runway-brand-card {
     padding: 0.85rem 0.4rem;
   }
@@ -3208,26 +3339,32 @@ button {
     padding: 1.8rem 0.6rem;
     border-radius: 12px;
   }
+
   .brand-runway-row {
     gap: 0.45rem;
     padding: 0.25rem 0;
   }
+
   .runway-brand-card {
     padding: 0.75rem 0.25rem;
     border-radius: 10px;
   }
+
   .brand-svg {
     width: 28px;
     height: 28px;
   }
+
   .brand-svg-wide {
     width: 42px;
     height: 24px;
   }
+
   .runway-brand-name {
     font-size: 0.65rem;
     letter-spacing: 0.04em;
   }
+
   .runway-car-actor {
     width: 160px;
     height: 48px;
@@ -3249,10 +3386,12 @@ button {
     opacity: 0.85;
     transform: translate(-50%, -50%) scale(0.4) rotate(0deg);
   }
+
   50% {
     opacity: 0.6;
     transform: translate(-30%, -70%) scale(1.6) rotate(45deg);
   }
+
   100% {
     opacity: 0;
     transform: translate(-10%, -100%) scale(2.6) rotate(90deg);
@@ -3276,10 +3415,12 @@ button {
     opacity: 1;
     transform: translate(-50%, -50%) scale(0.2);
   }
+
   50% {
     opacity: 0.8;
     transform: translate(-50%, -50%) scale(1.4);
   }
+
   100% {
     opacity: 0;
     transform: translate(-50%, -50%) scale(2.2);
@@ -3290,8 +3431,8 @@ button {
 .connect-consult-section {
   position: relative;
   background: radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.03) 0%, transparent 60%),
-              radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 60%),
-              #0b0b0c;
+    radial-gradient(circle at 20% 80%, rgba(255, 255, 255, 0.02) 0%, transparent 60%),
+    #0b0b0c;
   padding: 2.75rem 1.5rem 1.5rem 1.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.06);
   border-bottom: 1px solid rgba(255, 255, 255, 0.06);
@@ -3548,9 +3689,20 @@ button {
 }
 
 @keyframes beaconPing {
-  0% { transform: scale(0.9); opacity: 1; }
-  50% { transform: scale(1.4); opacity: 0.7; }
-  100% { transform: scale(0.9); opacity: 1; }
+  0% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
+
+  50% {
+    transform: scale(1.4);
+    opacity: 0.7;
+  }
+
+  100% {
+    transform: scale(0.9);
+    opacity: 1;
+  }
 }
 
 /* ================= CONCEPT 2 STYLES ================= */
@@ -4144,7 +4296,8 @@ button {
 .video-modal-frame-wrap {
   position: relative;
   width: 100%;
-  padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+  padding-bottom: 56.25%;
+  /* 16:9 Aspect Ratio */
   height: 0;
   border-radius: 10px;
   overflow: hidden;
@@ -4293,16 +4446,19 @@ button {
     grid-template-columns: repeat(12, 1fr);
     gap: 1.5rem;
   }
+
   .atelier-flip-card.tile-hero,
   .tile-hero {
     grid-column: span 7;
     min-height: 540px;
   }
+
   .atelier-flip-card.tile-portrait,
   .tile-portrait {
     grid-column: span 5;
     min-height: 540px;
   }
+
   .atelier-flip-card.tile-tri,
   .tile-tri {
     grid-column: span 4;
@@ -4311,6 +4467,7 @@ button {
 }
 
 @media (max-width: 1023px) {
+
   .atelier-flip-card.tile-hero,
   .atelier-flip-card.tile-portrait,
   .tile-hero,
@@ -4318,6 +4475,7 @@ button {
     grid-column: 1 / -1;
     min-height: 530px;
   }
+
   .atelier-flip-card.tile-tri,
   .tile-tri {
     grid-column: 1 / -1;
@@ -4329,6 +4487,7 @@ button {
   .atelier-flip-card {
     min-height: 520px;
   }
+
   .atelier-flip-card.tile-hero,
   .atelier-flip-card.tile-portrait,
   .tile-hero,
@@ -4908,29 +5067,36 @@ button {
     min-height: 240px;
     aspect-ratio: 16 / 11;
   }
+
   .gallery-hero-title {
     font-size: 1.65rem !important;
     line-height: 1.25 !important;
   }
+
   .gallery-hero-desc {
     font-size: 0.85rem !important;
     line-height: 1.45 !important;
   }
+
   .gallery-page-header {
     margin-bottom: 1.5rem !important;
   }
+
   .gallery-header-main {
     margin-bottom: 1.25rem !important;
     gap: 1rem !important;
   }
+
   .gallery-flip-back {
     padding: 0.85rem 0.95rem 0.95rem 0.95rem !important;
   }
+
   .gallery-back-title {
     font-size: 0.92rem !important;
     margin-bottom: 0.2rem !important;
     line-height: 1.25 !important;
   }
+
   .gallery-back-desc {
     font-size: 0.72rem !important;
     line-height: 1.35 !important;
@@ -4939,10 +5105,12 @@ button {
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
   .gallery-back-lightbox-btn {
     padding: 0.48rem 0.7rem !important;
     font-size: 0.72rem !important;
   }
+
   .gallery-action-icon-btn {
     width: 32px !important;
     height: 32px !important;
@@ -5511,42 +5679,52 @@ button {
     padding: 0.75rem 1rem;
     gap: 0.5rem;
   }
+
   .lightbox-brand-sep,
   .lightbox-top-badge {
     display: none;
   }
+
   .lightbox-image-stage {
     padding: 0.5rem 1rem;
     height: calc(100vh - 70px);
   }
+
   .lightbox-image-stage img {
     max-height: calc(100vh - 85px);
     max-width: 98vw;
   }
+
   .lightbox-zoom-bar {
     padding: 2px 4px;
     gap: 2px;
   }
+
   .lightbox-zoom-btn {
     width: 28px;
     height: 28px;
   }
+
   .lightbox-zoom-btn svg {
     width: 13px;
     height: 13px;
   }
+
   .lightbox-zoom-val {
     font-size: 0.7rem;
     padding: 0 4px;
     min-width: 36px;
   }
+
   .lightbox-arrow {
     width: 42px;
     height: 42px;
   }
+
   .lightbox-prev {
     left: 0.6rem;
   }
+
   .lightbox-next {
     right: 0.6rem;
   }
@@ -5557,51 +5735,63 @@ button {
     padding: 0.55rem 0.65rem;
     gap: 0.35rem;
   }
+
   .lightbox-brand-name {
     display: none;
   }
+
   .lightbox-brand-info {
     gap: 0.4rem;
   }
+
   .lightbox-top-badge {
     display: inline-block !important;
     font-size: 0.66rem;
     padding: 3px 8px;
   }
+
   .lightbox-counter-pill {
     font-size: 0.72rem;
     padding: 4px 8px;
     letter-spacing: 0;
   }
+
   .lightbox-action-btn {
     width: 32px;
     height: 32px;
   }
+
   .lightbox-action-btn svg {
     width: 15px;
     height: 15px;
   }
+
   .lightbox-zoom-bar {
     padding: 1px 3px;
     gap: 1px;
   }
+
   .lightbox-zoom-btn {
     width: 25px;
     height: 25px;
   }
+
   .lightbox-zoom-btn svg {
     width: 11px;
     height: 11px;
   }
+
   .lightbox-zoom-val {
     font-size: 0.66rem;
     padding: 0 2px;
     min-width: 30px;
   }
+
   .lightbox-arrow {
     width: 36px;
     height: 36px;
   }
+
   .lightbox-arrow svg {
     width: 18px;
     height: 18px;
@@ -6208,7 +6398,8 @@ button {
 
 .map-directions-btn:hover {
   background: #ffffff;
-  border-color: #ffffff; color: #000000;
+  border-color: #ffffff;
+  color: #000000;
 }
 
 /* Col 3: Shortcut Links (Right) */
@@ -6499,8 +6690,17 @@ button {
 }
 
 @keyframes beaconGlow {
-  0%, 100% { opacity: 0.4; transform: scale(0.9); }
-  50% { opacity: 1; transform: scale(1.2); }
+
+  0%,
+  100% {
+    opacity: 0.4;
+    transform: scale(0.9);
+  }
+
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
 }
 
 .dch-car-grid {
@@ -6630,6 +6830,7 @@ button {
   transition: all 0.2s ease;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.6);
 }
+
 .dch-img-expand-btn:hover {
   background: #ffffff;
   color: #000000;
@@ -6658,15 +6859,18 @@ button {
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.75);
   -webkit-tap-highlight-color: transparent;
 }
+
 .dch-gallery-arrow:hover {
   background: #ffffff;
   color: #000000;
   border-color: #ffffff;
   transform: translateY(-50%) scale(1.1);
 }
+
 .dch-gallery-prev {
   left: 0.75rem;
 }
+
 .dch-gallery-next {
   right: 0.75rem;
 }
@@ -6789,6 +6993,7 @@ button {
   overflow: hidden;
   margin-top: 0.15rem;
 }
+
 .dch-thumbnail-strip {
   display: flex;
   gap: 0.55rem;
@@ -6798,9 +7003,11 @@ button {
   scrollbar-color: rgba(255, 255, 255, 0.2) transparent;
   scroll-behavior: smooth;
 }
+
 .dch-thumbnail-strip::-webkit-scrollbar {
   height: 4px;
 }
+
 .dch-thumbnail-strip::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.25);
   border-radius: 999px;
@@ -6819,6 +7026,7 @@ button {
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
   -webkit-tap-highlight-color: transparent;
 }
+
 .dch-thumb-btn img {
   width: 100%;
   height: 100%;
@@ -6827,17 +7035,21 @@ button {
   opacity: 0.65;
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
+
 .dch-thumb-btn:hover img {
   opacity: 0.95;
   transform: scale(1.06);
 }
+
 .dch-thumb-btn.active {
   border-color: #22c55e;
   box-shadow: 0 0 12px rgba(34, 197, 94, 0.45);
 }
+
 .dch-thumb-btn.active img {
   opacity: 1;
 }
+
 .thumb-tag {
   position: absolute;
   bottom: 2px;
@@ -6863,11 +7075,13 @@ button {
   gap: 0.65rem;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
+
 .branch-alloc-head {
   display: flex;
   align-items: flex-start;
   gap: 0.75rem;
 }
+
 .branch-alloc-icon {
   width: 36px;
   height: 36px;
@@ -6879,12 +7093,14 @@ button {
   justify-content: center;
   flex-shrink: 0;
 }
+
 .branch-alloc-meta {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
   min-width: 0;
 }
+
 .branch-alloc-eyebrow {
   font-size: 0.65rem;
   font-weight: 700;
@@ -6892,17 +7108,20 @@ button {
   text-transform: uppercase;
   color: #22c55e;
 }
+
 .branch-alloc-name {
   font-size: 0.95rem;
   font-weight: 700;
   color: #ffffff;
   line-height: 1.25;
 }
+
 .branch-alloc-address {
   font-size: 0.78rem;
   color: #cbd5e1;
   line-height: 1.35;
 }
+
 .branch-alloc-actions {
   display: flex;
   align-items: center;
@@ -6911,6 +7130,7 @@ button {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   padding-top: 0.6rem;
 }
+
 .branch-alloc-hours {
   display: flex;
   align-items: center;
@@ -6918,6 +7138,7 @@ button {
   font-size: 0.72rem;
   color: #94a3b8;
 }
+
 .branch-alloc-map-btn {
   display: inline-flex;
   align-items: center;
@@ -6933,6 +7154,7 @@ button {
   transition: all 0.2s ease;
   white-space: nowrap;
 }
+
 .branch-alloc-map-btn:hover {
   background: #ffffff;
   color: #000000 !important;
@@ -6999,6 +7221,7 @@ button {
   margin-bottom: 0.75rem;
   flex-wrap: wrap;
 }
+
 .footer-branch-tab {
   background: rgba(255, 255, 255, 0.06);
   border: 1px solid rgba(255, 255, 255, 0.15);
@@ -7010,10 +7233,12 @@ button {
   cursor: pointer;
   transition: all 0.2s ease;
 }
+
 .footer-branch-tab:hover {
   background: rgba(255, 255, 255, 0.14);
   color: #ffffff;
 }
+
 .footer-branch-tab.active {
   background: #ffffff;
   color: #000000;
@@ -7211,6 +7436,7 @@ button {
     font-size: 0.72rem;
     letter-spacing: 0.2px;
   }
+
   .dch-btn-sub {
     font-size: 0.62rem;
   }
@@ -7283,6 +7509,7 @@ button {
     max-width: 95% !important;
     padding: 1.5rem 1.25rem !important;
   }
+
   .dch-car-grid {
     grid-template-columns: minmax(0, 1fr) !important;
     gap: 1.25rem !important;
@@ -7290,6 +7517,7 @@ button {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+
   .dch-car-visual-col,
   .dch-car-info-col {
     height: auto !important;
@@ -7297,6 +7525,7 @@ button {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+
   .dch-car-img-frame {
     flex: unset !important;
     min-height: unset !important;
@@ -7305,12 +7534,15 @@ button {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+
   .dch-car-title {
     font-size: 1.5rem !important;
   }
+
   .dch-modal-top-bar {
     padding-right: 2.5rem !important;
   }
+
   .dch-trust-strip {
     grid-template-columns: repeat(3, minmax(0, 1fr)) !important;
     margin-top: 0.5rem !important;
@@ -7325,53 +7557,68 @@ button {
     padding: 1.25rem 0.9rem !important;
     border-radius: 14px !important;
   }
+
   .dch-modal-top-bar {
     padding-right: 2.5rem !important;
   }
+
   .dch-modal-badges {
     flex-direction: column !important;
     align-items: flex-start !important;
     gap: 0.4rem !important;
   }
+
   .dch-car-title {
     font-size: 1.35rem !important;
   }
+
   .dch-specs-matrix {
     grid-template-columns: 1fr 1fr !important;
     gap: 0.5rem !important;
     padding: 0.65rem !important;
   }
+
   .dch-spec-item {
     padding: 0.5rem 0.55rem !important;
     gap: 0.45rem !important;
   }
+
   .dch-spec-icon {
     width: 28px !important;
     height: 28px !important;
   }
+
   .dch-spec-icon svg {
     width: 15px !important;
     height: 15px !important;
   }
+
   .dch-spec-label {
     font-size: 0.6rem !important;
   }
+
   .dch-spec-value {
     font-size: 0.76rem !important;
   }
+
   .dch-trust-strip {
     grid-template-columns: 1fr !important;
     gap: 0.4rem !important;
   }
-  .dch-wa-vip-btn, .dch-viewing-vip-btn {
+
+  .dch-wa-vip-btn,
+  .dch-viewing-vip-btn {
     padding: 0.85rem 1rem !important;
   }
+
   .dch-btn-main {
     font-size: 0.82rem !important;
   }
+
   .dch-btn-sub {
     font-size: 0.68rem !important;
   }
+
   .dch-hotline-row {
     font-size: 0.72rem !important;
     flex-direction: column !important;
@@ -7414,27 +7661,32 @@ button {
   .car-modal-backdrop {
     padding: 0.75rem !important;
   }
+
   .car-modal-box {
     padding: 1.5rem 1rem !important;
     max-height: 94vh !important;
     border-radius: 14px !important;
   }
+
   .appointment-modal-box {
     padding: 1.5rem 1rem !important;
     max-height: 94vh !important;
     border-radius: 14px !important;
   }
+
   .experience-video-box {
     padding: 1rem !important;
     width: 100% !important;
     border-radius: 14px !important;
   }
+
   .modal-close-x {
     top: 0.75rem !important;
     right: 0.75rem !important;
     width: 38px !important;
     height: 38px !important;
   }
+
   .cars-filter-row {
     padding: 0.85rem 0.75rem !important;
     gap: 0.75rem !important;
@@ -7442,12 +7694,14 @@ button {
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+
   .cars-search-input {
     width: 100% !important;
     min-width: 0 !important;
     max-width: 100% !important;
     box-sizing: border-box !important;
   }
+
   .filter-select {
     width: 100% !important;
     min-width: 0 !important;
@@ -7479,6 +7733,7 @@ button {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
@@ -7507,6 +7762,7 @@ button {
     opacity: 0;
     transform: scale(0.94) translateY(12px);
   }
+
   to {
     opacity: 1;
     transform: scale(1) translateY(0);
@@ -7744,10 +8000,13 @@ button {
 }
 
 @keyframes storyTagPillPulse {
-  0%, 100% {
+
+  0%,
+  100% {
     opacity: 1;
     transform: scale(1);
   }
+
   50% {
     opacity: 0.4;
     transform: scale(1.3);
@@ -8250,6 +8509,7 @@ button {
     grid-template-columns: 1fr;
     gap: 2.5rem;
   }
+
   .about-stats-grid {
     grid-template-columns: repeat(2, 1fr);
   }
@@ -8260,15 +8520,19 @@ button {
     grid-template-columns: repeat(2, 1fr);
     gap: 0.75rem;
   }
+
   .about-stat-card {
     padding: 1.2rem 0.75rem;
   }
+
   .about-stat-num {
     font-size: 1.75rem;
   }
+
   .about-stat-label {
     font-size: 0.68rem;
   }
+
   .about-cta-card {
     padding: 2.5rem 1.25rem;
   }
