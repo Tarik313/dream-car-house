@@ -10224,6 +10224,31 @@ button {
   }
 }
 
+.dch-specs-chapter-header {
+  grid-column: 1 / -1;
+  background: rgba(255, 255, 255, 0.035);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  border-top: 1px solid rgba(255, 255, 255, 0.07);
+  padding: 0.65rem 1.4rem;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 1.1px;
+  color: #dfca9a;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.dch-specs-chapter-header:first-child {
+  border-top: none;
+}
+
+.chapter-bullet {
+  font-size: 0.62rem;
+  color: #dfca9a;
+}
+
 .dch-spec-cell {
   display: flex;
   justify-content: space-between;

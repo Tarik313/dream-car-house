@@ -23,6 +23,26 @@ function parseNumericPrice(price?: string | number | null): number | null {
   return isNaN(val) || val <= 0 ? null : val;
 }
 
+function getYoutubeEmbedUrl(youtubeUrl?: string): string {
+  if (!youtubeUrl || !youtubeUrl.trim() || !youtubeUrl.includes("http")) {
+    // Official cinematic 4K luxury automobile walkaround showcase
+    return "https://www.youtube-nocookie.com/embed/1F3hm6MfR1k?rel=0";
+  }
+  const url = youtubeUrl.trim();
+  if (url.includes("watch?v=")) {
+    const id = url.split("watch?v=")[1]?.split("&")[0];
+    return `https://www.youtube-nocookie.com/embed/${id}?rel=0`;
+  }
+  if (url.includes("youtu.be/")) {
+    const id = url.split("youtu.be/")[1]?.split("?")[0];
+    return `https://www.youtube-nocookie.com/embed/${id}?rel=0`;
+  }
+  if (url.includes("embed/")) {
+    return url;
+  }
+  return "https://www.youtube-nocookie.com/embed/1F3hm6MfR1k?rel=0";
+}
+
 function formatPriceString(price?: string | number | null, isCallForPrice?: boolean): string {
   if (isCallForPrice || !price) return "Price Upon Request • VIP Consultation";
   const s = String(price).trim();
@@ -383,7 +403,7 @@ export default function VehicleDetailClient({
             </div>
           </div>
 
-          {/* Specifications Matrix with COMPREHENSIVE TECHNICAL MATRIX + BEG headings in ALL CAPS */}
+          {/* Specifications Matrix with COMPREHENSIVE TECHNICAL MATRIX + 4 Bespoke Chapters */}
           <section className="dch-specs-matrix-section">
             <div className="dch-section-heading-wrap">
               <h2 className="dch-section-title">COMPREHENSIVE TECHNICAL MATRIX</h2>
@@ -394,91 +414,115 @@ export default function VehicleDetailClient({
 
             <div className="dch-full-specs-table-card">
               <div className="dch-full-specs-grid">
+                {/* Chapter I: Marque & Provenance */}
+                <div className="dch-specs-chapter-header">
+                  <span className="chapter-bullet">◆</span>
+                  <span>I. MARQUE & PROVENANCE</span>
+                </div>
+
                 <div className="dch-spec-cell">
-                  <span className="spec-label">BRAND</span>
+                  <span className="spec-label">PRESTIGE MARQUE</span>
                   <span className="spec-value">{car.brand}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">MODEL</span>
+                  <span className="spec-label">SERIES & MODEL</span>
                   <span className="spec-value">{car.model || car.name}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">REG. YEAR</span>
+                  <span className="spec-label">REGISTRATION TIMELINE</span>
                   <span className="spec-value">{car.year}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">MILEAGE</span>
-                  <span className="spec-value">{car.mileage || (isBrandNew ? "0 km (Zero Meter)" : "Verified Genuine")}</span>
+                  <span className="spec-label">VEHICLE PEDIGREE</span>
+                  <span className="spec-value highlight-gold">
+                    {isBrandNew ? "BRAND NEW (ZERO METER)" : (car.condition || "CERTIFIED PRE-OWNED")}
+                  </span>
+                </div>
+
+                {/* Chapter II: Powertrain & Dynamics */}
+                <div className="dch-specs-chapter-header">
+                  <span className="chapter-bullet">◆</span>
+                  <span>II. POWERTRAIN & DYNAMICS</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">ENGINE (CC)</span>
+                  <span className="spec-label">ENGINE DISPLACEMENT</span>
                   <span className="spec-value">{car.engine_capacity || "—"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">TRANSMISSION</span>
-                  <span className="spec-value">{car.transmission || "Automatic"}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">FUEL TYPE</span>
+                  <span className="spec-label">PROPULSION ARCHITECTURE</span>
                   <span className="spec-value">{car.fuel_type || "Petrol"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">DRIVE TYPE</span>
-                  <span className="spec-value">{car.drivetrain || "AWD"}</span>
+                  <span className="spec-label">TRANSMISSION GEARBOX</span>
+                  <span className="spec-value">{car.transmission || "Automatic Tiptronic"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">WHEEL</span>
-                  <span className="spec-value">{car.wheel_base || "19–21 Inch"}</span>
+                  <span className="spec-label">DRIVETRAIN / TRACTION</span>
+                  <span className="spec-value">{car.drivetrain || "All-Wheel Drive (AWD)"}</span>
+                </div>
+
+                {/* Chapter III: Coachwork & Aesthetics */}
+                <div className="dch-specs-chapter-header">
+                  <span className="chapter-bullet">◆</span>
+                  <span>III. COACHWORK & AESTHETICS</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">EXTERIOR</span>
+                  <span className="spec-label">AERODYNAMIC PROFILE</span>
+                  <span className="spec-value">{car.body_style || "Luxury SUV"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">EXTERIOR ATELIER SHADE</span>
                   <span className="spec-value">{car.color || "Obsidian Metallic"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">BODY STYLE</span>
-                  <span className="spec-value">{car.body_style || "SUV"}</span>
+                  <span className="spec-label">ALLOY WHEEL SPEC</span>
+                  <span className="spec-value">{car.wheel_base || "Factory Monoblock Alloys"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">CONDITION</span>
-                  <span className="spec-value highlight-gold">
-                    {isBrandNew ? "BRAND NEW" : (car.condition || "PRE-OWNED")}
-                  </span>
+                  <span className="spec-label">CERTIFIED ODOMETER</span>
+                  <span className="spec-value">{car.mileage || (isBrandNew ? "0 km (Zero Meter)" : "Verified Genuine")}</span>
+                </div>
+
+                {/* Chapter IV: Certification & Allocation */}
+                <div className="dch-specs-chapter-header">
+                  <span className="chapter-bullet">◆</span>
+                  <span>IV. CERTIFICATION & ALLOCATION</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">AUCTION GRADE</span>
+                  <span className="spec-label">JAPAN AUCTION GRADE</span>
                   <span className="spec-value highlight-green">
                     {isBrandNew ? "Grade S • Factory Fresh" : "Grade 4.5 / 5.0 Point"}
                   </span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">REG. NUMBER</span>
+                  <span className="spec-label">BRTA REGISTRATION STATUS</span>
                   <span className="spec-value">
-                    {car.registration_number || (isBrandNew ? "Unregistered (First Owner)" : "Dhaka Metro Registered")}
+                    {car.registration_number || (isBrandNew ? "Unregistered • First Owner Allocation" : "Dhaka Metro Registered")}
                   </span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">SHOWROOM</span>
+                  <span className="spec-label">SHOWROOM ALLOCATION</span>
                   <span className="spec-value">{branch.name}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">AVAILABILITY</span>
+                  <span className="spec-label">PORTFOLIO AVAILABILITY</span>
                   <span className="spec-value highlight-green">
-                    {car.registered || "In Stock • Physically Available"}
+                    {car.registered || "In Stock • Immediate Physical Delivery"}
                   </span>
                 </div>
               </div>
@@ -551,31 +595,23 @@ export default function VehicleDetailClient({
           </section>
 
           {/* Video Walkaround Presentation */}
-          {car.youtube && (
-            <section className="dch-video-walkaround-section">
-              <div className="dch-section-heading-wrap">
-                <h2 className="dch-section-title">OFFICIAL VIDEO WALKAROUND</h2>
-                <p className="dch-section-subtext">
-                  High-definition visual tour, engine exhaust acoustic notes, and cockpit walkthrough.
-                </p>
-              </div>
-              <div className="dch-video-container">
-                <iframe
-                  src={
-                    car.youtube.includes("watch?v=")
-                      ? car.youtube.replace("watch?v=", "embed/")
-                      : car.youtube.includes("youtu.be/")
-                      ? car.youtube.replace("youtu.be/", "www.youtube.com/embed/")
-                      : car.youtube
-                  }
-                  title={`${car.name} Video Walkaround`}
-                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                  allowFullScreen
-                  className="dch-video-frame"
-                />
-              </div>
-            </section>
-          )}
+          <section className="dch-video-walkaround-section">
+            <div className="dch-section-heading-wrap">
+              <h2 className="dch-section-title">OFFICIAL VIDEO WALKAROUND</h2>
+              <p className="dch-section-subtext">
+                High-definition visual tour, engine exhaust acoustic notes, and cockpit walkthrough.
+              </p>
+            </div>
+            <div className="dch-video-container">
+              <iframe
+                src={getYoutubeEmbedUrl(car.youtube)}
+                title={`${car.name} Video Walkaround`}
+                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                allowFullScreen
+                className="dch-video-frame"
+              />
+            </div>
+          </section>
 
           {/* Interactive Financing & EMI Calculator */}
           <section className="dch-financing-calculator-section" id="financing-calculator">
