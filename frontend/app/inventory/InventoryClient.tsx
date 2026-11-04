@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import React, { useState, useMemo, useEffect, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { VEHICLE_DATA, Vehicle, SHOWROOM_BRANCHES } from "@/lib/showroomData";
@@ -167,10 +168,11 @@ function InventoryContent({ initialVehicles = [] }: InventoryClientProps = {}) {
             const branch =
               SHOWROOM_BRANCHES[car.branch_id] || SHOWROOM_BRANCHES.kakrail;
             return (
-              <div
+              <Link
+                href={`/cars/${car.slug || car.id}`}
                 key={car.id}
-                className="group inventory-card-box"
-                onClick={() => openCarModal(car)}
+                className="group inventory-card-box block"
+                style={{ textDecoration: "none", color: "inherit" }}
               >
                 <div className="portrait-image-wrapper">
                   <img src={car.image} alt={car.name} loading="lazy" />
@@ -190,7 +192,7 @@ function InventoryContent({ initialVehicles = [] }: InventoryClientProps = {}) {
                     {car.fuel_type}
                   </span>
                 </div>
-              </div>
+              </Link>
             );
           })
         ) : (

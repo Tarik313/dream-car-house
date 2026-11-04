@@ -2,6 +2,7 @@
 
 import React, { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { VEHICLE_DATA, Vehicle } from "@/lib/showroomData";
 import { useUI } from "@/lib/UIContext";
 
@@ -264,10 +265,12 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } =
     }, 70);
   };
 
-  // Card Click: Only open modal if not dragging/swiping
+  const router = useRouter();
+
+  // Card Click: Navigate to full car detail page if not dragging/swiping
   const handleCardClick = (car: Vehicle) => {
     if (hasDraggedRef.current) return;
-    openCarModal(car);
+    router.push(`/cars/${car.slug || car.id}`);
   };
 
   return (

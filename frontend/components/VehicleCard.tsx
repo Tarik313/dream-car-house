@@ -1,9 +1,9 @@
 "use client";
 
 import React from "react";
+import Link from "next/link";
 import { Vehicle } from "@/lib/showroomData";
 import { PublicVehicle } from "@/lib/types";
-import { useUI } from "@/lib/UIContext";
 
 interface VehicleCardProps {
   car: Vehicle | PublicVehicle;
@@ -30,8 +30,6 @@ function formatPrice(price?: string | number | null, isCallForPrice?: boolean): 
 }
 
 export default function VehicleCard({ car }: VehicleCardProps) {
-  const { openCarModal } = useUI();
-
   const waMessage = encodeURIComponent(
     `Hello DREAM CAR HOUSE, I am inquiring about the ${car.name} (${car.year}).`
   );
@@ -49,75 +47,86 @@ export default function VehicleCard({ car }: VehicleCardProps) {
           ? "Banani Branch"
           : car.branch_name || "");
 
+  const carSlug = car.slug || String(car.id);
+
   return (
-    <article
-      className="pref-car-card group"
-      onClick={() => openCarModal(car as unknown as Vehicle)}
-      style={{ cursor: "pointer" }}
-    >
-      <div className="pref-car-img-wrap">
-        <img
-          src={car.image}
-          alt={car.name}
-          loading="lazy"
-          className="pref-car-img"
-        />
-        <div className="pref-img-gradient" />
-        {branchLabel ? (
-          <span className="pref-branch-tag">
-            <svg
-              width="10"
-              height="10"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2.2"
-              aria-hidden="true"
-            >
-              <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
-              <circle cx="12" cy="10" r="3" />
-            </svg>
-            {branchLabel}
-          </span>
-        ) : null}
-      </div>
-
-      <div className="pref-car-body">
-        {/* Car Name - Crisp Luxury White */}
-        <h3 className="pref-car-title" title={car.name}>
-          {car.name}
-        </h3>
-
-        {/* Model Year */}
-        <p className="pref-car-meta">
-          {car.year}
-        </p>
-
-        {/* Minimalist 3-Column Specs Pod with Clean Headings */}
-        <div className="pref-specs-row">
-          <div className="pref-spec-item">
-            <span className="pref-spec-label">Engine</span>
-            <span className="pref-spec-val" title={car.engine_capacity || "—"}>
-              {car.engine_capacity || "—"}
+    <article className="pref-car-card group">
+      <Link
+        href={`/cars/${carSlug}`}
+        className="pref-car-link-wrap"
+        style={{ textDecoration: "none", color: "inherit", display: "block" }}
+      >
+        <div className="pref-car-img-wrap">
+          <img
+            src={car.image}
+            alt={car.name}
+            loading="lazy"
+            className="pref-car-img"
+          />
+          <div className="pref-img-gradient" />
+          {branchLabel ? (
+            <span className="pref-branch-tag">
+              <svg
+                width="10"
+                height="10"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                strokeWidth="2.2"
+                aria-hidden="true"
+              >
+                <path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z" />
+                <circle cx="12" cy="10" r="3" />
+              </svg>
+              {branchLabel}
             </span>
-          </div>
-          <div className="pref-spec-item">
-            <span className="pref-spec-label">Mileage</span>
-            <span className="pref-spec-val" title={car.mileage || "—"}>
-              {car.mileage || "—"}
-            </span>
-          </div>
-          <div className="pref-spec-item">
-            <span className="pref-spec-label">Fuel</span>
-            <span className="pref-spec-val" title={car.fuel_type || "—"}>
-              {car.fuel_type || "—"}
-            </span>
-          </div>
+          ) : null}
         </div>
 
+        <div className="pref-car-body">
+          {/* Car Name - Crisp Luxury White */}
+          <h3 className="pref-car-title" title={car.name}>
+            {car.name}
+          </h3>
+
+          {/* Model Year */}
+          <p className="pref-car-meta">
+            {car.year}
+          </p>
+
+          {/* Minimalist 3-Column Specs Pod with Clean Headings */}
+          <div className="pref-specs-row">
+            <div className="pref-spec-item">
+              <span className="pref-spec-label">Engine</span>
+              <span className="pref-spec-val" title={car.engine_capacity || "—"}>
+                {car.engine_capacity || "—"}
+              </span>
+            </div>
+            <div className="pref-spec-item">
+              <span className="pref-spec-label">Mileage</span>
+              <span className="pref-spec-val" title={car.mileage || "—"}>
+                {car.mileage || "—"}
+              </span>
+            </div>
+            <div className="pref-spec-item">
+              <span className="pref-spec-label">Fuel</span>
+              <span className="pref-spec-val" title={car.fuel_type || "—"}>
+                {car.fuel_type || "—"}
+              </span>
+            </div>
+          </div>
+        </div>
+      </Link>
+
+      <div className="pref-car-body-footer" style={{ padding: "0 1.25rem 1.25rem" }}>
         {/* Price & Action Row with Hairline Divider */}
-        <div className="pref-price-row" onClick={(e) => e.stopPropagation()}>
-          <span className="pref-price-val">{displayPrice}</span>
+        <div className="pref-price-row">
+          <Link
+            href={`/cars/${carSlug}`}
+            style={{ textDecoration: "none", color: "inherit" }}
+          >
+            <span className="pref-price-val">{displayPrice}</span>
+          </Link>
           <div className="pref-card-actions">
             <a
               href={waUrl}
@@ -126,6 +135,7 @@ export default function VehicleCard({ car }: VehicleCardProps) {
               className="pref-wa-btn-studio"
               title="Inquire on WhatsApp"
               aria-label="Inquire on WhatsApp"
+              onClick={(e) => e.stopPropagation()}
             >
               <svg
                 xmlns="http://www.w3.org/2000/svg"

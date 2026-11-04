@@ -516,71 +516,65 @@ export const getPublicInventory = cache(
  * Returns null if vehicle is not found (404) or unpublished.
  */
 export const getPublicInventoryDetail = cache(async (slug: string): Promise<PublicVehicle | null> => {
-  const origin = getBackendOrigin();
-  const url = `${origin}/api/v1/inventory/detail/${encodeURIComponent(slug)}/`;
-
-  let res: Response;
   try {
-    res = await fetch(url, {
+    const origin = getBackendOrigin();
+    const url = `${origin}/api/v1/inventory/detail/${encodeURIComponent(slug)}/`;
+    const res = await fetch(url, {
       cache: "no-store",
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
-  } catch (err: unknown) {
-    const message = err instanceof Error ? err.message : String(err);
-    throw new Error(`Backend unavailable at ${origin}: ${message}`);
+    if (res.ok) {
+      const json = (await res.json()) as { success?: boolean; data?: unknown };
+      if (json && json.success === true && json.data && typeof json.data === "object") {
+        return mapBackendCarToVehicle(json.data as Record<string, unknown>);
+      }
+    }
+  } catch {
+    // Fall back safely to authentic showroom data if backend is offline or on preview
   }
 
-  if (res.status === 404) {
-    return null;
+  const localMatch = VEHICLE_DATA.find(
+    (c) => c.slug?.toLowerCase() === slug.toLowerCase() || String(c.id) === slug
+  );
+  if (localMatch) {
+    return localMatch as unknown as PublicVehicle;
   }
-
-  if (!res.ok) {
-    throw new Error(`Failed to fetch vehicle detail: HTTP ${res.status}`);
-  }
-
-  const json = (await res.json()) as { success?: boolean; data?: unknown };
-  if (!json || json.success !== true || !json.data || typeof json.data !== "object") {
-    return null;
-  }
-
-  return mapBackendCarToVehicle(json.data as Record<string, unknown>);
+  return null;
 });
 
 /**
  * Deduplicated, server-only related vehicles fetcher by slug.
  */
 export const getPublicRelatedVehicles = cache(async (slug: string): Promise<PublicVehicle[]> => {
-  const origin = getBackendOrigin();
-  const url = `${origin}/api/v1/inventory/detail/${encodeURIComponent(slug)}/related/`;
-
-  let res: Response;
   try {
-    res = await fetch(url, {
+    const origin = getBackendOrigin();
+    const url = `${origin}/api/v1/inventory/detail/${encodeURIComponent(slug)}/related/`;
+    const res = await fetch(url, {
       cache: "no-store",
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
+    if (res.ok) {
+      const json = (await res.json()) as { success?: boolean; data?: unknown };
+      if (json && json.success === true && json.data) {
+        const list = Array.isArray(json.data)
+          ? json.data
+          : typeof json.data === "object" && Array.isArray((json.data as Record<string, unknown>).results)
+          ? ((json.data as Record<string, unknown>).results as unknown[])
+          : [];
+        if (list.length > 0) {
+          return list.map((item) => mapBackendCarToVehicle(item as Record<string, unknown>));
+        }
+      }
+    }
   } catch {
-    return [];
+    // Fall back to showroom data
   }
 
-  if (!res.ok) {
-    return [];
-  }
-
-  const json = (await res.json()) as { success?: boolean; data?: unknown };
-  if (!json || json.success !== true || !json.data) {
-    return [];
-  }
-
-  const list = Array.isArray(json.data)
-    ? json.data
-    : typeof json.data === "object" && Array.isArray((json.data as Record<string, unknown>).results)
-    ? ((json.data as Record<string, unknown>).results as unknown[])
-    : [];
-
-  return list.map((item) => mapBackendCarToVehicle(item as Record<string, unknown>));
+  return (
+    VEHICLE_DATA.filter((c) => c.slug?.toLowerCase() !== slug.toLowerCase()).slice(0, 3) as unknown as PublicVehicle[]
+  );
 });
 
 /**
