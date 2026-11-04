@@ -1,6 +1,7 @@
 import "server-only";
 import { cache } from "react";
 import type { Metadata } from "next";
+import { SHOWROOM, SHOWROOM_BRANCHES, VEHICLE_DATA } from "@/lib/showroomData";
 import type {
   PublicSiteSettings,
   PublicShowroomBranch,
@@ -25,16 +26,50 @@ export function getBackendOrigin(): string {
   const origin =
     process.env.INTERNAL_BACKEND_URL ||
     process.env.NEXT_PUBLIC_BASE_URL ||
-    process.env.BACKEND_API_ORIGIN;
-
-  if (!origin || !origin.trim()) {
-    throw new Error(
-      "Missing required backend origin configuration (set INTERNAL_BACKEND_URL or NEXT_PUBLIC_BASE_URL)"
-    );
-  }
+    process.env.BACKEND_API_ORIGIN ||
+    "http://127.0.0.1:8000";
 
   return origin.trim().replace(/\/$/, "");
 }
+
+export const defaultSiteSettings: PublicSiteSettings = {
+  id: 1,
+  name: SHOWROOM.name,
+  tagline: "The Pinnacle of Luxury Automobiles",
+  logo_text: "DREAM CAR HOUSE",
+  logo_asset: "/assets/dream-car-house-logo.png",
+  hotline: SHOWROOM.hotline,
+  phone: SHOWROOM.phone,
+  email: SHOWROOM.email,
+  whatsapp: SHOWROOM.whatsapp,
+  website: SHOWROOM.website,
+  primary_address: SHOWROOM.address,
+  footer_tagline: "The Pinnacle of Luxury Automobiles",
+  footer_copy_text: "© 2026 DREAM CAR HOUSE. All rights reserved.",
+  opening_hours_text: "Saturday – Thursday: 10:00 AM – 9:00 PM (Friday Closed)",
+  social_media: {
+    facebook: "https://www.facebook.com/dreamcarhousebd",
+    instagram: "https://www.instagram.com/dreamcarhousebd",
+    whatsapp: SHOWROOM.whatsapp,
+  },
+};
+
+export const defaultBranches: PublicShowroomBranch[] = Object.values(SHOWROOM_BRANCHES).map((b, idx) => ({
+  id: idx + 1,
+  branch_id: b.id,
+  name: b.name,
+  short_name: b.short_name,
+  tag: b.tag,
+  address: b.address,
+  phone: b.phone,
+  hotline: b.hotline,
+  email: b.email,
+  hours: b.hours,
+  map_link: b.map_link,
+  embed_map: b.embed_map,
+  order: idx + 1,
+  status: "PUBLISHED",
+}));
 
 function validateSiteSettingsPayload(data: unknown): data is PublicSiteSettings {
   if (!data || typeof data !== "object") return false;
@@ -198,12 +233,20 @@ export const fetchLayoutData = cache(
     branches: PublicShowroomBranch[];
     featuredVehicles: PublicVehicle[];
   }> => {
-    const [settings, branches, featuredVehicles] = await Promise.all([
-      getSiteSettings(),
-      getShowroomBranches(),
-      getFeaturedInventory().catch(() => []),
-    ]);
-    return { settings, branches, featuredVehicles };
+    try {
+      const [settings, branches, featuredVehicles] = await Promise.all([
+        getSiteSettings(),
+        getShowroomBranches(),
+        getFeaturedInventory().catch(() => []),
+      ]);
+      return { settings, branches, featuredVehicles };
+    } catch {
+      return {
+        settings: defaultSiteSettings,
+        branches: defaultBranches,
+        featuredVehicles: (VEHICLE_DATA.slice(0, 10) as unknown as PublicVehicle[]),
+      };
+    }
   }
 );
 
