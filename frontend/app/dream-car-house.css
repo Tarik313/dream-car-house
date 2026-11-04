@@ -9128,7 +9128,7 @@ button {
   transform: translateX(-50%);
   width: 100vw;
   height: 680px;
-  background: radial-gradient(ellipse at 50% 12%, rgba(229, 207, 155, 0.07) 0%, rgba(18, 23, 34, 0.45) 45%, transparent 75%);
+  background: radial-gradient(ellipse at 50% 12%, rgba(255, 255, 255, 0.03) 0%, rgba(17, 18, 21, 0.45) 50%, transparent 80%);
   pointer-events: none;
   z-index: 0;
 }
@@ -9163,11 +9163,11 @@ button {
   gap: 0.6rem;
   font-size: 0.82rem;
   margin-bottom: 1.25rem;
-  color: #948b83;
+  color: #71717a;
 }
 
 .dch-crumb-link {
-  color: #bdaea0;
+  color: #a1a1aa;
   text-decoration: none;
   transition: color 0.2s ease;
 }
@@ -9177,7 +9177,7 @@ button {
 }
 
 .dch-crumb-sep {
-  color: #524e48;
+  color: #52525b;
 }
 
 .dch-crumb-current {
@@ -9215,12 +9215,12 @@ button {
   width: 100%;
   height: 100%;
   min-height: 420px;
-  background: #0d1017;
-  border: 1px solid rgba(229, 207, 155, 0.26);
+  background: #0a0b0d;
+  border: 1px solid rgba(255, 255, 255, 0.1);
   border-radius: 14px;
   overflow: hidden;
   cursor: pointer;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.75), 0 0 35px rgba(229, 207, 155, 0.05);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.9);
 }
 
 @media (max-width: 768px) {
@@ -9359,16 +9359,16 @@ button {
   position: relative;
   border-radius: 12px;
   overflow: hidden;
-  background: #0f131c;
-  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #101114;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   cursor: pointer;
   transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .dch-gallery-vignette-slot:hover {
-  border-color: rgba(229, 207, 155, 0.6);
+  border-color: rgba(229, 207, 155, 0.5);
   transform: translateY(-2px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
 }
 
 .dch-gallery-vignette-slot.is-selected {
@@ -9577,21 +9577,21 @@ button {
 }
 
 .dch-quick-stat-card {
-  background: linear-gradient(180deg, #141926 0%, #0d1017 100%);
-  border: 1px solid rgba(229, 207, 155, 0.2);
+  background: #111215;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
   padding: 1.15rem 1.25rem;
   display: flex;
   flex-direction: column;
   gap: 4px;
-  box-shadow: inset 0 1px 0 rgba(229, 207, 155, 0.1), 0 8px 24px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
 }
 
 .dch-stat-label {
   font-size: 0.68rem;
   font-weight: 700;
   letter-spacing: 0.75px;
-  color: #c4b5a0;
+  color: #a1a1aa;
   text-transform: uppercase;
 }
 
@@ -9603,7 +9603,7 @@ button {
 
 .dch-stat-caption {
   font-size: 0.72rem;
-  color: #948b83;
+  color: #71717a;
 }
 
 /* Section Headings */
@@ -9691,15 +9691,15 @@ button {
 
 /* Editorial Story Card */
 .dch-editorial-card {
-  background: linear-gradient(180deg, #141926 0%, #0d1017 100%);
-  border: 1px solid rgba(229, 207, 155, 0.2);
+  background: #111215;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 1.85rem;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(229, 207, 155, 0.1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
 }
 
 .dch-editorial-body {
-  color: #e2e8f0;
+  color: #d4d4d8;
   line-height: 1.85;
   font-size: 0.96rem;
   margin: 0;
@@ -9712,9 +9712,9 @@ button {
   height: 0;
   overflow: hidden;
   border-radius: 14px;
-  border: 1px solid rgba(229, 207, 155, 0.22);
-  background: #0d1017;
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.6);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: #0a0b0d;
+  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.7);
 }
 
 .dch-video-frame {
@@ -9728,11 +9728,11 @@ button {
 
 /* Financing & EMI Calculator */
 .dch-calculator-card {
-  background: linear-gradient(180deg, #141926 0%, #0d1017 100%);
-  border: 1px solid rgba(229, 207, 155, 0.26);
+  background: #111215;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
   padding: 2rem;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.55), inset 0 1px 0 rgba(229, 207, 155, 0.12);
+  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6);
 }
 
 .dch-calc-inputs-grid {
@@ -9879,11 +9879,11 @@ button {
 
 /* Branch Card */
 .dch-branch-card {
-  background: linear-gradient(180deg, #141926 0%, #0d1017 100%);
-  border: 1px solid rgba(229, 207, 155, 0.2);
+  background: #111215;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   padding: 1.6rem 1.85rem;
-  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(229, 207, 155, 0.1);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.6);
 }
 
 .dch-branch-card-header {
@@ -9957,11 +9957,11 @@ button {
 .dch-sticky-pricing-card {
   position: sticky;
   top: 96px;
-  background: linear-gradient(180deg, #151a26 0%, #0c0f16 100%);
-  border: 1px solid rgba(229, 207, 155, 0.32);
+  background: #121316;
+  border: 1px solid rgba(229, 207, 155, 0.25);
   border-radius: 16px;
   padding: 1.45rem 1.55rem;
-  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.8), 0 0 35px rgba(229, 207, 155, 0.08), inset 0 1px 0 rgba(229, 207, 155, 0.18);
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.9);
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
@@ -10206,11 +10206,11 @@ button {
    ========================================================================== */
 
 .dch-full-specs-table-card {
-  background: linear-gradient(180deg, #141926 0%, #0d1017 100%);
-  border: 1px solid rgba(229, 207, 155, 0.25);
+  background: #111215;
+  border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 14px;
   overflow: hidden;
-  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.65), inset 0 1px 0 rgba(229, 207, 155, 0.15);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
 }
 
 .dch-full-specs-grid {
@@ -10229,17 +10229,17 @@ button {
   justify-content: space-between;
   align-items: center;
   padding: 0.95rem 1.4rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
   font-size: 0.84rem;
   transition: background 0.2s ease;
 }
 
 .dch-spec-cell:hover {
-  background: rgba(229, 207, 155, 0.04);
+  background: rgba(255, 255, 255, 0.02);
 }
 
 .dch-spec-cell:nth-child(odd) {
-  border-right: 1px solid rgba(255, 255, 255, 0.06);
+  border-right: 1px solid rgba(255, 255, 255, 0.05);
 }
 
 @media (max-width: 768px) {
@@ -10249,7 +10249,7 @@ button {
 }
 
 .dch-spec-cell .spec-label {
-  color: #c4b5a0;
+  color: #a1a1aa;
   font-weight: 700;
   font-size: 0.75rem;
   text-transform: uppercase;
@@ -10258,7 +10258,7 @@ button {
 
 .dch-section-subtext {
   font-size: 0.86rem;
-  color: #b5aba2;
+  color: #a1a1aa;
   margin-top: 0.35rem;
   margin-bottom: 0;
   line-height: 1.6;
@@ -10291,8 +10291,8 @@ button {
 }
 
 .dch-auction-sheet-card {
-  background: linear-gradient(135deg, rgba(20, 25, 38, 0.96) 0%, rgba(13, 17, 24, 0.98) 100%);
-  border: 1px solid rgba(229, 207, 155, 0.32);
+  background: #111215;
+  border: 1px solid rgba(229, 207, 155, 0.22);
   border-radius: 14px;
   padding: 1.45rem 1.75rem;
   display: flex;
@@ -10300,7 +10300,7 @@ button {
   justify-content: space-between;
   flex-wrap: wrap;
   gap: 1.25rem;
-  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(229, 207, 155, 0.15);
+  box-shadow: 0 14px 40px rgba(0, 0, 0, 0.6);
 }
 
 .dch-auction-left {

@@ -347,22 +347,8 @@ export default function VehicleDetailClient({
       <div className="dch-vehicle-content-grid">
         {/* Left Column: Comprehensive Specifications & Editorial Details (~66%) */}
         <div className="dch-vehicle-main-col">
-          {/* Header & Badges */}
+          {/* Header & Title */}
           <div className="dch-vehicle-headline-box">
-            <div className="dch-headline-pills-row">
-              {isBrandNew ? (
-                <span className="car-badge-pill pill-brandnew">
-                  <span className="pill-dot" />
-                  BRAND NEW
-                </span>
-              ) : (
-                <span className="car-badge-pill pill-preowned">
-                  <span className="pill-dot" />
-                  CERTIFIED PRE-OWNED
-                </span>
-              )}
-            </div>
-
             <h1 className="dch-car-main-title">{car.name}</h1>
 
             <p className="dch-car-subtitle">
