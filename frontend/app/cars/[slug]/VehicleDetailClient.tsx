@@ -353,7 +353,7 @@ export default function VehicleDetailClient({
               {isBrandNew ? (
                 <span className="car-badge-pill pill-brandnew">
                   <span className="pill-dot" />
-                  BRAND NEW • ZERO METER
+                  BRAND NEW
                 </span>
               ) : (
                 <span className="car-badge-pill pill-preowned">
@@ -361,17 +361,12 @@ export default function VehicleDetailClient({
                   CERTIFIED PRE-OWNED
                 </span>
               )}
-
-              <span className="dch-showroom-beacon">
-                <span className="beacon-pulse" />
-                <span>{branch.name.toUpperCase()} • PHYSICAL ALLOCATION</span>
-              </span>
             </div>
 
             <h1 className="dch-car-main-title">{car.name}</h1>
 
             <p className="dch-car-subtitle">
-              {car.brand.toUpperCase()} MARQUE • PRODUCTION YEAR {car.year} • STOCK REFERENCE: DCH-{car.id}
+              {car.brand.toUpperCase()}{car.year ? ` • REGISTRATION ${car.year}` : ""}
             </p>
           </div>
 
@@ -402,100 +397,99 @@ export default function VehicleDetailClient({
             </div>
           </div>
 
-          {/* Comprehensive Specifications Matrix */}
+          {/* Specifications Matrix with BEG headings + Auction Grade + Enhanced parameters */}
           <section className="dch-specs-matrix-section">
             <div className="dch-section-heading-wrap">
-              <span className="dch-section-eyebrow">COMPREHENSIVE TECHNICAL MATRIX</span>
-              <h2 className="dch-section-title">Official Showroom Specifications</h2>
+              <h2 className="dch-section-title">Specification</h2>
             </div>
 
             <div className="dch-full-specs-table-card">
               <div className="dch-full-specs-grid">
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Brand Marque</span>
+                  <span className="spec-label">Brand</span>
                   <span className="spec-value">{car.brand}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Model Line</span>
+                  <span className="spec-label">Model</span>
                   <span className="spec-value">{car.model || car.name}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Production Year</span>
+                  <span className="spec-label">Reg. year</span>
                   <span className="spec-value">{car.year}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Registration / Papers</span>
-                  <span className="spec-value">
-                    {car.registration_number || (isBrandNew ? "Unregistered Direct Import" : "Dhaka Metro Registered")}
-                  </span>
+                  <span className="spec-label">Mileage</span>
+                  <span className="spec-value">{car.mileage || (isBrandNew ? "0 km (Zero Meter)" : "Verified Genuine")}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Condition Grade</span>
-                  <span className="spec-value highlight-gold">
-                    {isBrandNew ? "Brand New (Zero Meter)" : (car.condition === "NEW" ? "Like New Condition" : "Certified Pre-Owned")}
-                  </span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">Engine Displacement</span>
+                  <span className="spec-label">Engine (CC)</span>
                   <span className="spec-value">{car.engine_capacity || "—"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
                   <span className="spec-label">Transmission</span>
-                  <span className="spec-value">{car.transmission || "Automatic Tiptronic"}</span>
+                  <span className="spec-value">{car.transmission || "Automatic"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Fuel Architecture</span>
+                  <span className="spec-label">Fuel type</span>
                   <span className="spec-value">{car.fuel_type || "Petrol"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Drivetrain / Drive Type</span>
-                  <span className="spec-value">{car.drivetrain || "All-Wheel Drive (AWD)"}</span>
+                  <span className="spec-label">Drive type</span>
+                  <span className="spec-value">{car.drivetrain || "AWD"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Wheel & Alloy Size</span>
-                  <span className="spec-value">{car.wheel_base || "19–21 Inch Forged Diamond-Cut"}</span>
+                  <span className="spec-label">Wheel</span>
+                  <span className="spec-value">{car.wheel_base || "19–21 Inch"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Exterior Finish / Color</span>
-                  <span className="spec-value">{car.color || "Obsidian Metallic Paint"}</span>
+                  <span className="spec-label">Exterior</span>
+                  <span className="spec-value">{car.color || "Obsidian Metallic"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Body Architecture</span>
-                  <span className="spec-value">{car.body_style || "Luxury SUV"}</span>
+                  <span className="spec-label">Body style</span>
+                  <span className="spec-value">{car.body_style || "SUV"}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Recorded Odometer</span>
-                  <span className="spec-value">{car.mileage || (isBrandNew ? "0 km (Untouched)" : "Verified Genuine")}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">Auction Sheet / Manifest</span>
-                  <span className="spec-value highlight-green">
-                    {isBrandNew ? "Factory Manifest Verified (S Grade)" : "Grade 4.5/5.0 Verified Auction Sheet"}
+                  <span className="spec-label">Condition</span>
+                  <span className="spec-value highlight-gold">
+                    {isBrandNew ? "BRAND NEW" : (car.condition || "PRE-OWNED")}
                   </span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Showroom Allocation</span>
+                  <span className="spec-label">Auction Grade</span>
+                  <span className="spec-value highlight-green">
+                    {isBrandNew ? "Grade S • Factory Fresh" : "Grade 4.5 / 5.0 Point"}
+                  </span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Reg. Number</span>
+                  <span className="spec-value">
+                    {car.registration_number || (isBrandNew ? "Unregistered (First Owner)" : "Dhaka Metro Registered")}
+                  </span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Showroom</span>
                   <span className="spec-value">{branch.name}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">Physical Availability</span>
+                  <span className="spec-label">Availability</span>
                   <span className="spec-value highlight-green">
-                    {car.registered || "In Showroom Vault • Ready for Viewing"}
+                    {car.registered || "In Stock • Physically Available"}
                   </span>
                 </div>
               </div>
