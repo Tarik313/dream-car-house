@@ -9481,8 +9481,8 @@ button {
 /* 3. Main Content Grid (Left Details vs Right Sticky Sidebar) */
 .dch-vehicle-content-grid {
   display: grid;
-  grid-template-columns: minmax(0, 1.8fr) minmax(320px, 1fr);
-  gap: 2.5rem;
+  grid-template-columns: minmax(0, 1fr) 295px;
+  gap: 2.25rem;
   align-items: start;
 }
 
@@ -9923,11 +9923,11 @@ button {
   background: #090b0e;
   border: 1px solid rgba(229, 207, 155, 0.25);
   border-radius: 14px;
-  padding: 1.75rem;
+  padding: 1.25rem 1.35rem;
   box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85);
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
+  gap: 1.15rem;
 }
 
 .dch-sidebar-pricing-box {
@@ -10162,4 +10162,203 @@ button {
   background: #f1f5f9 !important;
   border-color: #cbd5e1 !important;
   color: #0f172a !important;
+}
+
+/* ==========================================================================
+   Full Specifications Matrix & Auction Sheet Provenance Styles
+   ========================================================================== */
+
+.dch-full-specs-table-card {
+  background: #090b0e;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.dch-full-specs-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+}
+
+@media (max-width: 768px) {
+  .dch-full-specs-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.dch-spec-cell {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0.85rem 1.25rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+  font-size: 0.82rem;
+}
+
+.dch-spec-cell:nth-child(odd) {
+  border-right: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+@media (max-width: 768px) {
+  .dch-spec-cell:nth-child(odd) {
+    border-right: none;
+  }
+}
+
+.dch-spec-cell .spec-label {
+  color: #948b83;
+  font-weight: 500;
+}
+
+.dch-spec-cell .spec-value {
+  color: #f1f5f9;
+  font-weight: 600;
+  text-align: right;
+  max-width: 60%;
+  word-break: break-word;
+}
+
+.dch-spec-cell .spec-value.highlight-gold {
+  color: #e5cf9b;
+}
+
+.dch-spec-cell .spec-value.highlight-green {
+  color: #22c55e;
+}
+
+/* Auction Sheet Trust Card */
+.dch-auction-sheet-section {
+  margin-top: -0.5rem;
+}
+
+.dch-auction-sheet-card {
+  background: linear-gradient(135deg, rgba(229, 207, 155, 0.06) 0%, rgba(34, 197, 94, 0.04) 100%);
+  border: 1px solid rgba(229, 207, 155, 0.28);
+  border-radius: 12px;
+  padding: 1.35rem 1.6rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 1.25rem;
+}
+
+.dch-auction-left {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+  max-width: 700px;
+}
+
+.dch-auction-badge-icon {
+  margin-top: 2px;
+  background: rgba(229, 207, 155, 0.12);
+  padding: 8px;
+  border-radius: 8px;
+  border: 1px solid rgba(229, 207, 155, 0.25);
+}
+
+.dch-auction-title-row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+
+.dch-auction-heading {
+  font-size: 1.05rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0;
+}
+
+.dch-auction-score-pill {
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.6px;
+  padding: 0.2rem 0.55rem;
+  border-radius: 4px;
+  background: rgba(34, 197, 94, 0.12);
+  border: 1px solid rgba(34, 197, 94, 0.35);
+  color: #4ade80;
+}
+
+.dch-auction-desc {
+  font-size: 0.78rem;
+  color: #948b83;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.dch-auction-req-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  padding: 0.65rem 1.15rem;
+  border-radius: 8px;
+  background: rgba(229, 207, 155, 0.12);
+  border: 1px solid rgba(229, 207, 155, 0.4);
+  color: #e5cf9b;
+  font-size: 0.78rem;
+  font-weight: 700;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: all 0.2s ease;
+}
+
+.dch-auction-req-btn:hover {
+  background: #e5cf9b;
+  color: #050608;
+  transform: translateY(-2px);
+}
+
+/* Slimmer valuation tweaks */
+.dch-sidebar-price-amount {
+  font-size: 1.45rem;
+}
+
+.dch-sidebar-vip-btn {
+  padding: 0.75rem 1rem;
+}
+
+.btn-main-title {
+  font-size: 0.78rem;
+}
+
+.btn-sub-caption {
+  font-size: 0.64rem;
+}
+
+/* Light Theme Support for specs table & auction card */
+[data-theme="light"] .dch-full-specs-table-card,
+[data-theme="light"] .dch-auction-sheet-card {
+  background: #ffffff !important;
+  border-color: rgba(0, 0, 0, 0.1) !important;
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.04) !important;
+}
+
+[data-theme="light"] .dch-spec-cell {
+  border-bottom-color: rgba(0, 0, 0, 0.06) !important;
+  border-right-color: rgba(0, 0, 0, 0.06) !important;
+}
+
+[data-theme="light"] .dch-spec-cell .spec-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .dch-spec-cell .spec-value {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .dch-spec-cell .spec-value.highlight-gold {
+  color: #997323 !important;
+}
+
+[data-theme="light"] .dch-auction-heading {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .dch-auction-desc {
+  color: #64748b !important;
 }

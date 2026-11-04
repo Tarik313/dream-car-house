@@ -405,116 +405,144 @@ export default function VehicleDetailClient({
           {/* Comprehensive Specifications Matrix */}
           <section className="dch-specs-matrix-section">
             <div className="dch-section-heading-wrap">
-              <span className="dch-section-eyebrow">OFFICIAL TECHNICAL SPECIFICATIONS</span>
-              <h2 className="dch-section-title">Factory Build & Engineering Specs</h2>
+              <span className="dch-section-eyebrow">COMPREHENSIVE TECHNICAL MATRIX</span>
+              <h2 className="dch-section-title">Official Showroom Specifications</h2>
             </div>
 
-            <div className="dch-specs-cards-grid">
-              {/* Card 1: Powertrain & Performance */}
-              <div className="dch-spec-group-card">
-                <div className="dch-spec-group-head">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
-                    <circle cx="12" cy="12" r="3" />
-                    <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z" />
-                  </svg>
-                  <span>Powertrain & Mechanical</span>
+            <div className="dch-full-specs-table-card">
+              <div className="dch-full-specs-grid">
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Brand Marque</span>
+                  <span className="spec-value">{car.brand}</span>
                 </div>
-                <div className="dch-spec-rows-list">
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Engine Capacity</span>
-                    <span className="spec-val">{car.engine_capacity || "—"}</span>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Model Line</span>
+                  <span className="spec-value">{car.model || car.name}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Production Year</span>
+                  <span className="spec-value">{car.year}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Registration / Papers</span>
+                  <span className="spec-value">
+                    {car.registration_number || (isBrandNew ? "Unregistered Direct Import" : "Dhaka Metro Registered")}
+                  </span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Condition Grade</span>
+                  <span className="spec-value highlight-gold">
+                    {isBrandNew ? "Brand New (Zero Meter)" : (car.condition === "NEW" ? "Like New Condition" : "Certified Pre-Owned")}
+                  </span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Engine Displacement</span>
+                  <span className="spec-value">{car.engine_capacity || "—"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Transmission</span>
+                  <span className="spec-value">{car.transmission || "Automatic Tiptronic"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Fuel Architecture</span>
+                  <span className="spec-value">{car.fuel_type || "Petrol"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Drivetrain / Drive Type</span>
+                  <span className="spec-value">{car.drivetrain || "All-Wheel Drive (AWD)"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Wheel & Alloy Size</span>
+                  <span className="spec-value">{car.wheel_base || "19–21 Inch Forged Diamond-Cut"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Exterior Finish / Color</span>
+                  <span className="spec-value">{car.color || "Obsidian Metallic Paint"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Body Architecture</span>
+                  <span className="spec-value">{car.body_style || "Luxury SUV"}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Recorded Odometer</span>
+                  <span className="spec-value">{car.mileage || (isBrandNew ? "0 km (Untouched)" : "Verified Genuine")}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Auction Sheet / Manifest</span>
+                  <span className="spec-value highlight-green">
+                    {isBrandNew ? "Factory Manifest Verified (S Grade)" : "Grade 4.5/5.0 Verified Auction Sheet"}
+                  </span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Showroom Allocation</span>
+                  <span className="spec-value">{branch.name}</span>
+                </div>
+
+                <div className="dch-spec-cell">
+                  <span className="spec-label">Physical Availability</span>
+                  <span className="spec-value highlight-green">
+                    {car.registered || "In Showroom Vault • Ready for Viewing"}
+                  </span>
+                </div>
+              </div>
+            </div>
+          </section>
+
+          {/* Auction Sheet & Quality Provenance Trust Card */}
+          <section className="dch-auction-sheet-section">
+            <div className="dch-auction-sheet-card">
+              <div className="dch-auction-left">
+                <div className="dch-auction-badge-icon">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
+                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
+                    <polyline points="9 12 11 14 15 10" />
+                  </svg>
+                </div>
+                <div>
+                  <div className="dch-auction-title-row">
+                    <h3 className="dch-auction-heading">Verified Auction Sheet & Technical Inspection</h3>
+                    <span className="dch-auction-score-pill">
+                      {isBrandNew ? "GRADE S • 100% FACTORY FRESH" : "GRADE 4.5 / 5.0 • POINT VERIFIED"}
+                    </span>
                   </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Fuel Type</span>
-                    <span className="spec-val">{car.fuel_type || "Petrol"}</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Transmission</span>
-                    <span className="spec-val">{car.transmission || "Automatic"}</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Drivetrain</span>
-                    <span className="spec-val">{car.drivetrain || "All-Wheel Drive (AWD)"}</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Odometer</span>
-                    <span className="spec-val">{car.mileage || (isBrandNew ? "0 km (Brand New)" : "Verified")}</span>
-                  </div>
+                  <p className="dch-auction-desc">
+                    Every vehicle at DREAM CAR HOUSE comes with authentic international auction manifest verification, genuine odometer certification, and our comprehensive 150+ point physical inspection report.
+                  </p>
                 </div>
               </div>
 
-              {/* Card 2: Exterior & Body Architecture */}
-              <div className="dch-spec-group-card">
-                <div className="dch-spec-group-head">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
-                    <path d="M19 17h2c.6 0 1-.4 1-1v-3c0-.9-.7-1.7-1.5-1.9C18.7 10.6 16 10 16 10s-1.3-1.4-2.2-2.3c-.5-.4-1.1-.7-1.8-.7H5c-.6 0-1.1.4-1.4.9l-1.4 2.9A3.7 3.7 0 0 0 2 12v4c0 .6.4 1 1 1h2" />
-                    <circle cx="7" cy="17" r="2" />
-                    <circle cx="17" cy="17" r="2" />
+              <div className="dch-auction-actions">
+                <a
+                  href={`https://wa.me/${waPhone}?text=${encodeURIComponent(
+                    `Hello DREAM CAR HOUSE, I would like to inspect the official Verified Auction Sheet and 150+ Point Inspection Report for the ${car.name} (${car.year}).`
+                  )}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="dch-auction-req-btn"
+                >
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
                   </svg>
-                  <span>Exterior & Body Styling</span>
-                </div>
-                <div className="dch-spec-rows-list">
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Body Architecture</span>
-                    <span className="spec-val">{car.body_style || "Luxury SUV"}</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Exterior Finish</span>
-                    <span className="spec-val">{car.color || "Obsidian Metallic"}</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Production Year</span>
-                    <span className="spec-val">{car.year}</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Registration Status</span>
-                    <span className="spec-val">
-                      {car.registration_number || (isBrandNew ? "Unregistered Direct Import" : "Dhaka Metro Registered")}
-                    </span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Physical Availability</span>
-                    <span className="spec-val" style={{ color: "#22c55e", fontWeight: 600 }}>
-                      In Showroom Vault
-                    </span>
-                  </div>
-                </div>
-              </div>
-
-              {/* Card 3: Interior & Luxury Atelier */}
-              <div className="dch-spec-group-card">
-                <div className="dch-spec-group-head">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
-                    <rect x="2" y="3" width="20" height="14" rx="2" ry="2" />
-                    <line x1="8" y1="21" x2="16" y2="21" />
-                    <line x1="12" y1="17" x2="12" y2="21" />
-                  </svg>
-                  <span>Interior Comfort & Provenance</span>
-                </div>
-                <div className="dch-spec-rows-list">
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Cabin Trim</span>
-                    <span className="spec-val">Handcrafted Nappa Leather</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Seating Configuration</span>
-                    <span className="spec-val">5–7 Executive Seats</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Inspection Protocol</span>
-                    <span className="spec-val" style={{ color: "#e5cf9b" }}>
-                      150+ Multi-Point Verified
-                    </span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Showroom Allocation</span>
-                    <span className="spec-val">{branch.name}</span>
-                  </div>
-                  <div className="dch-spec-line">
-                    <span className="spec-name">Title Handover</span>
-                    <span className="spec-val">Immediate Transfer Ready</span>
-                  </div>
-                </div>
+                  <span>Request Auction Sheet (PDF)</span>
+                </a>
               </div>
             </div>
           </section>
