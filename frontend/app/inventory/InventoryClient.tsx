@@ -137,7 +137,28 @@ function InventoryContent({
     return VEHICLE_DATA;
   }, [initialVehicles]);
 
-  // Sync with URL query parameters
+  // Debounced URL sync for text search so user can freely type spaces without interference
+  useEffect(() => {
+    const handler = setTimeout(() => {
+      const trimmed = query.trim();
+      const sp = new URLSearchParams(window.location.search);
+      const currentQ = sp.get("q") || "";
+
+      if (trimmed !== currentQ) {
+        if (trimmed) {
+          sp.set("q", trimmed);
+        } else {
+          sp.delete("q");
+        }
+        const qs = sp.toString();
+        router.replace(`/inventory${qs ? `?${qs}` : ""}`, { scroll: false });
+      }
+    }, 380);
+
+    return () => clearTimeout(handler);
+  }, [query, router]);
+
+  // Sync with URL query parameters on navigation (without wiping spaces while typing)
   useEffect(() => {
     const brandParam = searchParams.get("brand");
     const typeParam = searchParams.get("type");
@@ -148,7 +169,9 @@ function InventoryContent({
     if (brandParam) setSelectedBrand(brandParam);
     if (typeParam) setSelectedType(typeParam);
     if (branchParam) setSelectedBranch(branchParam);
-    if (qParam) setQuery(qParam);
+    if (qParam !== null && qParam !== query.trim()) {
+      setQuery(qParam);
+    }
     if (priceParam) {
       const parsed = parsePriceRangeString(priceParam);
       setPriceRange(parsed);
@@ -303,10 +326,7 @@ function InventoryContent({
           type="text"
           id="cars-search-input"
           value={query}
-          onChange={(e) => {
-            setQuery(e.target.value);
-            syncUrlParams({ q: e.target.value });
-          }}
+          onChange={(e) => setQuery(e.target.value)}
           className="cars-search-input"
           placeholder="Search by brand or model (e.g. Mercedes, Land Cruiser, BMW)..."
         />
