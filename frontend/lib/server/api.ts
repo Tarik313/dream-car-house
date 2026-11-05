@@ -443,6 +443,9 @@ export interface PublicInventoryParams {
   type?: string;
   branch?: string;
   body_style?: string;
+  price_range?: string;
+  price_min?: number | string;
+  price_max?: number | string;
   q?: string;
   page?: number;
 }
@@ -469,6 +472,15 @@ export const getPublicInventory = cache(
     }
     if (params.body_style && params.body_style !== "all") {
       query.set("body_style", params.body_style);
+    }
+    if (params.price_range && params.price_range.trim() && params.price_range !== "all") {
+      query.set("price_range", params.price_range.trim());
+    }
+    if (params.price_min) {
+      query.set("price_min", String(params.price_min));
+    }
+    if (params.price_max) {
+      query.set("price_max", String(params.price_max));
     }
     if (params.q && params.q.trim()) {
       query.set("search", params.q.trim());

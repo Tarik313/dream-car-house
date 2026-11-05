@@ -10831,3 +10831,331 @@ button {
 [data-theme="light"] .dch-auction-desc {
   color: #64748b !important;
 }
+
+/* ==========================================================================
+   BEG AUTOS Style Luxury Interactive Price Filter System
+   ========================================================================== */
+
+.price-filter-container {
+  position: relative;
+  display: inline-block;
+}
+
+.price-popover-trigger {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: #000000;
+  border: 1px solid #374151;
+  color: #ffffff;
+  padding: 0.65rem 1.15rem;
+  border-radius: 6px;
+  font-family: inherit;
+  font-size: 0.92rem;
+  cursor: pointer;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  white-space: nowrap;
+  user-select: none;
+}
+
+.price-popover-trigger:hover {
+  border-color: rgba(255, 255, 255, 0.35);
+  background: rgba(255, 255, 255, 0.04);
+}
+
+.price-popover-trigger.is-active {
+  border-color: #facc15;
+  color: #facc15;
+  background: rgba(250, 204, 21, 0.08);
+  box-shadow: 0 0 14px rgba(250, 204, 21, 0.2);
+}
+
+.price-trigger-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 7px;
+  border-radius: 9999px;
+  background: #facc15;
+  color: #000000;
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.price-trigger-chevron {
+  width: 14px;
+  height: 14px;
+  transition: transform 0.25s ease;
+}
+
+.price-popover-trigger.is-open .price-trigger-chevron {
+  transform: rotate(180deg);
+}
+
+/* Luxury Dropdown Popover */
+.price-popover-card {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  width: 380px;
+  max-width: 90vw;
+  background: #0d0f14;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  border-radius: 14px;
+  padding: 1.5rem;
+  box-shadow: 0 20px 45px -10px rgba(0, 0, 0, 0.95), 0 0 24px rgba(250, 204, 21, 0.08);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  animation: priceFadeIn 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes priceFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-6px) scale(0.98);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+
+.price-popover-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  margin-bottom: 1.25rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.price-popover-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: #facc15;
+}
+
+.price-popover-display {
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: #ffffff;
+}
+
+/* Preset Brackets Grid */
+.price-presets-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  margin-bottom: 1.5rem;
+}
+
+.price-preset-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.55rem 0.65rem;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: #cbd5e1;
+  font-size: 0.78rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  white-space: nowrap;
+}
+
+.price-preset-btn:hover {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.25);
+  color: #ffffff;
+}
+
+.price-preset-btn.is-active {
+  background: rgba(250, 204, 21, 0.12);
+  border-color: #facc15;
+  color: #facc15;
+  font-weight: 600;
+}
+
+/* Dual Range Track */
+.price-slider-track-wrap {
+  position: relative;
+  height: 24px;
+  margin: 1rem 0 0.5rem;
+}
+
+.price-slider-base-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: rgba(255, 255, 255, 0.18);
+  border-radius: 9999px;
+}
+
+.price-slider-active-bar {
+  position: absolute;
+  top: 50%;
+  height: 3px;
+  transform: translateY(-50%);
+  background: linear-gradient(90deg, #facc15 0%, #eab308 100%);
+  box-shadow: 0 0 10px rgba(250, 204, 21, 0.5);
+  border-radius: 9999px;
+}
+
+.price-slider-markers {
+  display: flex;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  color: #64748b;
+  margin-top: 0.5rem;
+}
+
+/* Dual Thumbs */
+.beg-range-slider {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  margin: 0;
+  background: transparent;
+  pointer-events: none;
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.beg-range-slider::-webkit-slider-runnable-track {
+  background: transparent;
+  height: 100%;
+}
+
+.beg-range-slider::-moz-range-track {
+  background: transparent;
+}
+
+.beg-range-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  border: 2px solid #000;
+  cursor: grab;
+  background: #facc15;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
+  margin-top: 3px;
+  transition: transform 0.15s ease, background 0.15s ease;
+}
+
+.beg-range-slider::-webkit-slider-thumb:hover {
+  transform: scale(1.2);
+  background: #ffffff;
+}
+
+.beg-range-slider::-webkit-slider-thumb:active {
+  cursor: grabbing;
+  transform: scale(1.3);
+}
+
+.beg-range-slider::-moz-range-thumb {
+  pointer-events: auto;
+  width: 18px;
+  height: 18px;
+  border-radius: 9999px;
+  border: 2px solid #000;
+  cursor: grab;
+  background: #facc15;
+  box-shadow: 0 0 8px rgba(250, 204, 21, 0.7);
+}
+
+/* Action Buttons */
+.price-popover-actions {
+  display: flex;
+  gap: 10px;
+  margin-top: 1.5rem;
+}
+
+.price-popover-clear-btn {
+  flex: 1;
+  height: 38px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #e2e8f0;
+  font-size: 0.84rem;
+  font-weight: 500;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.price-popover-clear-btn:hover {
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+}
+
+.price-popover-apply-btn {
+  flex: 1.25;
+  height: 38px;
+  border-radius: 8px;
+  background: #facc15;
+  border: 1px solid #facc15;
+  color: #000000;
+  font-size: 0.84rem;
+  font-weight: 700;
+  cursor: pointer;
+  box-shadow: 0 4px 14px rgba(250, 204, 21, 0.25);
+  transition: all 0.2s ease;
+}
+
+.price-popover-apply-btn:hover {
+  background: #eab308;
+  border-color: #eab308;
+  transform: translateY(-1px);
+}
+
+/* Light Theme Support */
+[data-theme="light"] .price-popover-trigger {
+  background: #f8fafc !important;
+  border-color: rgba(148, 163, 184, 0.45) !important;
+  color: #0a0f1d !important;
+}
+
+[data-theme="light"] .price-popover-trigger.is-active {
+  border-color: #d97706 !important;
+  color: #d97706 !important;
+  background: rgba(217, 119, 6, 0.08) !important;
+}
+
+[data-theme="light"] .price-popover-card {
+  background: #ffffff !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 20px 45px -10px rgba(15, 23, 42, 0.15), 0 0 24px rgba(217, 119, 6, 0.06) !important;
+}
+
+[data-theme="light"] .price-popover-display {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .price-preset-btn {
+  background: #f1f5f9 !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
+  color: #334155 !important;
+}
+
+[data-theme="light"] .price-preset-btn:hover {
+  background: #e2e8f0 !important;
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .price-preset-btn.is-active {
+  background: rgba(217, 119, 6, 0.12) !important;
+  border-color: #d97706 !important;
+  color: #b45309 !important;
+}

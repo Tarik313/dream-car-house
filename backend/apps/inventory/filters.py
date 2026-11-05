@@ -10,6 +10,40 @@ class CharInFilter(BaseInFilter, django_filters.CharFilter):
 class InventoryFilter(django_filters.FilterSet):
     price_min = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
     price_max = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
+    min_price = django_filters.NumberFilter(field_name="price", lookup_expr='gte')
+    max_price = django_filters.NumberFilter(field_name="price", lookup_expr='lte')
+    price_range = django_filters.CharFilter(method='filter_price_range')
+
+    def filter_price_range(self, queryset, name, value):
+        if not value:
+            return queryset
+        val = str(value).strip().lower()
+        if val.startswith('under-'):
+            try:
+                max_val = float(val.replace('under-', ''))
+                return queryset.filter(price__lte=max_val)
+            except ValueError:
+                return queryset
+        if val.endswith('-plus'):
+            try:
+                min_val = float(val.replace('-plus', ''))
+                return queryset.filter(price__gte=min_val)
+            except ValueError:
+                return queryset
+        if '-' in val:
+            parts = val.split('-')
+            if len(parts) == 2:
+                try:
+                    p_min = float(parts[0]) if parts[0] else None
+                    p_max = float(parts[1]) if parts[1] else None
+                    if p_min is not None:
+                        queryset = queryset.filter(price__gte=p_min)
+                    if p_max is not None:
+                        queryset = queryset.filter(price__lte=p_max)
+                    return queryset
+                except ValueError:
+                    return queryset
+        return queryset
 
     brand = django_filters.CharFilter(field_name="brand__name", lookup_expr='iexact')
     model = django_filters.CharFilter(field_name="model__model", lookup_expr='iexact')
@@ -39,4 +73,9 @@ class InventoryFilter(django_filters.FilterSet):
             'car_type',
             'branch',
             'branch_id',
+            'price_min',
+            'price_max',
+            'min_price',
+            'max_price',
+            'price_range',
         ]

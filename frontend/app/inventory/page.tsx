@@ -21,6 +21,9 @@ interface PageProps {
     type?: string;
     branch?: string;
     body_style?: string;
+    price_range?: string;
+    price_min?: string;
+    price_max?: string;
     q?: string;
     page?: string;
   }>;
@@ -100,6 +103,9 @@ export default async function InventoryPage({ searchParams }: PageProps) {
         type: params.type,
         branch: params.branch,
         body_style: params.body_style,
+        price_range: params.price_range,
+        price_min: params.price_min,
+        price_max: params.price_max,
         q: params.q,
         page: pageNum,
       }),
@@ -172,6 +178,7 @@ export default async function InventoryPage({ searchParams }: PageProps) {
           type: params.type || "all",
           branch: params.branch || "all",
           body_style: params.body_style || "all",
+          price_range: params.price_range || "all",
           q: params.q || "",
         }}
       />
