@@ -58,7 +58,8 @@ button {
 }
 
 .max-w-7xl {
-  max-width: 80rem;
+  max-width: 1680px;
+  width: 100%;
   margin-left: auto;
   margin-right: auto;
 }
@@ -107,7 +108,8 @@ button {
 
 .header-container {
   position: relative;
-  max-width: 80rem;
+  max-width: 1680px;
+  width: 100%;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -2848,6 +2850,13 @@ button {
 @media (min-width: 1024px) {
   .preference-showcase-grid {
     grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+@media (min-width: 1400px) {
+  .preference-showcase-grid {
+    grid-template-columns: repeat(4, 1fr);
+    gap: 1.75rem;
   }
 }
 

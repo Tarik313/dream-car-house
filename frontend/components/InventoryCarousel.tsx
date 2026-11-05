@@ -274,7 +274,7 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } =
   };
 
   return (
-    <section id="carousel-section" className="carousel-section max-w-7xl">
+    <section id="carousel-section" className="carousel-section max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
       <div className="section-head">
         <h2 className="section-h2">Current Inventory</h2>
         <Link className="see-all-link" href="/inventory">

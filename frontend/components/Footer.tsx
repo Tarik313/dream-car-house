@@ -20,7 +20,7 @@ export default function Footer({
 
   return (
     <footer className="site-footer" id="contact">
-      <div className="max-w-7xl" style={{ paddingLeft: "1.5rem", paddingRight: "1.5rem" }}>
+      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
         <div className="footer-grid-3col">
           {/* Col 1: Contact Info */}
           <div className="footer-col-contact">

@@ -8,7 +8,7 @@ export default function ExperiencePillars({ experience }: { experience?: unknown
   const { openAppointmentModal } = useUI();
 
   return (
-    <section className="experience-section max-w-7xl" id="experience">
+    <section className="experience-section max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8" id="experience">
       <div className="experience-header">
         <div className="experience-header-text">
           <h2 className="experience-title">Inside Our Showrooms</h2>

@@ -15,7 +15,7 @@ export default function VisualChronicles({ chronicles }: { chronicles?: unknown 
   };
 
   return (
-    <section className="socials-section max-w-7xl" id="socials">
+    <section className="socials-section max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8" id="socials">
       <div className="socials-header">
         <div className="socials-header-text">
           <h2 className="section-h2" style={{ marginBottom: "0.35rem" }}>
