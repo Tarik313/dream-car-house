@@ -9,7 +9,7 @@ export default function ExperiencePillars({ experience }: { experience?: unknown
 
   return (
     <section className="experience-section w-full" id="experience">
-      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="luxury-container px-4 sm:px-6 lg:px-8">
         <div className="experience-header">
         <div className="experience-header-text">
           <h2 className="experience-title">Inside Our Showrooms</h2>

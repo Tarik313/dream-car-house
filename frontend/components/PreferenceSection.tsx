@@ -43,7 +43,7 @@ export default function PreferenceSection({
 
   return (
     <section className="preference-section w-full">
-      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="luxury-container px-4 sm:px-6 lg:px-8">
         <div className="preference-header-wrap">
         <div>
           <h2 className="section-h2" style={{ margin: 0 }}>

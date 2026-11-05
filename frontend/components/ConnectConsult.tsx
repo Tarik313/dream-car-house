@@ -8,7 +8,7 @@ export default function ConnectConsult({ consultation }: { consultation?: unknow
 
   return (
     <section className="connect-consult-section" id="connect-consult">
-      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="luxury-container px-4 sm:px-6 lg:px-8">
         <div className="consult-concept-card concept-card-1">
           <div className="concept-1-grid">
             <div className="concept-1-left">

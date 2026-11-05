@@ -275,17 +275,18 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } =
 
   return (
     <section id="carousel-section" className="carousel-section w-full">
-      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="luxury-container px-4 sm:px-6 lg:px-8">
         <div className="section-head">
-        <h2 className="section-h2">Current Inventory</h2>
-        <Link className="see-all-link" href="/inventory">
-          See All ({allInventory.length})
-        </Link>
+          <h2 className="section-h2">Current Inventory</h2>
+          <Link className="see-all-link" href="/inventory">
+            See All ({allInventory.length})
+          </Link>
+        </div>
       </div>
 
       <div
         ref={containerRef}
-        className="inventory-slider-container"
+        className="inventory-slider-container w-full"
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -327,7 +328,6 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } =
             );
           })}
         </div>
-      </div>
       </div>
     </section>
   );

@@ -57,11 +57,31 @@ button {
   background: none;
 }
 
+.luxury-container,
 .max-w-7xl {
-  max-width: 1680px;
   width: 100%;
+  max-width: 1840px;
   margin-left: auto;
   margin-right: auto;
+  box-sizing: border-box;
+}
+
+@media (min-width: 2000px) {
+  .luxury-container,
+  .header-container,
+  .max-w-7xl,
+  .dch-car-detail-page {
+    max-width: 2160px;
+  }
+}
+
+@media (min-width: 2560px) {
+  .luxury-container,
+  .header-container,
+  .max-w-7xl,
+  .dch-car-detail-page {
+    max-width: 2480px;
+  }
 }
 
 /* ================= Header (DREAM CAR HOUSE Luxury Menu System) ================= */
@@ -108,8 +128,8 @@ button {
 
 .header-container {
   position: relative;
-  max-width: 1680px;
   width: 100%;
+  max-width: 1840px;
   margin: 0 auto;
   display: flex;
   align-items: center;
@@ -2849,8 +2869,15 @@ button {
 
 @media (min-width: 1024px) {
   .preference-showcase-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(3, minmax(0, 1fr));
     gap: 1.75rem;
+    width: 100%;
+  }
+}
+
+@media (min-width: 1920px) {
+  .preference-showcase-grid {
+    gap: 2.25rem;
   }
 }
 
@@ -9382,7 +9409,7 @@ button {
   padding-right: 1.5rem;
   margin-left: auto;
   margin-right: auto;
-  max-width: 1680px;
+  max-width: 1840px;
   width: 100%;
   position: relative;
 }

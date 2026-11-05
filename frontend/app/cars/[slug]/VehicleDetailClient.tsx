@@ -197,7 +197,7 @@ export default function VehicleDetailClient({
   const waUrl = `https://wa.me/${waPhone}?text=${waMessage}`;
 
   return (
-    <div className="dch-car-detail-page max-w-[1680px] w-full mx-auto">
+    <div className="dch-car-detail-page luxury-container">
       {/* 1. Breadcrumbs & Top Navigation */}
       <nav aria-label="Breadcrumb" className="dch-breadcrumbs">
         <Link href="/" className="dch-crumb-link">

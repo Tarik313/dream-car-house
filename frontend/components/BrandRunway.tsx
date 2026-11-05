@@ -338,7 +338,7 @@ export default function BrandRunway({ brands }: { brands?: unknown } = {}) {
 
   return (
     <section className="brand-strip-section" id="brand-runway-section">
-      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="luxury-container px-4 sm:px-6 lg:px-8">
         <div className="runway-header">
           <h2 className="section-h2" style={{ marginBottom: "0.35rem" }}>
             Prestigious Automotive Marques

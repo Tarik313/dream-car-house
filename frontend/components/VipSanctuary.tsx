@@ -21,7 +21,7 @@ export default function VipSanctuary({ sanctuary }: { sanctuary?: unknown } = {}
       />
       <div className="vip-sanctuary-overlay"></div>
 
-      <div className="vip-sanctuary-container max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+      <div className="vip-sanctuary-container luxury-container px-4 sm:px-6 lg:px-8">
         <div className="vip-sanctuary-grid">
           {/* Left Column: Editorial Invitation & Value Pillars */}
           <div className="vip-sanctuary-narrative">
