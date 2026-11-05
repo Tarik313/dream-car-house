@@ -10387,16 +10387,50 @@ button {
 }
 
 .dch-btn-whatsapp {
-  background: #25d366;
-  color: #ffffff;
-  border: none;
-  box-shadow: 0 8px 20px rgba(37, 211, 102, 0.25);
+  background: #25d366 !important;
+  color: #ffffff !important;
+  border: 1px solid rgba(255, 255, 255, 0.25) !important;
+  box-shadow: 0 10px 26px rgba(37, 211, 102, 0.4), 0 0 14px rgba(37, 211, 102, 0.25);
 }
 
 .dch-btn-whatsapp:hover {
   transform: translateY(-2px);
-  background: #20bd5a;
-  box-shadow: 0 12px 24px rgba(37, 211, 102, 0.35);
+  background: #20bd5a !important;
+  box-shadow: 0 14px 32px rgba(37, 211, 102, 0.55), 0 0 20px rgba(37, 211, 102, 0.35);
+  border-color: rgba(255, 255, 255, 0.45) !important;
+}
+
+.dch-btn-whatsapp .btn-main-title {
+  color: #ffffff !important;
+  font-weight: 800;
+  letter-spacing: 0.6px;
+  font-size: 0.84rem;
+}
+
+.dch-btn-whatsapp .btn-sub-caption {
+  color: rgba(255, 255, 255, 0.92) !important;
+  font-weight: 500;
+  opacity: 1 !important;
+}
+
+.dch-whatsapp-icon-wrap {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.22);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  color: #ffffff !important;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.15);
+}
+
+.dch-whatsapp-icon-wrap svg {
+  width: 23px;
+  height: 23px;
+  fill: #ffffff !important;
+  filter: drop-shadow(0 1px 2px rgba(0, 0, 0, 0.2));
 }
 
 .dch-btn-outline {
