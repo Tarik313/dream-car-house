@@ -11,6 +11,7 @@ export interface SellCarSubmissionInput {
   mileage: number | string;
   offeredPrice?: number | string;
   notes?: string;
+  images?: File[];
 }
 
 export interface SellCarSubmissionResult {
@@ -23,15 +24,51 @@ export interface SellCarSubmissionResult {
 }
 
 export async function submitSellCarAction(
-  input: SellCarSubmissionInput
+  input: SellCarSubmissionInput | FormData
 ): Promise<SellCarSubmissionResult> {
   try {
-    const name = (input.name || "").trim().replace(/[<>]/g, "");
+    let name = "";
+    let rawPhone = "";
+    let carName = "";
+    let carModel = "";
+    let carYear = "";
+    let rawMileage = "";
+    let rawOfferedPrice = "";
+    let notes = "";
+    let imageFiles: File[] = [];
+
+    if (typeof FormData !== "undefined" && input instanceof FormData) {
+      name = String(input.get("name") || "");
+      rawPhone = String(input.get("phone") || "");
+      carName = String(input.get("carName") || "");
+      carModel = String(input.get("carModel") || "");
+      carYear = String(input.get("carYear") || "");
+      rawMileage = String(input.get("mileage") || "");
+      rawOfferedPrice = String(input.get("offeredPrice") || "");
+      notes = String(input.get("notes") || "");
+      const allImages = input.getAll("images");
+      imageFiles = allImages.filter((item): item is File => item instanceof File && item.size > 0);
+    } else {
+      const obj = input as SellCarSubmissionInput;
+      name = obj.name || "";
+      rawPhone = obj.phone || "";
+      carName = obj.carName || "";
+      carModel = obj.carModel || "";
+      carYear = obj.carYear || "";
+      rawMileage = String(obj.mileage || "");
+      rawOfferedPrice = String(obj.offeredPrice || "");
+      notes = obj.notes || "";
+      if (Array.isArray(obj.images)) {
+        imageFiles = obj.images.filter((item): item is File => item instanceof File && item.size > 0);
+      }
+    }
+
+    name = name.trim().replace(/[<>]/g, "");
     if (!name || name.length < 2) {
       return { ok: false, error: "Please enter your name (minimum 2 characters)." };
     }
 
-    const rawPhone = (input.phone || "").trim();
+    rawPhone = rawPhone.trim();
     const phoneRe = /^[+0-9\s-]{8,20}$/;
     if (!rawPhone || !phoneRe.test(rawPhone)) {
       return {
@@ -40,30 +77,30 @@ export async function submitSellCarAction(
       };
     }
 
-    const carName = (input.carName || "").trim().replace(/[<>]/g, "");
+    carName = carName.trim().replace(/[<>]/g, "");
     if (!carName) {
       return { ok: false, error: "Please enter vehicle manufacturer or brand." };
     }
 
-    const carModel = (input.carModel || "").trim().replace(/[<>]/g, "");
+    carModel = carModel.trim().replace(/[<>]/g, "");
     if (!carModel) {
       return { ok: false, error: "Please enter vehicle model." };
     }
 
-    const carYear = (input.carYear || "").trim().replace(/[<>]/g, "");
+    carYear = carYear.trim().replace(/[<>]/g, "");
     if (!carYear) {
       return { ok: false, error: "Please enter production year." };
     }
 
-    const rawMileage = String(input.mileage || "").replace(/[^0-9]/g, "");
-    const mileageNum = parseInt(rawMileage, 10);
+    const cleanMileage = rawMileage.replace(/[^0-9]/g, "");
+    const mileageNum = parseInt(cleanMileage, 10);
     if (isNaN(mileageNum) || mileageNum < 0) {
       return { ok: false, error: "Please enter valid mileage in km." };
     }
 
     let offeredPriceNum: number | null = null;
-    if (input.offeredPrice) {
-      const parsedPrice = parseInt(String(input.offeredPrice).replace(/[^0-9]/g, ""), 10);
+    if (rawOfferedPrice) {
+      const parsedPrice = parseInt(String(rawOfferedPrice).replace(/[^0-9]/g, ""), 10);
       if (!isNaN(parsedPrice) && parsedPrice > 0) {
         offeredPriceNum = parsedPrice;
       }
@@ -81,7 +118,9 @@ export async function submitSellCarAction(
     const waMsg = encodeURIComponent(
       `Hello DREAM CAR HOUSE Valuation Desk,\n\nI have submitted my luxury car for trade-in / valuation:\n\n• Name: ${name}\n• Phone: ${rawPhone}\n• Brand: ${carName}\n• Model: ${carModel}\n• Year: ${carYear}\n• Mileage: ${mileageNum.toLocaleString()} km${
         offeredPriceNum ? `\n• Expected Price: BDT ${offeredPriceNum.toLocaleString()}` : ""
-      }${input.notes ? `\n• Notes: ${input.notes}` : ""}`
+      }${notes ? `\n• Notes: ${notes}` : ""}${
+        imageFiles.length > 0 ? `\n• Attached Images: ${imageFiles.length} photos uploaded` : ""
+      }`
     );
 
     const cleanDigits = targetPhone.replace(/[^0-9]/g, "");
@@ -93,26 +132,27 @@ export async function submitSellCarAction(
     }
     const waUrl = waPhone ? `https://wa.me/${waPhone}?text=${waMsg}` : "";
 
-    // Submit to Django Backend endpoint /api/v1/home/sell-car/
+    // Prepare multipart/form-data for Django Backend endpoint /api/v1/home/sell-car/
     const origin = getBackendOrigin();
-    const payload: Record<string, unknown> = {
-      name,
-      phone: rawPhone,
-      car_name: carName,
-      car_model: carModel,
-      car_year: carYear,
-      mileage: mileageNum,
-    };
+    const backendFormData = new FormData();
+    backendFormData.append("name", name);
+    backendFormData.append("phone", rawPhone);
+    backendFormData.append("car_name", carName);
+    backendFormData.append("car_model", carModel);
+    backendFormData.append("car_year", carYear);
+    backendFormData.append("mileage", String(mileageNum));
     if (offeredPriceNum) {
-      payload.offered_price = offeredPriceNum;
+      backendFormData.append("offered_price", String(offeredPriceNum));
+    }
+
+    // Attach uploaded vehicle images (max 10 images)
+    for (const img of imageFiles.slice(0, 10)) {
+      backendFormData.append("images", img);
     }
 
     const res = await fetch(`${origin}/api/v1/home/sell-car/`, {
       method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
+      body: backendFormData,
       cache: "no-store",
     });
 
@@ -124,6 +164,8 @@ export async function submitSellCarAction(
           const firstErrKey = Object.keys(errorData.errors)[0];
           const firstErrVal = errorData.errors[firstErrKey];
           errMsg = Array.isArray(firstErrVal) ? firstErrVal[0] : String(firstErrVal);
+        } else if (errorData?.images && Array.isArray(errorData.images)) {
+          errMsg = errorData.images[0];
         } else if (errorData?.message) {
           errMsg = errorData.message;
         }

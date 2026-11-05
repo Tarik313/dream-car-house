@@ -6,6 +6,7 @@ import { UIProvider } from "@/lib/UIContext";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import ModalContainer from "@/components/ModalContainer";
+import FloatingSupercarTop from "@/components/FloatingSupercarTop";
 
 import { fetchLayoutData, getShowroomStoriesSSR, defaultSiteSettings, defaultBranches } from "@/lib/server/api";
 import { VEHICLE_DATA } from "@/lib/showroomData";
@@ -128,6 +129,7 @@ export default async function RootLayout({
             featuredVehicles={featuredVehicles}
             stories={stories}
           />
+          <FloatingSupercarTop />
         </UIProvider>
       </body>
     </html>

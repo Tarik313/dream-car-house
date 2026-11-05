@@ -3,13 +3,13 @@ from rest_framework.exceptions import ValidationError
 
 
 class ImageValidationMixin:
-    allowed_mime_types = ['image/jpeg', 'image/jpg', 'image/png']
+    allowed_mime_types = ['image/jpeg', 'image/jpg', 'image/png', 'image/webp']
 
     def validate_and_save_images(self, images, instance, related_model, fk_name, image_field_name='image'):
         for image in images:
             if image.content_type not in self.allowed_mime_types:
                 raise ValidationError({
-                    "images": ["Only .jpg, .jpeg, .png formats are allowed."]
+                    "images": ["Only .jpg, .jpeg, .png, .webp formats are allowed."]
                 })
 
             try:

@@ -1,7 +1,8 @@
 "use client";
 
-import React, { useState, useTransition } from "react";
+import React, { useState, useTransition, useRef, useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { submitSellCarAction, SellCarSubmissionResult } from "@/app/actions/sell";
 import { useUI } from "@/lib/UIContext";
 import type { PublicSiteSettings } from "@/lib/types";
@@ -36,6 +37,12 @@ export default function SellClient({
   const [branchPreference, setBranchPreference] = useState("kakrail");
   const [notes, setNotes] = useState("");
 
+  // Vehicle Image Upload State
+  const [selectedFiles, setSelectedFiles] = useState<File[]>([]);
+  const [previewUrls, setPreviewUrls] = useState<string[]>([]);
+  const [isDragging, setIsDragging] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [isPending, startTransition] = useTransition();
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
   const [submissionResult, setSubmissionResult] = useState<SellCarSubmissionResult["data"] | null>(null);
@@ -43,6 +50,13 @@ export default function SellClient({
   const activeBrandName = brand === "Other" ? customBrand : brand;
   const hotline = settings?.hotline || "01615-121312";
   const brandName = settings?.name || "DREAM CAR HOUSE";
+
+  // Clean up preview object URLs on unmount or change
+  useEffect(() => {
+    return () => {
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+    };
+  }, [previewUrls]);
 
   // Dynamic Theme Colors (Seamless Day/Night Mode)
   const colors = {
@@ -70,6 +84,68 @@ export default function SellClient({
       : "linear-gradient(135deg, #f59e0b 0%, #d97706 100%)",
   };
 
+  const handleFilesSelected = (files: FileList | File[]) => {
+    const fileArray = Array.from(files);
+    const allowedTypes = ["image/jpeg", "image/png", "image/webp", "image/jpg"];
+    const maxPhotos = 10;
+    const currentCount = selectedFiles.length;
+
+    if (currentCount >= maxPhotos) {
+      setErrorMessage("You can upload a maximum of 10 photos.");
+      return;
+    }
+
+    const newFiles: File[] = [];
+    let formatWarning = false;
+    let sizeWarning = false;
+
+    for (const f of fileArray) {
+      if (!allowedTypes.includes(f.type.toLowerCase())) {
+        formatWarning = true;
+        continue;
+      }
+      if (f.size > 10 * 1024 * 1024) {
+        sizeWarning = true;
+        continue;
+      }
+      if (currentCount + newFiles.length < maxPhotos) {
+        newFiles.push(f);
+      }
+    }
+
+    if (formatWarning) {
+      setErrorMessage("Some files were skipped: Only JPG, PNG, and WEBP formats are supported.");
+    } else if (sizeWarning) {
+      setErrorMessage("Some files were skipped: Each photo must be smaller than 10MB.");
+    }
+
+    if (newFiles.length > 0) {
+      const combinedFiles = [...selectedFiles, ...newFiles];
+      setSelectedFiles(combinedFiles);
+
+      // Revoke old previews and create new ones
+      previewUrls.forEach((url) => URL.revokeObjectURL(url));
+      const newPreviews = combinedFiles.map((file) => URL.createObjectURL(file));
+      setPreviewUrls(newPreviews);
+    }
+  };
+
+  const handleRemovePhoto = (index: number) => {
+    const updatedFiles = selectedFiles.filter((_, i) => i !== index);
+    setSelectedFiles(updatedFiles);
+
+    if (previewUrls[index]) {
+      URL.revokeObjectURL(previewUrls[index]);
+    }
+    setPreviewUrls(previewUrls.filter((_, i) => i !== index));
+  };
+
+  const formatFileSize = (bytes: number): string => {
+    if (bytes < 1024) return `${bytes} B`;
+    if (bytes < 1024 * 1024) return `${(bytes / 1024).toFixed(1)} KB`;
+    return `${(bytes / (1024 * 1024)).toFixed(1)} MB`;
+  };
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (isPending) return;
@@ -89,16 +165,26 @@ export default function SellClient({
         .filter(Boolean)
         .join(" | ");
 
-      const res = await submitSellCarAction({
-        name: fullName,
-        phone,
-        carName: finalBrand,
-        carModel: model,
-        carYear: year,
-        mileage,
-        offeredPrice: expectedPrice,
-        notes: combinedNotes,
+      const formData = new FormData();
+      formData.append("name", fullName);
+      formData.append("phone", phone);
+      formData.append("carName", finalBrand);
+      formData.append("carModel", model);
+      formData.append("carYear", year);
+      formData.append("mileage", mileage);
+      if (expectedPrice) {
+        formData.append("offeredPrice", expectedPrice);
+      }
+      if (combinedNotes) {
+        formData.append("notes", combinedNotes);
+      }
+
+      // Attach all selected images
+      selectedFiles.forEach((file) => {
+        formData.append("images", file);
       });
+
+      const res = await submitSellCarAction(formData);
 
       if (!res.ok) {
         setErrorMessage(res.error || "Failed to submit vehicle valuation. Please verify details.");
@@ -118,88 +204,254 @@ export default function SellClient({
   return (
     <div className="inventory-page-wrap max-w-7xl">
       <div style={{ maxWidth: "52rem", margin: "0 auto" }}>
-        
-        {/* Clean, Elegant Header */}
+        {/* Navigation Breadcrumb */}
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", fontSize: "0.82rem", color: colors.textMuted, marginBottom: "1.5rem" }}>
+          <Link href="/" style={{ color: colors.textMuted, textDecoration: "none" }}>Home</Link>
+          <span>›</span>
+          <Link href="/inventory" style={{ color: colors.textMuted, textDecoration: "none" }}>Inventory</Link>
+          <span>›</span>
+          <span style={{ color: colors.goldAccent, fontWeight: 600 }}>Sell / Trade-In</span>
+        </div>
+
+        {/* Luxury Header Banner */}
         <div style={{ textAlign: "center", marginBottom: "2.5rem" }}>
-          <h1 className="section-h2" style={{ marginBottom: "0.65rem", color: colors.textPrimary }}>
-            Sell Your Luxury Car
+          <span
+            style={{
+              display: "inline-block",
+              fontSize: "0.72rem",
+              fontWeight: 800,
+              letterSpacing: "0.22em",
+              textTransform: "uppercase",
+              color: colors.goldAccent,
+              background: colors.pillActiveBg,
+              border: `1px solid ${colors.pillActiveBorder}`,
+              padding: "4px 14px",
+              borderRadius: "9999px",
+              marginBottom: "1rem",
+            }}
+          >
+            Direct Acquisition & Trade-In Desk
+          </span>
+
+          <h1
+            style={{
+              fontSize: "clamp(1.85rem, 4vw, 2.75rem)",
+              fontWeight: 800,
+              letterSpacing: "-0.02em",
+              color: colors.textPrimary,
+              lineHeight: 1.15,
+              marginBottom: "0.75rem",
+            }}
+          >
+            Sell Your Luxury Vehicle
           </h1>
-          <p style={{ color: colors.textSecondary, fontSize: "0.95rem", lineHeight: 1.6, maxWidth: "600px", margin: "0 auto" }}>
-            Submit your vehicle specifications for a discreet appraisal, peak market valuation, and instant settlement across our Kakrail & Gulshan flagships.
+
+          <p
+            style={{
+              fontSize: "0.98rem",
+              color: colors.textSecondary,
+              maxWidth: "36rem",
+              margin: "0 auto",
+              lineHeight: 1.6,
+            }}
+          >
+            Enjoy transparent valuation, competitive instantaneous acquisition offers, and discreet transaction handling through {brandName}.
           </p>
         </div>
 
-        {/* The Valuation Form Card */}
+        {/* 3 Step Selling Assurance Badges */}
+        <div
+          style={{
+            display: "grid",
+            gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+            gap: "1rem",
+            marginBottom: "2rem",
+          }}
+        >
+          <div
+            style={{
+              background: colors.cardBg,
+              border: `1px solid ${colors.cardBorder}`,
+              borderRadius: "10px",
+              padding: "1rem 1.25rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.85rem",
+            }}
+          >
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "8px",
+                background: colors.pillActiveBg,
+                color: colors.goldAccent,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 800,
+                fontSize: "0.95rem",
+                flexShrink: 0,
+              }}
+            >
+              1
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: "0.88rem", color: colors.textPrimary }}>Submit Specs & Photos</div>
+              <div style={{ fontSize: "0.78rem", color: colors.textMuted }}>Details & clear photos</div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              background: colors.cardBg,
+              border: `1px solid ${colors.cardBorder}`,
+              borderRadius: "10px",
+              padding: "1rem 1.25rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.85rem",
+            }}
+          >
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "8px",
+                background: colors.pillActiveBg,
+                color: colors.goldAccent,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 800,
+                fontSize: "0.95rem",
+                flexShrink: 0,
+              }}
+            >
+              2
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: "0.88rem", color: colors.textPrimary }}>Certified Appraisal</div>
+              <div style={{ fontSize: "0.78rem", color: colors.textMuted }}>Kakrail or Gulshan lounge</div>
+            </div>
+          </div>
+
+          <div
+            style={{
+              background: colors.cardBg,
+              border: `1px solid ${colors.cardBorder}`,
+              borderRadius: "10px",
+              padding: "1rem 1.25rem",
+              display: "flex",
+              alignItems: "center",
+              gap: "0.85rem",
+            }}
+          >
+            <div
+              style={{
+                width: "36px",
+                height: "36px",
+                borderRadius: "8px",
+                background: colors.pillActiveBg,
+                color: colors.goldAccent,
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                fontWeight: 800,
+                fontSize: "0.95rem",
+                flexShrink: 0,
+              }}
+            >
+              3
+            </div>
+            <div>
+              <div style={{ fontWeight: 700, fontSize: "0.88rem", color: colors.textPrimary }}>Instant Settlement</div>
+              <div style={{ fontSize: "0.78rem", color: colors.textMuted }}>Secure bank wire or trade-in</div>
+            </div>
+          </div>
+        </div>
+
+        {/* Main Form Card */}
         <div
           style={{
             background: colors.cardBg,
             border: `1px solid ${colors.cardBorder}`,
-            borderRadius: "14px",
-            padding: "clamp(1.5rem, 3.5vw, 2.75rem)",
+            borderRadius: "16px",
             boxShadow: colors.cardShadow,
-            transition: "all 0.3s ease",
+            padding: "clamp(1.5rem, 3vw, 2.5rem)",
           }}
         >
           {errorMessage && (
             <div
               style={{
-                background: isLight ? "rgba(239, 68, 68, 0.08)" : "rgba(239, 68, 68, 0.12)",
+                background: isLight ? "rgba(239, 68, 68, 0.08)" : "rgba(239, 68, 68, 0.15)",
                 border: "1px solid rgba(239, 68, 68, 0.35)",
-                borderRadius: "10px",
-                padding: "0.85rem 1.15rem",
+                color: isLight ? "#dc2626" : "#fca5a5",
+                borderRadius: "8px",
+                padding: "0.85rem 1rem",
                 marginBottom: "1.5rem",
-                color: isLight ? "#b91c1c" : "#fca5a5",
                 fontSize: "0.88rem",
+                display: "flex",
+                alignItems: "center",
+                gap: "0.6rem",
               }}
             >
-              {errorMessage}
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <span>{errorMessage}</span>
             </div>
           )}
 
           {!submissionResult ? (
-            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
-              {/* Brand Pills */}
+            <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
+              {/* Brand Selector Pills */}
               <div>
                 <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: colors.textSecondary, marginBottom: "0.5rem" }}>
-                  Select Brand / Manufacturer <span style={{ color: "#ef4444" }}>*</span>
+                  Vehicle Make / Brand <span style={{ color: "#ef4444" }}>*</span>
                 </label>
-                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", marginBottom: "0.75rem" }}>
-                  {POPULAR_BRANDS.map((b) => (
-                    <button
-                      key={b}
-                      type="button"
-                      onClick={() => handleBrandPillClick(b)}
-                      style={{
-                        padding: "0.4rem 0.85rem",
-                        borderRadius: "8px",
-                        fontSize: "0.82rem",
-                        fontWeight: 500,
-                        cursor: "pointer",
-                        transition: "all 0.2s ease",
-                        background: brand === b ? colors.pillActiveBg : colors.pillBg,
-                        border: brand === b ? `1px solid ${colors.pillActiveBorder}` : `1px solid ${colors.pillBorder}`,
-                        color: brand === b ? colors.pillActiveText : colors.pillText,
-                      }}
-                    >
-                      {b}
-                    </button>
-                  ))}
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "0.45rem", marginBottom: "0.65rem" }}>
+                  {POPULAR_BRANDS.map((b) => {
+                    const active = brand === b;
+                    return (
+                      <button
+                        key={b}
+                        type="button"
+                        onClick={() => handleBrandPillClick(b)}
+                        style={{
+                          background: active ? colors.pillActiveBg : colors.pillBg,
+                          border: `1px solid ${active ? colors.pillActiveBorder : colors.pillBorder}`,
+                          color: active ? colors.pillActiveText : colors.pillText,
+                          padding: "6px 14px",
+                          borderRadius: "9999px",
+                          fontSize: "0.82rem",
+                          fontWeight: active ? 700 : 500,
+                          cursor: "pointer",
+                          transition: "all 0.15s ease",
+                        }}
+                      >
+                        {b}
+                      </button>
+                    );
+                  })}
                   <button
                     type="button"
                     onClick={() => handleBrandPillClick("Other")}
                     style={{
-                      padding: "0.4rem 0.85rem",
-                      borderRadius: "8px",
-                      fontSize: "0.82rem",
-                      fontWeight: 500,
-                      cursor: "pointer",
-                      transition: "all 0.2s ease",
                       background: brand === "Other" ? colors.pillActiveBg : colors.pillBg,
-                      border: brand === "Other" ? `1px solid ${colors.pillActiveBorder}` : `1px solid ${colors.pillBorder}`,
+                      border: `1px solid ${brand === "Other" ? colors.pillActiveBorder : colors.pillBorder}`,
                       color: brand === "Other" ? colors.pillActiveText : colors.pillText,
+                      padding: "6px 14px",
+                      borderRadius: "9999px",
+                      fontSize: "0.82rem",
+                      fontWeight: brand === "Other" ? 700 : 500,
+                      cursor: "pointer",
+                      transition: "all 0.15s ease",
                     }}
                   >
-                    Other
+                    Other Brand
                   </button>
                 </div>
 
@@ -209,11 +461,10 @@ export default function SellClient({
                     required
                     value={customBrand}
                     onChange={(e) => setCustomBrand(e.target.value)}
-                    placeholder="Enter Brand Name (e.g. Maserati, Bentley)..."
+                    placeholder="Enter brand name (e.g. Bentley, Aston Martin, Ferrari)..."
                     className="cars-search-input"
                     style={{
                       width: "100%",
-                      marginBottom: "0.75rem",
                       background: colors.inputBg,
                       borderColor: colors.inputBorder,
                       color: colors.inputText,
@@ -226,14 +477,14 @@ export default function SellClient({
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(200px, 1fr))", gap: "1rem" }}>
                 <div>
                   <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: colors.textSecondary, marginBottom: "0.4rem" }}>
-                    Model / Trim <span style={{ color: "#ef4444" }}>*</span>
+                    Model & Trim / Package <span style={{ color: "#ef4444" }}>*</span>
                   </label>
                   <input
                     type="text"
                     required
                     value={model}
                     onChange={(e) => setModel(e.target.value)}
-                    placeholder="e.g. S 580 / Defender 110"
+                    placeholder="e.g. S 580 Maybach, LC500, Defender 110"
                     className="cars-search-input"
                     style={{
                       width: "100%",
@@ -243,18 +494,17 @@ export default function SellClient({
                     }}
                   />
                 </div>
+
                 <div>
                   <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: colors.textSecondary, marginBottom: "0.4rem" }}>
-                    Production Year <span style={{ color: "#ef4444" }}>*</span>
+                    Manufacturing Year <span style={{ color: "#ef4444" }}>*</span>
                   </label>
                   <input
-                    type="number"
+                    type="text"
                     required
-                    min="2000"
-                    max="2026"
                     value={year}
                     onChange={(e) => setYear(e.target.value)}
-                    placeholder="e.g. 2023"
+                    placeholder="e.g. 2022"
                     className="cars-search-input"
                     style={{
                       width: "100%",
@@ -274,11 +524,11 @@ export default function SellClient({
                   </label>
                   <input
                     type="number"
-                    required
                     min="0"
+                    required
                     value={mileage}
                     onChange={(e) => setMileage(e.target.value)}
-                    placeholder="e.g. 18,500"
+                    placeholder="e.g. 18000"
                     className="cars-search-input"
                     style={{
                       width: "100%",
@@ -288,15 +538,16 @@ export default function SellClient({
                     }}
                   />
                 </div>
+
                 <div>
                   <label style={{ display: "block", fontSize: "0.82rem", fontWeight: 600, color: colors.textSecondary, marginBottom: "0.4rem" }}>
-                    Expected Price in BDT <span style={{ color: colors.textMuted, fontWeight: 400 }}>(Optional)</span>
+                    Expected Asking Price (BDT) <span style={{ color: colors.textMuted, fontWeight: 400 }}>(Optional)</span>
                   </label>
                   <input
                     type="text"
                     value={expectedPrice}
                     onChange={(e) => setExpectedPrice(e.target.value)}
-                    placeholder="e.g. 1,65,00,000"
+                    placeholder="e.g. 18500000"
                     className="cars-search-input"
                     style={{
                       width: "100%",
@@ -306,6 +557,167 @@ export default function SellClient({
                     }}
                   />
                 </div>
+              </div>
+
+              {/* Vehicle Photos Upload Dropzone */}
+              <div>
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "0.4rem" }}>
+                  <label style={{ fontSize: "0.82rem", fontWeight: 600, color: colors.textSecondary }}>
+                    Vehicle Images <span style={{ color: colors.textMuted, fontWeight: 400 }}>(Optional - Up to 10 photos)</span>
+                  </label>
+                  <span style={{ fontSize: "0.75rem", color: colors.goldAccent, fontWeight: 600 }}>
+                    {selectedFiles.length} / 10 Attached
+                  </span>
+                </div>
+
+                {/* Upload Trigger Area */}
+                <div
+                  onDragOver={(e) => {
+                    e.preventDefault();
+                    setIsDragging(true);
+                  }}
+                  onDragLeave={() => setIsDragging(false)}
+                  onDrop={(e) => {
+                    e.preventDefault();
+                    setIsDragging(false);
+                    if (e.dataTransfer.files) {
+                      handleFilesSelected(e.dataTransfer.files);
+                    }
+                  }}
+                  onClick={() => fileInputRef.current?.click()}
+                  style={{
+                    border: `2px dashed ${isDragging ? colors.goldAccent : colors.cardBorder}`,
+                    background: isDragging
+                      ? colors.pillActiveBg
+                      : isLight
+                      ? "rgba(248, 250, 252, 0.7)"
+                      : "rgba(18, 21, 28, 0.6)",
+                    borderRadius: "10px",
+                    padding: "1.25rem 1rem",
+                    textAlign: "center",
+                    cursor: "pointer",
+                    transition: "all 0.2s ease",
+                  }}
+                >
+                  <input
+                    ref={fileInputRef}
+                    type="file"
+                    multiple
+                    accept="image/jpeg,image/png,image/webp,image/jpg"
+                    style={{ display: "none" }}
+                    onChange={(e) => e.target.files && handleFilesSelected(e.target.files)}
+                  />
+
+                  <div
+                    style={{
+                      width: "44px",
+                      height: "44px",
+                      borderRadius: "50%",
+                      background: colors.pillActiveBg,
+                      color: colors.goldAccent,
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                      margin: "0 auto 0.6rem",
+                    }}
+                  >
+                    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z" />
+                      <circle cx="12" cy="13" r="4" />
+                    </svg>
+                  </div>
+
+                  <p style={{ fontSize: "0.88rem", fontWeight: 600, color: colors.textPrimary, marginBottom: "0.25rem" }}>
+                    Click or drag & drop vehicle photos here
+                  </p>
+                  <p style={{ fontSize: "0.76rem", color: colors.textMuted }}>
+                    Front, rear, interior, meter cluster • JPG, PNG, WEBP (Max 10MB each)
+                  </p>
+                </div>
+
+                {/* Previews Grid */}
+                {selectedFiles.length > 0 && (
+                  <div
+                    style={{
+                      display: "grid",
+                      gridTemplateColumns: "repeat(auto-fill, minmax(90px, 1fr))",
+                      gap: "0.75rem",
+                      marginTop: "1rem",
+                    }}
+                  >
+                    {previewUrls.map((url, idx) => (
+                      <div
+                        key={idx}
+                        style={{
+                          position: "relative",
+                          width: "100%",
+                          paddingTop: "100%",
+                          borderRadius: "8px",
+                          overflow: "hidden",
+                          border: `1px solid ${colors.cardBorder}`,
+                          background: "#000",
+                        }}
+                      >
+                        <Image
+                          src={url}
+                          alt={`Uploaded preview ${idx + 1}`}
+                          fill
+                          sizes="100px"
+                          style={{ objectFit: "cover" }}
+                          unoptimized
+                        />
+
+                        {/* File size tag */}
+                        <div
+                          style={{
+                            position: "absolute",
+                            bottom: "3px",
+                            left: "3px",
+                            background: "rgba(0, 0, 0, 0.75)",
+                            backdropFilter: "blur(4px)",
+                            color: "#fff",
+                            fontSize: "0.62rem",
+                            fontWeight: 600,
+                            padding: "1px 4px",
+                            borderRadius: "3px",
+                          }}
+                        >
+                          {formatFileSize(selectedFiles[idx]?.size || 0)}
+                        </div>
+
+                        {/* Remove Button */}
+                        <button
+                          type="button"
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            handleRemovePhoto(idx);
+                          }}
+                          style={{
+                            position: "absolute",
+                            top: "3px",
+                            right: "3px",
+                            width: "20px",
+                            height: "20px",
+                            borderRadius: "50%",
+                            background: "rgba(220, 38, 38, 0.9)",
+                            color: "#ffffff",
+                            border: "none",
+                            cursor: "pointer",
+                            display: "flex",
+                            alignItems: "center",
+                            justifyContent: "center",
+                            fontSize: "0.7rem",
+                            lineHeight: 1,
+                            transition: "transform 0.15s ease",
+                          }}
+                          title="Remove photo"
+                        >
+                          ✕
+                        </button>
+                      </div>
+                    ))}
+                  </div>
+                )}
               </div>
 
               {/* Name & Phone */}
@@ -414,7 +826,7 @@ export default function SellClient({
                   marginTop: "0.5rem",
                 }}
               >
-                {isPending ? "Submitting Valuation..." : "Submit Vehicle Details →"}
+                {isPending ? "Submitting Vehicle Details..." : "Submit Vehicle Details →"}
               </button>
 
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", flexWrap: "wrap", gap: "0.5rem", marginTop: "0.25rem", fontSize: "0.8rem", color: colors.textMuted }}>
@@ -450,6 +862,7 @@ export default function SellClient({
 
               <p style={{ color: colors.textSecondary, fontSize: "0.92rem", lineHeight: 1.6, maxWidth: "440px", margin: "0 auto 1.5rem" }}>
                 Thank you, <strong>{fullName}</strong>. Your {year} {activeBrandName} {model} has been securely logged for valuation (Ref #{submissionResult.id || "DCH-VAL"}).
+                {selectedFiles.length > 0 && ` (${selectedFiles.length} photos uploaded)`}
               </p>
 
               {submissionResult.waUrl && (
@@ -487,6 +900,9 @@ export default function SellClient({
                   setExpectedPrice("");
                   setPhone("");
                   setNotes("");
+                  setSelectedFiles([]);
+                  previewUrls.forEach((url) => URL.revokeObjectURL(url));
+                  setPreviewUrls([]);
                 }}
                 style={{
                   background: "transparent",
