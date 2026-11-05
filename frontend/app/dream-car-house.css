@@ -2850,12 +2850,6 @@ button {
 @media (min-width: 1024px) {
   .preference-showcase-grid {
     grid-template-columns: repeat(3, 1fr);
-  }
-}
-
-@media (min-width: 1400px) {
-  .preference-showcase-grid {
-    grid-template-columns: repeat(4, 1fr);
     gap: 1.75rem;
   }
 }

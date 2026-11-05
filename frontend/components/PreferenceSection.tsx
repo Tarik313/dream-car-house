@@ -42,8 +42,9 @@ export default function PreferenceSection({
     : null;
 
   return (
-    <section className="preference-section max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
-      <div className="preference-header-wrap">
+    <section className="preference-section w-full">
+      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="preference-header-wrap">
         <div>
           <h2 className="section-h2" style={{ margin: 0 }}>
             {headingText}
@@ -165,6 +166,7 @@ export default function PreferenceSection({
             <path d="M5 12h14M12 5l7 7-7 7" />
           </svg>
         </Link>
+      </div>
       </div>
     </section>
   );

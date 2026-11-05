@@ -8,8 +8,9 @@ export default function ExperiencePillars({ experience }: { experience?: unknown
   const { openAppointmentModal } = useUI();
 
   return (
-    <section className="experience-section max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8" id="experience">
-      <div className="experience-header">
+    <section className="experience-section w-full" id="experience">
+      <div className="max-w-[1680px] w-full mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="experience-header">
         <div className="experience-header-text">
           <h2 className="experience-title">Inside Our Showrooms</h2>
           <p className="experience-subtitle">
@@ -122,6 +123,7 @@ export default function ExperiencePillars({ experience }: { experience?: unknown
             <p className="showroom-card-addr">Ceremonial Unveiling & VIP Delivery Suite</p>
           </div>
         </div>
+      </div>
       </div>
     </section>
   );
