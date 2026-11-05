@@ -11618,3 +11618,52 @@ button {
     height: 42px;
   }
 }
+
+/* ================= Floating Supercar & Footer Clearance Protection ================= */
+/* 1. Ensure site-footer has generous bottom breathing room */
+.site-footer {
+  padding-bottom: 4rem !important;
+}
+
+@media (max-width: 768px) {
+  .site-footer {
+    padding-bottom: 5.5rem !important;
+  }
+}
+
+/* 2. Safe right-side gutter for footer bottom copyright bar so Showroom Heritage is never overlapped */
+@media (min-width: 768px) {
+  .footer-bottom-modern {
+    padding-right: 7.5rem !important;
+  }
+}
+
+/* 3. Dynamic lift when user reaches bottom footer area */
+.floating-supercar-wrapper {
+  transition: opacity 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 0.35s cubic-bezier(0.16, 1, 0.3, 1),
+              bottom 0.28s cubic-bezier(0.16, 1, 0.3, 1) !important;
+}
+
+.floating-supercar-wrapper.near-footer {
+  bottom: 5rem !important;
+}
+
+@media (max-width: 640px) {
+  .floating-supercar-wrapper.near-footer {
+    bottom: 4.5rem !important;
+  }
+}
+
+/* 4. Enhanced clarity & contrast for Showroom Heritage link */
+.footer-sub-link {
+  color: #cbd5e1 !important;
+  font-weight: 500;
+  transition: all 0.2s ease !important;
+}
+
+.footer-sub-link:hover {
+  color: #fbbf24 !important;
+  text-decoration: underline !important;
+  text-underline-offset: 3px;
+}

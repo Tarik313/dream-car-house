@@ -4,14 +4,21 @@ import React, { useState, useEffect, useRef } from "react";
 
 export default function FloatingSupercarTop() {
   const [isVisible, setIsVisible] = useState(false);
+  const [isNearFooter, setIsNearFooter] = useState(false);
   const [isLaunching, setIsLaunching] = useState(false);
   const scrollTimeoutRef = useRef<NodeJS.Timeout | null>(null);
 
   useEffect(() => {
     const handleScroll = () => {
+      const scrollY = window.scrollY;
       // Show when scrolled down 280px
-      const shouldShow = window.scrollY > 280;
-      setIsVisible(shouldShow);
+      setIsVisible(scrollY > 280);
+
+      // Check if user has scrolled to the bottom footer area
+      const scrollBottom = window.innerHeight + scrollY;
+      const docHeight = document.documentElement.scrollHeight;
+      // If within 140px of bottom, lift the supercar above footer elements
+      setIsNearFooter(docHeight - scrollBottom < 140);
     };
 
     window.addEventListener("scroll", handleScroll, { passive: true });
@@ -42,8 +49,8 @@ export default function FloatingSupercarTop() {
   return (
     <div
       className={`floating-supercar-wrapper ${isVisible ? "is-visible" : "is-hidden"} ${
-        isLaunching ? "is-launching" : ""
-      }`}
+        isNearFooter ? "near-footer" : ""
+      } ${isLaunching ? "is-launching" : ""}`}
       onClick={handleLaunchToTop}
       role="button"
       tabIndex={0}
@@ -146,3 +153,4 @@ export default function FloatingSupercarTop() {
     </div>
   );
 }
+
