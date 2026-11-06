@@ -1370,20 +1370,29 @@ button {
 }
 
 [data-theme="light"] .hero-pills {
-  background: rgba(255, 255, 255, 0.9) !important;
-  border-color: rgba(0, 0, 0, 0.12) !important;
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+  background: rgba(255, 255, 255, 0.45) !important;
+  backdrop-filter: blur(24px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(24px) saturate(180%) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 10px 32px -4px rgba(15, 23, 42, 0.08), 0 0 1px 1px rgba(255, 255, 255, 0.9) inset !important;
 }
 
 [data-theme="light"] .hero-pill-btn {
-  color: #1e293b !important;
-  background: rgba(0, 0, 0, 0.04) !important;
-  border-color: rgba(0, 0, 0, 0.08) !important;
+  background: rgba(255, 255, 255, 0.82) !important;
+  backdrop-filter: blur(12px) !important;
+  -webkit-backdrop-filter: blur(12px) !important;
+  color: #0a0f1d !important;
+  font-weight: 800 !important;
+  border: 1px solid rgba(255, 255, 255, 0.95) !important;
+  box-shadow: 0 3px 12px rgba(15, 23, 42, 0.06) !important;
 }
 
 [data-theme="light"] .hero-pill-btn:hover {
-  background: #d97706 !important;
+  background: #0a0f1d !important;
   color: #ffffff !important;
+  border-color: #0a0f1d !important;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(10, 15, 29, 0.22) !important;
 }
 
 /* Hero Foreground Stage (Cleaned for pure showcase) */
@@ -9346,18 +9355,6 @@ button {
 [data-theme="light"] .filter-select option {
   background: #ffffff !important;
   color: #0a0f1d !important;
-}
-
-[data-theme="light"] .hero-pill-btn {
-  background: #0a0f1d !important;
-  color: #ffffff !important;
-  border-color: #0a0f1d !important;
-}
-
-[data-theme="light"] .hero-pill-btn:hover {
-  background: #d97706 !important;
-  border-color: #d97706 !important;
-  color: #ffffff !important;
 }
 
 
