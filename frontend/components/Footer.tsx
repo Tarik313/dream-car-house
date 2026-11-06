@@ -14,7 +14,7 @@ export default function Footer({
   settings?: PublicSiteSettings;
   branches?: PublicShowroomBranch[];
 } = {}) {
-  const { openCompareModal } = useUI();
+  const { openCompareModal, openAppointmentModal } = useUI();
   const [activeBranch, setActiveBranch] = useState<"kakrail" | "gulshan">("kakrail");
 
   // Fallback branch config
@@ -284,7 +284,7 @@ export default function Footer({
             </div>
           </div>
 
-          {/* Col 3: Curated Luxury Shortcut Links */}
+          {/* Col 3: Curated Luxury Shortcut Links & VIP Viewing */}
           <div className="footer-col-links">
             <h3 className="footer-heading">Curated Discovery</h3>
             <ul className="footer-shortcut-list">
@@ -343,6 +343,27 @@ export default function Footer({
                 </Link>
               </li>
             </ul>
+
+            {/* VIP Concierge Card to Balance Column Height & Right Gutters */}
+            <div className="footer-concierge-card">
+              <div className="concierge-card-header">
+                <span className="concierge-card-badge">PRIVATE VIEWING</span>
+                <span className="concierge-card-title">Book Showroom Visit</span>
+              </div>
+              <p className="concierge-card-desc">
+                Experience automotive excellence in person at Kakrail Flagship or Gulshan Lounge.
+              </p>
+              <button
+                type="button"
+                onClick={() => openAppointmentModal()}
+                className="concierge-card-btn"
+              >
+                <span>Request Private Appointment</span>
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polyline points="9 18 15 12 9 6" />
+                </svg>
+              </button>
+            </div>
           </div>
         </div>
 

@@ -163,23 +163,6 @@ export default function AboutClient({
     <div className="about-page-wrap">
       {/* 1. Cinematic Hero Header */}
       <section className="about-hero-section">
-        <div style={{ marginBottom: "1.25rem", display: "flex", justifyContent: "center" }}>
-          <Image
-            src="/assets/dch-logo.webp"
-            alt="DREAM CAR HOUSE Flagship Logo"
-            width={1020}
-            height={350}
-            style={{
-              height: "72px",
-              width: "auto",
-              maxWidth: "340px",
-              objectFit: "contain",
-              filter: "drop-shadow(0 4px 16px rgba(0,0,0,0.85)) drop-shadow(0 0 16px rgba(255,255,255,0.2))",
-            }}
-            priority
-            unoptimized
-          />
-        </div>
         <div className="about-pill-badge">
           {heroBadge}
         </div>

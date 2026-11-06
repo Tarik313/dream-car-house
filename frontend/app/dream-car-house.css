@@ -60,9 +60,11 @@ button {
 .luxury-container,
 .max-w-7xl {
   width: 100%;
-  max-width: 1840px;
+  max-width: 1720px;
   margin-left: auto;
   margin-right: auto;
+  padding-left: clamp(1.25rem, 3.5vw, 2.75rem);
+  padding-right: clamp(1.25rem, 3.5vw, 2.75rem);
   box-sizing: border-box;
 }
 
@@ -1308,6 +1310,80 @@ button {
 .night-vignette,
 .day-vignette {
   display: none !important;
+}
+
+/* ================= Hero Dock & Floating Actions ================= */
+.hero-content {
+  position: absolute;
+  bottom: 2.25rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: auto;
+  max-width: 92vw;
+  pointer-events: auto;
+}
+
+.hero-pills {
+  display: inline-flex;
+  align-items: center;
+  padding: 0.35rem 0.55rem;
+  border-radius: 9999px;
+  background: rgba(12, 14, 18, 0.82);
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(245, 158, 11, 0.12);
+  gap: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.hero-pill-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.65rem 1.4rem;
+  border-radius: 9999px;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: #e2e8f0;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  cursor: pointer;
+  transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.hero-pill-btn:hover {
+  background: linear-gradient(135deg, rgba(245, 158, 11, 0.3) 0%, rgba(217, 119, 6, 0.4) 100%);
+  border-color: rgba(245, 158, 11, 0.6);
+  color: #fbbf24;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 18px rgba(245, 158, 11, 0.3);
+}
+
+[data-theme="light"] .hero-pills {
+  background: rgba(255, 255, 255, 0.9) !important;
+  border-color: rgba(0, 0, 0, 0.12) !important;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.12) !important;
+}
+
+[data-theme="light"] .hero-pill-btn {
+  color: #1e293b !important;
+  background: rgba(0, 0, 0, 0.04) !important;
+  border-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .hero-pill-btn:hover {
+  background: #d97706 !important;
+  color: #ffffff !important;
 }
 
 /* Hero Foreground Stage (Cleaned for pure showcase) */
@@ -6251,12 +6327,24 @@ button {
 /* ================= Footer (DREAM CAR HOUSE Flagship) ================= */
 /* ================= Footer (3-Column Luxury Architecture) ================= */
 .site-footer {
-  margin-top: 4.5rem;
+  margin-top: 5rem;
   color: #fff;
-  padding-top: 4rem;
+  padding-top: 4.5rem;
   padding-bottom: 2.5rem;
   border-top: 1px solid rgba(255, 255, 255, 0.08);
-  background: linear-gradient(180deg, #101012 0%, #0b0b0c 100%);
+  background: linear-gradient(180deg, #101012 0%, #080809 100%);
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.site-footer .luxury-container {
+  width: 100%;
+  max-width: 1680px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.5rem, 4vw, 3rem) !important;
+  padding-right: clamp(1.5rem, 4vw, 3rem) !important;
+  box-sizing: border-box;
 }
 
 .footer-grid-3col {
@@ -6265,11 +6353,11 @@ button {
   gap: 2.5rem;
 }
 
-@media (min-width: 900px) {
+@media (min-width: 992px) {
   .footer-grid-3col {
-    grid-template-columns: 1.15fr 1.35fr 0.9fr;
-    gap: 3.5rem;
-    align-items: start;
+    grid-template-columns: 1.05fr 1.15fr 1fr;
+    gap: clamp(2rem, 3.2vw, 3.5rem);
+    align-items: stretch;
   }
 }
 
@@ -6470,21 +6558,113 @@ button {
   transform: translateX(2px);
 }
 
+/* Col 3: VIP Concierge Private Viewing Card */
+.footer-concierge-card {
+  margin-top: 1.5rem;
+  padding: 1.15rem 1.25rem;
+  border-radius: 12px;
+  background: radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.08), transparent 50%),
+              linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
+  border: 1px solid rgba(245, 158, 11, 0.22);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+  display: flex;
+  flex-direction: column;
+  gap: 0.65rem;
+  box-sizing: border-box;
+}
+
+.concierge-card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.5rem;
+  flex-wrap: wrap;
+}
+
+.concierge-card-badge {
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: #fbbf24;
+  background: rgba(245, 158, 11, 0.15);
+  border: 1px solid rgba(245, 158, 11, 0.35);
+  padding: 2px 8px;
+  border-radius: 999px;
+}
+
+.concierge-card-title {
+  font-size: 0.88rem;
+  font-weight: 700;
+  color: #ffffff;
+  letter-spacing: 0.04em;
+}
+
+.concierge-card-desc {
+  font-size: 0.8rem;
+  line-height: 1.45;
+  color: #94a3b8;
+  margin: 0;
+}
+
+.concierge-card-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  margin-top: 0.35rem;
+  padding: 0.65rem 1.15rem;
+  border-radius: 8px;
+  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
+  color: #0b0b0c;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border: none;
+  cursor: pointer;
+  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
+}
+
+.concierge-card-btn:hover {
+  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
+  color: #000;
+}
+
+[data-theme="light"] .footer-concierge-card {
+  background: #ffffff !important;
+  border-color: rgba(217, 119, 6, 0.3) !important;
+  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .concierge-card-title {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .concierge-card-desc {
+  color: #475569 !important;
+}
+
 /* Bottom Bar */
 .footer-bottom-modern {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   margin-top: 3.5rem;
-  padding-top: 1.75rem;
+  padding-top: 1.85rem;
   display: flex;
   flex-direction: column;
-  gap: 1rem;
+  gap: 1.25rem;
   align-items: center;
   justify-content: space-between;
+  box-sizing: border-box;
 }
 
 @media (min-width: 768px) {
   .footer-bottom-modern {
     flex-direction: row;
+    padding-right: 4.5rem !important;
   }
 }
 
@@ -11687,7 +11867,7 @@ button {
 /* 2. Safe right-side gutter for footer bottom copyright bar so Showroom Heritage is never overlapped */
 @media (min-width: 768px) {
   .footer-bottom-modern {
-    padding-right: 7.5rem !important;
+    padding-right: 4.5rem !important;
   }
 }
 

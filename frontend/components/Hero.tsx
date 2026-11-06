@@ -50,8 +50,8 @@ export default function Hero({ initialData }: HeroProps = {}) {
       </div>
 
       {heading ? (
-        <div className="hero-content" style={{ position: "relative", zIndex: 10 }}>
-          <h1 className="hero-title">{heading}</h1>
+        <div className="hero-content">
+          <h1 className="hero-title sr-only">{heading}</h1>
           {ctaButtons.length > 0 && (
             <div className="hero-pills">
               {ctaButtons.map((btn, index) => {
