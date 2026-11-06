@@ -28,7 +28,7 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } =
   const lastPointerXRef = useRef(0);
   const lastTimeRef = useRef(0);
   const velocityRef = useRef(0);
-  const autoSpeedRef = useRef(0.75); // Natural slow-motion pace matching showroom style
+  const autoSpeedRef = useRef(-0.75); // Natural leftward slow-motion pace matching showroom style
 
   // Touch direction lock (distinguishes horizontal swipe vs vertical page scroll)
   const isTouchHorizontalRef = useRef<boolean | null>(null);
