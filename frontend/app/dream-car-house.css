@@ -95,11 +95,11 @@ button {
   z-index: 1005;
   padding: 1rem 2rem;
   box-sizing: border-box;
-  background: rgba(6, 8, 12, 0.82);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
+  background: transparent;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: 1px solid transparent;
+  box-shadow: none;
   transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
     background 0.35s ease,
     border-color 0.35s ease,
@@ -1226,15 +1226,13 @@ button {
   transition: transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
 }
 
-/* ================= Hero Section (Luxury Flagship Boxed Showcase) ================= */
+/* ================= Hero Section (Day vs Night Showroom Showcase) ================= */
 .hero-showcase-section {
   position: relative;
-  width: calc(100% - clamp(2.5rem, 7vw, 5.5rem));
-  max-width: 1720px;
-  margin: calc(85px + 1.25rem) auto 2.5rem auto;
+  width: 100%;
   aspect-ratio: 3330 / 1280;
   min-height: 520px;
-  max-height: calc(100vh - 120px);
+  max-height: 94vh;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1243,15 +1241,13 @@ button {
   background: #0b0b0c;
   color: #ffffff;
   padding: 0;
-  border-radius: clamp(16px, 2.2vw, 28px);
-  box-shadow: 0 30px 70px -15px rgba(0, 0, 0, 0.8), 0 0 0 1px rgba(255, 255, 255, 0.08);
+  margin: 0;
   box-sizing: border-box;
-  transition: background 0.75s ease, box-shadow 0.4s ease;
+  transition: background 0.75s ease;
 }
 
 [data-theme="light"] .hero-showcase-section {
   background: #e8edf3;
-  box-shadow: 0 25px 60px -15px rgba(15, 23, 42, 0.14), 0 0 0 1px rgba(148, 163, 184, 0.28);
 }
 
 /* Background Container & Images */
@@ -1294,18 +1290,12 @@ button {
 
 @media (max-width: 1024px) {
   .hero-showcase-section {
-    width: calc(100% - 2.5rem);
-    margin: calc(85px + 0.85rem) auto 2rem auto;
-    border-radius: 20px;
     min-height: 480px;
   }
 }
 
 @media (max-width: 768px) {
   .hero-showcase-section {
-    width: calc(100% - 1.25rem);
-    margin: calc(75px + 0.6rem) auto 1.5rem auto;
-    border-radius: 16px;
     aspect-ratio: auto;
     min-height: 440px;
     height: 65vh;
@@ -1767,17 +1757,17 @@ button {
   color: #0f172a !important;
 }
 
-/* Seamless Luxury Floating Menu Bar */
+/* Seamless Floating Menu Bar (Zero Cutout Border Line at Top) */
 [data-theme="light"] .header {
-  background: rgba(248, 250, 252, 0.88) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.22) !important;
-  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.05) !important;
+  background: transparent !important;
+  backdrop-filter: blur(0px) !important;
+  -webkit-backdrop-filter: blur(0px) !important;
+  border-bottom: 1px solid transparent !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .header.header-scrolled {
-  background: rgba(232, 237, 243, 0.94) !important;
+  background: rgba(232, 237, 243, 0.90) !important;
   backdrop-filter: blur(24px) saturate(160%) !important;
   -webkit-backdrop-filter: blur(24px) saturate(160%) !important;
   border-bottom: 1px solid rgba(148, 163, 184, 0.28) !important;
