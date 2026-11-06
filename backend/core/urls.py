@@ -1,5 +1,10 @@
 import os
+import mimetypes
 from django.conf import settings
+
+# Ensure proper MIME types for modern image formats on Windows
+mimetypes.add_type("image/webp", ".webp")
+mimetypes.add_type("image/avif", ".avif")
 from django.contrib import admin
 from django.urls import path, include
 from django.http import JsonResponse

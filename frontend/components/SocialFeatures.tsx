@@ -6,13 +6,23 @@ import type { PublicPeopleTalk } from "@/lib/types";
 
 export default function SocialFeatures({
   items = [],
+  maxItems = 3,
 }: {
   items?: PublicPeopleTalk[];
+  maxItems?: number;
 }) {
   if (!items || items.length === 0) return null;
 
+  // Prioritize featured spotlights first, then take top 3
+  const sortedItems = [...items].sort((a, b) => {
+    if (a.is_featured && !b.is_featured) return -1;
+    if (!a.is_featured && b.is_featured) return 1;
+    return 0;
+  });
+  const displayItems = sortedItems.slice(0, maxItems);
+
   return (
-    <section className="social-features-section" style={{ padding: "4rem 0", background: "rgba(5, 7, 10, 0.8)", borderTop: "1px solid rgba(255, 255, 255, 0.06)", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
+    <section className="social-features-section" style={{ padding: "4.5rem 0", background: "rgba(5, 7, 10, 0.8)", borderTop: "1px solid rgba(255, 255, 255, 0.06)", borderBottom: "1px solid rgba(255, 255, 255, 0.06)" }}>
       <div className="max-w-7xl" style={{ margin: "0 auto", padding: "0 1.5rem" }}>
         {/* Header */}
         <div style={{ textAlign: "center", marginBottom: "3rem" }}>
@@ -45,15 +55,16 @@ export default function SocialFeatures({
           </p>
         </div>
 
-        {/* Grid of Social Feature Cards */}
+        {/* Grid of 3 High-Impact Social Feature Cards */}
         <div
           style={{
             display: "grid",
-            gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
-            gap: "1.5rem",
+            gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))",
+            gap: "1.75rem",
           }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"
         >
-          {items.map((item, idx) => {
+          {displayItems.map((item, idx) => {
             const imageSrc = item.image && item.image.trim() ? item.image : "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80";
             const cardContent = (
               <div
@@ -70,12 +81,12 @@ export default function SocialFeatures({
                 className="group hover:scale-[1.02] hover:border-sky-500/40 hover:shadow-xl hover:shadow-sky-500/5"
               >
                 {/* Image */}
-                <div style={{ position: "relative", width: "100%", height: "220px", background: "#0a0c10" }}>
+                <div style={{ position: "relative", width: "100%", height: "240px", background: "#0a0c10" }}>
                   <Image
                     src={imageSrc}
                     alt={item.title || "Showroom Delivery Spotlight"}
                     fill
-                    sizes="(max-width: 768px) 100vw, 33vw"
+                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                     style={{ objectFit: "cover" }}
                     unoptimized
                   />
