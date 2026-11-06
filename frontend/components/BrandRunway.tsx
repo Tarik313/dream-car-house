@@ -1,8 +1,9 @@
 "use client";
 
-import React, { useState, useEffect, useRef, useCallback } from "react";
+import React, { useState, useEffect, useRef, useCallback, useMemo } from "react";
 import { useRouter } from "next/navigation";
 import { ALL_RUNWAY_BRANDS } from "@/lib/showroomData";
+import type { PublicBrand } from "@/lib/types";
 
 // Sleek Stealth GT Sweeper - Dark carbon silhouette, dual glowing exhaust flames, red LED taillight
 const CAR_SVG_SWEEPER = `
@@ -106,8 +107,44 @@ const CAR_SVG_DEPLOYER = `
   <circle cx="125" cy="42" r="3" fill="#ffffff"/>
 </svg>`;
 
-export default function BrandRunway({ brands }: { brands?: unknown } = {}) {
+export default function BrandRunway({
+  brands = [],
+}: {
+  brands?: PublicBrand[];
+} = {}) {
   const router = useRouter();
+
+  const activeBrandList = useMemo(() => {
+    const svgMap: Record<string, string> = {};
+    ALL_RUNWAY_BRANDS.forEach((b) => {
+      svgMap[b.name.toLowerCase()] = b.svg;
+      svgMap[b.filterBrand.toLowerCase()] = b.svg;
+    });
+
+    const source = brands && brands.length > 0 ? brands : ALL_RUNWAY_BRANDS;
+    return source.map((b, idx) => {
+      const name = b.name;
+      const filterBrand =
+        "filterBrand" in b && typeof b.filterBrand === "string"
+          ? b.filterBrand
+          : b.name;
+      const svg =
+        "svg" in b && typeof b.svg === "string"
+          ? b.svg
+          : svgMap[name.toLowerCase()] ||
+            svgMap[filterBrand.toLowerCase()] ||
+            "";
+      const image = "image" in b && typeof b.image === "string" ? b.image : "";
+      return {
+        id: "id" in b ? b.id : idx,
+        name: name.toUpperCase(),
+        filterBrand,
+        svg,
+        image,
+        originalIndex: idx,
+      };
+    });
+  }, [brands]);
 
   // Responsive page size: Mobile = 3, Tablet = 6, Desktop = 8
   const [pageSize, setPageSize] = useState<number>(8);
@@ -239,7 +276,7 @@ export default function BrandRunway({ brands }: { brands?: unknown } = {}) {
       carActor.style.left = "-240px";
 
       // Calculate next sequential batch without skipping ANY brand!
-      setStartIndex((prev) => (prev + pageSize) % ALL_RUNWAY_BRANDS.length);
+      setStartIndex((prev) => (prev + pageSize) % (activeBrandList.length || 1));
 
       // Initialize all incoming cards in dissolved state so they materialize cleanly
       setDissolvedIndexes(Array.from({ length: pageSize }, (_, i) => i));
@@ -332,8 +369,9 @@ export default function BrandRunway({ brands }: { brands?: unknown } = {}) {
 
   // Sliced brands for current active view
   const visibleBrands = Array.from({ length: pageSize }, (_, i) => {
-    const idx = (startIndex + i) % ALL_RUNWAY_BRANDS.length;
-    return { ...ALL_RUNWAY_BRANDS[idx], originalIndex: idx };
+    const count = activeBrandList.length || 1;
+    const idx = (startIndex + i) % count;
+    return activeBrandList[idx] || activeBrandList[0];
   });
 
   return (
@@ -390,10 +428,21 @@ export default function BrandRunway({ brands }: { brands?: unknown } = {}) {
                   title={`View ${brand.name} Collection`}
                 >
                   <div className="brand-badge-inner">
-                    <div
-                      style={{ display: "contents" }}
-                      dangerouslySetInnerHTML={{ __html: brand.svg }}
-                    />
+                    {brand.svg ? (
+                      <div
+                        style={{ display: "contents" }}
+                        dangerouslySetInnerHTML={{ __html: brand.svg }}
+                      />
+                    ) : brand.image ? (
+                      <img
+                        src={brand.image}
+                        alt={brand.name}
+                        className="brand-svg"
+                        style={{ objectFit: "contain", maxWidth: "48px", maxHeight: "36px" }}
+                      />
+                    ) : (
+                      <span className="brand-placeholder-badge">{brand.name.slice(0, 2)}</span>
+                    )}
                     <span className="runway-brand-name">{brand.name}</span>
                   </div>
                 </div>

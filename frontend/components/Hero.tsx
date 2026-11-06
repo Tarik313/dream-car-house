@@ -16,6 +16,9 @@ export default function Hero({ initialData }: HeroProps = {}) {
   const heading = initialData?.heading;
   const ctaButtons: PublicHeroCta[] = initialData?.cta_buttons || [];
 
+  const nightSrc = initialData?.image || "/assets/dch-night-showroom.webp";
+  const daySrc = initialData?.poster || "/assets/dch-day-showroom.webp";
+
   return (
     <section
       className={`hero-showcase-section ${theme === "dark" ? "theme-dark" : "theme-light"}`}
@@ -27,7 +30,7 @@ export default function Hero({ initialData }: HeroProps = {}) {
         {/* Night Showroom */}
         <div className={`hero-bg-layer hero-bg-night ${theme === "dark" ? "is-active" : "is-inactive"}`}>
           <Image
-            src="/assets/dch-night-showroom.webp"
+            src={nightSrc}
             alt="DREAM CAR HOUSE Night Luxury Showroom - Pinnacle of Luxury Automobiles"
             fill
             priority
@@ -39,7 +42,7 @@ export default function Hero({ initialData }: HeroProps = {}) {
         {/* Day Showroom */}
         <div className={`hero-bg-layer hero-bg-day ${theme === "light" ? "is-active" : "is-inactive"}`}>
           <Image
-            src="/assets/dch-day-showroom.webp"
+            src={daySrc}
             alt="DREAM CAR HOUSE Day Luxury Showroom - Pinnacle of Luxury Automobiles"
             fill
             priority

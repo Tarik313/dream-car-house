@@ -85,3 +85,4 @@ export function parseShowroomHours(hoursText?: string | null): ParsedHours {
     closeMinutes,
   };
 }
+

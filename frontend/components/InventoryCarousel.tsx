@@ -4,15 +4,16 @@ import React, { useRef, useEffect, useState, useCallback } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { VEHICLE_DATA, Vehicle } from "@/lib/showroomData";
+import type { PublicVehicle } from "@/lib/types";
 import { useUI } from "@/lib/UIContext";
 
-export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } = {}) {
+export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehicle[] } = {}) {
   const { openCarModal } = useUI();
   const trackRef = useRef<HTMLDivElement>(null);
   const containerRef = useRef<HTMLDivElement>(null);
 
-  // Full inventory dataset (always intact, unimpacted by hero tab navigation)
-  const allInventory = VEHICLE_DATA;
+  // Full inventory dataset (from dynamic API if available, fallback to showroomData)
+  const allInventory = Array.isArray(vehicles) && vehicles.length > 0 ? vehicles : VEHICLE_DATA;
 
   // 3-tile duplicated dataset for mathematically seamless, infinite bidirectional wrapping
   const marqueeData = React.useMemo(() => [...allInventory, ...allInventory, ...allInventory], [allInventory]);
@@ -268,7 +269,7 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } =
   const router = useRouter();
 
   // Card Click: Navigate to full car detail page if not dragging/swiping
-  const handleCardClick = (car: Vehicle) => {
+  const handleCardClick = (car: Vehicle | PublicVehicle) => {
     if (hasDraggedRef.current) return;
     router.push(`/cars/${car.slug || car.id}`);
   };
@@ -302,7 +303,8 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: unknown } =
         >
           {marqueeData.map((car, index) => {
             const branchName =
-              car.branch_id === "kakrail" ? "Kakrail Branch" : "Gulshan Branch";
+              car.branch_name ||
+              (car.branch_id === "kakrail" ? "Kakrail Branch" : "Gulshan Branch");
             return (
               <div key={`${car.id}-${index}`} className="card-item-slider">
                 <div
