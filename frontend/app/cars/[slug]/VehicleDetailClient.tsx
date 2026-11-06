@@ -7,6 +7,7 @@ import { Vehicle, GalleryPhoto } from "@/lib/showroomData";
 import { useUI } from "@/lib/UIContext";
 import VehicleCard from "@/components/VehicleCard";
 import type { PublicSiteSettings } from "@/lib/types";
+import { submitInventoryQuoteAction } from "@/app/actions/quote";
 
 interface VehicleDetailClientProps {
   car: Vehicle;
@@ -68,6 +69,39 @@ export default function VehicleDetailClient({
   const { openAppointmentModal, openGalleryLightbox } = useUI();
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [isCopied, setIsCopied] = useState(false);
+
+  // Quote Request States
+  const [isQuoteOpen, setIsQuoteOpen] = useState(false);
+  const [quoteName, setQuoteName] = useState("");
+  const [quoteEmail, setQuoteEmail] = useState("");
+  const [quotePhone, setQuotePhone] = useState("");
+  const [quotePending, setQuotePending] = useState(false);
+  const [quoteSuccess, setQuoteSuccess] = useState(false);
+  const [quoteError, setQuoteError] = useState("");
+
+  const handleQuoteSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (quotePending) return;
+    setQuoteError("");
+    setQuotePending(true);
+    try {
+      const res = await submitInventoryQuoteAction({
+        carId: car.id,
+        name: quoteName,
+        email: quoteEmail,
+        phone: quotePhone,
+      });
+      if (res.ok) {
+        setQuoteSuccess(true);
+      } else {
+        setQuoteError(res.error || "Unable to submit quote request. Please try again.");
+      }
+    } catch {
+      setQuoteError("An unexpected error occurred. Please contact us directly.");
+    } finally {
+      setQuotePending(false);
+    }
+  };
 
   // EMI Calculator States
   const numericPrice = useMemo(() => parseNumericPrice(car.price), [car.price]);
@@ -637,6 +671,37 @@ export default function VehicleDetailClient({
                   <span className="btn-sub-caption">+880 1615-121312</span>
                 </div>
               </a>
+
+              {/* Quaternary: Request Written Official Quotation */}
+              <button
+                type="button"
+                className="dch-sidebar-vip-btn"
+                onClick={() => {
+                  setQuoteSuccess(false);
+                  setQuoteError("");
+                  setIsQuoteOpen(true);
+                }}
+                style={{
+                  background: "rgba(255, 255, 255, 0.04)",
+                  border: "1px solid rgba(255, 255, 255, 0.14)",
+                  color: "#cbd5e1",
+                  cursor: "pointer",
+                }}
+              >
+                <div className="dch-vip-btn-icon">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2.2">
+                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
+                    <polyline points="14 2 14 8 20 8" />
+                    <line x1="16" y1="13" x2="8" y2="13" />
+                    <line x1="16" y1="17" x2="8" y2="17" />
+                    <polyline points="10 9 9 9 8 9" />
+                  </svg>
+                </div>
+                <div className="dch-vip-btn-text">
+                  <span className="btn-main-title" style={{ color: "#38bdf8" }}>GET FORMAL QUOTATION</span>
+                  <span className="btn-sub-caption">Pro-Forma Invoice & Specs</span>
+                </div>
+              </button>
             </div>
           </div>
 
@@ -854,6 +919,199 @@ export default function VehicleDetailClient({
             ))}
           </div>
         </section>
+      )}
+
+      {/* Official Quotation Modal */}
+      {isQuoteOpen && (
+        <div className="car-modal-backdrop active" onClick={() => setIsQuoteOpen(false)}>
+          <div
+            className="car-modal-box appointment-modal-box"
+            onClick={(e) => e.stopPropagation()}
+            style={{ maxWidth: "480px" }}
+          >
+            <button
+              className="modal-close-x"
+              onClick={() => setIsQuoteOpen(false)}
+              aria-label="Close Quotation Modal"
+              title="Close"
+            >
+              &times;
+            </button>
+
+            <div className="appointment-modal-head">
+              <span className="consult-pill-tag">OFFICIAL PRO-FORMA INVOICE</span>
+              <h3 className="appointment-modal-title">Request Formal Quotation</h3>
+              <p className="appointment-modal-sub">
+                Receive duty breakdown, import documentation, and official written quotation for{" "}
+                <strong style={{ color: "#38bdf8" }}>
+                  {car.year ? `${car.year} ` : ""}{car.name}
+                </strong>
+                .
+              </p>
+            </div>
+
+            {quoteSuccess ? (
+              <div style={{ padding: "2rem 1rem", textAlign: "center" }}>
+                <div
+                  style={{
+                    width: "52px",
+                    height: "52px",
+                    borderRadius: "50%",
+                    background: "rgba(16, 185, 129, 0.15)",
+                    border: "1px solid rgba(16, 185, 129, 0.4)",
+                    color: "#10b981",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    margin: "0 auto 1.25rem",
+                    fontSize: "1.5rem",
+                    fontWeight: 700,
+                  }}
+                >
+                  ✓
+                </div>
+                <h4 style={{ fontWeight: 700, fontSize: "1.25rem", color: "#ffffff", marginBottom: "0.5rem" }}>
+                  Quotation Request Sent!
+                </h4>
+                <p style={{ color: "#94a3b8", fontSize: "0.92rem", lineHeight: 1.6, marginBottom: "1.75rem" }}>
+                  Our corporate sales desk has received your quotation request for{" "}
+                  <strong style={{ color: "#ffffff" }}>{car.name}</strong>. An official pro-forma invoice will be
+                  prepared and communicated to you.
+                </p>
+                <button
+                  type="button"
+                  className="consult-primary-btn"
+                  onClick={() => setIsQuoteOpen(false)}
+                  style={{ width: "100%", justifyContent: "center" }}
+                >
+                  <span>Close Window</span>
+                </button>
+              </div>
+            ) : (
+              <form onSubmit={handleQuoteSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.1rem" }}>
+                {quoteError && (
+                  <div
+                    style={{
+                      padding: "0.75rem 1rem",
+                      background: "rgba(239, 68, 68, 0.15)",
+                      border: "1px solid rgba(239, 68, 68, 0.35)",
+                      borderRadius: "8px",
+                      color: "#fca5a5",
+                      fontSize: "0.85rem",
+                    }}
+                  >
+                    {quoteError}
+                  </div>
+                )}
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "0.82rem",
+                      fontWeight: 600,
+                      color: "#cbd5e1",
+                      marginBottom: "0.35rem",
+                    }}
+                  >
+                    Your Full Name *
+                  </label>
+                  <input
+                    type="text"
+                    required
+                    value={quoteName}
+                    onChange={(e) => setQuoteName(e.target.value)}
+                    placeholder="e.g. Chowdhury Rahman"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      background: "rgba(0,0,0,0.4)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      borderRadius: "8px",
+                      color: "#ffffff",
+                      fontSize: "0.9rem",
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "0.82rem",
+                      fontWeight: 600,
+                      color: "#cbd5e1",
+                      marginBottom: "0.35rem",
+                    }}
+                  >
+                    Email Address *
+                  </label>
+                  <input
+                    type="email"
+                    required
+                    value={quoteEmail}
+                    onChange={(e) => setQuoteEmail(e.target.value)}
+                    placeholder="corporate@company.com"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      background: "rgba(0,0,0,0.4)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      borderRadius: "8px",
+                      color: "#ffffff",
+                      fontSize: "0.9rem",
+                    }}
+                  />
+                </div>
+
+                <div>
+                  <label
+                    style={{
+                      display: "block",
+                      fontSize: "0.82rem",
+                      fontWeight: 600,
+                      color: "#cbd5e1",
+                      marginBottom: "0.35rem",
+                    }}
+                  >
+                    Phone / WhatsApp Number *
+                  </label>
+                  <input
+                    type="tel"
+                    required
+                    value={quotePhone}
+                    onChange={(e) => setQuotePhone(e.target.value)}
+                    placeholder="017XX-XXXXXX"
+                    style={{
+                      width: "100%",
+                      padding: "0.75rem 1rem",
+                      background: "rgba(0,0,0,0.4)",
+                      border: "1px solid rgba(255,255,255,0.12)",
+                      borderRadius: "8px",
+                      color: "#ffffff",
+                      fontSize: "0.9rem",
+                    }}
+                  />
+                </div>
+
+                <button
+                  type="submit"
+                  disabled={quotePending}
+                  className="consult-primary-btn"
+                  style={{
+                    width: "100%",
+                    padding: "0.85rem",
+                    marginTop: "0.5rem",
+                    justifyContent: "center",
+                    cursor: quotePending ? "not-allowed" : "pointer",
+                  }}
+                >
+                  <span>{quotePending ? "Submitting Request..." : "Request Pro-Forma Quote →"}</span>
+                </button>
+              </form>
+            )}
+          </div>
+        </div>
       )}
     </div>
   );

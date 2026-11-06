@@ -1,6 +1,12 @@
 import type { Metadata } from "next";
 import ContactClient from "./ContactClient";
-import { getPageSEO, buildMetadataFromSEO, getShowroomBranches, getSiteSettings } from "@/lib/server/api";
+import {
+  getPageSEO,
+  buildMetadataFromSEO,
+  getShowroomBranches,
+  getSiteSettings,
+  getSalesRepresentatives,
+} from "@/lib/server/api";
 
 const fallbackMetadata: Metadata = {
   title: "Location & Showroom Contact • Kakrail & Gulshan | DREAM CAR HOUSE",
@@ -17,9 +23,10 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function ContactPage() {
-  const [branches, settings] = await Promise.all([
+  const [branches, settings, salesReps] = await Promise.all([
     getShowroomBranches().catch(() => []),
     getSiteSettings().catch(() => null),
+    getSalesRepresentatives().catch(() => []),
   ]);
-  return <ContactClient branches={branches} settings={settings} />;
+  return <ContactClient branches={branches} settings={settings} salesReps={salesReps} />;
 }

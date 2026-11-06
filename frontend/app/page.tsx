@@ -8,6 +8,7 @@ import type {
   PublicExperienceSection,
   PublicVisualChroniclesSection,
   PublicVipSanctuarySection,
+  PublicPeopleTalk,
 } from "@/lib/types";
 import Hero from "@/components/Hero";
 import InventoryCarousel from "@/components/InventoryCarousel";
@@ -16,6 +17,7 @@ import BrandRunway from "@/components/BrandRunway";
 import ConnectConsult from "@/components/ConnectConsult";
 import ExperiencePillars from "@/components/ExperiencePillars";
 import VisualChronicles from "@/components/VisualChronicles";
+import SocialFeatures from "@/components/SocialFeatures";
 import VipSanctuary from "@/components/VipSanctuary";
 import {
   getHeroSlider,
@@ -27,6 +29,7 @@ import {
   getExperienceSection,
   getVisualChroniclesSection,
   getVipSanctuarySection,
+  getPeopleTalks,
   getPageSEO,
   buildMetadataFromSEO,
 } from "@/lib/server/api";
@@ -75,9 +78,10 @@ export default async function HomePage() {
   let experienceData: PublicExperienceSection | null = null;
   let chroniclesData: PublicVisualChroniclesSection | null = null;
   let sanctuaryData: PublicVipSanctuarySection | null = null;
+  let peopleTalkData: PublicPeopleTalk[] = [];
 
   try {
-    const [hero, featured, inventory, preference, brands, consultation, experience, chronicles, sanctuary] =
+    const [hero, featured, inventory, preference, brands, consultation, experience, chronicles, sanctuary, peopleTalk] =
       await Promise.all([
         getHeroSlider().catch(() => null),
         getFeaturedInventory().catch(() => []),
@@ -88,6 +92,7 @@ export default async function HomePage() {
         getExperienceSection().catch(() => null),
         getVisualChroniclesSection().catch(() => null),
         getVipSanctuarySection().catch(() => null),
+        getPeopleTalks().catch(() => []),
       ]);
     heroData = hero;
     featuredCars = featured;
@@ -98,6 +103,7 @@ export default async function HomePage() {
     experienceData = experience;
     chroniclesData = chronicles;
     sanctuaryData = sanctuary;
+    peopleTalkData = peopleTalk;
   } catch (error) {
     console.error("[HomePage] Failed to fetch homepage data:", error);
   }
@@ -130,7 +136,10 @@ export default async function HomePage() {
       {/* 7. Showroom Atelier Visual Chronicles (Interactive 3D Flip Cards) */}
       <VisualChronicles chronicles={chroniclesData} />
 
-      {/* 8. VIP Showroom Invitation & Private Sanctuary Suite */}
+      {/* 8. Across Socials & Press: People Talk About Us */}
+      <SocialFeatures items={peopleTalkData} />
+
+      {/* 9. VIP Showroom Invitation & Private Sanctuary Suite */}
       <VipSanctuary sanctuary={sanctuaryData} />
     </div>
   );

@@ -1133,7 +1133,7 @@ export function buildMetadataFromSEO(
 }
 
 
-import type { PublicShowroomStory } from "@/lib/types";
+import type { PublicShowroomStory, PublicSalesRepresentative, PublicPeopleTalk } from "@/lib/types";
 
 export const getShowroomStoriesSSR = cache(async (): Promise<PublicShowroomStory[]> => {
   try {
@@ -1155,3 +1155,45 @@ export const getShowroomStoriesSSR = cache(async (): Promise<PublicShowroomStory
     return [];
   }
 });
+
+export const getSalesRepresentatives = cache(async (): Promise<PublicSalesRepresentative[]> => {
+  try {
+    const origin = getBackendOrigin();
+    const res = await fetch(`${origin}/api/v1/home/sales-representative/`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (json.success && Array.isArray(json.data)) {
+      return json.data as PublicSalesRepresentative[];
+    }
+    return [];
+  } catch (err) {
+    console.warn("[getSalesRepresentatives] Fetch error:", err);
+    return [];
+  }
+});
+
+export const getPeopleTalks = cache(async (): Promise<PublicPeopleTalk[]> => {
+  try {
+    const origin = getBackendOrigin();
+    const res = await fetch(`${origin}/api/v1/home/people-talk/`, {
+      cache: "no-store",
+    });
+    if (!res.ok) return [];
+    const json = await res.json();
+    if (json.success && json.data) {
+      if (Array.isArray(json.data.results)) {
+        return json.data.results as PublicPeopleTalk[];
+      }
+      if (Array.isArray(json.data)) {
+        return json.data as PublicPeopleTalk[];
+      }
+    }
+    return [];
+  } catch (err) {
+    console.warn("[getPeopleTalks] Fetch error:", err);
+    return [];
+  }
+});
+

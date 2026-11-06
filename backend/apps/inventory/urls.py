@@ -30,4 +30,5 @@ urlpatterns = [
     path('featured/', InventoryFeaturedListView.as_view(), name='inventory_featured_list'),
     path('stocks/', StockListView.as_view(), name='inventory_stocks'),
     path('quote/', InventoryQuoteCreateAPI.as_view(), name='inventory_quote'),
+    path('quote', InventoryQuoteCreateAPI.as_view(), name='inventory_quote_noslash'),
 ]

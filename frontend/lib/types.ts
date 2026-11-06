@@ -394,3 +394,19 @@ export interface PublicShowroomStory {
   created_at?: string;
   updated_at?: string;
 }
+
+export interface PublicSalesRepresentative {
+  id?: number;
+  name: string;
+  phone_number: string;
+}
+
+export interface PublicPeopleTalk {
+  id: number;
+  title: string;
+  image: string;
+  url?: string;
+  is_featured: boolean;
+  status?: string;
+}
+
