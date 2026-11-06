@@ -7,6 +7,7 @@ import {
   getShowroomBranches,
   getPublicInventory,
   getAboutSection,
+  getPeopleTalks,
 } from "@/lib/server/api";
 
 export async function generateMetadata(): Promise<Metadata> {
@@ -48,11 +49,12 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function AboutPage() {
-  const [settings, branches, inventory, aboutData] = await Promise.all([
+  const [settings, branches, inventory, aboutData, peopleTalks] = await Promise.all([
     getSiteSettings().catch(() => null),
     getShowroomBranches().catch(() => []),
     getPublicInventory().catch(() => ({ items: [], totalRows: 0 })),
     getAboutSection().catch(() => null),
+    getPeopleTalks().catch(() => []),
   ]);
 
   const jsonLd = {
@@ -115,6 +117,7 @@ export default async function AboutPage() {
         settings={settings || undefined}
         branches={branches}
         totalVehicles={inventory.totalRows || inventory.items.length}
+        peopleTalks={peopleTalks}
       />
     </>
   );

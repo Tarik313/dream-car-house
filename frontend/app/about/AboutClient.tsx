@@ -4,7 +4,8 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUI } from "@/lib/UIContext";
-import type { PublicSiteSettings, PublicShowroomBranch, PublicAboutSection } from "@/lib/types";
+import type { PublicSiteSettings, PublicShowroomBranch, PublicAboutSection, PublicPeopleTalk } from "@/lib/types";
+import SocialFeatures from "@/components/SocialFeatures";
 
 function renderPillarIcon(iconKey: string) {
   switch (iconKey?.toLowerCase()) {
@@ -52,11 +53,13 @@ export default function AboutClient({
   settings,
   branches = [],
   totalVehicles,
+  peopleTalks = [],
 }: {
   aboutData?: PublicAboutSection | null;
   settings?: PublicSiteSettings;
   branches?: PublicShowroomBranch[];
   totalVehicles?: number;
+  peopleTalks?: PublicPeopleTalk[];
 } = {}) {
   const { openVideoModal, openAppointmentModal } = useUI();
 
@@ -398,6 +401,11 @@ export default function AboutClient({
           })}
         </div>
       </section>
+
+      {/* 5.5 Across Socials & Press / People Talk About Us (Real Deliveries & Press Spotlights) */}
+      {peopleTalks && peopleTalks.length > 0 && (
+        <SocialFeatures items={peopleTalks} />
+      )}
 
       {/* 6. VIP Consultation Concierge CTA with Glowing WhatsApp Button */}
       <section className="about-cta-card">
