@@ -1288,6 +1288,14 @@ button {
   height: 100%;
 }
 
+/* Precise optical recentering: counters image native +200px rightward and +300px upward bias */
+@media (min-width: 769px) {
+  .hero-bg-image {
+    transform: translate(-1.8%, 2.2%) scale(1.05);
+    transform-origin: center center;
+  }
+}
+
 @media (max-width: 1024px) {
   .hero-showcase-section {
     min-height: 480px;
