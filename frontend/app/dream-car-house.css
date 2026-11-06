@@ -2463,19 +2463,22 @@ button {
   border-color: rgba(22, 163, 74, 0.35) !important;
 }
 
-[data-theme="light"] .social-pill {
-  background: rgba(255, 255, 255, 0.85) !important;
-  border: 1px solid rgba(148, 163, 184, 0.4) !important;
-  color: #1e293b !important;
-  font-weight: 600 !important;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+[data-theme="light"] .social-pill.social-fb {
+  background: #1877f2 !important;
+  border-color: #1877f2 !important;
+  color: #ffffff !important;
 }
 
-[data-theme="light"] .social-pill:hover {
-  background: #0a0f1d !important;
-  border-color: #0a0f1d !important;
+[data-theme="light"] .social-pill.social-ig {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  border-color: transparent !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 12px rgba(10, 15, 29, 0.2) !important;
+}
+
+[data-theme="light"] .social-pill.social-yt {
+  background: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
 }
 
 [data-theme="light"] .footer-branch-tab {
@@ -6429,29 +6432,27 @@ button {
 }
 
 .footer-social-row {
-  display: flex;
-  gap: 0.6rem;
-  flex-wrap: wrap;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 0.55rem;
+  width: 100%;
+  max-width: 360px;
 }
 
 .social-pill {
   display: inline-flex;
   align-items: center;
+  justify-content: center;
   gap: 0.45rem;
-  padding: 6px 13px;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.09);
-  border-radius: 6px;
-  color: #9ca3af;
-  font-size: 0.8rem;
+  padding: 8px 8px;
+  border-radius: 8px;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-decoration: none;
-  transition: all 0.2s;
-}
-
-.social-pill:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.35);
-  color: #ffffff;
+  transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  width: 100%;
+  white-space: nowrap;
 }
 
 .footer-heading {
@@ -6556,96 +6557,6 @@ button {
 
 .footer-shortcut-list a:hover .shortcut-arrow {
   transform: translateX(2px);
-}
-
-/* Col 3: VIP Concierge Private Viewing Card */
-.footer-concierge-card {
-  margin-top: 1.5rem;
-  padding: 1.15rem 1.25rem;
-  border-radius: 12px;
-  background: radial-gradient(circle at 10% 20%, rgba(245, 158, 11, 0.08), transparent 50%),
-              linear-gradient(135deg, rgba(255, 255, 255, 0.04) 0%, rgba(255, 255, 255, 0.01) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.22);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
-  display: flex;
-  flex-direction: column;
-  gap: 0.65rem;
-  box-sizing: border-box;
-}
-
-.concierge-card-header {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-}
-
-.concierge-card-badge {
-  font-size: 0.62rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  padding: 2px 8px;
-  border-radius: 999px;
-}
-
-.concierge-card-title {
-  font-size: 0.88rem;
-  font-weight: 700;
-  color: #ffffff;
-  letter-spacing: 0.04em;
-}
-
-.concierge-card-desc {
-  font-size: 0.8rem;
-  line-height: 1.45;
-  color: #94a3b8;
-  margin: 0;
-}
-
-.concierge-card-btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.5rem;
-  margin-top: 0.35rem;
-  padding: 0.65rem 1.15rem;
-  border-radius: 8px;
-  background: linear-gradient(135deg, #f59e0b 0%, #d97706 100%);
-  color: #0b0b0c;
-  font-size: 0.78rem;
-  font-weight: 700;
-  letter-spacing: 0.06em;
-  text-transform: uppercase;
-  border: none;
-  cursor: pointer;
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
-  box-shadow: 0 4px 14px rgba(245, 158, 11, 0.35);
-}
-
-.concierge-card-btn:hover {
-  background: linear-gradient(135deg, #fbbf24 0%, #f59e0b 100%);
-  transform: translateY(-2px);
-  box-shadow: 0 6px 20px rgba(245, 158, 11, 0.5);
-  color: #000;
-}
-
-[data-theme="light"] .footer-concierge-card {
-  background: #ffffff !important;
-  border-color: rgba(217, 119, 6, 0.3) !important;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.06) !important;
-}
-
-[data-theme="light"] .concierge-card-title {
-  color: #0f172a !important;
-}
-
-[data-theme="light"] .concierge-card-desc {
-  color: #475569 !important;
 }
 
 /* Bottom Bar */
@@ -8376,9 +8287,20 @@ button {
 
 /* ================= Luxury About Page Styling ================= */
 .about-page-wrap {
-  padding: 3.5rem 1.5rem 6rem;
+  padding-top: 8.5rem;
+  padding-bottom: 6rem;
+  padding-left: clamp(1rem, 3.5vw, 2rem);
+  padding-right: clamp(1rem, 3.5vw, 2rem);
   max-width: 1280px;
   margin: 0 auto;
+  box-sizing: border-box;
+}
+
+@media (max-width: 768px) {
+  .about-page-wrap {
+    padding-top: 6.5rem;
+    padding-bottom: 4rem;
+  }
 }
 
 .about-hero-section {
@@ -11490,62 +11412,72 @@ button {
   color: #94a3b8;
 }
 
-/* Authentic Social Brand Badges with Distinct Respective Colors */
+/* Authentic Social Brand Badges with Distinct Respective Colors - Permanent Solid Contrast */
 .social-pill {
   display: inline-flex;
   align-items: center;
-  gap: 0.5rem;
-  padding: 7px 14px;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 8px 10px;
   border-radius: 8px;
-  font-size: 0.82rem;
-  font-weight: 600;
+  font-size: 0.78rem;
+  font-weight: 700;
   text-decoration: none;
   transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  width: 100%;
 }
 
-/* Facebook Official Blue */
+/* Facebook Official Blue - Solid by Default (Both Night & Day Mode) */
 .social-pill.social-fb {
-  background: rgba(24, 119, 242, 0.1);
-  border: 1px solid rgba(24, 119, 242, 0.3);
-  color: #2e89ff;
+  background: #1877f2 !important;
+  border: 1px solid #1877f2 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
 }
 
 .social-pill.social-fb:hover {
-  background: #1877f2;
-  border-color: #1877f2;
+  background: #0d65d9 !important;
+  border-color: #0d65d9 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 18px rgba(24, 119, 242, 0.45);
+  box-shadow: 0 6px 20px rgba(24, 119, 242, 0.55);
   transform: translateY(-2px);
 }
 
-/* Instagram Official Radiant Gradient */
+/* Instagram Official Radiant Gradient - Solid by Default (Both Night & Day Mode) */
 .social-pill.social-ig {
-  background: rgba(225, 48, 108, 0.1);
-  border: 1px solid rgba(225, 48, 108, 0.3);
-  color: #fd1d1d;
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  border: 1px solid transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(225, 48, 108, 0.35);
 }
 
 .social-pill.social-ig:hover {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%);
-  border-color: transparent;
+  filter: brightness(1.12);
   color: #ffffff !important;
-  box-shadow: 0 4px 18px rgba(225, 48, 108, 0.45);
+  box-shadow: 0 6px 20px rgba(225, 48, 108, 0.55);
   transform: translateY(-2px);
 }
 
-/* YouTube Official Vibrant Red */
+/* YouTube Official Vibrant Red - Solid by Default (Both Night & Day Mode) */
 .social-pill.social-yt {
-  background: rgba(255, 0, 0, 0.1);
-  border: 1px solid rgba(255, 0, 0, 0.3);
-  color: #ff3333;
+  background: #ff0000 !important;
+  border: 1px solid #ff0000 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(255, 0, 0, 0.35);
 }
 
 .social-pill.social-yt:hover {
-  background: #ff0000;
-  border-color: #ff0000;
+  background: #e60000 !important;
+  border-color: #e60000 !important;
   color: #ffffff !important;
-  box-shadow: 0 4px 18px rgba(255, 0, 0, 0.45);
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.55);
   transform: translateY(-2px);
+}
+
+.social-pill svg {
+  fill: currentColor !important;
+  flex-shrink: 0;
 }
 
 /* WhatsApp Official Emerald Green */
