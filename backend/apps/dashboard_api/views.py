@@ -198,6 +198,12 @@ class LoginView(APIView):
         if not username or not password:
             raise AuthenticationFailed("Invalid credentials.")
 
+        if "@" in username:
+            from django.contrib.auth.models import User
+            matched_user = User.objects.filter(email__iexact=username).first()
+            if matched_user:
+                username = matched_user.username
+
         user = authenticate(request, username=username, password=password)
         if user is None:
             raise AuthenticationFailed("Invalid credentials.")

@@ -53,7 +53,8 @@ export default function SocialFeatures({
             gap: "1.5rem",
           }}
         >
-          {items.map((item) => {
+          {items.map((item, idx) => {
+            const imageSrc = item.image && item.image.trim() ? item.image : "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=800&q=80";
             const cardContent = (
               <div
                 style={{
@@ -71,8 +72,8 @@ export default function SocialFeatures({
                 {/* Image */}
                 <div style={{ position: "relative", width: "100%", height: "220px", background: "#0a0c10" }}>
                   <Image
-                    src={item.image}
-                    alt={item.title}
+                    src={imageSrc}
+                    alt={item.title || "Showroom Delivery Spotlight"}
                     fill
                     sizes="(max-width: 768px) 100vw, 33vw"
                     style={{ objectFit: "cover" }}
@@ -147,7 +148,7 @@ export default function SocialFeatures({
 
             return item.url ? (
               <a
-                key={item.id}
+                key={item.id ?? idx}
                 href={item.url}
                 target="_blank"
                 rel="noopener noreferrer"
@@ -156,7 +157,7 @@ export default function SocialFeatures({
                 {cardContent}
               </a>
             ) : (
-              <div key={item.id}>{cardContent}</div>
+              <div key={item.id ?? idx}>{cardContent}</div>
             );
           })}
         </div>
@@ -164,3 +165,4 @@ export default function SocialFeatures({
     </section>
   );
 }
+

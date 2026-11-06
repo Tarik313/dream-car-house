@@ -84,7 +84,7 @@ class PeopleTalkAboutUsSerializer(serializers.ModelSerializer, OptimizedImageSer
     class Meta:
         model = PeopleTalkAboutUs
         fields = [
-            'title', 'image', 'url', 'is_featured'
+            'id', 'title', 'image', 'url', 'is_featured', 'status'
         ]
 
     def get_image(self, obj):
