@@ -43,11 +43,6 @@ class Command(BaseCommand):
                     "action": "link",
                     "destination": "/inventory?type=PRE_OWNED",
                 },
-                {
-                    "label": "Connect to Consult",
-                    "action": "appointment_modal",
-                    "destination": "",
-                },
             ],
             "scroll_link_label": "Scroll to Current Inventory",
             "scroll_link_target": "#carousel-section",

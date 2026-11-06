@@ -36,7 +36,6 @@ import type { SliderItem, HeroCtaButton } from "@/lib/types";
 const DEFAULT_CTA_BUTTONS: HeroCtaButton[] = [
   { label: "Brand New", action: "link", destination: "/inventory?type=BRAND_NEW" },
   { label: "Pre-Owned", action: "link", destination: "/inventory?type=PRE_OWNED" },
-  { label: "Connect to Consult", action: "appointment_modal", destination: "" },
 ];
 
 export function SliderClient({
