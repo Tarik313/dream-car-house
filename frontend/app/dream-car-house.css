@@ -6464,6 +6464,76 @@ button {
   white-space: nowrap;
 }
 
+/* Official Social Media Marque Icons (Under Curated Discovery) */
+.footer-social-icons-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.5rem;
+  padding-top: 0.25rem;
+}
+
+.social-icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 42px;
+  height: 42px;
+  border-radius: 10px;
+  text-decoration: none;
+  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  box-sizing: border-box;
+  flex-shrink: 0;
+}
+
+.social-icon-btn.social-fb {
+  background: #1877f2 !important;
+  border: 1px solid #1877f2 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+}
+
+.social-icon-btn.social-fb:hover {
+  background: #166fe5 !important;
+  border-color: #166fe5 !important;
+  box-shadow: 0 6px 20px rgba(24, 119, 242, 0.55);
+  transform: translateY(-2px) scale(1.06);
+}
+
+.social-icon-btn.social-ig {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  border: 1px solid transparent !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(220, 39, 67, 0.35);
+}
+
+.social-icon-btn.social-ig:hover {
+  filter: brightness(1.12);
+  box-shadow: 0 6px 20px rgba(225, 48, 108, 0.55);
+  transform: translateY(-2px) scale(1.06);
+}
+
+.social-icon-btn.social-yt {
+  background: #ff0000 !important;
+  border: 1px solid #ff0000 !important;
+  color: #ffffff !important;
+  box-shadow: 0 4px 14px rgba(255, 0, 0, 0.35);
+}
+
+.social-icon-btn.social-yt:hover {
+  background: #e60000 !important;
+  border-color: #e60000 !important;
+  box-shadow: 0 6px 20px rgba(255, 0, 0, 0.55);
+  transform: translateY(-2px) scale(1.06);
+}
+
+.social-icon-btn svg {
+  fill: currentColor !important;
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
 .footer-heading {
   font-size: 1.15rem;
   font-weight: 700;
