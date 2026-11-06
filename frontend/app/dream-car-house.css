@@ -2563,6 +2563,22 @@ button {
   font-weight: 700 !important;
 }
 
+[data-theme="light"] .agency-credit-sep {
+  color: rgba(148, 163, 184, 0.6) !important;
+}
+
+[data-theme="light"] .agency-credit {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .agency-credit-link {
+  color: #d97706 !important;
+}
+
+[data-theme="light"] .agency-credit-link:hover {
+  color: #b45309 !important;
+}
+
 [data-theme="light"] .footer-sub-links {
   color: #64748b !important;
 }
@@ -6661,6 +6677,36 @@ button {
 .footer-copy-text {
   color: #6b7280;
   font-size: 0.85rem;
+  display: inline-flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.4rem;
+}
+
+.agency-credit-sep {
+  color: rgba(255, 255, 255, 0.25);
+  margin: 0 0.15rem;
+}
+
+.agency-credit {
+  color: #9ca3af;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+}
+
+.agency-credit-link {
+  color: #f59e0b;
+  text-decoration: none;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  transition: all 0.2s ease;
+}
+
+.agency-credit-link:hover {
+  color: #fbbf24;
+  text-shadow: 0 0 12px rgba(245, 158, 11, 0.5);
+  text-decoration: underline;
 }
 
 .footer-sub-links {

@@ -346,7 +346,19 @@ export default function Footer({
         {/* Clean Luxury Bottom Copyright Bar (Plain Back to Top link replaced by Floating Supercar) */}
         <div className="footer-bottom-modern">
           <div className="footer-copy-text">
-            © {new Date().getFullYear()} <strong>DREAM CAR HOUSE</strong>. All rights reserved. Kakrail & Gulshan, Dhaka, Bangladesh.
+            © {new Date().getFullYear()} <strong>DREAM CAR HOUSE</strong>. All rights reserved.
+            <span className="agency-credit-sep">•</span>
+            <span className="agency-credit">
+              Crafted by{" "}
+              <a
+                href="https://terrafusionz.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="agency-credit-link"
+              >
+                Terra Fusion
+              </a>
+            </span>
           </div>
           <div className="footer-sub-links">
             <span className="footer-sub-label">Confidential Private Concierge Advisory</span>
