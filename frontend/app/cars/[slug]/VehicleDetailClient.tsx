@@ -118,7 +118,7 @@ export default function VehicleDetailClient({
         address: car.branch.address || car.branch_address || "",
         phone: car.branch.phone || "+880 1615-121312",
         hotline: car.branch.hotline || "+880 1615-121312",
-        hours: car.branch.hours || "Saturday – Thursday: 10:00 AM – 9:00 PM",
+        hours: car.branch.hours || "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
         map_link: car.branch.map_link || "https://maps.google.com/?q=Kakrail+Dhaka",
       }
     : {
@@ -130,7 +130,7 @@ export default function VehicleDetailClient({
           car.branch_address || "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000",
         phone: "+880 1615-121312",
         hotline: "+880 1615-121312",
-        hours: "Saturday – Thursday: 10:00 AM – 9:00 PM (Friday Closed)",
+        hours: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
         map_link: "https://maps.google.com/?q=18+Shaheed+Captain+Mansur+Ali+Soroni+Kakrail+Dhaka",
       };
 

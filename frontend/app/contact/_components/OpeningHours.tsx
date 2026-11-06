@@ -5,8 +5,8 @@ import { useEffect, useState } from "react";
 // days: 0 = Sunday … 6 = Saturday. open/close are 24h hours in Dhaka time.
 // TODO: confirm with the showroom — these came from the design mock.
 const HOURS = [
-  { label: "Saturday – Thursday", time: "10:00 AM – 8:00 PM", days: [6, 0, 1, 2, 3, 4], open: 10, close: 20 },
-  { label: "Friday", time: "3:00 PM – 8:00 PM", days: [5], open: 15, close: 20 },
+  { label: "Saturday – Thursday", time: "10:00 AM – 10:00 PM", days: [6, 0, 1, 2, 3, 4], open: 10, close: 22 },
+  { label: "Friday", time: "Closed", days: [5], open: 0, close: 0 },
 ];
 
 const WEEKDAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];

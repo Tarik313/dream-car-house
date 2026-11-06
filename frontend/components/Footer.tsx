@@ -1,11 +1,12 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { SHOWROOM_BRANCHES } from "@/lib/showroomData";
 import { useUI } from "@/lib/UIContext";
 import type { PublicSiteSettings, PublicShowroomBranch } from "@/lib/types";
+import { parseShowroomHours } from "@/lib/utils/openingHours";
 
 export default function Footer({
   settings,
@@ -27,11 +28,26 @@ export default function Footer({
 
   const hotline = settings?.hotline || "01615-121312";
   const email = settings?.email || "dreamcarhouse101@gmail.com";
-  const hours = settings?.opening_hours_text || "Sat – Thu: 10:00 AM – 9:00 PM";
+  const hours =
+    settings?.opening_hours_text ||
+    branches?.[0]?.hours ||
+    "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
   const tagline = settings?.footer_tagline || "Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka.";
   const fbUrl = settings?.social_media?.facebook || "https://facebook.com";
   const igUrl = settings?.social_media?.instagram || "https://instagram.com";
   const ytUrl = settings?.social_media?.youtube || "https://youtube.com";
+
+  const [isOpen, setIsOpen] = useState(true);
+
+  useEffect(() => {
+    const evaluate = () => {
+      const parsed = parseShowroomHours(hours);
+      setIsOpen(parsed.isOpen);
+    };
+    evaluate();
+    const interval = setInterval(evaluate, 30000);
+    return () => clearInterval(interval);
+  }, [hours]);
 
   // WhatsApp configuration
   const rawWa = settings?.whatsapp || settings?.social_media?.whatsapp || hotline;
@@ -175,7 +191,10 @@ export default function Footer({
                   <polyline points="12 6 12 12 16 14" />
                 </svg>
                 <span>
-                  {hours} <span className="status-open-pill">Showroom Open</span>
+                  {hours}{" "}
+                  <span className={`status-open-pill ${isOpen ? "open" : "closed"}`}>
+                    {isOpen ? "Showroom Open" : "Showroom Closed"}
+                  </span>
                 </span>
               </li>
             </ul>

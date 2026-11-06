@@ -46,7 +46,7 @@ export const defaultSiteSettings: PublicSiteSettings = {
   primary_address: SHOWROOM.address,
   footer_tagline: "The Pinnacle of Luxury Automobiles",
   footer_copy_text: "© 2026 DREAM CAR HOUSE. All rights reserved.",
-  opening_hours_text: "Saturday – Thursday: 10:00 AM – 9:00 PM (Friday Closed)",
+  opening_hours_text: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
   social_media: {
     facebook: "https://www.facebook.com/dreamcarhousebd",
     instagram: "https://www.instagram.com/dreamcarhousebd",

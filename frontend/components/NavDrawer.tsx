@@ -4,36 +4,37 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUI } from "@/lib/UIContext";
+import type { PublicSiteSettings, PublicShowroomBranch } from "@/lib/types";
+import { parseShowroomHours } from "@/lib/utils/openingHours";
 
 export default function NavDrawer({
   settings,
   branches,
 }: {
-  settings?: unknown;
-  branches?: unknown;
+  settings?: PublicSiteSettings | null;
+  branches?: PublicShowroomBranch[] | null;
 } = {}) {
   const { isDrawerOpen, closeDrawer, openAppointmentModal } = useUI();
+  const rawHours =
+    settings?.opening_hours_text ||
+    branches?.[0]?.hours ||
+    "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
+  const phone = settings?.hotline || branches?.[0]?.phone || "01615-121312";
+
   const [isOpen, setIsOpen] = useState(true);
+  const [displayHours, setDisplayHours] = useState("10:00 AM – 10:00 PM");
 
   useEffect(() => {
     const evaluateStatus = () => {
-      const now = new Date();
-      const hour = now.getHours();
-      const minutes = now.getMinutes();
-      const currentTimeInMinutes = hour * 60 + minutes;
-      const openTimeInMinutes = 10 * 60; // 10:00 AM
-      const closeTimeInMinutes = 22 * 60; // 10:00 PM (22:00)
-
-      const currentlyOpen =
-        currentTimeInMinutes >= openTimeInMinutes &&
-        currentTimeInMinutes < closeTimeInMinutes;
-      setIsOpen(currentlyOpen);
+      const parsed = parseShowroomHours(rawHours);
+      setIsOpen(parsed.isOpen);
+      setDisplayHours(parsed.displayHours);
     };
 
     evaluateStatus();
     const interval = setInterval(evaluateStatus, 30000);
     return () => clearInterval(interval);
-  }, []);
+  }, [rawHours]);
 
   return (
     <>
@@ -207,14 +208,14 @@ export default function NavDrawer({
             <span className={`drawer-status-dot ${isOpen ? "open" : "closed"}`}></span>
             <span className={`drawer-status-text ${isOpen ? "status-open" : "status-closed"}`}>
               {isOpen
-                ? "SHOWROOM OPEN TODAY • 10:00 AM - 10:00 PM"
-                : "SHOWROOM CLOSED NOW • 10:00 AM - 10:00 PM"}
+                ? `SHOWROOM OPEN TODAY • ${displayHours}`
+                : `SHOWROOM CLOSED NOW • ${displayHours}`}
             </span>
           </div>
 
           <div className="drawer-concierge-phone">
             <span className="drawer-phone-label">VIP Concierge Line</span>
-            <a href="tel:01615-121312" className="drawer-phone-val">
+            <a href={`tel:${phone.replace(/\s+/g, "")}`} className="drawer-phone-val">
               <svg
                 width="15"
                 height="15"
@@ -226,7 +227,7 @@ export default function NavDrawer({
               >
                 <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
               </svg>
-              01615-121312
+              {phone}
             </a>
           </div>
 

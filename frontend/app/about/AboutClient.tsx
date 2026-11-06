@@ -304,89 +304,98 @@ export default function AboutClient({
         </div>
 
         <div className="about-branches-grid">
-          {/* Branch 1: Kakrail */}
-          <div className="about-branch-card">
-            <div>
-              <span className="about-branch-tag">PRIMARY SHOWROOM & VAULT</span>
-              <h3 className="about-branch-name">Kakrail Flagship Showroom</h3>
-              <p className="about-branch-address">
-                18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000
-              </p>
+          {((branches && branches.length > 0 ? branches : []) as PublicShowroomBranch[]).concat(
+            (!branches || branches.length === 0)
+              ? [
+                  {
+                    id: 1,
+                    branch_id: "kakrail",
+                    name: "Kakrail Flagship Showroom",
+                    short_name: "Kakrail Branch",
+                    tag: "PRIMARY SHOWROOM & VAULT",
+                    address: "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000",
+                    phone: "01615-121312",
+                    hotline: "+880 1615-121312",
+                    email: "dreamcarhouse101@gmail.com",
+                    hours: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
+                    map_link: "https://maps.google.com/?q=Kakrail,Dhaka",
+                    embed_map: "https://maps.google.com/maps?output=embed",
+                    order: 1,
+                    status: "PUBLISHED",
+                    features: ["Main Display Floor", "Private Handover Vault", "Diagnostic Lab"],
+                  },
+                  {
+                    id: 2,
+                    branch_id: "gulshan",
+                    name: "Gulshan Avenue Lounge",
+                    short_name: "Gulshan Branch",
+                    tag: "BOUTIQUE CONSULTATION DESK",
+                    address: "House #07, Road #127, Gulshan Avenue, Dhaka-1212",
+                    phone: "01615-121312",
+                    hotline: "+880 1615-121312",
+                    email: "dreamcarhouse101@gmail.com",
+                    hours: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
+                    map_link: "https://maps.google.com/?q=House+07+Road+127+Gulshan+Avenue+Dhaka",
+                    embed_map: "https://maps.google.com/maps?output=embed",
+                    order: 2,
+                    status: "PUBLISHED",
+                    features: ["Executive Consultation", "Bespoke Custom Orders", "VIP Coffee Bar"],
+                  },
+                ]
+              : []
+          ).map((br: PublicShowroomBranch) => {
+            const isGulshan = String(br.name).toLowerCase().includes("gulshan");
+            const defaultFeatures: string[] = isGulshan
+              ? ["Executive Consultation", "Bespoke Custom Orders", "VIP Coffee Bar"]
+              : ["Main Display Floor", "Private Handover Vault", "Diagnostic Lab"];
+            const features = br.features && br.features.length > 0 ? br.features : defaultFeatures;
+            const tag = br.tag || (isGulshan ? "BOUTIQUE CONSULTATION DESK" : "PRIMARY SHOWROOM & VAULT");
+            const mapHref = br.map_link || `https://maps.google.com/?q=${encodeURIComponent(br.address)}`;
+            const phone = br.phone || br.hotline || "01615-121312";
 
-              <div className="about-branch-features">
-                <span className="about-branch-pill">Main Display Floor</span>
-                <span className="about-branch-pill">Private Handover Vault</span>
-                <span className="about-branch-pill">Diagnostic Lab</span>
+            return (
+              <div key={br.id} className="about-branch-card">
+                <div>
+                  <span className="about-branch-tag">{tag}</span>
+                  <h3 className="about-branch-name">{br.name}</h3>
+                  <p className="about-branch-address">{br.address}</p>
+
+                  <div className="about-branch-features">
+                    {features.map((feat: string, fIdx: number) => (
+                      <span key={fIdx} className="about-branch-pill">
+                        {feat}
+                      </span>
+                    ))}
+                  </div>
+
+                  <div className="about-branch-timing">
+                    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                      <circle cx="12" cy="12" r="10" />
+                      <polyline points="12 6 12 12 16 14" />
+                    </svg>
+                    <span>{br.hours}</span>
+                  </div>
+                </div>
+
+                <div className="about-branch-actions">
+                  <a
+                    href={mapHref}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="about-dir-btn"
+                  >
+                    <span>Get Directions</span>
+                    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M5 12h14M12 5l7 7-7 7" />
+                    </svg>
+                  </a>
+                  <a href={`tel:${phone.replace(/\s+/g, "")}`} className="about-call-btn">
+                    <span>{phone}</span>
+                  </a>
+                </div>
               </div>
-
-              <div className="about-branch-timing">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                <span>Sat – Thu: 10:00 AM – 9:00 PM (Fri Closed)</span>
-              </div>
-            </div>
-
-            <div className="about-branch-actions">
-              <a
-                href="https://maps.google.com/?q=Kakrail,Dhaka"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-dir-btn"
-              >
-                <span>Get Directions</span>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
-              <a href="tel:01615121312" className="about-call-btn">
-                <span>01615-121312</span>
-              </a>
-            </div>
-          </div>
-
-          {/* Branch 2: Gulshan */}
-          <div className="about-branch-card">
-            <div>
-              <span className="about-branch-tag">BOUTIQUE CONSULTATION DESK</span>
-              <h3 className="about-branch-name">Gulshan Avenue Lounge</h3>
-              <p className="about-branch-address">
-                Road #127, Gulshan Avenue, Gulshan-2, Dhaka-1212
-              </p>
-
-              <div className="about-branch-features">
-                <span className="about-branch-pill">Executive Consultation</span>
-                <span className="about-branch-pill">Bespoke Custom Orders</span>
-                <span className="about-branch-pill">VIP Coffee Bar</span>
-              </div>
-
-              <div className="about-branch-timing">
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <circle cx="12" cy="12" r="10" />
-                  <polyline points="12 6 12 12 16 14" />
-                </svg>
-                <span>Sat – Thu: 11:00 AM – 8:00 PM (Fri Closed)</span>
-              </div>
-            </div>
-
-            <div className="about-branch-actions">
-              <a
-                href="https://maps.google.com/?q=Gulshan+Avenue,Dhaka"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="about-dir-btn"
-              >
-                <span>Get Directions</span>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </a>
-              <a href="tel:01615121312" className="about-call-btn">
-                <span>01615-121312</span>
-              </a>
-            </div>
-          </div>
+            );
+          })}
         </div>
       </section>
 

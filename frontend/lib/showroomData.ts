@@ -25,7 +25,7 @@ export const SHOWROOM_BRANCHES: Record<string, ShowroomBranch> = {
     phone: "01615-121312",
     hotline: "+880 1615-121312",
     email: "dreamcarhouse101@gmail.com",
-    hours: "Saturday – Thursday: 10:00 AM – 9:00 PM (Friday Closed)",
+    hours: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
     map_link: "https://maps.google.com/?q=18+Shaheed+Captain+Mansur+Ali+Soroni+Kakrail+Dhaka",
     embed_map:
       "https://maps.google.com/maps?width=600&height=400&hl=en&q=18%20Shaheed%20Captain%20Mansur%20Ali%20Soroni%20Kakrail%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed",
@@ -39,7 +39,7 @@ export const SHOWROOM_BRANCHES: Record<string, ShowroomBranch> = {
     phone: "01615-121312",
     hotline: "+880 1615-121312",
     email: "dreamcarhouse101@gmail.com",
-    hours: "Saturday – Thursday: 10:00 AM – 9:00 PM (Friday Closed)",
+    hours: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
     map_link: "https://maps.google.com/?q=House+07+Road+127+Gulshan+Avenue+Dhaka",
     embed_map:
       "https://maps.google.com/maps?width=600&height=400&hl=en&q=House%2007%20Road%20127%20Gulshan%20Avenue%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed",

@@ -41,6 +41,7 @@ export interface PublicShowroomBranch {
   embed_map: string;
   order: number;
   status: "PUBLISHED" | "DRAFT" | "ARCHIVED" | string;
+  features?: string[];
 }
 
 export interface PublicHeroCta {

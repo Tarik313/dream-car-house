@@ -68,7 +68,7 @@ class SiteSettings(BaseModel):
     )
     opening_hours_text = models.CharField(
         max_length=200,
-        default="Sat – Thu: 10:00 AM – 9:00 PM",
+        default="Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
         verbose_name=_("General Opening Hours Text"),
     )
     social_media = models.ForeignKey(

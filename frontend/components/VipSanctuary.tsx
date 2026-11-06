@@ -4,15 +4,35 @@ import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUI } from "@/lib/UIContext";
+import type { PublicVipSanctuarySection } from "@/lib/types";
 
-export default function VipSanctuary({ sanctuary }: { sanctuary?: unknown } = {}) {
+export default function VipSanctuary({
+  sanctuary,
+}: {
+  sanctuary?: PublicVipSanctuarySection | null;
+} = {}) {
   const { openAppointmentModal, openVideoModal } = useUI();
+
+  const location =
+    sanctuary?.location_text ||
+    "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000";
+  const hours =
+    sanctuary?.hours_text ||
+    "Daily 10:00 AM – 10:00 PM (Private Viewings by Reservation)";
+  const hotline = sanctuary?.phone_text || "01615-121312";
+  const waUrl =
+    sanctuary?.whatsapp_url ||
+    `https://wa.me/8801615121312?text=Hello%20DREAM%20CAR%20HOUSE,%20I%20would%20like%20to%20inquire%20about%20a%20luxury%20vehicle`;
+
+  const bgImage =
+    sanctuary?.background_image ||
+    "https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2560&q=95";
 
   return (
     <section className="vip-sanctuary-section" id="sanctuary">
       <Image
         className="vip-sanctuary-bg"
-        src="https://images.unsplash.com/photo-1503376780353-7e6692767b70?auto=format&fit=crop&w=2560&q=95"
+        src={bgImage}
         alt="DREAM CAR HOUSE Showroom Atmosphere"
         fill
         sizes="100vw"
@@ -118,7 +138,7 @@ export default function VipSanctuary({ sanctuary }: { sanctuary?: unknown } = {}
                 </div>
                 <div className="vip-feature-text">
                   <span className="vip-feat-label">Showroom Location</span>
-                  <span className="vip-feat-val">18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000</span>
+                  <span className="vip-feat-val">{location}</span>
                 </div>
               </div>
 
@@ -131,7 +151,7 @@ export default function VipSanctuary({ sanctuary }: { sanctuary?: unknown } = {}
                 </div>
                 <div className="vip-feature-text">
                   <span className="vip-feat-label">VIP Viewing Hours</span>
-                  <span className="vip-feat-val">Daily 10:00 AM – 10:00 PM (Private Viewings by Reservation)</span>
+                  <span className="vip-feat-val">{hours}</span>
                 </div>
               </div>
 
@@ -143,8 +163,8 @@ export default function VipSanctuary({ sanctuary }: { sanctuary?: unknown } = {}
                 </div>
                 <div className="vip-feature-text">
                   <span className="vip-feat-label">Direct Concierge Hotline</span>
-                  <a href="tel:01615-121312" className="vip-feat-val vip-phone-link">
-                    01615-121312
+                  <a href={`tel:${hotline.replace(/\s+/g, "")}`} className="vip-feat-val vip-phone-link">
+                    {hotline}
                   </a>
                 </div>
               </div>
@@ -153,7 +173,7 @@ export default function VipSanctuary({ sanctuary }: { sanctuary?: unknown } = {}
             {/* Card Bottom Quick Connect Buttons */}
             <div className="vip-card-cta-group">
               <a
-                href="https://wa.me/8801615121312?text=Hello%20DREAM%20CAR%20HOUSE,%20I%20would%20like%20to%20inquire%20about%20a%20luxury%20vehicle"
+                href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="vip-wa-btn"
