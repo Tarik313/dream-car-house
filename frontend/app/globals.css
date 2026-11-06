@@ -1,0 +1,47 @@
+@import "tailwindcss";
+
+:root {
+  --bg-black: #0b0b0c;
+  --bg-surface: #0d0d0f;
+  --bg-card: #101012;
+  --border-dark: rgba(255, 255, 255, 0.10);
+  --border-light: rgba(255, 255, 255, 0.20);
+  --border-hover: rgba(255, 255, 255, 0.25);
+  --text-white: #ffffff;
+  --text-gray: rgba(255, 255, 255, 0.50);
+  --text-gray-light: #e5e7eb;
+}
+
+html,
+body {
+  width: 100%;
+  max-width: 100vw;
+  background-color: #0b0b0c;
+  color: #ffffff;
+  overflow-x: hidden;
+  scroll-behavior: smooth;
+}
+
+/* Custom scrollbar for luxury aesthetic */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #050608;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #1f2937;
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #374151;
+}
+
+/* Smooth link transitions */
+a, button {
+  transition: all 0.2s ease-in-out;
+}

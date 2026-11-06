@@ -1,0 +1,9 @@
+services:
+  dashboard:
+    build: .
+    ports:
+      - "127.0.0.1:3100:3100"
+    environment:
+      DASHBOARD_API_ORIGIN: http://host.docker.internal:8000
+    extra_hosts:
+      - "host.docker.internal:host-gateway"

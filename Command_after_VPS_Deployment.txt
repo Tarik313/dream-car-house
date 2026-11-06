@@ -1,0 +1,25 @@
+# Backend
+cd /data/begautos/app/backend
+source venv/bin/activate
+pip install -r requirements.txt
+python manage.py makemigrations
+python manage.py migrate
+python manage.py collectstatic --noinput
+systemctl restart begautos
+
+# Frontend
+cd /data/begautos/app/frontend
+rm -rf .next
+npm install
+npm run build
+pm2 restart begautos-frontend
+
+# Nginx
+systemctl reload nginx
+
+
+
+# Server reboot হলে verify
+pm2 list
+systemctl status begautos
+systemctl status nginx

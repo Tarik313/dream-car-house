@@ -1,0 +1,1481 @@
+[
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$h8VR5zVdGRFPbi1OTKzhue$Owgcq2vKinKCrp+WhyDi1awKnZXAhiqDJgbLO194tpM=",
+    "last_login": "2026-10-21T08:07:12.637Z",
+    "is_superuser": true,
+    "username": "test_staff",
+    "first_name": "",
+    "last_name": "",
+    "email": "test_staff@begautos.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-10-21T06:09:54.664Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "auth.user",
+  "fields": {
+    "password": "pbkdf2_sha256$1200000$gATdIqUd6CUNV8Af4hhPwQ$npBedtpydLvVVx1H6+mzmPKQ3GiKwzKzxSmbgf/GJkY=",
+    "last_login": "2026-10-21T15:44:09.750Z",
+    "is_superuser": true,
+    "username": "admin",
+    "first_name": "",
+    "last_name": "",
+    "email": "admin@gmail.com",
+    "is_staff": true,
+    "is_active": true,
+    "date_joined": "2026-10-21T15:41:35.261Z",
+    "groups": [],
+    "user_permissions": []
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "04d452fv0ynrqsorayepiywhqinca6pd",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGll2_IWSPmew1rtrHECOFCcV4u4QKQW0b2beSyTY1pq2zkuaSFyEEaffLQM-uO2A7tBus8S5rcuU5a7Ig3Y5zsTP6-H-HVTo9VsHtNaAxhxCAAJPxBCYrWKtnC4uYxkMRjRlcOjpTF47A5FUBBMDK_H-AAfaOIo:1xJYRq:LIQPJ3t0CG04enzcIO1k-A4biNHdyoOxWlfT-LDcMVY",
+    "expire_date": "2026-11-04T15:41:50.376Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "1458oocv7dijcs327cmzvmf4zqwlha9g",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHaEFzMcp0_sMaGEhOIlAMnYV5e6xJRdJOzPvvZnHbS1-62nxM7ErE-zyywLGZ6qHoAfWe-Ox1XWZAz8SftrOp0bpdTvbv4OCvexrpUCA0GCMCtHmgGgsOJ3NIAHzGHKWRG5HQScU0hGoITpEodOYpLLs8wXK0DeP:1xJPWQ:yqzaMSnMGT-WJYCuhMZoXtRx_BIqet7USEEzdTXRtag",
+    "expire_date": "2026-11-04T06:09:58.170Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ftavye2n7bhna72r14qqfufl03w7uqes",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHaEFzMcp0_sMaGEhOIlAMnYV5e6xJRdJOzPvvZnHbS1-62nxM7ErE-zyywLGZ6qHoAfWe-Ox1XWZAz8SftrOp0bpdTvbv4OCvexrpUCA0GCMCtHmgGgsOJ3NIAHzGHKWRG5HQScU0hGoITpEodOYpLLs8wXK0DeP:1xJRLs:rZRTAV4r4kGc1oWwXaI42FwWyw1SbCX_GVJqIEABlnQ",
+    "expire_date": "2026-11-04T08:07:12.641Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "gs34j16hdmor4zgwih3invh97otwy6ve",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHaEFzMcp0_sMaGEhOIlAMnYV5e6xJRdJOzPvvZnHbS1-62nxM7ErE-zyywLGZ6qHoAfWe-Ox1XWZAz8SftrOp0bpdTvbv4OCvexrpUCA0GCMCtHmgGgsOJ3NIAHzGHKWRG5HQScU0hGoITpEodOYpLLs8wXK0DeP:1xJRK6:pr2SI7INbrAMb3lY8br12sS1QjhK5ZrFsyN71J0EpNc",
+    "expire_date": "2026-11-04T08:05:22.781Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "oh751zl8i7dar9k1a38kflkhpcdzx4v2",
+  "fields": {
+    "session_data": ".eJxVjDsOwjAQBe_iGll2_IWSPmew1rtrHECOFCcV4u4QKQW0b2beSyTY1pq2zkuaSFyEEaffLQM-uO2A7tBus8S5rcuU5a7Ig3Y5zsTP6-H-HVTo9VsHtNaAxhxCAAJPxBCYrWKtnC4uYxkMRjRlcOjpTF47A5FUBBMDK_H-AAfaOIo:1xJYU5:_b5ufpG90aIk67pd8mb_PmNwlKqEvKtj4MA1S9Hnbzw",
+    "expire_date": "2026-11-04T15:44:09.779Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "uywn2y248jq0gpn4mn19ukw4o5efjdsi",
+  "fields": {
+    "session_data": ".eJxVjEEOwiAQRe_C2pBCoQMu3XsGMjCDVA0kpV0Z765NutDtf-_9lwi4rSVsnZcwkzgLLU6_W8T04LoDumO9NZlaXZc5yl2RB-3y2oifl8P9OyjYy7ceJ4fZQUb2mQA5jzj4pCJY1jpltEjGgDLonQKyaYhegUqOabLROyveHwrDOHg:1xJSgv:qCm4T_iofuEglFfMAGni6X2X6LjvX55uV6CAxfdFjuY",
+    "expire_date": "2026-11-04T09:33:01.297Z"
+  }
+},
+{
+  "model": "sessions.session",
+  "pk": "ypd1y5frq16h1h3aa10frq5k2tvpsvea",
+  "fields": {
+    "session_data": ".eJxVjDsOwyAQBe9CHaEFzMcp0_sMaGEhOIlAMnYV5e6xJRdJOzPvvZnHbS1-62nxM7ErE-zyywLGZ6qHoAfWe-Ox1XWZAz8SftrOp0bpdTvbv4OCvexrpUCA0GCMCtHmgGgsOJ3NIAHzGHKWRG5HQScU0hGoITpEodOYpLLs8wXK0DeP:1xJRL5:9feqL8iOxSLXO2N4RQOEOAqf5IplG-m8MTWhdDecza4",
+    "expire_date": "2026-11-04T08:06:23.170Z"
+  }
+},
+{
+  "model": "home.slider",
+  "pk": 1,
+  "fields": {
+    "heading": "Welcome to Dream Car House",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png"
+  }
+},
+{
+  "model": "home.socialmedia",
+  "pk": 1,
+  "fields": {
+    "facebook": "https://facebook.com/dreamcarhouse",
+    "instagram": "https://instagram.com/dreamcarhouse",
+    "twitter": "https://twitter.com/dreamcarhouse",
+    "youtube": "https://youtube.com/@dreamcarhouse"
+  }
+},
+{
+  "model": "home.sellcar",
+  "pk": 1,
+  "fields": {
+    "name": "Shafiqul Alam",
+    "phone": "+8801719876543",
+    "car_name": "Mercedes-Benz E200 AMG",
+    "car_model": "E-Class W213",
+    "car_year": "2020",
+    "offered_price": 7500000,
+    "mileage": 24000
+  }
+},
+{
+  "model": "home.peopletalkaboutus",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-21T16:00:40.995Z",
+    "updated_at": "2026-10-21T16:00:40.995Z",
+    "title": "Exceptional buying experience at Dream Car House - 5 Star",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "url": "https://youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "home.peopletalkaboutus",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-21T16:00:40.998Z",
+    "updated_at": "2026-10-21T16:00:40.998Z",
+    "title": "Delivery handover of 2023 Mercedes GLS 450",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "url": "https://youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "home.subscriber",
+  "pk": 1,
+  "fields": {
+    "email": "luxurycarlover.bd@gmail.com"
+  }
+},
+{
+  "model": "home.subscriber",
+  "pk": 2,
+  "fields": {
+    "email": "investor.dhaka@gmail.com"
+  }
+},
+{
+  "model": "home.salesrepresentative",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-21T16:00:40.984Z",
+    "updated_at": "2026-10-21T16:00:40.984Z",
+    "name": "Tanvir Ahmed",
+    "phone_number": "+8801711000111",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "home.salesrepresentative",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-21T16:00:40.988Z",
+    "updated_at": "2026-10-21T16:00:40.988Z",
+    "name": "Mahfuzur Rahman",
+    "phone_number": "+8801811000222",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "home.salesrepresentative",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-10-21T16:00:40.991Z",
+    "updated_at": "2026-10-21T16:00:40.991Z",
+    "name": "Farhan Kabir",
+    "phone_number": "+8801911000333",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "home.contactmessage",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-21T16:00:58.678Z",
+    "updated_at": "2026-10-21T16:00:58.678Z",
+    "topic": "PURCHASE",
+    "name": "Imtiaz Hossain",
+    "phone": "+8801812345678",
+    "email": "imtiaz.hossain@outlook.com",
+    "vehicle": "",
+    "message": "Do you support custom import orders for 2024 Porsche 911 GT3?",
+    "preferred_contact": "PHONE"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 1,
+  "fields": {
+    "name": "Porsche",
+    "segment": "REFINED_VERSATILE",
+    "image": "",
+    "listing_footer_text": "",
+    "status": "PUBLISHED",
+    "target_keyword": null,
+    "meta_title": null,
+    "meta_description": null,
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": null,
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T06:14:21.030Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 3,
+  "fields": {
+    "name": "Mercedes-Benz",
+    "segment": "LUXURY",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Mercedes-Benz models.",
+    "status": "PUBLISHED",
+    "target_keyword": "mercedes-benz cars bangladesh",
+    "meta_title": "Mercedes-Benz Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Mercedes-Benz vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Mercedes-Benz Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.514Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 4,
+  "fields": {
+    "name": "BMW",
+    "segment": "LUXURY",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported BMW models.",
+    "status": "PUBLISHED",
+    "target_keyword": "bmw cars bangladesh",
+    "meta_title": "BMW Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury BMW vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "BMW Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.517Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 5,
+  "fields": {
+    "name": "Audi",
+    "segment": "LUXURY",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Audi models.",
+    "status": "PUBLISHED",
+    "target_keyword": "audi cars bangladesh",
+    "meta_title": "Audi Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Audi vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Audi Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.520Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 6,
+  "fields": {
+    "name": "Land Rover",
+    "segment": "LUXURY",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Land Rover models.",
+    "status": "PUBLISHED",
+    "target_keyword": "land rover cars bangladesh",
+    "meta_title": "Land Rover Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Land Rover vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Land Rover Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.531Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 7,
+  "fields": {
+    "name": "Toyota",
+    "segment": "POPULAR",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Toyota models.",
+    "status": "PUBLISHED",
+    "target_keyword": "toyota cars bangladesh",
+    "meta_title": "Toyota Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Toyota vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Toyota Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.534Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 8,
+  "fields": {
+    "name": "Honda",
+    "segment": "POPULAR",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Honda models.",
+    "status": "PUBLISHED",
+    "target_keyword": "honda cars bangladesh",
+    "meta_title": "Honda Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Honda vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Honda Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.539Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 9,
+  "fields": {
+    "name": "Nissan",
+    "segment": "POPULAR",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Nissan models.",
+    "status": "PUBLISHED",
+    "target_keyword": "nissan cars bangladesh",
+    "meta_title": "Nissan Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Nissan vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Nissan Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.547Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 10,
+  "fields": {
+    "name": "Lexus",
+    "segment": "LUXURY",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Lexus models.",
+    "status": "PUBLISHED",
+    "target_keyword": "lexus cars bangladesh",
+    "meta_title": "Lexus Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Lexus vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Lexus Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.550Z"
+  }
+},
+{
+  "model": "inventory.brand",
+  "pk": 11,
+  "fields": {
+    "name": "Mazda",
+    "segment": "POPULAR",
+    "image": "",
+    "listing_footer_text": "Browse official stock and verified imported Mazda models.",
+    "status": "PUBLISHED",
+    "target_keyword": "mazda cars bangladesh",
+    "meta_title": "Mazda Cars Price in Bangladesh | Dream Car House",
+    "meta_description": "Explore premium and luxury Mazda vehicles available now at Dream Car House Dhaka.",
+    "canonical_url": null,
+    "robots": "index, follow",
+    "schema_json": null,
+    "h1_title": "Mazda Showroom in Bangladesh",
+    "short_description": null,
+    "long_description": null,
+    "feature_image": "",
+    "feature_image_alt": null,
+    "seo_updated_at": "2026-10-21T16:00:02.554Z"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 1,
+  "fields": {
+    "brand": 3,
+    "model": "GLS 450",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 2,
+  "fields": {
+    "brand": 3,
+    "model": "GLE 450",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 3,
+  "fields": {
+    "brand": 3,
+    "model": "CLA 200",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 4,
+  "fields": {
+    "brand": 4,
+    "model": "X7 xDrive40i",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 5,
+  "fields": {
+    "brand": 4,
+    "model": "530e M Sport",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 6,
+  "fields": {
+    "brand": 5,
+    "model": "Q8 55 TFSI",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 7,
+  "fields": {
+    "brand": 5,
+    "model": "A6 45 TFSI",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 8,
+  "fields": {
+    "brand": 1,
+    "model": "Cayenne GTS",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 9,
+  "fields": {
+    "brand": 1,
+    "model": "Panamera 4 E-Hybrid",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 10,
+  "fields": {
+    "brand": 6,
+    "model": "Defender 110 P400",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 11,
+  "fields": {
+    "brand": 7,
+    "model": "Land Cruiser 300 ZX",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 12,
+  "fields": {
+    "brand": 7,
+    "model": "Harrier Hybrid",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 13,
+  "fields": {
+    "brand": 10,
+    "model": "LX 600 VIP",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.modelgeneration",
+  "pk": 14,
+  "fields": {
+    "brand": 10,
+    "model": "RX 350 F Sport",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.bodystyle",
+  "pk": 1,
+  "fields": {
+    "body": "Sedan",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.bodystyle",
+  "pk": 2,
+  "fields": {
+    "body": "SUV",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.bodystyle",
+  "pk": 3,
+  "fields": {
+    "body": "Coupe",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.bodystyle",
+  "pk": 4,
+  "fields": {
+    "body": "Convertible",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.bodystyle",
+  "pk": 5,
+  "fields": {
+    "body": "Hatchback",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.bodystyle",
+  "pk": 6,
+  "fields": {
+    "body": "Crossover",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.bodystyle",
+  "pk": 7,
+  "fields": {
+    "body": "Wagon",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-21T16:00:02.632Z",
+    "updated_at": "2026-10-21T16:00:02.632Z",
+    "name": "Mercedes-Benz GLS 450 4MATIC AMG Line 2023",
+    "car_type": "PRE_OWNED",
+    "brand": 3,
+    "model": 1,
+    "model_name": "GLS 450",
+    "year": 2023,
+    "engine_capacity": "3000",
+    "fuel_type": "OCTANE+HYBRID",
+    "mileage": "9,200",
+    "price": "29500000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "AWD (4MATIC)",
+    "wheel_base": "21 Inch AMG",
+    "color": "Selenite Grey Metallic",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 2,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Floats on asphalt with supreme elegance. Equipped with 3.0L turbocharged inline-6 with EQ Boost, Burmester 3D Surround Sound, Panoramic Sunroof, MBUX hyperscreen infotainment, and 7-passenger electric seating.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2023 Mercedes-Benz GLS 450 4MATIC SUV in Selenite Grey",
+    "target_keyword": "mercedes benz gls 450 bangladesh",
+    "meta_title": "2023 Mercedes-Benz GLS 450 for Sale | Dream Car House",
+    "meta_description": "Buy the 2023 Mercedes-Benz GLS 450 4MATIC in Selenite Grey at Dream Car House Dhaka. 9,200 km driven, mint condition.",
+    "slug": "2023-mercedes-benz-gls-450-3000cc-selenite-grey-metallic",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2023-mercedes-benz-gls-450-3000cc-selenite-grey-metallic/",
+    "schema_override": null,
+    "featured_image_alt": "Mercedes-Benz GLS 450 Front View in Selenite Grey",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 2,
+  "fields": {
+    "created_at": "2026-10-21T16:00:03.770Z",
+    "updated_at": "2026-10-21T16:00:03.770Z",
+    "name": "Land Rover Defender 110 P400 SE 2022",
+    "car_type": "PRE_OWNED",
+    "brand": 6,
+    "model": 10,
+    "model_name": "DEFENDER 110 P400",
+    "year": 2022,
+    "engine_capacity": "3000",
+    "fuel_type": "OCTANE",
+    "mileage": "14,500",
+    "price": "25800000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "AWD with Terrain Response 2",
+    "wheel_base": "20 Inch Gloss Dark Grey",
+    "color": "Gondwana Stone",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 2,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Uncompromising capability and iconic design. Powered by 3.0L Ingenium i6 producing 395 HP. Features air suspension, 3D surround camera, ClearSight ground view, Meridian audio, and Ebony Windsor leather.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2022 Land Rover Defender 110 P400 in Gondwana Stone",
+    "target_keyword": "land rover defender 110 dhaka",
+    "meta_title": "2022 Land Rover Defender 110 for Sale | Dream Car House",
+    "meta_description": "Drive the iconic 2022 Land Rover Defender 110 P400 in Gondwana Stone. Available at Dream Car House Dhaka showroom.",
+    "slug": "2022-land-rover-defender-110-p400-3000cc-gondwana-stone",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2022-land-rover-defender-110-p400-3000cc-gondwana-stone/",
+    "schema_override": null,
+    "featured_image_alt": "Land Rover Defender 110 Front Angle in Gondwana Stone",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 3,
+  "fields": {
+    "created_at": "2026-10-21T16:00:04.519Z",
+    "updated_at": "2026-10-21T16:00:04.519Z",
+    "name": "Toyota Land Cruiser 300 ZX Twin Turbo 2024",
+    "car_type": "BRAND_NEW",
+    "brand": 7,
+    "model": 11,
+    "model_name": "LAND CRUISER 300 ZX",
+    "year": 2024,
+    "engine_capacity": "3500",
+    "fuel_type": "OCTANE",
+    "mileage": "50",
+    "price": "42000000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "Full-time 4WD with Multi-Terrain Select",
+    "wheel_base": "20 Inch Premium Alloy",
+    "color": "Precious White Pearl",
+    "condition": "NEW",
+    "registered": "Available",
+    "body_style": 2,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>The pinnacle of full-size SUV luxury and indestructible reliability. 3.5L V6 Twin-Turbo mated to a 10-speed direct shift transmission, JBL 14-speaker sound system, rear seat entertainment dual screens, and ventilated seats.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "NO",
+    "status": "PUBLISHED",
+    "h1_title": "Brand New 2024 Toyota Land Cruiser 300 ZX in Pearl White",
+    "target_keyword": "toyota land cruiser 300 zx price bangladesh",
+    "meta_title": "2024 Toyota Land Cruiser 300 ZX for Sale | Dream Car House",
+    "meta_description": "Brand new 2024 Toyota Land Cruiser 300 ZX in Precious White Pearl available immediately at Dream Car House.",
+    "slug": "2024-toyota-land-cruiser-300-zx-3500cc-precious-white-pearl",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2024-toyota-land-cruiser-300-zx-3500cc-precious-white-pearl/",
+    "schema_override": null,
+    "featured_image_alt": "2024 Toyota Land Cruiser 300 ZX Front Profile",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 4,
+  "fields": {
+    "created_at": "2026-10-21T16:00:05.159Z",
+    "updated_at": "2026-10-21T16:00:05.159Z",
+    "name": "BMW X7 xDrive40i M Sport 2023",
+    "car_type": "PRE_OWNED",
+    "brand": 4,
+    "model": 4,
+    "model_name": "X7 XDRIVE40I",
+    "year": 2023,
+    "engine_capacity": "3000",
+    "fuel_type": "OCTANE+HYBRID",
+    "mileage": "8,300",
+    "price": "28500000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "Intelligent xDrive AWD",
+    "wheel_base": "22 Inch Individual Bicolor",
+    "color": "Carbon Black Metallic",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 2,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Commanding presence with BMW Curved Display, Sky Lounge Panoramic Glass Sunroof, Bowers & Wilkins Diamond surround system, CraftedClarity crystal controls, and adaptive 2-axle air suspension.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2023 BMW X7 xDrive40i M Sport in Carbon Black",
+    "target_keyword": "bmw x7 m sport dhaka",
+    "meta_title": "2023 BMW X7 xDrive40i M Sport for Sale | Dream Car House",
+    "meta_description": "Buy the 2023 BMW X7 xDrive40i M Sport with Sky Lounge and 381 HP turbo engine at Dream Car House.",
+    "slug": "2023-bmw-x7-xdrive40i-3000cc-carbon-black-metallic",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2023-bmw-x7-xdrive40i-3000cc-carbon-black-metallic/",
+    "schema_override": null,
+    "featured_image_alt": "BMW X7 M Sport Front Grille and Adaptive Headlights",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 5,
+  "fields": {
+    "created_at": "2026-10-21T16:00:05.787Z",
+    "updated_at": "2026-10-21T16:00:05.787Z",
+    "name": "Porsche Cayenne GTS Coupe 2022",
+    "car_type": "PRE_OWNED",
+    "brand": 1,
+    "model": 8,
+    "model_name": "CAYENNE GTS",
+    "year": 2022,
+    "engine_capacity": "4000",
+    "fuel_type": "OCTANE",
+    "mileage": "11,000",
+    "price": "32000000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "All-Wheel Drive (PTM)",
+    "wheel_base": "21 Inch RS Spyder Design",
+    "color": "Carmine Red",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 3,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Pure sports car soul in a luxury coupe SUV. 4.0L Twin-Turbo V8 putting down 453 HP. Includes Sport Chrono package, sports exhaust system with central tailpipes, adaptive air suspension, and Alcantara interior package.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "NO",
+    "status": "PUBLISHED",
+    "h1_title": "2022 Porsche Cayenne GTS Coupe in Carmine Red",
+    "target_keyword": "porsche cayenne gts price bangladesh",
+    "meta_title": "2022 Porsche Cayenne GTS Coupe for Sale | Dream Car House",
+    "meta_description": "Experience thrilling V8 power with the 2022 Porsche Cayenne GTS Coupe in Carmine Red. Available at Dream Car House.",
+    "slug": "2022-porsche-cayenne-gts-4000cc-carmine-red",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2022-porsche-cayenne-gts-4000cc-carmine-red/",
+    "schema_override": null,
+    "featured_image_alt": "Porsche Cayenne GTS Coupe Dynamic Profile",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-10-21T16:00:06.367Z",
+    "updated_at": "2026-10-21T16:00:06.367Z",
+    "name": "Audi Q8 55 TFSI quattro S Line 2021",
+    "car_type": "PRE_OWNED",
+    "brand": 5,
+    "model": 6,
+    "model_name": "Q8 55 TFSI",
+    "year": 2021,
+    "engine_capacity": "3000",
+    "fuel_type": "OCTANE+HYBRID",
+    "mileage": "15,200",
+    "price": "19800000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "quattro Permanent AWD",
+    "wheel_base": "22 Inch 5-Twin-Spoke",
+    "color": "Mythos Black Metallic",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 2,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Athletic coupe silhouette with flagship Audi luxury. Matrix LED headlights with dynamic turn indicators, Bang & Olufsen 3D sound system, dual touchscreen MMI, frameless doors, and soft close doors.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": false,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2021 Audi Q8 55 TFSI quattro S Line in Mythos Black",
+    "target_keyword": "audi q8 55 tfsi dhaka price",
+    "meta_title": "2021 Audi Q8 55 TFSI S Line for Sale | Dream Car House",
+    "meta_description": "Buy the 2021 Audi Q8 55 TFSI quattro S Line in Mythos Black at Dream Car House showroom in Dhaka.",
+    "slug": "2021-audi-q8-55-tfsi-3000cc-mythos-black-metallic",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2021-audi-q8-55-tfsi-3000cc-mythos-black-metallic/",
+    "schema_override": null,
+    "featured_image_alt": "Audi Q8 S Line Mythos Black Front",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-10-21T16:00:07.514Z",
+    "updated_at": "2026-10-21T16:00:07.515Z",
+    "name": "Lexus LX 600 VIP 4-Seater 2023",
+    "car_type": "BRAND_NEW",
+    "brand": 10,
+    "model": 13,
+    "model_name": "LX 600 VIP",
+    "year": 2023,
+    "engine_capacity": "3500",
+    "fuel_type": "OCTANE",
+    "mileage": "120",
+    "price": "49500000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "Full-time AWD with Electronic Diff Lock",
+    "wheel_base": "22 Inch Forged Luxury Alloy",
+    "color": "Sonic Titanium",
+    "condition": "NEW",
+    "registered": "Available",
+    "body_style": 2,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>The ultimate ultra-luxury VIP executive SUV. 4-seater executive layout with ottoman relaxation rear seats, dual rear entertainment displays, Mark Levinson Reference Audio with 25 speakers, and active height control suspension.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "NO",
+    "status": "PUBLISHED",
+    "h1_title": "2023 Lexus LX 600 VIP 4-Seater in Sonic Titanium",
+    "target_keyword": "lexus lx 600 vip price bangladesh",
+    "meta_title": "2023 Lexus LX 600 VIP for Sale | Dream Car House",
+    "meta_description": "Experience supreme luxury in the brand new 2023 Lexus LX 600 VIP 4-Seater at Dream Car House Dhaka.",
+    "slug": "2023-lexus-lx-600-vip-3500cc-sonic-titanium",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2023-lexus-lx-600-vip-3500cc-sonic-titanium/",
+    "schema_override": null,
+    "featured_image_alt": "Lexus LX 600 VIP Front Grille in Sonic Titanium",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-10-21T16:00:08.188Z",
+    "updated_at": "2026-10-21T16:00:08.189Z",
+    "name": "Mercedes-Benz GLE 450 4MATIC 2022",
+    "car_type": "PRE_OWNED",
+    "brand": 3,
+    "model": 2,
+    "model_name": "GLE 450",
+    "year": 2022,
+    "engine_capacity": "3000",
+    "fuel_type": "OCTANE+HYBRID",
+    "mileage": "16,800",
+    "price": "18900000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "AWD (4MATIC)",
+    "wheel_base": "20 Inch AMG Twin 5-Spoke",
+    "color": "Polar White",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 2,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Exceptional balance of luxury, family comfort, and performance. Turbocharged 3.0L with 362 HP, panoramic sunroof, ambient lighting with 64 colors, electric tailgate, and 360-degree camera assistance.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": false,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2022 Mercedes-Benz GLE 450 4MATIC in Polar White",
+    "target_keyword": "mercedes gle 450 for sale dhaka",
+    "meta_title": "2022 Mercedes-Benz GLE 450 for Sale | Dream Car House",
+    "meta_description": "Buy the 2022 Mercedes-Benz GLE 450 4MATIC in Polar White at Dream Car House. Inspected and certified.",
+    "slug": "2022-mercedes-benz-gle-450-3000cc-polar-white",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2022-mercedes-benz-gle-450-3000cc-polar-white/",
+    "schema_override": null,
+    "featured_image_alt": "Mercedes-Benz GLE 450 Polar White Side Profile",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 9,
+  "fields": {
+    "created_at": "2026-10-21T16:00:08.763Z",
+    "updated_at": "2026-10-21T16:00:08.763Z",
+    "name": "BMW 530e M Sport Plug-in Hybrid 2022",
+    "car_type": "PRE_OWNED",
+    "brand": 4,
+    "model": 5,
+    "model_name": "530E M SPORT",
+    "year": 2022,
+    "engine_capacity": "2000",
+    "fuel_type": "PETROL+PLUG-IN HYBRID",
+    "mileage": "22,400",
+    "price": "11500000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "Rear Wheel Drive (RWD)",
+    "wheel_base": "19 Inch M Y-Spoke",
+    "color": "Bernina Grey Amber Effect",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 1,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>The business athlete of executive sedans. 2.0L TwinPower Turbo combined with electric motor producing 292 HP with XtraBoost. M Sport aerodynamics, Dakota leather sports seats, and Harman Kardon surround sound.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": false,
+    "inventory_type": "BUDGET FRIENDLY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2022 BMW 530e M Sport Plug-in Hybrid in Bernina Grey",
+    "target_keyword": "bmw 530e hybrid bangladesh price",
+    "meta_title": "2022 BMW 530e M Sport for Sale | Dream Car House",
+    "meta_description": "2022 BMW 530e M Sport Plug-in Hybrid executive sedan available in Bernina Grey at Dream Car House.",
+    "slug": "2022-bmw-530e-m-sport-2000cc-bernina-grey-amber-effect",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2022-bmw-530e-m-sport-2000cc-bernina-grey-amber-effect/",
+    "schema_override": null,
+    "featured_image_alt": "BMW 530e M Sport Sedan Front Angle",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 10,
+  "fields": {
+    "created_at": "2026-10-21T16:00:09.359Z",
+    "updated_at": "2026-10-21T16:00:09.359Z",
+    "name": "Porsche Panamera 4 E-Hybrid Executive 2021",
+    "car_type": "PRE_OWNED",
+    "brand": 1,
+    "model": 9,
+    "model_name": "PANAMERA 4 E-HYBRID",
+    "year": 2021,
+    "engine_capacity": "2900",
+    "fuel_type": "PETROL+PLUG-IN HYBRID",
+    "mileage": "17,100",
+    "price": "24500000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "Active All-Wheel Drive (PTM)",
+    "wheel_base": "21 Inch Panamera Exclusive Design",
+    "color": "Gentian Blue Metallic",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 1,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Unrivalled fusion of four-door executive limousine comfort with genuine Porsche sportscar dynamics. 456 HP combined hybrid output, extended wheelbase, soft-close doors, BOSE Surround Sound, and sport chrono clock.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": true,
+    "inventory_type": "LUXURY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2021 Porsche Panamera 4 E-Hybrid in Gentian Blue",
+    "target_keyword": "porsche panamera hybrid dhaka",
+    "meta_title": "2021 Porsche Panamera 4 E-Hybrid for Sale | Dream Car House",
+    "meta_description": "Drive the 2021 Porsche Panamera 4 E-Hybrid in stunning Gentian Blue Metallic. Available at Dream Car House.",
+    "slug": "2021-porsche-panamera-4-e-hybrid-2900cc-gentian-blue-metallic",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2021-porsche-panamera-4-e-hybrid-2900cc-gentian-blue-metallic/",
+    "schema_override": null,
+    "featured_image_alt": "Porsche Panamera 4 E-Hybrid Gentian Blue Front",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 11,
+  "fields": {
+    "created_at": "2026-10-21T16:00:09.930Z",
+    "updated_at": "2026-10-21T16:00:09.930Z",
+    "name": "Toyota Harrier Hybrid Z Leather Package 2022",
+    "car_type": "RECONDITIONED",
+    "brand": 7,
+    "model": 12,
+    "model_name": "HARRIER HYBRID",
+    "year": 2022,
+    "engine_capacity": "2500",
+    "fuel_type": "OCTANE+HYBRID",
+    "mileage": "18,500",
+    "price": "7800000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "E-Four (Electric 4WD)",
+    "wheel_base": "19 Inch High-Gloss Aluminum",
+    "color": "Precious Black Pearl",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 6,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Sophisticated crossover with benchmark fuel economy and coupe styling. Top-grade Z Leather package with electrochromic panoramic dimming roof, JBL 9-speaker system, digital inner mirror with front/rear dashcam, and brown genuine leather.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": false,
+    "inventory_type": "BUDGET FRIENDLY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2022 Toyota Harrier Hybrid Z Leather in Precious Black",
+    "target_keyword": "toyota harrier hybrid z leather dhaka",
+    "meta_title": "2022 Toyota Harrier Hybrid Z for Sale | Dream Car House",
+    "meta_description": "2022 Toyota Harrier Hybrid Z Leather Package in Precious Black Pearl for sale at Dream Car House.",
+    "slug": "2022-toyota-harrier-hybrid-2500cc-precious-black-pearl",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2022-toyota-harrier-hybrid-2500cc-precious-black-pearl/",
+    "schema_override": null,
+    "featured_image_alt": "Toyota Harrier Hybrid Z Front Grille",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventory",
+  "pk": 12,
+  "fields": {
+    "created_at": "2026-10-21T16:00:10.490Z",
+    "updated_at": "2026-10-21T16:00:10.490Z",
+    "name": "Mercedes-Benz CLA 200 AMG Line 2023",
+    "car_type": "PRE_OWNED",
+    "brand": 3,
+    "model": 3,
+    "model_name": "CLA 200",
+    "year": 2023,
+    "engine_capacity": "1332",
+    "fuel_type": "OCTANE",
+    "mileage": "12,300",
+    "price": "9400000.00",
+    "transmission": "AUTOMATIC",
+    "drive_type": "Front Wheel Drive (FWD)",
+    "wheel_base": "18 Inch AMG 5-Twin-Spoke",
+    "color": "Denim Blue Metallic",
+    "condition": "USED",
+    "registered": "Available",
+    "body_style": 3,
+    "feature_image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "description": "<p>Sleek 4-door coupe styling with sporty road presence. AMG sports styling package, dual 10.25-inch digital widescreen displays, 64-color ambient lighting, sports bucket seats, and diamond-pin radiator grille.</p>",
+    "youtube": "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    "is_featured": false,
+    "inventory_type": "BUDGET FRIENDLY",
+    "slightly_negotiable": "YES",
+    "status": "PUBLISHED",
+    "h1_title": "2023 Mercedes-Benz CLA 200 AMG Line in Denim Blue",
+    "target_keyword": "mercedes cla 200 amg bangladesh",
+    "meta_title": "2023 Mercedes-Benz CLA 200 AMG for Sale | Dream Car House",
+    "meta_description": "Buy the 2023 Mercedes-Benz CLA 200 AMG Line in Denim Blue Metallic at Dream Car House Dhaka.",
+    "slug": "2023-mercedes-benz-cla-200-1332cc-denim-blue-metallic",
+    "redirect_url": null,
+    "canonical_url": "https://www.begautos.com/cars/2023-mercedes-benz-cla-200-1332cc-denim-blue-metallic/",
+    "schema_override": null,
+    "featured_image_alt": "Mercedes-Benz CLA 200 AMG Front Profile",
+    "indexing": "index, follow",
+    "previous_slug": ""
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 1,
+  "fields": {
+    "inventory": 1,
+    "caption": "Mercedes-Benz GLS 450 4MATIC AMG Line 2023 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Mercedes-Benz GLS 450 4MATIC AMG Line 2023 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 2,
+  "fields": {
+    "inventory": 1,
+    "caption": "Mercedes-Benz GLS 450 4MATIC AMG Line 2023 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Mercedes-Benz GLS 450 4MATIC AMG Line 2023 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 3,
+  "fields": {
+    "inventory": 2,
+    "caption": "Land Rover Defender 110 P400 SE 2022 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Land Rover Defender 110 P400 SE 2022 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 4,
+  "fields": {
+    "inventory": 2,
+    "caption": "Land Rover Defender 110 P400 SE 2022 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Land Rover Defender 110 P400 SE 2022 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 5,
+  "fields": {
+    "inventory": 3,
+    "caption": "Toyota Land Cruiser 300 ZX Twin Turbo 2024 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Toyota Land Cruiser 300 ZX Twin Turbo 2024 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 6,
+  "fields": {
+    "inventory": 3,
+    "caption": "Toyota Land Cruiser 300 ZX Twin Turbo 2024 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Toyota Land Cruiser 300 ZX Twin Turbo 2024 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 7,
+  "fields": {
+    "inventory": 4,
+    "caption": "BMW X7 xDrive40i M Sport 2023 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "BMW X7 xDrive40i M Sport 2023 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 8,
+  "fields": {
+    "inventory": 4,
+    "caption": "BMW X7 xDrive40i M Sport 2023 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "BMW X7 xDrive40i M Sport 2023 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 9,
+  "fields": {
+    "inventory": 5,
+    "caption": "Porsche Cayenne GTS Coupe 2022 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Porsche Cayenne GTS Coupe 2022 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 10,
+  "fields": {
+    "inventory": 5,
+    "caption": "Porsche Cayenne GTS Coupe 2022 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Porsche Cayenne GTS Coupe 2022 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 11,
+  "fields": {
+    "inventory": 6,
+    "caption": "Audi Q8 55 TFSI quattro S Line 2021 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Audi Q8 55 TFSI quattro S Line 2021 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 12,
+  "fields": {
+    "inventory": 6,
+    "caption": "Audi Q8 55 TFSI quattro S Line 2021 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Audi Q8 55 TFSI quattro S Line 2021 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 13,
+  "fields": {
+    "inventory": 7,
+    "caption": "Lexus LX 600 VIP 4-Seater 2023 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Lexus LX 600 VIP 4-Seater 2023 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 14,
+  "fields": {
+    "inventory": 7,
+    "caption": "Lexus LX 600 VIP 4-Seater 2023 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Lexus LX 600 VIP 4-Seater 2023 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 15,
+  "fields": {
+    "inventory": 8,
+    "caption": "Mercedes-Benz GLE 450 4MATIC 2022 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Mercedes-Benz GLE 450 4MATIC 2022 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 16,
+  "fields": {
+    "inventory": 8,
+    "caption": "Mercedes-Benz GLE 450 4MATIC 2022 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Mercedes-Benz GLE 450 4MATIC 2022 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 17,
+  "fields": {
+    "inventory": 9,
+    "caption": "BMW 530e M Sport Plug-in Hybrid 2022 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "BMW 530e M Sport Plug-in Hybrid 2022 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 18,
+  "fields": {
+    "inventory": 9,
+    "caption": "BMW 530e M Sport Plug-in Hybrid 2022 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "BMW 530e M Sport Plug-in Hybrid 2022 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 19,
+  "fields": {
+    "inventory": 10,
+    "caption": "Porsche Panamera 4 E-Hybrid Executive 2021 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Porsche Panamera 4 E-Hybrid Executive 2021 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 20,
+  "fields": {
+    "inventory": 10,
+    "caption": "Porsche Panamera 4 E-Hybrid Executive 2021 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Porsche Panamera 4 E-Hybrid Executive 2021 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 21,
+  "fields": {
+    "inventory": 11,
+    "caption": "Toyota Harrier Hybrid Z Leather Package 2022 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Toyota Harrier Hybrid Z Leather Package 2022 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 22,
+  "fields": {
+    "inventory": 11,
+    "caption": "Toyota Harrier Hybrid Z Leather Package 2022 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Toyota Harrier Hybrid Z Leather Package 2022 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 23,
+  "fields": {
+    "inventory": 12,
+    "caption": "Mercedes-Benz CLA 200 AMG Line 2023 - Front Angle View",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Mercedes-Benz CLA 200 AMG Line 2023 Front Exterior",
+    "order": 1
+  }
+},
+{
+  "model": "inventory.inventoryimage",
+  "pk": 24,
+  "fields": {
+    "inventory": 12,
+    "caption": "Mercedes-Benz CLA 200 AMG Line 2023 - Luxury Interior Cabin",
+    "image": "images/2026-10-21/test_logo-2026-10-21-16-45-42.png",
+    "alt_text": "Mercedes-Benz CLA 200 AMG Line 2023 Cockpit and Leather Seats",
+    "order": 2
+  }
+},
+{
+  "model": "inventory.stock",
+  "pk": 6,
+  "fields": {
+    "created_at": "2026-10-21T16:00:21.904Z",
+    "updated_at": "2026-10-21T16:00:21.905Z",
+    "title": "Mercedes-Benz GLS 450 AMG Night Package 2023",
+    "image": "",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.stock",
+  "pk": 7,
+  "fields": {
+    "created_at": "2026-10-21T16:00:21.911Z",
+    "updated_at": "2026-10-21T16:00:21.911Z",
+    "title": "BMW X7 xDrive40i Pure Excellence 2023",
+    "image": "",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.stock",
+  "pk": 8,
+  "fields": {
+    "created_at": "2026-10-21T16:00:21.915Z",
+    "updated_at": "2026-10-21T16:00:21.915Z",
+    "title": "Porsche Cayenne GTS Twin Turbo 2022",
+    "image": "",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.stock",
+  "pk": 9,
+  "fields": {
+    "created_at": "2026-10-21T16:00:21.918Z",
+    "updated_at": "2026-10-21T16:00:21.918Z",
+    "title": "Toyota Land Cruiser 300 ZX Pearl White 2024",
+    "image": "",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.stock",
+  "pk": 10,
+  "fields": {
+    "created_at": "2026-10-21T16:00:21.924Z",
+    "updated_at": "2026-10-21T16:00:21.924Z",
+    "title": "Land Rover Defender 110 P400 SE 2022",
+    "image": "",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.stock",
+  "pk": 11,
+  "fields": {
+    "created_at": "2026-10-21T16:00:21.929Z",
+    "updated_at": "2026-10-21T16:00:21.929Z",
+    "title": "Audi Q8 55 TFSI quattro Mythos Black 2021",
+    "image": "",
+    "status": "PUBLISHED"
+  }
+},
+{
+  "model": "inventory.inventoryquote",
+  "pk": 1,
+  "fields": {
+    "created_at": "2026-10-21T16:00:58.673Z",
+    "updated_at": "2026-10-21T16:00:58.673Z",
+    "car": 1,
+    "name": "Zubair Al Mamun",
+    "email": "zubair.mamun@gmail.com",
+    "phone": "+8801712345678"
+  }
+}
+]

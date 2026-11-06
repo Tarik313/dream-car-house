@@ -1,0 +1,8 @@
+app,model,table,field,upload_to,expected_dir
+home,Slider,tbl_video,image,images_path_dir,media_root/media/images/YYYY-MM-DD/<filename>-YYYY-MM-DD-HH-MM-SS.<ext>
+home,PeopleTalkAboutUs,tbl_people_talk,image,images_path_dir,media_root/media/images/YYYY-MM-DD/<filename>-YYYY-MM-DD-HH-MM-SS.<ext>
+home,SellYourCarImages,tbl_sell_your_cars_images,image,images_path_dir,media_root/media/images/YYYY-MM-DD/<filename>-YYYY-MM-DD-HH-MM-SS.<ext>
+inventory,Brand,tbl_brand,image,images_path_dir,media_root/media/images/YYYY-MM-DD/<filename>-YYYY-MM-DD-HH-MM-SS.<ext>
+inventory,Inventory,tbl_inventories,feature_image,images_path_dir,media_root/media/images/YYYY-MM-DD/<filename>-YYYY-MM-DD-HH-MM-SS.<ext>
+inventory,InventoryImage,tbl_inventory_images,image,images_path_dir,media_root/media/images/YYYY-MM-DD/<filename>-YYYY-MM-DD-HH-MM-SS.<ext>
+inventory,Stock,tbl_stocks,image,images_path_dir,media_root/media/images/YYYY-MM-DD/<filename>-YYYY-MM-DD-HH-MM-SS.<ext>
