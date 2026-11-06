@@ -350,3 +350,6 @@ logging.config.dictConfig(LOGGING)
 NEXT_REVALIDATE_URL = "http://127.0.0.1:3000/api/revalidate"
 REVALIDATE_SECRET = "beg2025secret"
 
+APPEND_SLASH = False
+
+

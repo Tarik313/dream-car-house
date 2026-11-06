@@ -1,159 +1,228 @@
 "use client";
 
 import React, { useState } from "react";
-import { SHOWROOM_BRANCHES, SHOWROOM } from "@/lib/showroomData";
+import { SHOWROOM_BRANCHES } from "@/lib/showroomData";
 import { useUI } from "@/lib/UIContext";
+import { parseShowroomHours } from "@/lib/utils/openingHours";
+import type { PublicShowroomBranch, PublicSiteSettings } from "@/lib/types";
 
 export default function ContactClient({
-  branches,
+  branches = [],
   settings,
 }: {
-  branches?: unknown;
-  settings?: unknown;
+  branches?: PublicShowroomBranch[];
+  settings?: PublicSiteSettings | null;
 } = {}) {
   const { openAppointmentModal } = useUI();
-  const [activeTab, setActiveTab] = useState<"kakrail" | "gulshan">("kakrail");
 
-  const kakrail = SHOWROOM_BRANCHES.kakrail;
-  const gulshan = SHOWROOM_BRANCHES.gulshan;
-  const currentBranch = SHOWROOM_BRANCHES[activeTab];
+  // Active Branch Selection
+  const defaultBranchId = branches[0]?.branch_id || "kakrail";
+  const [activeTab, setActiveTab] = useState<string>(defaultBranchId);
+
+  // Form State
+  const [name, setName] = useState("");
+  const [phone, setPhone] = useState("");
+  const [email, setEmail] = useState("");
+  const [topic, setTopic] = useState("BUYING");
+  const [preferredContact, setPreferredContact] = useState("WHATSAPP");
+  const [message, setMessage] = useState("");
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [submitSuccess, setSubmitSuccess] = useState(false);
+  const [submitError, setSubmitError] = useState("");
+
+  // Branch data resolution
+  const activeBranchList = branches && branches.length > 0 ? branches : [
+    {
+      id: 1,
+      branch_id: "kakrail",
+      name: SHOWROOM_BRANCHES.kakrail.name,
+      short_name: SHOWROOM_BRANCHES.kakrail.short_name,
+      tag: "MAIN FLAGSHIP SHOWROOM",
+      address: SHOWROOM_BRANCHES.kakrail.address,
+      phone: SHOWROOM_BRANCHES.kakrail.phone,
+      hotline: SHOWROOM_BRANCHES.kakrail.phone,
+      email: "dreamcarhouse101@gmail.com",
+      hours: SHOWROOM_BRANCHES.kakrail.hours,
+      embed_map: SHOWROOM_BRANCHES.kakrail.embed_map,
+      map_link: SHOWROOM_BRANCHES.kakrail.map_link,
+      order: 1,
+      status: "PUBLISHED",
+    },
+    {
+      id: 2,
+      branch_id: "gulshan",
+      name: SHOWROOM_BRANCHES.gulshan.name,
+      short_name: SHOWROOM_BRANCHES.gulshan.short_name,
+      tag: "GULSHAN AVENUE ATELIER",
+      address: SHOWROOM_BRANCHES.gulshan.address,
+      phone: SHOWROOM_BRANCHES.gulshan.phone,
+      hotline: SHOWROOM_BRANCHES.gulshan.phone,
+      email: "dreamcarhouse101@gmail.com",
+      hours: SHOWROOM_BRANCHES.gulshan.hours,
+      embed_map: SHOWROOM_BRANCHES.gulshan.embed_map,
+      map_link: SHOWROOM_BRANCHES.gulshan.map_link,
+      order: 2,
+      status: "PUBLISHED",
+    },
+  ];
+
+  const currentBranch =
+    activeBranchList.find((b) => b.branch_id === activeTab) || activeBranchList[0];
+
+  // Dynamic hours status
+  const hoursText =
+    currentBranch.hours ||
+    settings?.opening_hours_text ||
+    "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
+  const hoursState = parseShowroomHours(hoursText);
+
+  // Settings values
+  const corporateHotline = settings?.hotline || settings?.phone || "01615-121312";
+  const corporateEmail = settings?.email || "dreamcarhouse101@gmail.com";
+  const corporateWhatsapp = settings?.whatsapp || "8801615121312";
+
+  let cleanWa = corporateWhatsapp.replace(/[^0-9]/g, "");
+  if (cleanWa.startsWith("0")) cleanWa = "88" + cleanWa;
+  if (!cleanWa.startsWith("880") && cleanWa.length === 10) cleanWa = "880" + cleanWa;
+
+  const waUrl = `https://wa.me/${cleanWa}?text=${encodeURIComponent(
+    "Hello DREAM CAR HOUSE, I am inquiring about a luxury vehicle consultation."
+  )}`;
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone || !message) {
+      setSubmitError("Please fill in your name, phone number, and message.");
+      return;
+    }
+
+    setIsSubmitting(true);
+    setSubmitError("");
+
+    try {
+      const res = await fetch("/api/v1/home/contact/", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          phone,
+          email,
+          topic,
+          preferred_contact: preferredContact,
+          enquiry: message,
+          vehicle: `${currentBranch.name} Inquiry`,
+        }),
+      });
+
+      if (res.ok) {
+        setSubmitSuccess(true);
+        setName("");
+        setPhone("");
+        setEmail("");
+        setMessage("");
+      } else {
+        const data = await res.json().catch(() => ({}));
+        setSubmitError(data?.detail || "Failed to submit message. Please try again or WhatsApp us directly.");
+      }
+    } catch {
+      setSubmitError("Network connection error. Please contact us via WhatsApp directly.");
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <div className="inventory-page-wrap max-w-7xl">
       <div className="contact-page-container">
         {/* Page Header */}
         <div className="contact-header-wrap">
-          <span className="contact-eyebrow-badge">
-            OFFICIAL SHOWROOM DIRECTORY
-          </span>
-          <h1 className="contact-page-title">
-            Contact & Showroom Locations
-          </h1>
+          <span className="contact-eyebrow-badge">OFFICIAL SHOWROOM DIRECTORY</span>
+          <h1 className="contact-page-title">Contact & Showroom Locations</h1>
           <p className="contact-page-sub">
             Visit our state-of-the-art luxury showrooms or connect directly with our VIP executive sales concierge across Kakrail & Gulshan.
           </p>
         </div>
 
-        {/* 2 Showroom Branch Cards Grid */}
+        {/* Dynamic Showroom Branch Cards Grid */}
         <div className="contact-branches-grid">
-          {/* Kakrail Branch Card */}
-          <div className={`contact-branch-card ${activeTab === "kakrail" ? "active" : ""}`}>
-            <div className="contact-card-top">
-              <span className="car-badge-pill pill-brandnew">
-                MAIN FLAGSHIP
-              </span>
-              <span className="contact-live-status">
-                <span className="contact-status-dot"></span>
-                <span>OPEN TODAY</span>
-              </span>
-            </div>
-            <h3 className="contact-branch-name">
-              {kakrail.name}
-            </h3>
-            <p className="contact-branch-addr">
-              {kakrail.address}
-            </p>
-            <div className="contact-meta-row">
-              <span className="contact-meta-label">Direct Hotline:</span>
-              <a href={`tel:${kakrail.phone}`} className="contact-meta-link">
-                {kakrail.phone}
-              </a>
-            </div>
-            <div className="contact-meta-row" style={{ marginBottom: "1.5rem" }}>
-              <span className="contact-meta-label">Showroom Hours:</span>
-              <span className="contact-meta-val">{kakrail.hours}</span>
-            </div>
-            <div className="contact-card-actions">
-              <button
-                type="button"
-                className="consult-primary-btn"
-                onClick={() => openAppointmentModal({ branchId: "kakrail" })}
-              >
-                <span>Book Kakrail Viewing</span>
-              </button>
-              <button
-                type="button"
-                className="gallery-btn-secondary"
-                onClick={() => setActiveTab("kakrail")}
-              >
-                View on Map
-              </button>
-            </div>
-          </div>
+          {activeBranchList.map((branch) => {
+            const isSelected = branch.branch_id === activeTab;
+            const branchHours = branch.hours || hoursText;
+            const branchState = parseShowroomHours(branchHours);
 
-          {/* Gulshan Branch Card */}
-          <div className={`contact-branch-card ${activeTab === "gulshan" ? "active" : ""}`}>
-            <div className="contact-card-top">
-              <span className="car-badge-pill pill-preowned">
-                GULSHAN AVENUE ATELIER
-              </span>
-              <span className="contact-live-status">
-                <span className="contact-status-dot"></span>
-                <span>OPEN TODAY</span>
-              </span>
-            </div>
-            <h3 className="contact-branch-name">
-              {gulshan.name}
-            </h3>
-            <p className="contact-branch-addr">
-              {gulshan.address}
-            </p>
-            <div className="contact-meta-row">
-              <span className="contact-meta-label">Direct Hotline:</span>
-              <a href={`tel:${gulshan.phone}`} className="contact-meta-link">
-                {gulshan.phone}
-              </a>
-            </div>
-            <div className="contact-meta-row" style={{ marginBottom: "1.5rem" }}>
-              <span className="contact-meta-label">Showroom Hours:</span>
-              <span className="contact-meta-val">{gulshan.hours}</span>
-            </div>
-            <div className="contact-card-actions">
-              <button
-                type="button"
-                className="consult-primary-btn"
-                onClick={() => openAppointmentModal({ branchId: "gulshan" })}
+            return (
+              <div
+                key={branch.id || branch.branch_id}
+                className={`contact-branch-card ${isSelected ? "active" : ""}`}
               >
-                <span>Book Gulshan Viewing</span>
-              </button>
-              <button
-                type="button"
-                className="gallery-btn-secondary"
-                onClick={() => setActiveTab("gulshan")}
-              >
-                View on Map
-              </button>
-            </div>
-          </div>
+                <div className="contact-card-top">
+                  <span className="car-badge-pill pill-brandnew">
+                    {branch.tag || "OFFICIAL SHOWROOM"}
+                  </span>
+                  <span className="contact-live-status">
+                    <span
+                      className="contact-status-dot"
+                      style={{
+                        background: branchState.isOpen ? "#10b981" : "#ef4444",
+                      }}
+                    ></span>
+                    <span>{branchState.isOpen ? "OPEN TODAY" : "CLOSED NOW"}</span>
+                  </span>
+                </div>
+                <h3 className="contact-branch-name">{branch.name}</h3>
+                <p className="contact-branch-addr">{branch.address}</p>
+                <div className="contact-meta-row">
+                  <span className="contact-meta-label">Direct Hotline:</span>
+                  <a href={`tel:${branch.phone}`} className="contact-meta-link">
+                    {branch.phone}
+                  </a>
+                </div>
+                <div className="contact-meta-row" style={{ marginBottom: "1.5rem" }}>
+                  <span className="contact-meta-label">Showroom Hours:</span>
+                  <span className="contact-meta-val">{branchHours}</span>
+                </div>
+                <div className="contact-card-actions">
+                  <button
+                    type="button"
+                    className="consult-primary-btn"
+                    onClick={() => openAppointmentModal({ branchId: branch.branch_id })}
+                  >
+                    <span>Book {branch.short_name || branch.name} Viewing</span>
+                  </button>
+                  <button
+                    type="button"
+                    className="gallery-btn-secondary"
+                    onClick={() => setActiveTab(branch.branch_id)}
+                  >
+                    View on Map
+                  </button>
+                </div>
+              </div>
+            );
+          })}
         </div>
 
         {/* Interactive Google Map Section */}
         <div className="contact-map-card">
           <div className="contact-map-header">
-            <h3 className="contact-map-title">
-              Live Map: {currentBranch.name}
-            </h3>
+            <h3 className="contact-map-title">Live Map: {currentBranch.name}</h3>
             <div className="footer-branch-tabs" style={{ margin: 0 }}>
-              <button
-                type="button"
-                className={`footer-branch-tab ${activeTab === "kakrail" ? "active" : ""}`}
-                onClick={() => setActiveTab("kakrail")}
-              >
-                Kakrail Branch
-              </button>
-              <button
-                type="button"
-                className={`footer-branch-tab ${activeTab === "gulshan" ? "active" : ""}`}
-                onClick={() => setActiveTab("gulshan")}
-              >
-                Gulshan Branch
-              </button>
+              {activeBranchList.map((b) => (
+                <button
+                  key={b.branch_id}
+                  type="button"
+                  className={`footer-branch-tab ${activeTab === b.branch_id ? "active" : ""}`}
+                  onClick={() => setActiveTab(b.branch_id)}
+                >
+                  {b.short_name || b.name}
+                </button>
+              ))}
             </div>
           </div>
 
           <div className="map-embed-wrapper-modern" style={{ height: "400px" }}>
             <iframe
-              src={currentBranch.embed_map}
+              src={currentBranch.embed_map || "https://maps.google.com"}
               loading="lazy"
               title={`DREAM CAR HOUSE Location - ${currentBranch.name}`}
               allowFullScreen
@@ -161,36 +230,34 @@ export default function ContactClient({
           </div>
 
           <div className="contact-map-footer">
-            <span className="contact-map-addr-text">
-              {currentBranch.address}
-            </span>
-            <a
-              href={currentBranch.map_link}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="map-directions-btn"
-            >
-              <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                <polygon points="3 11 22 2 13 21 11 13 3 11" />
-              </svg>
-              <span>Get Live Directions</span>
-            </a>
+            <span className="contact-map-addr-text">{currentBranch.address}</span>
+            {currentBranch.map_link && (
+              <a
+                href={currentBranch.map_link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="map-directions-btn"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                </svg>
+                <span>Get Live Directions</span>
+              </a>
+            )}
           </div>
         </div>
 
         {/* Global WhatsApp & Hotline Direct Contact Banner */}
         <div className="contact-banner-card">
           <div className="contact-banner-info">
-            <h3 className="contact-banner-title">
-              Connect with Corporate VIP Concierge
-            </h3>
+            <h3 className="contact-banner-title">Connect with Corporate VIP Concierge</h3>
             <p className="contact-banner-desc">
-              Official Hotline: <strong>01615-121312</strong> • Email: <strong>dreamcarhouse101@gmail.com</strong>
+              Official Hotline: <strong>{corporateHotline}</strong> • Email: <strong>{corporateEmail}</strong>
             </p>
           </div>
 
           <a
-            href="https://wa.me/8801615121312?text=Hello%20DREAM%20CAR%20HOUSE,%20I%20am%20inquiring%20about%20a%20luxury%20vehicle%20at%20your%20Dhaka%20showroom."
+            href={waUrl}
             target="_blank"
             rel="noopener noreferrer"
             className="consult-whatsapp-btn"
@@ -201,6 +268,117 @@ export default function ContactClient({
             </svg>
             <span>Chat on WhatsApp</span>
           </a>
+        </div>
+
+        {/* Direct Concierge Message Form */}
+        <div className="contact-form-card" style={{ marginTop: "2rem", padding: "2.5rem", background: "rgba(18, 22, 30, 0.7)", border: "1px solid rgba(255, 255, 255, 0.08)", borderRadius: "16px" }}>
+          <h3 style={{ fontSize: "1.5rem", fontWeight: 700, marginBottom: "0.5rem", color: "#ffffff" }}>
+            Send a Confidential Message
+          </h3>
+          <p style={{ color: "#94a3b8", marginBottom: "1.5rem", fontSize: "0.95rem" }}>
+            Our VIP sales directors respond promptly to vehicle acquisitions, custom imports, and valuation inquiries.
+          </p>
+
+          {submitSuccess ? (
+            <div style={{ padding: "1.5rem", background: "rgba(16, 185, 129, 0.12)", border: "1px solid rgba(16, 185, 129, 0.4)", borderRadius: "12px", color: "#10b981" }}>
+              <h4 style={{ fontWeight: 700, marginBottom: "0.25rem" }}>Inquiry Received Successfully</h4>
+              <p style={{ fontSize: "0.9rem" }}>Thank you. A dedicated automotive curator from DREAM CAR HOUSE will contact you shortly.</p>
+            </div>
+          ) : (
+            <form onSubmit={handleSubmit} style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1.25rem" }}>
+              <div>
+                <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.5rem" }}>
+                  Your Full Name *
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="e.g. Tariq Ahmed"
+                  className="filter-search-input"
+                  style={{ width: "100%", padding: "0.75rem 1rem", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", color: "#ffffff" }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.5rem" }}>
+                  Direct Phone Number *
+                </label>
+                <input
+                  type="tel"
+                  required
+                  value={phone}
+                  onChange={(e) => setPhone(e.target.value)}
+                  placeholder="017XX-XXXXXX"
+                  className="filter-search-input"
+                  style={{ width: "100%", padding: "0.75rem 1rem", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", color: "#ffffff" }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.5rem" }}>
+                  Email Address
+                </label>
+                <input
+                  type="email"
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="name@example.com"
+                  className="filter-search-input"
+                  style={{ width: "100%", padding: "0.75rem 1rem", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", color: "#ffffff" }}
+                />
+              </div>
+
+              <div>
+                <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.5rem" }}>
+                  Area of Interest
+                </label>
+                <select
+                  value={topic}
+                  onChange={(e) => setTopic(e.target.value)}
+                  className="filter-select"
+                  style={{ width: "100%", padding: "0.75rem 1rem", background: "#0b0f17", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", color: "#ffffff" }}
+                >
+                  <option value="BUYING">Buying a Luxury Vehicle</option>
+                  <option value="SELLING">Selling or Trading My Car</option>
+                  <option value="AFTER_SALES">After-Sales & Warranty Service</option>
+                  <option value="OTHER">Other VIP Corporate Inquiry</option>
+                </select>
+              </div>
+
+              <div style={{ gridColumn: "1 / -1" }}>
+                <label style={{ display: "block", fontSize: "0.85rem", fontWeight: 600, color: "#cbd5e1", marginBottom: "0.5rem" }}>
+                  Your Message or Vehicle of Interest *
+                </label>
+                <textarea
+                  required
+                  rows={4}
+                  value={message}
+                  onChange={(e) => setMessage(e.target.value)}
+                  placeholder="Describe the vehicle you are interested in or any specific inquiry..."
+                  style={{ width: "100%", padding: "0.75rem 1rem", background: "rgba(0,0,0,0.4)", border: "1px solid rgba(255,255,255,0.12)", borderRadius: "8px", color: "#ffffff", resize: "vertical" }}
+                />
+              </div>
+
+              {submitError && (
+                <div style={{ gridColumn: "1 / -1", color: "#ef4444", fontSize: "0.9rem" }}>
+                  {submitError}
+                </div>
+              )}
+
+              <div style={{ gridColumn: "1 / -1", display: "flex", justifyContent: "flex-end" }}>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="consult-primary-btn"
+                  style={{ padding: "0.85rem 2rem", opacity: isSubmitting ? 0.7 : 1 }}
+                >
+                  <span>{isSubmitting ? "Submitting..." : "Send Confidential Message"}</span>
+                </button>
+              </div>
+            </form>
+          )}
         </div>
       </div>
     </div>
