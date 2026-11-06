@@ -125,6 +125,55 @@ function InventoryContent({
   const [tempPriceRange, setTempPriceRange] = useState<[number, number]>(initialRange);
   const [isPriceOpen, setIsPriceOpen] = useState(false);
   const popoverRef = useRef<HTMLDivElement>(null);
+  const cardRef = useRef<HTMLDivElement>(null);
+
+  // Dynamic screen boundary protection so price popover never bleeds offscreen
+  useEffect(() => {
+    if (!isPriceOpen || !cardRef.current || !popoverRef.current) return;
+
+    const adjustPosition = () => {
+      const card = cardRef.current;
+      const container = popoverRef.current;
+      if (!card || !container) return;
+
+      const vw = window.innerWidth;
+
+      if (vw <= 640) {
+        card.style.left = "0px";
+        card.style.right = "0px";
+        card.style.width = "100%";
+        card.style.maxWidth = "100%";
+        return;
+      }
+
+      card.style.width = "380px";
+      card.style.maxWidth = "calc(100vw - 32px)";
+
+      const containerRect = container.getBoundingClientRect();
+      const cardWidth = Math.min(380, vw - 32);
+
+      const spaceOnRight = vw - containerRect.left;
+      const spaceOnLeft = containerRect.right;
+
+      if (spaceOnRight < cardWidth + 16 && spaceOnLeft >= cardWidth + 16) {
+        card.style.right = "0px";
+        card.style.left = "auto";
+      } else if (spaceOnLeft < cardWidth + 16 && spaceOnRight >= cardWidth + 16) {
+        card.style.left = "0px";
+        card.style.right = "auto";
+      } else {
+        card.style.right = "0px";
+        card.style.left = "auto";
+      }
+    };
+
+    const timer = setTimeout(adjustPosition, 10);
+    window.addEventListener("resize", adjustPosition);
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener("resize", adjustPosition);
+    };
+  }, [isPriceOpen]);
 
   const allVehicles = useMemo(() => {
     if (
@@ -398,7 +447,12 @@ function InventoryContent({
 
           {/* Luxury Dropdown Popover */}
           {isPriceOpen && (
-            <div className="price-popover-card" role="dialog" aria-label="Price range filter">
+            <div
+              ref={cardRef}
+              className="price-popover-card"
+              role="dialog"
+              aria-label="Price range filter"
+            >
               {/* Popover Header */}
               <div className="price-popover-head">
                 <span className="price-popover-label">BUDGET & PRICE RANGE</span>
