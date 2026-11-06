@@ -1,7 +1,7 @@
 # DREAM CAR HOUSE - MANDATORY ARCHITECTURAL RULES & GUIDELINES
 
 > [!IMPORTANT]
-> The following rules are mandatory and must be strictly followed for all development, feature implementations, and bug fixes across the Dream Car House project.
+> The following rules are mandatory and must be strictly followed for all development, feature implementations, bug fixes, and maintenance across the Dream Car House project.
 
 ---
 
@@ -15,7 +15,7 @@
 ## 2. STRICT DYNAMIC DATA FROM BACKEND APIS (NO FALLBACK OR STATIC DATA)
 - **Zero Static Mock Data:** All data—including vehicles, showroom stories, site identity, audio/sound settings, banners, brands, testimonials, and contact details—must be fetched dynamically via SSR from the Django REST API backend.
 - **No Hardcoded Mock Arrays:** Never leave static placeholder arrays or mock JSON in the frontend. If a required field, configuration, or model does not exist in the backend, implement it in the backend first.
-- **Single Source of Truth:** The PostgreSQL/SQLite Django database is the authoritative source for all content displayed on both the website and dashboard.
+- **Single Source of Truth:** The Django REST API backend and database is the sole authoritative source for all content displayed on both the website and dashboard.
 
 ---
 
@@ -40,7 +40,7 @@ Whenever implementing a new feature or modifying an existing one, strictly follo
 ---
 
 ## 5. CODE HYGIENE & DUPLICATION PREVENTION
-- **Prevent Duplicate Models/Content:** Always check existing models in `apps/home`, `apps/dealership`, and `apps/dashboard_api` before creating new ones. Never duplicate database tables or serializer representations.
+- **Prevent Duplicate Models/Content:** Always check existing models in `apps/home`, `apps/dealership`, `apps/inventory`, and `apps/dashboard_api` before creating new ones. Never duplicate database tables or serializer representations.
 - **Clean Organization:** Keep directory structure clean and modular. Preserve separation of concerns between API contracts, dashboard management, and public storefront presentation.
 - **Field Consistency:** Ensure field names and data types match 100% across Django models, DRF serializers, TypeScript interfaces, and form inputs.
 
@@ -52,3 +52,11 @@ Whenever implementing a new feature or modifying an existing one, strictly follo
   - Dashboard form submission and database persistence.
   - Frontend website SSR rendering and browser client behavior.
 - **Zero Tolerances for Mismatches:** Inspect and resolve any TypeScript errors, missing prop warnings, or payload mismatches before considering any task done.
+
+---
+
+## 7. GIT WORKFLOW & REMOTE SYNC (TARIK313)
+- **Parent Remote:** Remote origin points to `https://github.com/Tarik313/dream-car-house.git`.
+- **Direct & Valid Commits:** Use clear, descriptive, conventional commit messages.
+- **No Unnecessary Branches:** No need to create multiple temporary branches for standard tasks unless explicitly instructed.
+- **Permanent Push:** When a feature or correction is permanently completed and verified across all 3 steps, commit cleanly and push directly to the parent remote repository (`main` branch) for `Tarik313`.
