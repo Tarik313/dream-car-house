@@ -46,9 +46,19 @@ export default function PreferenceSection({
       <div className="luxury-container px-4 sm:px-6 lg:px-8">
         <div className="preference-header-wrap">
         <div>
+          {sectionData?.badge && (
+            <span className="preference-badge" style={{ marginBottom: "0.5rem", display: "inline-block" }}>
+              {sectionData.badge}
+            </span>
+          )}
           <h2 className="section-h2" style={{ margin: 0 }}>
             {headingText}
           </h2>
+          {sectionData?.subtext && (
+            <p style={{ color: "#94a3b8", fontSize: "0.92rem", marginTop: "0.4rem", marginBottom: 0, maxWidth: "36rem" }}>
+              {sectionData.subtext}
+            </p>
+          )}
         </div>
 
         {/* Segment Switcher Controller */}
