@@ -169,6 +169,10 @@ export default function VehicleDetailClient({
       };
 
   const isBrandNew = car.car_type === "BRAND_NEW";
+  const isElectric = Boolean(
+    (car.fuel_type && car.fuel_type.toUpperCase().includes("ELECTRIC")) ||
+    (car.engine_capacity && (car.engine_capacity.toLowerCase().includes("kwh") || car.engine_capacity.toLowerCase().includes("electric")))
+  );
   const displayPrice = formatPriceString(car.price, car.is_call_for_price);
 
   const handleExpandToCinema = (indexToOpen?: number) => {
@@ -409,7 +413,7 @@ export default function VehicleDetailClient({
       {/* Quick Specifications Bar (Clean, Minimal, No Captions) */}
       <div className="dch-quick-stats-row">
         <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">ENGINE DISPLACEMENT</span>
+          <span className="dch-stat-label">{isElectric ? "BATTERY CAPACITY" : "ENGINE DISPLACEMENT"}</span>
           <span className="dch-stat-val">{car.engine_capacity || "—"}</span>
         </div>
 
@@ -479,7 +483,7 @@ export default function VehicleDetailClient({
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">ENGINE DISPLACEMENT</span>
+                  <span className="spec-label">{isElectric ? "BATTERY CAPACITY" : "ENGINE DISPLACEMENT"}</span>
                   <span className="spec-value">{car.engine_capacity || "—"}</span>
                 </div>
 

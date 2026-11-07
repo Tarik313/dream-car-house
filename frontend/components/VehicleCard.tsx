@@ -49,6 +49,13 @@ export default function VehicleCard({ car }: VehicleCardProps) {
 
   const carSlug = car.slug || String(car.id);
 
+  const isElectric =
+    Boolean(
+      (car.fuel_type && car.fuel_type.toUpperCase().includes("ELECTRIC")) ||
+      (car.engine_capacity && (car.engine_capacity.toLowerCase().includes("kwh") || car.engine_capacity.toLowerCase().includes("electric")))
+    );
+  const engineLabel = isElectric ? "Battery" : "Engine";
+
   return (
     <article className="pref-car-card group">
       <Link
@@ -97,7 +104,7 @@ export default function VehicleCard({ car }: VehicleCardProps) {
           {/* Minimalist 3-Column Specs Pod with Clean Headings */}
           <div className="pref-specs-row">
             <div className="pref-spec-item">
-              <span className="pref-spec-label">Engine</span>
+              <span className="pref-spec-label">{engineLabel}</span>
               <span className="pref-spec-val" title={car.engine_capacity || "—"}>
                 {car.engine_capacity || "—"}
               </span>

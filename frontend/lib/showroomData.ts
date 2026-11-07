@@ -136,13 +136,13 @@ export interface Vehicle {
 export const VEHICLE_DATA: Vehicle[] = [
   {
     id: 1,
-    name: "Mercedes-Benz G 580",
+    name: "Mercedes-Benz G 580 with EQ Technology",
     brand: "Mercedes-Benz",
     model: "G 580",
     year: 2025,
     car_type: "BRAND_NEW",
     fuel_type: "Electric",
-    engine_capacity: "116 kWh EQ Technology",
+    engine_capacity: "116 kWh",
     mileage: "Brand New (00 km)",
     price: "Call for Price",
     registered: "Available",
