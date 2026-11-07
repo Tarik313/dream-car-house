@@ -55,8 +55,6 @@ export default function VehicleCard({ car }: VehicleCardProps) {
       (car.engine_capacity && (car.engine_capacity.toLowerCase().includes("kwh") || car.engine_capacity.toLowerCase().includes("electric")))
     );
   const engineLabel = isElectric ? "Battery" : "Engine";
-  const isG580 = car.name.toLowerCase().includes("g 580") || (car.model && car.model.toLowerCase().includes("g 580"));
-  const techBadge = isG580 ? "EQ Technology" : null;
 
   return (
     <article className="pref-car-card group">
@@ -98,15 +96,9 @@ export default function VehicleCard({ car }: VehicleCardProps) {
             {car.name}
           </h3>
 
-          {/* Model Year & Architecture */}
+          {/* Model Year */}
           <p className="pref-car-meta">
-            <span>{car.year}</span>
-            {techBadge && (
-              <>
-                <span style={{ margin: "0 0.35rem", opacity: 0.4 }}>•</span>
-                <span style={{ color: "#38bdf8", fontWeight: 600 }}>{techBadge}</span>
-              </>
-            )}
+            {car.year}
           </p>
 
           {/* Minimalist 3-Column Specs Pod with Clean Headings */}
