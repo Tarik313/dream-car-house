@@ -1,19 +1,52 @@
+# ========================================================
+# DREAM CAR HOUSE - Git Ignore Specification
+# ========================================================
+
+# Environment Variables & Secrets (NEVER COMMIT)
+.env
+.env.*
+!.env.production.example
+!.env.example
+*.env
+*.env.*
+begautos/.env
+frontend/.env*
+!frontend/.env.example
+dashboard/.env*
+!dashboard/.env.example
+backend/.env*
+!backend/.env.example
+
+# Local SQLite Databases
+*.sqlite3
+*.db
+backend/db.sqlite3
+
+# Media, Uploads & Assets
 backend/media_root/
+backend/media/
 backend/images/
 images/
-backend/db.sqlite3
+media/
+
+# Database Dumps, Fixtures & Backups
+backend/sqlite_backup.json
+*_backup.json
+*.sql
+*.dump
+*dump*.json
+datadump.json
+
+# Python artifacts
 *.pyc
 __pycache__/
 
-frontend/.env
-frontend/.env.local
+# Node.js artifacts
+node_modules/
+.next/
+*.tsbuildinfo
 
-dashboard/.next/
-dashboard/node_modules/
-dashboard/.env*
-!dashboard/.env.example
-dashboard/*.tsbuildinfo
-
+# Scratch & Temporary Logs
 LastPromptsOutput.txt
 scratch/
 */scratch/
