@@ -1,5 +1,6 @@
-from .base import *
 import os
+os.environ.setdefault("SECRET_KEY", "django-insecure-dev-only-local-dreamcarhouse-key-not-for-production")
+from .base import *
 
 DEBUG = True
 ALLOWED_HOSTS = ["*"]

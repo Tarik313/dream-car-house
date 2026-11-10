@@ -94,12 +94,14 @@ export async function loginAction(
     if (name === "csrftoken") csrftokenValue = val;
   }
 
-  const isProduction = process.env.NODE_ENV === "production";
+  // Use DASHBOARD_COOKIE_SECURE env var (default false) so login works over HTTP during first-boot testing.
+  // Set DASHBOARD_COOKIE_SECURE=true once HTTPS / SSL mode is activated.
+  const isCookieSecure = process.env.DASHBOARD_COOKIE_SECURE === "true";
 
   if (sessionidValue) {
     cookieStore.set("sessionid", sessionidValue, {
       httpOnly: true,
-      secure: isProduction,
+      secure: isCookieSecure,
       sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 14, // 14 days
@@ -110,7 +112,7 @@ export async function loginAction(
   if (csrfToSet) {
     cookieStore.set("csrftoken", csrfToSet, {
       httpOnly: false, // CSRF token needs to be readable for forms/headers
-      secure: isProduction,
+      secure: isCookieSecure,
       sameSite: "lax",
       path: "/",
       maxAge: 60 * 60 * 24 * 14,

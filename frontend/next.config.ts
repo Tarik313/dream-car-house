@@ -8,8 +8,8 @@ const nextConfig: NextConfig = {
   async rewrites() {
     const backendOrigin =
       process.env.INTERNAL_BACKEND_URL ||
-      process.env.NEXT_PUBLIC_BASE_URL ||
-      "http://127.0.0.1:8000";
+      process.env.BACKEND_API_ORIGIN ||
+      "http://backend:8000";
     const origin = backendOrigin.replace(/\/$/, "");
     return [
       {

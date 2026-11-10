@@ -1,24 +1,23 @@
 import type { NextConfig } from "next";
+
 const config: NextConfig = {
   output: "standalone",
   poweredByHeader: false,
+  assetPrefix: process.env.NODE_ENV === "production" ? "/_dashboard_next" : undefined,
   allowedDevOrigins: [
-    "192.168.10.143",
-    "192.168.10.225",
-    "192.168.10.143:3000",
-    "192.168.10.225:3000",
     "localhost:3000",
     "127.0.0.1:3000",
+    "localhost:3001",
+    "127.0.0.1:3001",
+    "localhost:3100",
+    "127.0.0.1:3100",
   ],
   experimental: {
     serverActions: {
+      bodySizeLimit: "50mb",
       allowedOrigins: [
-        "192.168.10.143:3000",
-        "192.168.10.225:3000",
-        "192.168.10.143",
-        "192.168.10.225",
-        "localhost:3000",
-        "127.0.0.1:3000",
+        "dreamcarhouse.com",
+        "www.dreamcarhouse.com",
       ],
     },
   },
@@ -31,4 +30,5 @@ const config: NextConfig = {
     ] }];
   },
 };
+
 export default config;

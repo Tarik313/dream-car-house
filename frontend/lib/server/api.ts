@@ -25,9 +25,8 @@ import type {
 export function getBackendOrigin(): string {
   const origin =
     process.env.INTERNAL_BACKEND_URL ||
-    process.env.NEXT_PUBLIC_BASE_URL ||
     process.env.BACKEND_API_ORIGIN ||
-    "http://127.0.0.1:8000";
+    "http://backend:8000";
 
   return origin.trim().replace(/\/$/, "");
 }
@@ -38,6 +37,8 @@ export const defaultSiteSettings: PublicSiteSettings = {
   tagline: "The Pinnacle of Luxury Automobiles",
   logo_text: "DREAM CAR HOUSE",
   logo_asset: "/assets/dream-car-house-logo.png",
+  logo: "/assets/dch-logo.webp",
+  logo_light: "/assets/dch-logo.webp",
   hotline: SHOWROOM.hotline,
   phone: SHOWROOM.phone,
   email: SHOWROOM.email,

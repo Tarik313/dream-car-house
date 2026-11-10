@@ -4,6 +4,7 @@ from rest_framework import serializers
 
 from base.models import BaseModel
 from core.mixins.image_optimization_mixins import OptimizedImageSerializerMixin
+from core.utils.media import build_media_url
 
 from apps.inventory.models import (
     Brand, ModelGeneration, BodyStyle, Inventory, InventoryImage, Stock, InventoryQuote
@@ -177,16 +178,14 @@ class InventoryDetailSerializer(serializers.ModelSerializer, OptimizedImageSeria
         # Build public page URL
         page_url = obj.canonical_url or ''
         if not page_url and obj.slug:
-            try:
-                page_url = self.context['request'].build_absolute_uri(f'/cars/{obj.slug}/')
-            except Exception:
-                page_url = f'https://dreamcarhouse.com/inventory/{obj.slug}/'
+            public_base = getattr(settings, 'PUBLIC_BASE_URL', '') or 'https://dreamcarhouse.com'
+            page_url = f"{public_base.rstrip('/')}/cars/{obj.slug}/"
 
         # Build feature image URL
         feature_image_url = ''
         if obj.feature_image:
             try:
-                feature_image_url = self.context['request'].build_absolute_uri(obj.feature_image.url)
+                feature_image_url = build_media_url(obj.feature_image.url)
             except Exception:
                 feature_image_url = ''
 
@@ -194,7 +193,7 @@ class InventoryDetailSerializer(serializers.ModelSerializer, OptimizedImageSeria
         gallery_urls = []
         for img in obj.inventory_images.all().order_by('order'):
             try:
-                gallery_urls.append(self.context['request'].build_absolute_uri(img.image.url))
+                gallery_urls.append(build_media_url(img.image.url))
             except Exception:
                 pass
 

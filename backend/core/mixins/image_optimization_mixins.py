@@ -4,6 +4,7 @@ import logging
 from django.conf import settings
 from PIL import Image
 from io import BytesIO
+from core.utils.media import build_media_url
 
 logger = logging.getLogger(__name__)
 
@@ -41,15 +42,15 @@ class OptimizedImageSerializerMixin:
             # Skip video and vector SVG files (serve as original)
             image_name_lower = image_field.name.lower()
             if any(image_name_lower.endswith(ext) for ext in ['.mp4', '.mov', '.avi', '.mkv', '.webm', '.svg']):
-                return request.build_absolute_uri(image_url)
+                return build_media_url(image_url)
 
             # Resolve local path (skip for remote/S3 storage)
             try:
                 image_path = image_field.path
                 if not os.path.exists(image_path):
-                    return request.build_absolute_uri(image_url)
+                    return build_media_url(image_url)
             except (AttributeError, ValueError):
-                return request.build_absolute_uri(image_url)
+                return build_media_url(image_url)
 
             # Always serve as WebP
             temp_dir = os.path.join(settings.MEDIA_ROOT, 'temp')
@@ -61,9 +62,7 @@ class OptimizedImageSerializerMixin:
             # Fast cache check
             if os.path.exists(temp_path):
                 if os.path.getmtime(temp_path) >= os.path.getmtime(image_path):
-                    return request.build_absolute_uri(
-                        f"/media/temp/{temp_filename}"
-                    )
+                    return build_media_url(f"/media/temp/{temp_filename}")
 
             # Open and process image
             with Image.open(image_path) as img:
@@ -136,9 +135,7 @@ class OptimizedImageSerializerMixin:
                     f"{final_size:.1f}KB (q={best_quality}, webp)"
                 )
 
-                return request.build_absolute_uri(
-                    f"/media/temp/{temp_filename}"
-                )
+                return build_media_url(f"/media/temp/{temp_filename}")
 
         except Exception as e:
             logger.error(
@@ -149,11 +146,6 @@ class OptimizedImageSerializerMixin:
 
         # Final fallback — return original
         try:
-            request = self.context.get('request')
-            return (
-                request.build_absolute_uri(image_field.url)
-                if request
-                else image_field.url
-            )
+            return build_media_url(image_field.url)
         except Exception:
             return None

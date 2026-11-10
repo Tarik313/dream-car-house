@@ -9,7 +9,6 @@
 !.env.example
 *.env
 *.env.*
-begautos/.env
 frontend/.env*
 !frontend/.env.example
 dashboard/.env*
@@ -26,12 +25,15 @@ backend/db.sqlite3
 backend/media_root/
 backend/media/
 backend/images/
+backend/static_root/
+static_root/
 images/
 media/
 
 # Database Dumps, Fixtures & Backups
 backend/sqlite_backup.json
 *_backup.json
+*backup*.json
 *.sql
 *.dump
 *dump*.json

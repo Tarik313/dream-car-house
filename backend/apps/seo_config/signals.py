@@ -6,8 +6,10 @@ import os
 
 @receiver(post_save, sender="seo_config.SEOConfig")
 def handle_seo_config_save(sender, instance, **kwargs):
-    NEXT_REVALIDATE_URL = getattr(settings, "NEXT_REVALIDATE_URL", "http://127.0.0.1:3000/api/revalidate")
-    REVALIDATE_SECRET = getattr(settings, "REVALIDATE_SECRET", "beg2025secret")
+    REVALIDATE_SECRET = getattr(settings, "REVALIDATE_SECRET", "")
+    if not REVALIDATE_SECRET:
+        return
+    NEXT_REVALIDATE_URL = getattr(settings, "NEXT_REVALIDATE_URL", "http://frontend:3000/api/revalidate")
     
     if instance.page == "home":
         path = "/"

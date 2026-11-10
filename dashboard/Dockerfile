@@ -5,6 +5,8 @@ RUN npm ci
 
 FROM node:22-bookworm-slim AS build
 WORKDIR /app
+ARG DASHBOARD_API_ORIGIN=http://backend:8000
+ENV DASHBOARD_API_ORIGIN=$DASHBOARD_API_ORIGIN
 ENV NEXT_TELEMETRY_DISABLED=1
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .

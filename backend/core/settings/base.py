@@ -13,12 +13,22 @@ PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 BASE_DIR = os.path.dirname(PROJECT_DIR)
 
 # SECURITY WARNING: keep the secret key used in production secret!
-# SECRET_KEY = os.environ.get("JTRO_SECRET_KEY")
-SECRET_KEY = "django-insecure-nf%y9rx%oz(-f4es0n0+%^v1s0c5w^ow4x_#p995kmktfxe6jw"
+SECRET_KEY = os.environ.get("SECRET_KEY") or os.environ.get("JTRO_SECRET_KEY")
+if not SECRET_KEY:
+    raise ValueError(
+        "CRITICAL SECURITY ERROR: SECRET_KEY or JTRO_SECRET_KEY environment variable is mandatory and missing."
+    )
 
 # SECURITY WARNING: define the correct hosts in production!
-# ALLOWED_HOSTS = os.environ.get('JTRO_ALLOWED_HOSTS').split(',')
-ALLOWED_HOSTS = ["*"]
+_allowed_hosts_env = os.environ.get("ALLOWED_HOSTS") or os.environ.get("JTRO_ALLOWED_HOSTS")
+if _allowed_hosts_env:
+    ALLOWED_HOSTS = [h.strip() for h in _allowed_hosts_env.split(",") if h.strip()]
+else:
+    if os.environ.get("DJANGO_SETTINGS_MODULE", "").endswith("production"):
+        raise ValueError(
+            "CRITICAL SECURITY ERROR: ALLOWED_HOSTS or JTRO_ALLOWED_HOSTS environment variable is mandatory and missing in production."
+        )
+    ALLOWED_HOSTS = ["*"]
 
 # Application definition
 INSTALLED_APPS = [
@@ -185,7 +195,23 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'core.wsgi.application'
 
-AUTH_PASSWORD_VALIDATORS = []
+AUTH_PASSWORD_VALIDATORS = [
+    {
+        'NAME': 'django.contrib.auth.password_validation.UserAttributeSimilarityValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.MinimumLengthValidator',
+        'OPTIONS': {
+            'min_length': 10,
+        }
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.CommonPasswordValidator',
+    },
+    {
+        'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
+    },
+]
 
 LANGUAGE_CODE = 'en-us'
 TIME_ZONE = 'Asia/Dhaka'
@@ -197,17 +223,26 @@ STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
 )
 
+_core_static_dir = os.path.join(PROJECT_DIR, "static")
 STATICFILES_DIRS = [
-    os.path.join(PROJECT_DIR, "static"),
-]
+    _core_static_dir,
+] if os.path.isdir(_core_static_dir) else []
 
-STATICFILES_STORAGE = "django.contrib.staticfiles.storage.StaticFilesStorage"
+STORAGES = {
+    "default": {
+        "BACKEND": "django.core.files.storage.FileSystemStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "django.contrib.staticfiles.storage.StaticFilesStorage",
+    },
+}
 
 STATIC_ROOT = os.path.join(BASE_DIR, "static_root", "static")
 STATIC_URL = "/static/"
 
 MEDIA_URL = "/media/"
 MEDIA_ROOT = os.path.join(BASE_DIR, "media_root", "media")
+PUBLIC_BASE_URL = (os.environ.get("PUBLIC_BASE_URL") or os.environ.get("NEXT_PUBLIC_BASE_URL") or "").rstrip("/")
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
@@ -304,30 +339,34 @@ JAZZMIN_UI_TWEAKS = {
 }
 
 # CORS CONFIG
-CORS_ORIGIN_ALLOW_ALL = True
+CORS_ORIGIN_ALLOW_ALL = False
+CORS_ALLOW_ALL_ORIGINS = False
 CORS_ALLOW_CREDENTIALS = True
-CORS_ALLOW_ALL_ORIGINS = True
 
 CORS_ALLOW_METHODS = (
     'GET','POST','PUT','DELETE','OPTIONS','PATCH',
 )
 
-CORS_ALLOWED_ORIGINS = [
-    "https://dreamcarhouse.com",
-    "https://www.dreamcarhouse.com",
-]
+_cors_origins_env = os.environ.get("CORS_ALLOWED_ORIGINS")
+if _cors_origins_env:
+    CORS_ALLOWED_ORIGINS = [o.strip() for o in _cors_origins_env.split(",") if o.strip()]
+else:
+    CORS_ALLOWED_ORIGINS = [
+        "https://dreamcarhouse.com",
+        "https://www.dreamcarhouse.com",
+    ]
 
-CORS_ORIGIN_WHITELIST = [
-    'https://dreamcarhouse.com',
-    'https://www.dreamcarhouse.com',
-]
+CORS_ORIGIN_WHITELIST = CORS_ALLOWED_ORIGINS
 
-CSRF_TRUSTED_ORIGINS = [
-    'https://author.dreamcarhouse.com',
-    'http://author.dreamcarhouse.com',
-    'https://dreamcarhouse.com',
-    'https://www.dreamcarhouse.com',
-]
+_csrf_origins_env = os.environ.get("CSRF_TRUSTED_ORIGINS")
+if _csrf_origins_env:
+    CSRF_TRUSTED_ORIGINS = [o.strip() for o in _csrf_origins_env.split(",") if o.strip()]
+else:
+    CSRF_TRUSTED_ORIGINS = [
+        'https://author.dreamcarhouse.com',
+        'https://dreamcarhouse.com',
+        'https://www.dreamcarhouse.com',
+    ]
 
 CORS_ALLOW_HEADERS = [
     'accept','accept-encoding','authorization','content-type','dnt',
@@ -347,8 +386,8 @@ DATA_UPLOAD_MAX_MEMORY_SIZE = 100 * 1024 * 1024
 
 logging.config.dictConfig(LOGGING)            
 
-NEXT_REVALIDATE_URL = "http://127.0.0.1:3000/api/revalidate"
-REVALIDATE_SECRET = "beg2025secret"
+NEXT_REVALIDATE_URL = os.environ.get("NEXT_REVALIDATE_URL", "http://frontend:3000/api/revalidate")
+REVALIDATE_SECRET = os.environ.get("REVALIDATE_SECRET", "")
 
 APPEND_SLASH = False
 

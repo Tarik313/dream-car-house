@@ -6,15 +6,14 @@ import requests
 
 @receiver(post_save, sender="inventory.Inventory")
 def handle_inventory_save(sender, instance, **kwargs):
+    REVALIDATE_SECRET = getattr(settings, "REVALIDATE_SECRET", "")
+    if not REVALIDATE_SECRET:
+        return
+
     NEXT_REVALIDATE_URL = getattr(
         settings,
         "NEXT_REVALIDATE_URL",
-        "http://127.0.0.1:3000/api/revalidate"
-    )
-    REVALIDATE_SECRET = getattr(
-        settings,
-        "REVALIDATE_SECRET",
-        "beg2025secret"
+        "http://frontend:3000/api/revalidate"
     )
 
     slug_path = f"/cars/{instance.slug}"
