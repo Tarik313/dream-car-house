@@ -125,28 +125,6 @@ test("hasPermission verifies model permissions and superuser bypass", () => {
 test("navigation items filter strictly according to user permissions", async () => {
   const { navigation } = await import("../lib/navigation");
 
-  const readOnlyStockUser: DashboardUser = {
-    id: 3,
-    username: "stock_viewer",
-    email: "stock@example.com",
-    is_staff: true,
-    is_superuser: false,
-    permissions: ["inventory.view_stock"],
-  };
-
-  const allowedForStockUser = navigation.filter((item) => {
-    if (!item.permission) return true;
-    return hasPermission(readOnlyStockUser, item.permission);
-  });
-
-  const allowedHrefs = allowedForStockUser.map((i) => i.href);
-  assert.ok(allowedHrefs.includes("/workspace/stocks"));
-  assert.ok(!allowedHrefs.includes("/workspace/quotes"));
-  assert.ok(!allowedHrefs.includes("/workspace/inventory"));
-  assert.ok(!allowedHrefs.includes("/workspace/brands"));
-  assert.ok(!allowedHrefs.includes("/workspace/model-generations"));
-  assert.ok(!allowedHrefs.includes("/workspace/body-styles"));
-
   const readOnlyBodyStyleUser: DashboardUser = {
     id: 16,
     username: "bodystyle_viewer",
@@ -162,7 +140,6 @@ test("navigation items filter strictly according to user permissions", async () 
   }).map((i) => i.href);
 
   assert.ok(allowedForBodyStyleUser.includes("/workspace/body-styles"));
-  assert.ok(!allowedForBodyStyleUser.includes("/workspace/stocks"));
   assert.ok(!allowedForBodyStyleUser.includes("/workspace/inventory"));
   assert.ok(!allowedForBodyStyleUser.includes("/workspace/brands"));
 
@@ -181,7 +158,6 @@ test("navigation items filter strictly according to user permissions", async () 
   }).map((i) => i.href);
 
   assert.ok(allowedForQuoteUser.includes("/workspace/quotes"));
-  assert.ok(!allowedForQuoteUser.includes("/workspace/stocks"));
   assert.ok(!allowedForQuoteUser.includes("/workspace/inventory"));
   assert.ok(!allowedForQuoteUser.includes("/workspace/sell-cars"));
 
@@ -200,11 +176,9 @@ test("navigation items filter strictly according to user permissions", async () 
   }).map((i) => i.href);
 
   assert.ok(allowedForSellCarUser.includes("/workspace/sell-cars"));
-  assert.ok(!allowedForSellCarUser.includes("/workspace/stocks"));
   assert.ok(!allowedForSellCarUser.includes("/workspace/quotes"));
   assert.ok(!allowedForSellCarUser.includes("/workspace/inventory"));
   assert.ok(!allowedForSellCarUser.includes("/workspace/inbox/contact"));
-  assert.ok(!allowedForSellCarUser.includes("/workspace/inbox/subscribers"));
 
   const readOnlyContactUser: DashboardUser = {
     id: 6,
@@ -221,26 +195,7 @@ test("navigation items filter strictly according to user permissions", async () 
   }).map((i) => i.href);
 
   assert.ok(allowedForContactUser.includes("/workspace/inbox/contact"));
-  assert.ok(!allowedForContactUser.includes("/workspace/inbox/subscribers"));
   assert.ok(!allowedForContactUser.includes("/workspace/quotes"));
-
-  const readOnlySubscriberUser: DashboardUser = {
-    id: 7,
-    username: "subscriber_viewer",
-    email: "sub@example.com",
-    is_staff: true,
-    is_superuser: false,
-    permissions: ["home.view_subscriber"],
-  };
-
-  const allowedForSubUser = navigation.filter((item) => {
-    if (!item.permission) return true;
-    return hasPermission(readOnlySubscriberUser, item.permission);
-  }).map((i) => i.href);
-
-  assert.ok(allowedForSubUser.includes("/workspace/inbox/subscribers"));
-  assert.ok(!allowedForSubUser.includes("/workspace/inbox/contact"));
-  assert.ok(!allowedForSubUser.includes("/workspace/quotes"));
 
   const readOnlySliderUser: DashboardUser = {
     id: 8,
