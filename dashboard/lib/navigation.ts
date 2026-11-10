@@ -6,11 +6,9 @@ export type NavigationItem = Readonly<{
     | "/workspace/brands"
     | "/workspace/model-generations"
     | "/workspace/body-styles"
-    | "/workspace/stocks"
     | "/workspace/quotes"
     | "/workspace/sell-cars"
     | "/workspace/inbox/contact"
-    | "/workspace/inbox/subscribers"
     | "/workspace/content/sliders"
     | "/workspace/content/stories"
     | "/workspace/content/preferences"
@@ -43,11 +41,9 @@ export const navigation: readonly NavigationItem[] = [
   { href: "/workspace/brands", label: "Brands", symbol: "ðŸ·ï¸", permission: "inventory.view_brand" },
   { href: "/workspace/model-generations", label: "Models", symbol: "ðŸš˜", permission: "inventory.view_modelgeneration" },
   { href: "/workspace/body-styles", label: "Body Styles", symbol: "ðŸš—", permission: "inventory.view_bodystyle" },
-  { href: "/workspace/stocks", label: "Stock Items", symbol: "ðŸ“¦", permission: "inventory.view_stock" },
   { href: "/workspace/quotes", label: "Customer Quotes", symbol: "ðŸ’¬", permission: "inventory.view_inventoryquote" },
   { href: "/workspace/sell-cars", label: "Sell Car Leads", symbol: "ðŸ¤", permission: "home.view_sellcar" },
   { href: "/workspace/inbox/contact", label: "Contact Inbox", symbol: "ðŸ“¬", permission: "home.view_contactmessage" },
-  { href: "/workspace/inbox/subscribers", label: "Subscribers", symbol: "ðŸ‘¥", permission: "home.view_subscriber" },
   { href: "/workspace/content/sliders", label: "Slider Videos", symbol: "ðŸŽ¬", permission: "home.view_slider" },
   { href: "/workspace/content/stories", label: "Showroom Stories", symbol: "ðŸ“±", permission: "home.view_showroomstory" },
   { href: "/workspace/content/preferences", label: "Preference Section", symbol: "âš™ï¸", permission: "home.view_preferencesection" },
@@ -75,11 +71,9 @@ export const allRoutes: Record<string, { label: string; symbol: string }> = {
   "/workspace/brands": { label: "Brands", symbol: "ðŸ·ï¸" },
   "/workspace/model-generations": { label: "Models", symbol: "ðŸš˜" },
   "/workspace/body-styles": { label: "Body Styles", symbol: "ðŸš—" },
-  "/workspace/stocks": { label: "Stock Items", symbol: "ðŸ“¦" },
   "/workspace/quotes": { label: "Customer Quotes", symbol: "ðŸ’¬" },
   "/workspace/sell-cars": { label: "Sell Car Leads", symbol: "ðŸ¤" },
   "/workspace/inbox/contact": { label: "Contact Inbox", symbol: "ðŸ“¬" },
-  "/workspace/inbox/subscribers": { label: "Subscribers", symbol: "ðŸ‘¥" },
   "/workspace/content/sliders": { label: "Slider Videos", symbol: "ðŸŽ¬" },
   "/workspace/content/stories": { label: "Showroom Stories", symbol: "ðŸ“±" },
   "/workspace/content/preferences": { label: "Preference Section", symbol: "âš™ï¸" },

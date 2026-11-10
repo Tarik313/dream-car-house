@@ -379,30 +379,25 @@ export function InventoryFormClient({
               />
             </FormField>
 
-            <FormField label="Inventory Type" error={fieldErrors.inventory_type}>
+            <FormField
+              label="Showroom Branch"
+              error={fieldErrors.branch}
+              description="Assigned showroom location (e.g. Kakrail, Gulshan)."
+            >
               <Select
-                name="inventory_type"
-                options={[
-                  { label: "Budget Friendly", value: "BUDGET FRIENDLY" },
-                  { label: "Luxury", value: "LUXURY" },
-                ]}
-                defaultValue={initialCar?.inventory_type || "BUDGET FRIENDLY"}
+                name="branch_select"
+                options={branchOptions}
+                value={selectedBranchId}
+                onChange={(e) => setSelectedBranchId(e.target.value)}
               />
             </FormField>
           </div>
 
-          <FormField
-            label="Showroom Branch"
-            error={fieldErrors.branch}
-            description="Assigned showroom location (e.g. Kakrail, Gulshan). Cards and detail pages show actual branch."
-          >
-            <Select
-              name="branch_select"
-              options={branchOptions}
-              value={selectedBranchId}
-              onChange={(e) => setSelectedBranchId(e.target.value)}
-            />
-          </FormField>
+          <input
+            type="hidden"
+            name="inventory_type"
+            value={initialCar?.inventory_type || "LUXURY"}
+          />
 
           <div style={{ display: "flex", alignItems: "center", gap: "var(--space-4)", paddingTop: "var(--space-2)" }}>
             <Switch
@@ -465,22 +460,15 @@ export function InventoryFormClient({
 
       {/* 3. Pricing & Availability Tab */}
       <div style={{ display: activeTab === "pricing" ? "flex" : "none", flexDirection: "column", gap: "var(--space-4)", background: "var(--surface)", padding: "var(--space-4)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
-            <FormField label="Price (BDT)" error={fieldErrors.price} description="Decimal numeric value preserved separately (e.g. 28000000.00)">
-              <Input name="price" defaultValue={initialCar?.price ? String(initialCar.price) : ""} placeholder="e.g. 28000000.00" />
-            </FormField>
+          <FormField label="Price (BDT)" error={fieldErrors.price} description="Decimal numeric value preserved separately (e.g. 28000000.00)">
+            <Input name="price" defaultValue={initialCar?.price ? String(initialCar.price) : ""} placeholder="e.g. 28000000.00" />
+          </FormField>
 
-            <FormField label="Is Slightly Negotiable?" error={fieldErrors.slightly_negotiable}>
-              <Select
-                name="slightly_negotiable"
-                options={[
-                  { label: "YES", value: "YES" },
-                  { label: "NO", value: "NO" },
-                ]}
-                defaultValue={initialCar?.slightly_negotiable || "YES"}
-              />
-            </FormField>
-          </div>
+          <input
+            type="hidden"
+            name="slightly_negotiable"
+            value={initialCar?.slightly_negotiable || "NO"}
+          />
 
           <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-2)", padding: "var(--space-3)", background: "var(--surface-raised, rgba(255,255,255,0.03))", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
             <Switch

@@ -47,16 +47,12 @@ function getNavIcon(href: string): ReactNode {
       return <GitBranch size={18} />;
     case "/workspace/body-styles":
       return <Shapes size={18} />;
-    case "/workspace/stocks":
-      return <Boxes size={18} />;
     case "/workspace/quotes":
       return <MessageSquare size={18} />;
     case "/workspace/sell-cars":
       return <Handshake size={18} />;
     case "/workspace/inbox/contact":
       return <Mail size={18} />;
-    case "/workspace/inbox/subscribers":
-      return <Users size={18} />;
     case "/workspace/content/sliders":
       return <Clapperboard size={18} />;
     case "/workspace/content/stories":

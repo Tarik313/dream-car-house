@@ -75,7 +75,7 @@ export function SliderClient({
 
   // Form State - Create
   const [createHeading, setCreateHeading] = useState("");
-  const [createPoster, setCreatePoster] = useState("/assets/maybach_hero_poster.jpg");
+  const [createPoster, setCreatePoster] = useState("/assets/dch-day-showroom.webp");
   const [createProvider, setCreateProvider] = useState<"youtube" | "vimeo" | "direct">("youtube");
   const [createSource, setCreateSource] = useState("7cxfVWs4YGw");
   const [createStartTime, setCreateStartTime] = useState(45);
@@ -124,7 +124,7 @@ export function SliderClient({
 
   function handleOpenCreate() {
     setCreateHeading("The Pinnacle of Luxury Automobiles");
-    setCreatePoster("/assets/maybach_hero_poster.jpg");
+    setCreatePoster("/assets/dch-day-showroom.webp");
     setCreateProvider("youtube");
     setCreateSource("7cxfVWs4YGw");
     setCreateStartTime(45);
@@ -141,7 +141,7 @@ export function SliderClient({
   function handleOpenEdit(slider: SliderItem) {
     setActiveSlider(slider);
     setEditHeading(slider.heading || "");
-    setEditPoster(slider.poster || "/assets/maybach_hero_poster.jpg");
+    setEditPoster(slider.poster || "/assets/dch-day-showroom.webp");
     setEditProvider(slider.video_provider || "youtube");
     setEditSource(slider.video_source || "7cxfVWs4YGw");
     setEditStartTime(slider.video_start_time ?? 45);
@@ -548,7 +548,7 @@ export function SliderClient({
                   Poster Backdrop
                 </span>
                 <p style={{ margin: "4px 0 0 0", fontSize: "var(--font-size-sm)" }}>
-                  <code>{activeSlider.poster || "/assets/maybach_hero_poster.jpg"}</code>
+                  <code>{activeSlider.poster || "/assets/dch-day-showroom.webp"}</code>
                 </p>
               </div>
 
@@ -686,7 +686,7 @@ export function SliderClient({
             <Input
               value={createPoster}
               onChange={(e) => setCreatePoster(e.target.value)}
-              placeholder="e.g. /assets/maybach_hero_poster.jpg"
+              placeholder="e.g. /assets/dch-day-showroom.webp"
               disabled={submitting}
             />
           </FormField>

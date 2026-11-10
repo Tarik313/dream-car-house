@@ -21,7 +21,7 @@ class Slider(models.Model):
     )
     poster = models.CharField(
         max_length=500,
-        default="/assets/maybach_hero_poster.jpg",
+        default="/assets/dch-day-showroom.webp",
         blank=True,
         verbose_name=_("Poster Image URL / Path"),
     )
@@ -37,7 +37,7 @@ class Slider(models.Model):
     )
     video_source = models.CharField(
         max_length=500,
-        default="7cxfVWs4YGw",
+        default="",
         blank=True,
         verbose_name=_("Video ID or URL"),
     )

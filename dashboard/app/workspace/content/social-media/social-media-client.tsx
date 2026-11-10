@@ -330,36 +330,6 @@ export function SocialMediaClient({
         ),
     },
     {
-      id: "twitter",
-      header: "Twitter / X",
-      accessor: (item) =>
-        item.twitter ? (
-          <a
-            href={item.twitter}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              color: "var(--primary)",
-              textDecoration: "underline",
-              fontSize: "var(--font-size-xs)",
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "4px",
-              maxWidth: "180px",
-              overflow: "hidden",
-              textOverflow: "ellipsis",
-              whiteSpace: "nowrap",
-            }}
-            title={item.twitter}
-          >
-            <span style={{ overflow: "hidden", textOverflow: "ellipsis" }}>{item.twitter}</span>
-            <ExternalLink size={11} style={{ flexShrink: 0 }} />
-          </a>
-        ) : (
-          <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>—</span>
-        ),
-    },
-    {
       id: "youtube",
       header: "YouTube",
       accessor: (item) =>
@@ -522,7 +492,7 @@ export function SocialMediaClient({
       <FilterBar
         searchValue={q}
         onSearchChange={(newQ) => updateParams({ q: newQ })}
-        searchPlaceholder="Search URLs (facebook, instagram, twitter, youtube)..."
+        searchPlaceholder="Search URLs (facebook, instagram, youtube)..."
       />
 
       {/* Main Table */}
@@ -631,25 +601,6 @@ export function SocialMediaClient({
                 </p>
               </div>
 
-              <div>
-                <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
-                  Twitter / X URL
-                </span>
-                <p style={{ margin: "2px 0 0 0", wordBreak: "break-all" }}>
-                  {activeItem.twitter ? (
-                    <a
-                      href={activeItem.twitter}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      style={{ color: "var(--primary)", textDecoration: "underline" }}
-                    >
-                      {activeItem.twitter} <ExternalLink size={12} style={{ display: "inline" }} />
-                    </a>
-                  ) : (
-                    <span className="muted">Not configured</span>
-                  )}
-                </p>
-              </div>
 
               <div>
                 <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
@@ -725,15 +676,6 @@ export function SocialMediaClient({
             />
           </FormField>
 
-          <FormField label="Twitter / X URL (Optional)" error={formErrors.twitter}>
-            <Input
-              type="url"
-              placeholder="https://twitter.com/dreamcarhouse"
-              value={formData.twitter}
-              onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
-              disabled={submitting}
-            />
-          </FormField>
 
           <FormField label="YouTube URL (Optional)" error={formErrors.youtube}>
             <Input
@@ -784,15 +726,6 @@ export function SocialMediaClient({
             />
           </FormField>
 
-          <FormField label="Twitter / X URL (Optional)" error={formErrors.twitter}>
-            <Input
-              type="url"
-              placeholder="https://twitter.com/dreamcarhouse"
-              value={formData.twitter}
-              onChange={(e) => setFormData({ ...formData, twitter: e.target.value })}
-              disabled={submitting}
-            />
-          </FormField>
 
           <FormField label="YouTube URL (Optional)" error={formErrors.youtube}>
             <Input

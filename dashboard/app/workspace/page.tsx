@@ -5,7 +5,6 @@ import {
   Building2,
   GitBranch,
   Shapes,
-  Boxes,
   MessageSquare,
   Handshake,
   Mail,
@@ -119,24 +118,6 @@ export default async function WorkspacePage() {
               </div>
             )}
 
-            {metrics.stocks && (
-              <div style={{ padding: "var(--space-4)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", color: "var(--muted)", marginBottom: "var(--space-2)" }}>
-                  <span style={{ fontSize: "var(--font-size-xs)", fontWeight: 600, textTransform: "uppercase" }}>Showroom Stocks</span>
-                  <Boxes size={16} style={{ color: "var(--accent)" }} />
-                </div>
-                <div style={{ fontSize: "2rem", fontWeight: 700, lineHeight: 1 }}>{metrics.stocks.total}</div>
-                <div style={{ display: "flex", gap: "var(--space-2)", marginTop: "var(--space-3)", fontSize: "var(--font-size-xs)" }}>
-                  <span className="badge badge--info">{metrics.stocks.published} published</span>
-                  <span className="badge badge--neutral">{metrics.stocks.unpublished} unlisted</span>
-                </div>
-                <div style={{ marginTop: "var(--space-3)" }}>
-                  <Link href="/workspace/stocks" className="link-button" style={{ fontSize: "var(--font-size-xs)" }}>
-                    Manage stock banners →
-                  </Link>
-                </div>
-              </div>
-            )}
 
             {metrics.quotes && (
               <div style={{ padding: "var(--space-4)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
@@ -194,23 +175,6 @@ export default async function WorkspacePage() {
               </div>
             )}
 
-            {metrics.subscribers && (
-              <div style={{ padding: "var(--space-4)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
-                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", color: "var(--muted)", marginBottom: "var(--space-2)" }}>
-                  <span style={{ fontSize: "var(--font-size-xs)", fontWeight: 600, textTransform: "uppercase" }}>Subscribers</span>
-                  <Users size={16} style={{ color: "var(--accent)" }} />
-                </div>
-                <div style={{ fontSize: "2rem", fontWeight: 700, lineHeight: 1 }}>{metrics.subscribers.total}</div>
-                <p className="muted" style={{ fontSize: "var(--font-size-xs)", margin: "var(--space-3) 0 0 0" }}>
-                  Newsletter audience subscriptions
-                </p>
-                <div style={{ marginTop: "var(--space-3)" }}>
-                  <Link href="/workspace/inbox/subscribers" className="link-button" style={{ fontSize: "var(--font-size-xs)" }}>
-                    Manage subscribers →
-                  </Link>
-                </div>
-              </div>
-            )}
 
             {metrics.users && (
               <div style={{ padding: "var(--space-4)", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
@@ -416,26 +380,6 @@ export default async function WorkspacePage() {
             </div>
           )}
 
-          {hasPermission(user, "inventory.view_stock") && (
-            <div style={{ padding: "var(--space-3)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", background: "var(--surface)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-1)" }}>
-                  <Boxes size={18} style={{ color: "var(--accent)" }} />
-                  <h3 style={{ margin: 0, fontSize: "var(--font-size-md)" }}>Stock Items</h3>
-                </div>
-                <p className="muted" style={{ fontSize: "var(--font-size-sm)", margin: "0 0 var(--space-3) 0" }}>
-                  Showroom arrival banners, shipment teasers, and media banners.
-                </p>
-              </div>
-              <Link
-                href="/workspace/stocks"
-                className="button button--secondary"
-                style={{ fontSize: "var(--font-size-xs)", display: "inline-flex", alignItems: "center", gap: "var(--space-2)", width: "fit-content" }}
-              >
-                Manage Stock Banners <ArrowRight size={14} />
-              </Link>
-            </div>
-          )}
 
           {hasPermission(user, "inventory.view_inventoryquote") && (
             <div style={{ padding: "var(--space-3)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", background: "var(--surface)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
@@ -500,26 +444,6 @@ export default async function WorkspacePage() {
             </div>
           )}
 
-          {hasPermission(user, "home.view_subscriber") && (
-            <div style={{ padding: "var(--space-3)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", background: "var(--surface)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
-              <div>
-                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-1)" }}>
-                  <Users size={18} style={{ color: "var(--accent)" }} />
-                  <h3 style={{ margin: 0, fontSize: "var(--font-size-md)" }}>Subscribers</h3>
-                </div>
-                <p className="muted" style={{ fontSize: "var(--font-size-sm)", margin: "0 0 var(--space-3) 0" }}>
-                  Newsletter and dealership subscription email list.
-                </p>
-              </div>
-              <Link
-                href="/workspace/inbox/subscribers"
-                className="button button--secondary"
-                style={{ fontSize: "var(--font-size-xs)", display: "inline-flex", alignItems: "center", gap: "var(--space-2)", width: "fit-content" }}
-              >
-                Manage Subscribers <ArrowRight size={14} />
-              </Link>
-            </div>
-          )}
 
           {hasPermission(user, "home.view_slider") && (
             <div style={{ padding: "var(--space-3)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", background: "var(--surface)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
