@@ -811,7 +811,7 @@ class DashboardReferenceDataTests(TestCase):
             {
                 "name": "Overlong Engine Spec",
                 "brand": self.brand_toyota.id,
-                "engine_capacity": "123456789012345678901",  # 21 chars > 20
+                "engine_capacity": "X" * 101,  # 101 chars > 100
                 "fuel_type": "PETROL",
                 "transmission": "AUTOMATIC",
                 "condition": "USED",

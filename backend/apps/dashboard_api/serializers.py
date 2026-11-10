@@ -252,7 +252,7 @@ class InventoryDetailManagementSerializer(serializers.ModelSerializer):
     branch_detail = serializers.SerializerMethodField()
     inventory_images = InventoryImageManagementSerializer(many=True, read_only=True)
     slug = serializers.SlugField(required=False, allow_blank=True)
-    engine_capacity = serializers.CharField(required=False, allow_blank=True, max_length=20)
+    engine_capacity = serializers.CharField(required=False, allow_blank=True, max_length=100)
     wheel_base = serializers.CharField(required=False, allow_blank=True, max_length=20)
     mileage = serializers.CharField(required=False, allow_blank=True, max_length=20)
     year = serializers.IntegerField(required=False, allow_null=True)

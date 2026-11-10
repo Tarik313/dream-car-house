@@ -412,7 +412,7 @@ export function InventoryFormClient({
       <div style={{ display: activeTab === "specs" ? "flex" : "none", flexDirection: "column", gap: "var(--space-4)", background: "var(--surface)", padding: "var(--space-4)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
             <FormField label="Engine Capacity (cc)" error={fieldErrors.engine_capacity}>
-              <Input name="engine_capacity" defaultValue={initialCar?.engine_capacity || ""} maxLength={20} placeholder="e.g. 3500" />
+              <Input name="engine_capacity" defaultValue={initialCar?.engine_capacity || ""} maxLength={100} placeholder="e.g. 3500 cc Twin Turbo V6" />
             </FormField>
 
             <FormField label="Mileage" error={fieldErrors.mileage}>
@@ -449,7 +449,7 @@ export function InventoryFormClient({
             </FormField>
 
             <FormField label="Drive Train / Type" error={fieldErrors.drive_type}>
-              <Input name="drive_type" defaultValue={initialCar?.drive_type || ""} maxLength={50} placeholder="e.g. 4WD, AWD, FWD" />
+              <Input name="drive_type" defaultValue={initialCar?.drive_type || ""} maxLength={150} placeholder="e.g. 4WD, AWD, FWD" />
             </FormField>
 
             <FormField label="Wheel Base" error={fieldErrors.wheel_base}>

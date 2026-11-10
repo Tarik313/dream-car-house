@@ -100,7 +100,7 @@ class Inventory(BaseModel):
         verbose_name=_("Reg. Year")
     )
     engine_capacity = models.CharField(
-        max_length=20,
+        max_length=100,
         null=True,
         blank=True,
         verbose_name=_("Engine Capacity (cc)")
@@ -129,7 +129,7 @@ class Inventory(BaseModel):
         verbose_name=_("Transmission")
     )
     drive_type = models.CharField(
-        max_length=50,
+        max_length=150,
         verbose_name=_("Drive Type/Train"),
         blank=True,
         null=True
