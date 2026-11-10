@@ -61,12 +61,11 @@ services:
       - DJANGO_SETTINGS_MODULE=core.settings.production
       - DATABASE_URL=postgres://${POSTGRES_USER:-dch_user}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env.production}@postgres:5432/${POSTGRES_DB:-dreamcarhouse_db}
       - REDIS_URL=redis://redis:6379/1
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
       - ALLOWED_HOSTS=${ALLOWED_HOSTS:?ALLOWED_HOSTS must be set in .env.production}
       - CORS_ALLOWED_ORIGINS=${CORS_ALLOWED_ORIGINS:?CORS_ALLOWED_ORIGINS must be set in .env.production}
       - CSRF_TRUSTED_ORIGINS=${CSRF_TRUSTED_ORIGINS:?CSRF_TRUSTED_ORIGINS must be set in .env.production}
       - SECRET_KEY=${SECRET_KEY:?SECRET_KEY must be set in .env.production}
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:?PUBLIC_BASE_URL must be set in .env.production}
       - JTRO_DEBUG=${JTRO_DEBUG:-False}
       - JTRO_SSL_ENABLED=${JTRO_SSL_ENABLED:-False}
       - JTRO_HSTS_SECONDS=${JTRO_HSTS_SECONDS:-3600}
@@ -86,37 +85,44 @@ services:
     networks:
       - dch_network
 
-  # 4. Celery Asynchronous Background Worker
-  celery:
-    build:
-      context: ./backend
-      dockerfile: Dockerfile
-    container_name: dch_celery
-    restart: unless-stopped
-    env_file:
-      - .env.production
-    command: celery -A core worker -l info --concurrency=2
-    environment:
-      - DJANGO_SETTINGS_MODULE=core.settings.production
-      - DATABASE_URL=postgres://${POSTGRES_USER:-dch_user}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env.production}@postgres:5432/${POSTGRES_DB:-dreamcarhouse_db}
-      - REDIS_URL=redis://redis:6379/1
-      - CELERY_BROKER_URL=redis://redis:6379/0
-      - CELERY_RESULT_BACKEND=redis://redis:6379/0
-      - SECRET_KEY=${SECRET_KEY:?SECRET_KEY must be set in .env.production}
-    volumes:
-      - media_volume:/app/media_root/media
-    depends_on:
-      backend:
-        condition: service_started
-      redis:
-        condition: service_healthy
-    logging:
-      driver: "json-file"
-      options:
-        max-size: "10m"
-        max-file: "3"
-    networks:
-      - dch_network
+  # ---------------------------------------------------------------------------
+  # Celery Asynchronous Worker (Disabled: zero background tasks in codebase)
+  # core/celery.py and core/__init__.py remain fully configured for Celery.
+  # To re-enable Celery worker when async tasks (e.g. email queues) are added:
+  # 1. Uncomment the 'celery' service block below.
+  # 2. Add CELERY_BROKER_URL and CELERY_RESULT_BACKEND to .env.production.
+  # 3. Re-run: docker compose --env-file .env.production up -d celery
+  # ---------------------------------------------------------------------------
+  # celery:
+  #   build:
+  #     context: ./backend
+  #     dockerfile: Dockerfile
+  #   container_name: dch_celery
+  #   restart: unless-stopped
+  #   env_file:
+  #     - .env.production
+  #   command: celery -A core worker -l info --concurrency=2
+  #   environment:
+  #     - DJANGO_SETTINGS_MODULE=core.settings.production
+  #     - DATABASE_URL=postgres://${POSTGRES_USER:-dch_user}:${POSTGRES_PASSWORD:?POSTGRES_PASSWORD must be set in .env.production}@postgres:5432/${POSTGRES_DB:-dreamcarhouse_db}
+  #     - REDIS_URL=redis://redis:6379/1
+  #     - CELERY_BROKER_URL=${CELERY_BROKER_URL:-redis://redis:6379/0}
+  #     - CELERY_RESULT_BACKEND=${CELERY_RESULT_BACKEND:-redis://redis:6379/0}
+  #     - SECRET_KEY=${SECRET_KEY:?SECRET_KEY must be set in .env.production}
+  #   volumes:
+  #     - media_volume:/app/media_root/media
+  #   depends_on:
+  #     backend:
+  #       condition: service_started
+  #     redis:
+  #       condition: service_healthy
+  #   logging:
+  #     driver: "json-file"
+  #     options:
+  #       max-size: "10m"
+  #       max-file: "3"
+  #   networks:
+  #     - dch_network
 
   # 5. Next.js Luxury Frontend (SSR)
   frontend:

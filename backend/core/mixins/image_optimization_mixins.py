@@ -32,7 +32,7 @@ class OptimizedImageSerializerMixin:
         try:
             request = self.context.get('request')
             if not request:
-                return image_field.url
+                return build_media_url(image_field.url)
 
             image_url = image_field.url
             image_name = os.path.splitext(

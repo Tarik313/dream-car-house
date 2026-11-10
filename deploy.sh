@@ -21,6 +21,7 @@ REQUIRED_VARS=(
     "CORS_ALLOWED_ORIGINS"
     "CSRF_TRUSTED_ORIGINS"
     "NEXT_PUBLIC_BASE_URL"
+    "PUBLIC_BASE_URL"
 )
 
 # Parse .env.production safely to validate required variables
