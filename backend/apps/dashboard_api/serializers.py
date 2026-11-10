@@ -4,6 +4,7 @@ from django.contrib.auth import password_validation
 from django.contrib.auth.models import User, Group, Permission
 from rest_framework import serializers
 from core.mixins.image_optimization_mixins import OptimizedImageSerializerMixin
+from core.utils.media import build_media_url
 from apps.inventory.models import Brand, ModelGeneration, BodyStyle, Inventory, InventoryImage, Stock, InventoryQuote
 from apps.home.models import (
     SellCar,
@@ -65,10 +66,7 @@ class BrandManagementSerializer(serializers.ModelSerializer):
     def get_image_url(self, obj):
         if not obj.image:
             return None
-        request = self.context.get("request")
-        if request:
-            return request.build_absolute_uri(obj.image.url)
-        return obj.image.url
+        return build_media_url(obj.image.url)
 
     def validate_image(self, value):
         if not value:
@@ -1211,6 +1209,8 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
             "tagline",
             "logo_text",
             "logo_asset",
+            "logo",
+            "logo_light",
             "hotline",
             "phone",
             "email",
@@ -1225,6 +1225,14 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["id", "created_at", "updated_at"]
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        if ret.get("logo"):
+            ret["logo"] = build_media_url(ret["logo"])
+        if ret.get("logo_light"):
+            ret["logo_light"] = build_media_url(ret["logo_light"])
+        return ret
 
     def validate_name(self, value):
         val = value.strip()
@@ -1866,8 +1874,5 @@ class ShowroomStoryManagementSerializer(serializers.ModelSerializer, OptimizedIm
 
     def get_resolved_media_url(self, obj):
         if obj.media_file:
-            request = self.context.get("request")
-            if request:
-                return request.build_absolute_uri(obj.media_file.url)
-            return obj.media_file.url
+            return build_media_url(obj.media_file.url)
         return obj.media_url or ""

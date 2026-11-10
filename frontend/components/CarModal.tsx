@@ -43,8 +43,8 @@ export default function CarModal({
   settings,
   branches,
 }: {
-  settings?: unknown;
-  branches?: unknown;
+  settings?: any;
+  branches?: any;
 } = {}) {
   const {
     selectedCar,
@@ -53,6 +53,7 @@ export default function CarModal({
     openGalleryLightbox,
   } = useUI();
   const [activeImgIdx, setActiveImgIdx] = useState(0);
+  const logoSrc = settings?.logo || "/assets/dch-logo.webp";
   const [isCopied, setIsCopied] = useState(false);
 
   useEffect(() => {
@@ -192,7 +193,7 @@ export default function CarModal({
             <div className="dch-modal-top-bar">
               <div style={{ display: "flex", alignItems: "center", gap: "1rem" }}>
                 <Image
-                  src="/assets/dch-logo.webp"
+                  src={logoSrc}
                   alt="DREAM CAR HOUSE"
                   width={1020}
                   height={350}

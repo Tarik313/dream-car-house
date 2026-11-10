@@ -20,6 +20,7 @@ export default function NavDrawer({
     branches?.[0]?.hours ||
     "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
   const phone = settings?.hotline || branches?.[0]?.phone || "01615-121312";
+  const logoSrc = settings?.logo || "/assets/dch-logo.webp";
 
   const [isOpen, setIsOpen] = useState(true);
   const [displayHours, setDisplayHours] = useState("10:00 AM – 10:00 PM");
@@ -67,7 +68,7 @@ export default function NavDrawer({
             <div className="supercar-brand-row">
               <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
                 <Image
-                  src="/assets/dch-logo.webp"
+                  src={logoSrc}
                   alt="DREAM CAR HOUSE Logo"
                   width={1020}
                   height={350}

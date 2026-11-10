@@ -14,6 +14,8 @@ export interface PublicSiteSettings {
   tagline: string;
   logo_text: string;
   logo_asset: string;
+  logo?: string | null;
+  logo_light?: string | null;
   hotline: string;
   phone: string;
   email: string;

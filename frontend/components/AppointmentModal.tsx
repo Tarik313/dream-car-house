@@ -10,10 +10,11 @@ export default function AppointmentModal({
   settings,
   branches,
 }: {
-  settings?: unknown;
-  branches?: unknown;
+  settings?: any;
+  branches?: any;
 } = {}) {
   const { isAppointmentOpen, closeAppointmentModal, appointmentPrefill } = useUI();
+  const logoSrc = settings?.logo || "/assets/dch-logo.webp";
 
   const [fullName, setFullName] = useState("");
   const [phone, setPhone] = useState("");
@@ -73,7 +74,7 @@ export default function AppointmentModal({
         <div className="appointment-modal-head">
           <div style={{ marginBottom: "0.85rem" }}>
             <Image
-              src="/assets/dch-logo.webp"
+              src={logoSrc}
               alt="DREAM CAR HOUSE"
               width={1020}
               height={350}

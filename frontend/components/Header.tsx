@@ -13,6 +13,10 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
   const [isSpinning, setIsSpinning] = useState(false);
 
   const brandName = settings?.name || "DREAM CAR HOUSE";
+  const isDayMode = theme === "light";
+  const logoSrc = isDayMode
+    ? (settings?.logo_light || settings?.logo || "/assets/dch-logo.webp")
+    : (settings?.logo || "/assets/dch-logo.webp");
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
@@ -158,7 +162,7 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
         <div className="header-logo">
           <Link href="/" className="header-logo-link" aria-label={`${brandName} Homepage`}>
             <Image
-              src="/assets/dch-logo.webp"
+              src={logoSrc}
               alt={`${brandName} Logo`}
               width={1020}
               height={350}

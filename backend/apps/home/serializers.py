@@ -4,6 +4,7 @@ import bleach
 from rest_framework import serializers
 
 from core.mixins.image_optimization_mixins import OptimizedImageSerializerMixin
+from core.utils.media import build_media_url
 
 from apps.home.models import (
     Slider, SocialMedia, SellCar, PeopleTalkAboutUs, SellYourCarImages, Subscriber, SalesRepresentative,
@@ -179,6 +180,8 @@ class PublicSiteSettingsSerializer(serializers.ModelSerializer):
             'tagline',
             'logo_text',
             'logo_asset',
+            'logo',
+            'logo_light',
             'hotline',
             'phone',
             'email',
@@ -196,6 +199,14 @@ class PublicSiteSettingsSerializer(serializers.ModelSerializer):
         if sm:
             return SocialMediaSerializer(sm, context=self.context).data
         return None
+
+    def to_representation(self, instance):
+        ret = super().to_representation(instance)
+        if ret.get('logo'):
+            ret['logo'] = build_media_url(ret['logo'])
+        if ret.get('logo_light'):
+            ret['logo_light'] = build_media_url(ret['logo_light'])
+        return ret
 
 
 class PublicShowroomBranchSerializer(serializers.ModelSerializer):
@@ -570,8 +581,5 @@ class PublicShowroomStorySerializer(serializers.ModelSerializer, OptimizedImageS
 
     def get_media_url(self, obj):
         if obj.media_file:
-            request = self.context.get('request')
-            if request:
-                return request.build_absolute_uri(obj.media_file.url)
-            return obj.media_file.url
+            return build_media_url(obj.media_file.url)
         return obj.media_url or ""

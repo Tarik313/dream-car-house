@@ -26,6 +26,20 @@ class SiteSettings(BaseModel):
         default="/assets/supercar_wheel.png",
         verbose_name=_("Logo Asset Path"),
     )
+    logo = models.ImageField(
+        upload_to="site/",
+        null=True,
+        blank=True,
+        verbose_name=_("Night Mode / Default Logo"),
+        help_text=_("Main brand logo displayed on dark backgrounds, header in Night Mode, and footer. (Recommended: light/white/gold)."),
+    )
+    logo_light = models.ImageField(
+        upload_to="site/",
+        null=True,
+        blank=True,
+        verbose_name=_("Day Mode Logo"),
+        help_text=_("Alternative brand logo displayed on white/light backgrounds in Day Mode. (Recommended: dark/black/gold)."),
+    )
     hotline = models.CharField(
         max_length=50,
         default="01615-121312",

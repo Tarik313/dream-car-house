@@ -33,6 +33,7 @@ export default function Footer({
     branches?.[0]?.hours ||
     "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
   const tagline = settings?.footer_tagline || "Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka.";
+  const logoSrc = settings?.logo || "/assets/dch-logo.webp";
   const fbUrl = settings?.social_media?.facebook || "https://facebook.com";
   const igUrl = settings?.social_media?.instagram || "https://instagram.com";
   const ytUrl = settings?.social_media?.youtube || "https://youtube.com";
@@ -102,7 +103,7 @@ export default function Footer({
             <div style={{ marginBottom: "1.1rem" }}>
               <Link href="/" aria-label="DREAM CAR HOUSE Homepage">
                 <Image
-                  src="/assets/dch-logo.webp"
+                  src={logoSrc}
                   alt="DREAM CAR HOUSE Logo"
                   width={1020}
                   height={350}

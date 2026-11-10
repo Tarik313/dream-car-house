@@ -5,10 +5,24 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
+import { Upload } from "@/components/ui/Upload";
 import { useToast } from "@/components/ui/Toast";
 import { updateSiteSettingsAction } from "@/app/actions/settings";
 import type { SiteSettingsItem } from "@/lib/types";
-import { Settings, Save, ExternalLink } from "lucide-react";
+import {
+  Building2,
+  Sun,
+  Moon,
+  Phone,
+  Mail,
+  MapPin,
+  Clock,
+  Save,
+  ExternalLink,
+  Globe,
+  Sparkles,
+  Info,
+} from "lucide-react";
 
 interface SiteSettingsClientProps {
   initialSettings: SiteSettingsItem;
@@ -43,7 +57,7 @@ export function SiteSettingsClient({
   const [submitting, setSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!canChange) {
       showToast({
@@ -62,13 +76,23 @@ export function SiteSettingsClient({
       body.append(k, v);
     });
 
+    const logoNightInput = e.currentTarget.querySelector('input[name="logo"]') as HTMLInputElement;
+    if (logoNightInput?.files?.[0]) {
+      body.append("logo", logoNightInput.files[0]);
+    }
+
+    const logoDayInput = e.currentTarget.querySelector('input[name="logo_light"]') as HTMLInputElement;
+    if (logoDayInput?.files?.[0]) {
+      body.append("logo_light", logoDayInput.files[0]);
+    }
+
     try {
       const res = await updateSiteSettingsAction(body);
       if (res.ok) {
         showToast({
           type: "success",
           title: "Settings Saved",
-          message: "Public business identity and contact details updated successfully.",
+          message: "Public business identity, contact details, and Day/Night logos updated successfully.",
         });
         router.refresh();
       } else {
@@ -95,48 +119,239 @@ export function SiteSettingsClient({
   };
 
   return (
-    <div style={{ padding: "1.5rem", maxWidth: "960px", margin: "0 auto" }}>
+    <div style={{ maxWidth: "1080px", margin: "0 auto", paddingBottom: "3rem" }}>
+      {/* Top Banner Card */}
       <div
         style={{
-          background: "#11141a",
-          border: "1px solid #1e2430",
+          background: "var(--surface-primary)",
+          border: "1px solid var(--border-default)",
           borderRadius: "8px",
-          padding: "1.5rem",
-          boxShadow: "0 4px 20px rgba(0,0,0,0.3)",
+          padding: "1.25rem 1.5rem",
+          marginBottom: "1.5rem",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          flexWrap: "wrap",
+          gap: "1rem",
+          boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
-          <div>
-            <h2 style={{ fontSize: "1.25rem", fontWeight: 700, color: "#fff", display: "flex", alignItems: "center", gap: "0.5rem" }}>
-              <Settings size={20} className="text-amber-500" />
-              General Business & Brand Settings
+        <div>
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+            <Building2 size={20} style={{ color: "var(--brand-primary)" }} />
+            <h2 style={{ margin: 0, fontSize: "16px", fontWeight: 700, color: "var(--text-primary)" }}>
+              Showroom Identity & Brand Configuration
             </h2>
-            <p style={{ fontSize: "0.85rem", color: "#94a3b8", marginTop: "0.25rem" }}>
-              Changes take effect immediately on public Header, Footer, and Contact components without rebuild.
-            </p>
+            <span
+              style={{
+                fontSize: "11px",
+                fontWeight: 600,
+                padding: "2px 8px",
+                borderRadius: "12px",
+                background: "var(--tab-active-bg)",
+                color: "var(--tab-active-text)",
+              }}
+            >
+              Live Site Settings
+            </span>
           </div>
-          <a
-            href={formData.website || "http://127.0.0.1:3000"}
-            target="_blank"
-            rel="noopener noreferrer"
-            style={{
-              display: "inline-flex",
-              alignItems: "center",
-              gap: "0.4rem",
-              fontSize: "0.85rem",
-              color: "#38bdf8",
-              textDecoration: "none",
-            }}
-          >
-            <span>View Public Website</span>
-            <ExternalLink size={14} />
-          </a>
+          <p style={{ margin: "4px 0 0 0", fontSize: "12px", color: "var(--text-muted)" }}>
+            Updates apply instantly to public Header, Day/Night Modes, Navigation Drawer, Footer, and Contact Modals.
+          </p>
         </div>
 
-        <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.25rem" }}>
-          {/* Row 1: Business Name & Website */}
+        <a
+          href={formData.website || "http://127.0.0.1:3000"}
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            display: "inline-flex",
+            alignItems: "center",
+            gap: "0.4rem",
+            fontSize: "12px",
+            fontWeight: 600,
+            padding: "6px 12px",
+            borderRadius: "4px",
+            background: "var(--surface-secondary)",
+            border: "1px solid var(--border-default)",
+            color: "var(--action-primary)",
+            textDecoration: "none",
+          }}
+        >
+          <span>View Public Showroom</span>
+          <ExternalLink size={13} />
+        </a>
+      </div>
+
+      <form onSubmit={handleSubmit} style={{ display: "flex", flexDirection: "column", gap: "1.5rem" }}>
+        {/* ========================================================================= */}
+        {/* Section 1: Day & Night Mode Brand Logos */}
+        {/* ========================================================================= */}
+        <div
+          style={{
+            background: "var(--surface-primary)",
+            border: "1px solid var(--border-default)",
+            borderRadius: "8px",
+            padding: "1.5rem",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+            <Sparkles size={18} style={{ color: "var(--warning)" }} />
+            <h3 style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: "var(--text-primary)" }}>
+              Brand Logos (Day & Night Mode Adaptive)
+            </h3>
+          </div>
+          <p style={{ margin: "0 0 1.25rem 0", fontSize: "12px", color: "var(--text-muted)" }}>
+            Dream Car House features an adaptive Day/Night Luxury Orb switcher. Provide optimized logos for both light and dark backgrounds.
+          </p>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(320px, 1fr))", gap: "1.25rem" }}>
+            {/* 1. Night Mode Logo (Dark Theme / Default) */}
+            <div
+              style={{
+                border: "1px solid var(--border-default)",
+                borderRadius: "6px",
+                padding: "1.25rem",
+                background: "var(--surface-secondary)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.75rem",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 700, fontSize: "13px", color: "var(--text-primary)" }}>
+                  <Moon size={15} style={{ color: "#f59e0b" }} />
+                  Night Mode Logo (Default)
+                </span>
+                <span style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", padding: "2px 6px", borderRadius: "4px", background: "#0f172a", color: "#f8fafc" }}>
+                  Dark Theme
+                </span>
+              </div>
+              <p style={{ margin: 0, fontSize: "11px", color: "var(--text-muted)" }}>
+                Shown on dark backgrounds, Night Mode header, and showroom footer.
+              </p>
+
+              {/* Preview Panel (Dark Background) */}
+              <div
+                style={{
+                  background: "#090d16",
+                  border: "1px solid #1e293b",
+                  borderRadius: "6px",
+                  padding: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "75px",
+                }}
+              >
+                {initialSettings.logo ? (
+                  <img
+                    src={initialSettings.logo}
+                    alt="Active Night Mode Logo"
+                    style={{ maxHeight: "55px", maxWidth: "240px", objectFit: "contain" }}
+                  />
+                ) : (
+                  <img
+                    src="/assets/dch-logo.webp"
+                    alt="Default Showroom Logo"
+                    style={{ maxHeight: "55px", maxWidth: "240px", objectFit: "contain" }}
+                  />
+                )}
+              </div>
+
+              <FormField label="Upload New Night Mode Logo" error={formErrors.logo} description="Transparent PNG, WebP or SVG (max 10MB). Light/gold artwork recommended.">
+                <Upload name="logo" accept="image/*,.svg" disabled={!canChange || submitting} />
+              </FormField>
+            </div>
+
+            {/* 2. Day Mode Logo (Light Theme) */}
+            <div
+              style={{
+                border: "1px solid var(--border-default)",
+                borderRadius: "6px",
+                padding: "1.25rem",
+                background: "var(--surface-secondary)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "0.75rem",
+              }}
+            >
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 700, fontSize: "13px", color: "var(--text-primary)" }}>
+                  <Sun size={15} style={{ color: "#ea580c" }} />
+                  Day Mode Logo
+                </span>
+                <span style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", padding: "2px 6px", borderRadius: "4px", background: "#f1f5f9", color: "#0f172a", border: "1px solid #cbd5e1" }}>
+                  Light Theme
+                </span>
+              </div>
+              <p style={{ margin: 0, fontSize: "11px", color: "var(--text-muted)" }}>
+                Shown on white/light backgrounds when a visitor toggles Day Mode.
+              </p>
+
+              {/* Preview Panel (Light Background) */}
+              <div
+                style={{
+                  background: "#ffffff",
+                  border: "1px solid #cbd5e1",
+                  borderRadius: "6px",
+                  padding: "1rem",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  minHeight: "75px",
+                }}
+              >
+                {initialSettings.logo_light ? (
+                  <img
+                    src={initialSettings.logo_light}
+                    alt="Active Day Mode Logo"
+                    style={{ maxHeight: "55px", maxWidth: "240px", objectFit: "contain" }}
+                  />
+                ) : initialSettings.logo ? (
+                  <img
+                    src={initialSettings.logo}
+                    alt="Active Night Mode Logo (Fallback)"
+                    style={{ maxHeight: "55px", maxWidth: "240px", objectFit: "contain" }}
+                  />
+                ) : (
+                  <img
+                    src="/assets/dch-logo.webp"
+                    alt="Default Showroom Logo"
+                    style={{ maxHeight: "55px", maxWidth: "240px", objectFit: "contain" }}
+                  />
+                )}
+              </div>
+
+              <FormField label="Upload New Day Mode Logo" error={formErrors.logo_light} description="Transparent PNG, WebP or SVG (max 10MB). Dark/metallic artwork recommended.">
+                <Upload name="logo_light" accept="image/*,.svg" disabled={!canChange || submitting} />
+              </FormField>
+            </div>
+          </div>
+        </div>
+
+        {/* ========================================================================= */}
+        {/* Section 2: Showroom Brand & Business Information */}
+        {/* ========================================================================= */}
+        <div
+          style={{
+            background: "var(--surface-primary)",
+            border: "1px solid var(--border-default)",
+            borderRadius: "8px",
+            padding: "1.5rem",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
+            <Globe size={18} style={{ color: "var(--action-primary)" }} />
+            <h3 style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: "var(--text-primary)" }}>
+              Business Name & Digital Presence
+            </h3>
+          </div>
+
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
-            <FormField label="Business Name" required error={formErrors.name}>
+            <FormField label="Showroom / Business Name" required error={formErrors.name}>
               <Input
                 name="name"
                 value={formData.name}
@@ -147,7 +362,7 @@ export function SiteSettingsClient({
               />
             </FormField>
 
-            <FormField label="Website URL" required error={formErrors.website}>
+            <FormField label="Official Website URL" required error={formErrors.website}>
               <Input
                 name="website"
                 value={formData.website}
@@ -159,20 +374,40 @@ export function SiteSettingsClient({
             </FormField>
           </div>
 
-          {/* Row 2: Tagline */}
-          <FormField label="Brand Tagline" error={formErrors.tagline}>
-            <Input
-              name="tagline"
-              value={formData.tagline}
-              onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
-              placeholder="Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka."
-              disabled={!canChange || submitting}
-            />
-          </FormField>
+          <div style={{ marginTop: "1rem" }}>
+            <FormField label="Hero Tagline (Brand Philosophy)" error={formErrors.tagline} description="Displayed on showroom hero banners and metadata previews.">
+              <Input
+                name="tagline"
+                value={formData.tagline}
+                onChange={(e) => setFormData({ ...formData, tagline: e.target.value })}
+                placeholder="Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka."
+                disabled={!canChange || submitting}
+              />
+            </FormField>
+          </div>
+        </div>
 
-          {/* Row 3: Hotline, Phone & WhatsApp */}
+        {/* ========================================================================= */}
+        {/* Section 3: Concierge & Contact Lines */}
+        {/* ========================================================================= */}
+        <div
+          style={{
+            background: "var(--surface-primary)",
+            border: "1px solid var(--border-default)",
+            borderRadius: "8px",
+            padding: "1.5rem",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
+            <Phone size={18} style={{ color: "var(--success)" }} />
+            <h3 style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: "var(--text-primary)" }}>
+              Concierge, Phone & WhatsApp Hotlines
+            </h3>
+          </div>
+
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "1rem" }}>
-            <FormField label="Hotline (Concierge Line)" required error={formErrors.hotline}>
+            <FormField label="Hotline (Priority Line)" required error={formErrors.hotline}>
               <Input
                 name="hotline"
                 value={formData.hotline}
@@ -183,7 +418,7 @@ export function SiteSettingsClient({
               />
             </FormField>
 
-            <FormField label="Direct Phone" required error={formErrors.phone}>
+            <FormField label="Direct Showroom Phone" required error={formErrors.phone}>
               <Input
                 name="phone"
                 value={formData.phone}
@@ -194,7 +429,7 @@ export function SiteSettingsClient({
               />
             </FormField>
 
-            <FormField label="WhatsApp Number" required error={formErrors.whatsapp}>
+            <FormField label="WhatsApp Concierge Number" required error={formErrors.whatsapp}>
               <Input
                 name="whatsapp"
                 value={formData.whatsapp}
@@ -206,8 +441,7 @@ export function SiteSettingsClient({
             </FormField>
           </div>
 
-          {/* Row 4: Email & Opening Hours */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem" }}>
             <FormField label="Official Contact Email" required error={formErrors.email}>
               <Input
                 name="email"
@@ -220,19 +454,38 @@ export function SiteSettingsClient({
               />
             </FormField>
 
-            <FormField label="General Opening Hours Text" required error={formErrors.opening_hours_text}>
+            <FormField label="General Showroom Operating Hours" required error={formErrors.opening_hours_text}>
               <Input
                 name="opening_hours_text"
                 value={formData.opening_hours_text}
                 onChange={(e) => setFormData({ ...formData, opening_hours_text: e.target.value })}
-                placeholder="Sat – Thu: 10:00 AM – 9:00 PM"
+                placeholder="Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)"
                 disabled={!canChange || submitting}
                 required
               />
             </FormField>
           </div>
+        </div>
 
-          {/* Row 5: Primary Address */}
+        {/* ========================================================================= */}
+        {/* Section 4: Address, Showroom & Footer Details */}
+        {/* ========================================================================= */}
+        <div
+          style={{
+            background: "var(--surface-primary)",
+            border: "1px solid var(--border-default)",
+            borderRadius: "8px",
+            padding: "1.5rem",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          }}
+        >
+          <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1rem" }}>
+            <MapPin size={18} style={{ color: "var(--danger)" }} />
+            <h3 style={{ margin: 0, fontSize: "14px", fontWeight: 700, color: "var(--text-primary)" }}>
+              Physical Showroom Address & Legal Footer Copy
+            </h3>
+          </div>
+
           <FormField label="Primary Showroom Address" required error={formErrors.primary_address}>
             <Input
               name="primary_address"
@@ -244,8 +497,7 @@ export function SiteSettingsClient({
             />
           </FormField>
 
-          {/* Row 6: Footer Tagline & Copyright */}
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem" }}>
             <FormField label="Footer Tagline" error={formErrors.footer_tagline}>
               <Input
                 name="footer_tagline"
@@ -256,7 +508,7 @@ export function SiteSettingsClient({
               />
             </FormField>
 
-            <FormField label="Footer Copyright Text" required error={formErrors.footer_copy_text}>
+            <FormField label="Footer Copyright Notice" required error={formErrors.footer_copy_text}>
               <Input
                 name="footer_copy_text"
                 value={formData.footer_copy_text}
@@ -267,21 +519,39 @@ export function SiteSettingsClient({
               />
             </FormField>
           </div>
+        </div>
 
-          {/* Action Button */}
-          <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1rem" }}>
-            <Button
-              type="submit"
-              variant="primary"
-              disabled={!canChange || submitting}
-              isLoading={submitting}
-              leftIcon={<Save size={16} />}
-            >
-              <span>{submitting ? "Saving Changes..." : "Save Settings"}</span>
-            </Button>
-          </div>
-        </form>
-      </div>
+        {/* ========================================================================= */}
+        {/* Bottom Actions Bar */}
+        {/* ========================================================================= */}
+        <div
+          style={{
+            background: "var(--surface-primary)",
+            border: "1px solid var(--border-default)",
+            borderRadius: "8px",
+            padding: "1rem 1.5rem",
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            boxShadow: "0 1px 3px rgba(0,0,0,0.04)",
+          }}
+        >
+          <span style={{ fontSize: "12px", color: "var(--text-muted)", display: "flex", alignItems: "center", gap: "0.35rem" }}>
+            <Info size={14} />
+            Instant ISR revalidation triggers across frontend upon saving.
+          </span>
+
+          <Button
+            type="submit"
+            variant="primary"
+            disabled={!canChange || submitting}
+            isLoading={submitting}
+            leftIcon={<Save size={16} />}
+          >
+            <span>{submitting ? "Saving All Settings..." : "Save Business Settings"}</span>
+          </Button>
+        </div>
+      </form>
     </div>
   );
 }
