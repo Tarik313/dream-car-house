@@ -1,22 +1,13 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
+import { getDashboardActionAuthContext as getAuthContext } from "@/lib/server/auth";
 import { requestDashboard, type ApiResult } from "@/lib/server/transport";
 import type {
   ConsultationSectionItem,
   ExperienceSectionItem,
   ExperiencePillarItem,
 } from "@/lib/types";
-
-async function getAuthContext() {
-  const cookieStore = await cookies();
-  const sessionid = cookieStore.get("sessionid")?.value;
-  const csrftoken = cookieStore.get("csrftoken")?.value;
-  const cookieHeader = `sessionid=${sessionid}${csrftoken ? `; csrftoken=${csrftoken}` : ""}`;
-  const origin = process.env.DASHBOARD_API_ORIGIN || "http://127.0.0.1:8000";
-  return { origin, cookieHeader, csrftoken };
-}
 
 // ----------------- Consultation Section Actions -----------------
 export async function getConsultationSectionDashboardAction(): Promise<ApiResult<ConsultationSectionItem>> {

@@ -1,50 +1,31 @@
 import "server-only";
 import { cookies } from "next/headers";
-import { requestDashboard } from "./transport";
+import {
+  buildDashboardCookieHeader,
+  validateSafeRedirect,
+  verifyDashboardSession,
+} from "./session";
 
 import type { DashboardUser, DashboardAccess } from "../types";
 export type { DashboardUser, DashboardAccess };
+export { validateSafeRedirect };
 
-function decodeUserData(val: unknown): DashboardUser | undefined {
-  if (typeof val !== "object" || val === null) return undefined;
-  const user = "user" in val ? (val as { user: unknown }).user : val;
-  if (typeof user !== "object" || user === null) return undefined;
-  const u = user as Record<string, unknown>;
-  if (
-    typeof u.id !== "number" ||
-    typeof u.username !== "string" ||
-    typeof u.email !== "string" ||
-    typeof u.is_staff !== "boolean" ||
-    typeof u.is_superuser !== "boolean" ||
-    !Array.isArray(u.permissions)
-  ) {
-    return undefined;
-  }
-  return {
-    id: u.id,
-    username: u.username,
-    email: u.email,
-    is_staff: u.is_staff,
-    is_superuser: u.is_superuser,
-    permissions: u.permissions.map(String),
-  };
-}
-
-export function validateSafeRedirect(target: string | null | undefined, fallback = "/workspace"): string {
-  if (!target) return fallback;
-  // Must start with '/' and must not start with '//' or contain control characters
-  if (target.startsWith("/") && !target.startsWith("//") && !target.includes("\\")) {
-    // avoid any open redirect attempt with protocol-like strings
-    try {
-      const parsed = new URL(target, "http://127.0.0.1");
-      if (parsed.origin === "http://127.0.0.1") {
-        return parsed.pathname + parsed.search;
-      }
-    } catch {
-      return fallback;
-    }
-  }
-  return fallback;
+/**
+ * Resolves cookie credentials for dashboard server actions.
+ * Returns an empty cookieHeader if no valid sessionid cookie is present so
+ * transport.ts rejects unauthenticated calls before hitting the backend.
+ */
+export async function getDashboardActionAuthContext(): Promise<{
+  origin: string;
+  cookieHeader: string;
+  csrftoken: string | undefined;
+}> {
+  const cookieStore = await cookies();
+  const sessionid = cookieStore.get("sessionid")?.value?.trim();
+  const csrftoken = cookieStore.get("csrftoken")?.value?.trim();
+  const origin = process.env.DASHBOARD_API_ORIGIN || "http://127.0.0.1:8000";
+  const cookieHeader = buildDashboardCookieHeader(sessionid, csrftoken);
+  return { origin, cookieHeader, csrftoken };
 }
 
 /**
@@ -55,38 +36,7 @@ export async function getDashboardAccess(): Promise<DashboardAccess> {
   const cookieStore = await cookies();
   const sessionid = cookieStore.get("sessionid")?.value;
   const csrftoken = cookieStore.get("csrftoken")?.value;
-
-  if (!sessionid) {
-    return { allowed: false, reason: "UNAUTHENTICATED" };
-  }
-
-  const origin = process.env.DASHBOARD_API_ORIGIN || "http://127.0.0.1:8000";
-  const cookieHeader = `sessionid=${sessionid}${csrftoken ? `; csrftoken=${csrftoken}` : ""}`;
-
-  const result = await requestDashboard<DashboardUser>({
-    origin,
-    path: "auth/me/",
-    method: "GET",
-    cookie: cookieHeader,
-    csrfToken: csrftoken,
-    decode: decodeUserData,
-  });
-
-  if (!result.ok) {
-    if (result.error.code === "UNAUTHENTICATED") {
-      return { allowed: false, reason: "UNAUTHENTICATED" };
-    }
-    if (result.error.code === "FORBIDDEN") {
-      return { allowed: false, reason: "FORBIDDEN" };
-    }
-    return { allowed: false, reason: "AUTH_UNAVAILABLE" };
-  }
-
-  if (!result.data.is_staff) {
-    return { allowed: false, reason: "FORBIDDEN" };
-  }
-
-  return { allowed: true, user: result.data, csrfToken: csrftoken };
+  return verifyDashboardSession({ sessionid, csrftoken });
 }
 
 /**

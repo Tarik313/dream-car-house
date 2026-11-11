@@ -1,20 +1,9 @@
 "use server";
 
 import { revalidatePath } from "next/cache";
-import { cookies } from "next/headers";
+import { getDashboardActionAuthContext as getAuthContext } from "@/lib/server/auth";
 import { requestDashboard, type ApiResult } from "@/lib/server/transport";
 import type { AboutSectionItem } from "@/lib/types";
-
-async function getAuthContext() {
-  const cookieStore = await cookies();
-  const origin = process.env.DASHBOARD_API_ORIGIN || "http://127.0.0.1:8000";
-  const cookieHeader = cookieStore
-    .getAll()
-    .map((c) => `${c.name}=${c.value}`)
-    .join("; ");
-  const csrftoken = cookieStore.get("csrftoken")?.value;
-  return { origin, cookieHeader, csrftoken };
-}
 
 export async function updateAboutSectionAction(
   formData: FormData
