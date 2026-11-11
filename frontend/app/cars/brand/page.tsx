@@ -1,30 +1,26 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import Image from "next/image";
-import { getAllPublicBrands, getPublicInventory } from "@/lib/server/api";
+import {
+  defaultSiteSettings,
+  getAllPublicBrands,
+  getPublicInventory,
+  getSiteSettings,
+} from "@/lib/server/api";
+import { buildCleanPageMetadata } from "@/lib/seo";
 
-export const metadata: Metadata = {
-  title: "Official Luxury Marques & Automotive Brands | DREAM CAR HOUSE",
-  description:
-    "Explore prestigious automotive brands at DREAM CAR HOUSE Dhaka showrooms: Mercedes-Benz, BMW, Porsche, Rolls-Royce, Bentley, Lexus, Land Rover, and Toyota.",
-  alternates: {
-    canonical: "https://dreamcarhouse.com/cars/brand/",
-  },
-  openGraph: {
-    title: "Official Luxury Marques & Automotive Brands | DREAM CAR HOUSE",
-    description: "Explore prestigious automotive brands at DREAM CAR HOUSE Dhaka showrooms.",
-    url: "https://dreamcarhouse.com/cars/brand/",
-    siteName: "DREAM CAR HOUSE",
-    type: "website",
-  },
-  twitter: {
-    card: "summary_large_image",
-    title: "Official Luxury Marques & Automotive Brands | DREAM CAR HOUSE",
-    description: "Explore prestigious automotive brands at DREAM CAR HOUSE Dhaka showrooms.",
-  },
-};
-
-export const dynamic = "force-dynamic";
+export async function generateMetadata(): Promise<Metadata> {
+  const settings = await getSiteSettings().catch(() => defaultSiteSettings);
+  return buildCleanPageMetadata({
+    title: "Official Luxury Marques & Automotive Brands",
+    description:
+      "Explore prestigious automotive brands at DREAM CAR HOUSE Dhaka showrooms: Mercedes-Benz, BMW, Porsche, Rolls-Royce, Bentley, Lexus, Land Rover, and Toyota.",
+    ogDescription:
+      "Explore prestigious automotive brands at DREAM CAR HOUSE Dhaka showrooms.",
+    path: "/cars/brand/",
+    settings,
+  });
+}
 
 export default async function BrandsDirectoryPage() {
   const [allBrands, inventoryRes] = await Promise.all([
@@ -68,7 +64,7 @@ export default async function BrandsDirectoryPage() {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://dreamcarhouse.com",
+        item: "https://dreamcarhouse.com/",
       },
       {
         "@type": "ListItem",

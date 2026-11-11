@@ -1,33 +1,21 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPublicInventory, getCategorySEO, buildMetadataFromSEO } from "@/lib/server/api";
+import { getPublicInventory, resolveSeoPageMetadata } from "@/lib/server/api";
 import VehicleCard from "@/components/VehicleCard";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getCategorySEO("brand-new").catch(() => null);
-  const fallback: Metadata = {
-    title: "Brand New & Reconditioned Luxury Vehicles | DREAM CAR HOUSE",
-    description:
-      "Explore factory-fresh, zero-mileage brand new luxury automobiles in Bangladesh at DREAM CAR HOUSE Kakrail and Gulshan showrooms.",
-    alternates: {
-      canonical: "https://dreamcarhouse.com/cars/brand-new/",
-    },
-    openGraph: {
-      title: "Brand New & Reconditioned Luxury Vehicles | DREAM CAR HOUSE",
+  return resolveSeoPageMetadata({
+    key: "brand-new",
+    kind: "category",
+    fallback: {
+      title: "Brand New & Reconditioned Luxury Vehicles",
       description:
+        "Explore factory-fresh, zero-mileage brand new luxury automobiles in Bangladesh at DREAM CAR HOUSE Kakrail and Gulshan showrooms.",
+      ogDescription:
         "Explore factory-fresh, zero-mileage brand new luxury automobiles in Bangladesh.",
-      url: "https://dreamcarhouse.com/cars/brand-new/",
-      siteName: "DREAM CAR HOUSE",
-      type: "website",
+      path: "/cars/brand-new/",
     },
-    twitter: {
-      card: "summary_large_image",
-      title: "Brand New & Reconditioned Luxury Vehicles | DREAM CAR HOUSE",
-      description:
-        "Explore factory-fresh, zero-mileage brand new luxury automobiles in Bangladesh.",
-    },
-  };
-  return buildMetadataFromSEO(seo, fallback);
+  });
 }
 
 export default async function BrandNewCarsPage() {

@@ -4,35 +4,22 @@ import {
   getPublicInventory,
   getInventoryFilters,
   getShowroomBranches,
-  getCategorySEO,
-  buildMetadataFromSEO,
+  resolveSeoPageMetadata,
 } from "@/lib/server/api";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getCategorySEO("cars").catch(() => null);
-  const fallback: Metadata = {
-    title: "Luxury Vehicles Collection | DREAM CAR HOUSE",
-    description:
-      "Explore our complete collection of brand new and certified pre-owned luxury vehicles in Bangladesh. Mercedes-Benz, BMW, Lexus, Toyota, Land Rover, and Porsche.",
-    alternates: {
-      canonical: "https://dreamcarhouse.com/cars/",
-    },
-    openGraph: {
-      title: "Luxury Vehicles Collection | DREAM CAR HOUSE",
+  return resolveSeoPageMetadata({
+    key: "cars",
+    kind: "category",
+    fallback: {
+      title: "Luxury Vehicles Collection",
       description:
+        "Explore our complete collection of brand new and certified pre-owned luxury vehicles in Bangladesh. Mercedes-Benz, BMW, Lexus, Toyota, Land Rover, and Porsche.",
+      ogDescription:
         "Explore our complete collection of brand new and certified pre-owned luxury vehicles in Bangladesh.",
-      url: "https://dreamcarhouse.com/cars/",
-      siteName: "DREAM CAR HOUSE",
-      type: "website",
+      path: "/cars/",
     },
-    twitter: {
-      card: "summary_large_image",
-      title: "Luxury Vehicles Collection | DREAM CAR HOUSE",
-      description:
-        "Explore our complete collection of brand new and certified pre-owned luxury vehicles in Bangladesh.",
-    },
-  };
-  return buildMetadataFromSEO(seo, fallback);
+  });
 }
 
 export default async function CarsPage() {

@@ -1,7 +1,15 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
-import { getPublicInventoryDetail, getPublicRelatedVehicles, getSiteSettings } from "@/lib/server/api";
+import {
+  defaultSiteSettings,
+  getPublicInventoryDetail,
+  getPublicRelatedVehicles,
+  getSiteSettings,
+} from "@/lib/server/api";
+import { buildCarSeo, cleanText, getPublicBaseUrl, normalizeCanonicalUrl } from "@/lib/seo";
 import VehicleDetailClient from "./VehicleDetailClient";
+
+export const revalidate = 60;
 
 interface PageProps {
   params: Promise<{
@@ -11,7 +19,10 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { slug } = await params;
-  const car = await getPublicInventoryDetail(slug);
+  const [car, settings] = await Promise.all([
+    getPublicInventoryDetail(slug),
+    getSiteSettings().catch(() => defaultSiteSettings),
+  ]);
 
   if (!car) {
     return {
@@ -20,11 +31,8 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     };
   }
 
-  const title = car.meta_title || `${car.name} (${car.year}) | DREAM CAR HOUSE`;
-  const description =
-    car.meta_description ||
-    `${car.name} ${car.year} in Bangladesh. ${car.engine_capacity}, ${car.mileage}, ${car.fuel_type}. Available at ${car.branch_name}.`;
-  const canonical = car.canonical_url || `https://dreamcarhouse.com/cars/${car.slug}/`;
+  const carSeo = buildCarSeo(car, { settings });
+  const siteName = cleanText(settings.name) || "DREAM CAR HOUSE";
 
   let robotsConfig: Metadata["robots"] = undefined;
   if (car.indexing) {
@@ -36,34 +44,33 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     }
   }
 
-  const alt = car.featured_image_alt || `${car.name} (${car.year}) Stance`;
-
   return {
-    title,
-    description,
+    title: carSeo.title,
+    description: carSeo.description,
     robots: robotsConfig,
     alternates: {
-      canonical,
+      canonical: carSeo.canonicalUrl,
     },
     openGraph: {
-      title,
-      description,
-      url: canonical,
+      title: carSeo.ogTitle,
+      description: carSeo.ogDescription,
+      url: carSeo.ogUrl,
+      siteName,
       type: "article",
       images: [
         {
-          url: car.image,
+          url: carSeo.ogImage,
           width: 1200,
           height: 630,
-          alt,
+          alt: carSeo.imageAlt,
         },
       ],
     },
     twitter: {
       card: "summary_large_image",
-      title,
-      description,
-      images: [car.image],
+      title: carSeo.twitterTitle,
+      description: carSeo.twitterDescription,
+      images: [carSeo.twitterImage],
     },
   };
 }
@@ -82,9 +89,11 @@ export default async function CarDetailPage({ params }: PageProps) {
   }
 
   const [relatedCars, settings] = await Promise.all([
-    getPublicRelatedVehicles(car.slug),
-    getSiteSettings().catch(() => null),
+    getPublicRelatedVehicles(car.slug).catch(() => []),
+    getSiteSettings().catch(() => defaultSiteSettings),
   ]);
+  const carSeo = buildCarSeo(car, { settings });
+  const baseUrl = getPublicBaseUrl(settings?.website);
 
   // Parse numeric price safely
   const numericPrice = car.raw_price ? parseFloat(car.raw_price) : null;
@@ -107,10 +116,10 @@ export default async function CarDetailPage({ params }: PageProps) {
   const offerObj: Record<string, unknown> = {
     "@type": "Offer",
     priceCurrency: "BDT",
-    url: car.canonical_url || `https://dreamcarhouse.com/cars/${car.slug}/`,
+    url: carSeo.canonicalUrl,
     seller: {
       "@type": "AutoDealer",
-      name: "DREAM CAR HOUSE",
+      name: cleanText(settings?.name) || "DREAM CAR HOUSE",
       address: car.branch_address,
       telephone: "+880 1615-121312",
     },
@@ -134,20 +143,20 @@ export default async function CarDetailPage({ params }: PageProps) {
       name: car.brand,
     },
     vehicleModelDate: car.year ? car.year.toString() : undefined,
-    fuelType: car.fuel_type,
-    color: car.color,
-    vehicleTransmission: car.transmission,
-    bodyType: car.body_style,
-    driveWheelConfiguration: car.drivetrain,
-    mileageFromOdometer: car.mileage
+    fuelType: carSeo.fuelTypeText || car.fuel_type,
+    color: cleanText(car.color) || undefined,
+    vehicleTransmission: cleanText(car.transmission) || undefined,
+    bodyType: cleanText(car.body_style) || undefined,
+    driveWheelConfiguration: cleanText(car.drivetrain) || undefined,
+    mileageFromOdometer: carSeo.mileageText
       ? {
           "@type": "QuantitativeValue",
-          value: car.mileage,
+          value: carSeo.mileageText,
           unitCode: "KMT",
         }
       : undefined,
-    image: car.image,
-    description: car.meta_description || car.description,
+    image: carSeo.ogImage,
+    description: carSeo.jsonLdDescription,
     offers: offerObj,
   };
 
@@ -159,19 +168,19 @@ export default async function CarDetailPage({ params }: PageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://dreamcarhouse.com/",
+        item: normalizeCanonicalUrl("/", baseUrl),
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Inventory",
-        item: "https://dreamcarhouse.com/inventory/",
+        item: normalizeCanonicalUrl("/inventory/", baseUrl),
       },
       {
         "@type": "ListItem",
         position: 3,
         name: car.name,
-        item: `https://dreamcarhouse.com/cars/${car.slug}/`,
+        item: carSeo.canonicalUrl,
       },
     ],
   };

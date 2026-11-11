@@ -1,20 +1,20 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPublicInventory, getCategorySEO, buildMetadataFromSEO } from "@/lib/server/api";
+import { getPublicInventory, resolveSeoPageMetadata } from "@/lib/server/api";
 import VehicleCard from "@/components/VehicleCard";
 import type { PublicVehicle } from "@/lib/types";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getCategorySEO("reconditioned").catch(() => null);
-  const fallback: Metadata = {
-    title: "Reconditioned Luxury Vehicles | DREAM CAR HOUSE",
-    description:
-      "Explore auction-grade 5A & certified reconditioned Japanese and European luxury cars in Dhaka at DREAM CAR HOUSE.",
-    alternates: {
-      canonical: "https://dreamcarhouse.com/cars/reconditioned/",
+  return resolveSeoPageMetadata({
+    key: "reconditioned",
+    kind: "category",
+    fallback: {
+      title: "Reconditioned Luxury Vehicles",
+      description:
+        "Explore auction-grade 5A & certified reconditioned Japanese and European luxury cars in Dhaka at DREAM CAR HOUSE.",
+      path: "/cars/reconditioned/",
     },
-  };
-  return buildMetadataFromSEO(seo, fallback);
+  });
 }
 
 export default async function ReconditionedCarsPage() {

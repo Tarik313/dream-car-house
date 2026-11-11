@@ -1,25 +1,23 @@
 import type { Metadata } from "next";
 import ContactClient from "./ContactClient";
 import {
-  getPageSEO,
-  buildMetadataFromSEO,
+  resolveSeoPageMetadata,
   getShowroomBranches,
   getSiteSettings,
   getSalesRepresentatives,
 } from "@/lib/server/api";
 
-const fallbackMetadata: Metadata = {
-  title: "Location & Showroom Contact • Kakrail & Gulshan | DREAM CAR HOUSE",
-  description:
-    "Visit DREAM CAR HOUSE at 18 Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka and Gulshan Avenue. Call 01615-121312 for VIP luxury vehicle consultations.",
-  alternates: {
-    canonical: "https://dreamcarhouse.com/contact/",
-  },
-};
-
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getPageSEO("contact");
-  return buildMetadataFromSEO(seo, fallbackMetadata);
+  return resolveSeoPageMetadata({
+    key: "contact",
+    kind: "page",
+    fallback: {
+      title: "Location & Showroom Contact • Kakrail & Gulshan",
+      description:
+        "Visit DREAM CAR HOUSE at 18 Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka and Gulshan Avenue. Call 01615-121312 for VIP luxury vehicle consultations.",
+      path: "/contact/",
+    },
+  });
 }
 
 export default async function ContactPage() {

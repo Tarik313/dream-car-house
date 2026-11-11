@@ -14,7 +14,7 @@ export default async function CarDetailByIdPage({ params }: PageProps) {
   let res: Response;
   try {
     res = await fetch(`${origin}/api/v1/inventory/detail/${encodeURIComponent(id)}/`, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["inventory"] },
       redirect: "manual",
       signal: AbortSignal.timeout(5000),
     });
@@ -27,7 +27,7 @@ export default async function CarDetailByIdPage({ params }: PageProps) {
     if (loc) {
       const match = loc.match(/\/api\/v1\/inventory\/detail\/([^/]+)\/?/);
       if (match && match[1]) {
-        permanentRedirect(`/cars/${match[1]}`);
+        permanentRedirect(`/cars/${match[1]}/`);
       }
     }
   }
@@ -36,7 +36,7 @@ export default async function CarDetailByIdPage({ params }: PageProps) {
     try {
       const json = await res.json();
       if (json?.data?.slug) {
-        permanentRedirect(`/cars/${json.data.slug}`);
+        permanentRedirect(`/cars/${json.data.slug}/`);
       }
     } catch {
       notFound();

@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPublicInventory, getPageSEO, buildMetadataFromSEO } from "@/lib/server/api";
+import { getPublicInventory, resolveSeoPageMetadata } from "@/lib/server/api";
 import VehicleCard from "@/components/VehicleCard";
 
-const fallbackMetadata: Metadata = {
-  title: "BYD Luxury Electric & Hybrid Vehicles | DREAM CAR HOUSE",
-  description:
-    "Explore BYD electric and hybrid luxury vehicles in Bangladesh at DREAM CAR HOUSE Kakrail and Gulshan showrooms.",
-  alternates: {
-    canonical: "https://dreamcarhouse.com/byd-cars/",
-  },
-};
-
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getPageSEO("byd-cars");
-  return buildMetadataFromSEO(seo, fallbackMetadata);
+  return resolveSeoPageMetadata({
+    key: "byd-cars",
+    kind: "page",
+    fallback: {
+      title: "BYD Luxury Electric & Hybrid Vehicles",
+      description:
+        "Explore BYD electric and hybrid luxury vehicles in Bangladesh at DREAM CAR HOUSE Kakrail and Gulshan showrooms.",
+      path: "/byd-cars/",
+    },
+  });
 }
 
 export default async function BydCarsPage() {

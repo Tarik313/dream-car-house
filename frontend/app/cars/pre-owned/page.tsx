@@ -1,20 +1,19 @@
 import type { Metadata } from "next";
 import Link from "next/link";
-import { getPublicInventory, getCategorySEO, buildMetadataFromSEO } from "@/lib/server/api";
+import { getPublicInventory, resolveSeoPageMetadata } from "@/lib/server/api";
 import VehicleCard from "@/components/VehicleCard";
 
-const fallbackMetadata: Metadata = {
-  title: "Certified Pre-Owned Luxury Vehicles | DREAM CAR HOUSE",
-  description:
-    "Explore 150-point certified pre-owned luxury cars in Dhaka at DREAM CAR HOUSE. Verified service history and showroom-ready condition.",
-  alternates: {
-    canonical: "https://dreamcarhouse.com/cars/pre-owned/",
-  },
-};
-
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getCategorySEO("pre-owned");
-  return buildMetadataFromSEO(seo, fallbackMetadata);
+  return resolveSeoPageMetadata({
+    key: "pre-owned",
+    kind: "category",
+    fallback: {
+      title: "Certified Pre-Owned Luxury Vehicles",
+      description:
+        "Explore 150-point certified pre-owned luxury cars in Dhaka at DREAM CAR HOUSE. Verified service history and showroom-ready condition.",
+      path: "/cars/pre-owned/",
+    },
+  });
 }
 
 export default async function PreOwnedCarsPage() {

@@ -1,25 +1,23 @@
 import type { Metadata } from "next";
 import GalleryClient from "./GalleryClient";
 import {
-  getPageSEO,
-  buildMetadataFromSEO,
+  resolveSeoPageMetadata,
   getVisualChroniclesSection,
   getPublicInventory,
 } from "@/lib/server/api";
 import type { GalleryPhoto } from "@/lib/showroomData";
 
-const fallbackMetadata: Metadata = {
-  title: "Showroom Media Gallery & Atelier Chronicles | DREAM CAR HOUSE",
-  description:
-    "Explore high-definition photography and cinema spotlights of exotic, flagship, and rare luxury vehicles at DREAM CAR HOUSE Kakrail and Gulshan showrooms.",
-  alternates: {
-    canonical: "https://dreamcarhouse.com/gallery/",
-  },
-};
-
 export async function generateMetadata(): Promise<Metadata> {
-  const seo = await getPageSEO("gallery");
-  return buildMetadataFromSEO(seo, fallbackMetadata);
+  return resolveSeoPageMetadata({
+    key: "gallery",
+    kind: "page",
+    fallback: {
+      title: "Showroom Media Gallery & Atelier Chronicles",
+      description:
+        "Explore high-definition photography and cinema spotlights of exotic, flagship, and rare luxury vehicles at DREAM CAR HOUSE Kakrail and Gulshan showrooms.",
+      path: "/gallery/",
+    },
+  });
 }
 
 function resolveVehicleCategory(

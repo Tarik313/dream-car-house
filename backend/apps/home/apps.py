@@ -6,3 +6,6 @@ class HomeConfig(AppConfig):
     default_auto_field = 'django.db.models.BigAutoField'
     name = 'apps.home'
     verbose_name = _('Home')
+
+    def ready(self):
+        import apps.home.signals  # noqa

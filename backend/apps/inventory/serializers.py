@@ -207,8 +207,22 @@ class InventoryDetailSerializer(serializers.ModelSerializer, OptimizedImageSeria
         if obj.registered == Inventory.AvailabilityChoices.SOLD:
             availability = "https://schema.org/SoldOut"
 
+        from apps.inventory.seo import (
+            build_car_seo_for_instance,
+            format_mileage,
+            is_malformed_auto_seo_description,
+        )
+
+        generated_seo = build_car_seo_for_instance(obj)
+        schema_description = (
+            obj.meta_description
+            if obj.meta_description and not is_malformed_auto_seo_description(obj.meta_description)
+            else generated_seo["meta_description"]
+        )
+        clean_mileage = format_mileage(obj.mileage)
+
         price_val = ''
-        if obj.price and obj.registered != Inventory.AvailabilityChoices.PRE_ORDER:
+        if obj.price and not obj.is_call_for_price and obj.registered != Inventory.AvailabilityChoices.PRE_ORDER:
             try:
                 price_val = str(int(float(str(obj.price))))
             except (ValueError, TypeError):
@@ -218,7 +232,7 @@ class InventoryDetailSerializer(serializers.ModelSerializer, OptimizedImageSeria
             "@context": "https://schema.org",
             "@type": "Car",
             "name": obj.name,
-            "description": obj.meta_description or '',
+            "description": schema_description,
             "url": page_url,
             "brand": {
                 "@type": "Brand",
@@ -233,7 +247,7 @@ class InventoryDetailSerializer(serializers.ModelSerializer, OptimizedImageSeria
             "driveWheelConfiguration": obj.drive_type or '',
             "mileageFromOdometer": {
                 "@type": "QuantitativeValue",
-                "value": obj.mileage or '',
+                "value": clean_mileage,
                 "unitCode": "KMT"
             },
             "offers": {
@@ -244,7 +258,7 @@ class InventoryDetailSerializer(serializers.ModelSerializer, OptimizedImageSeria
                 "url": page_url,
                 "seller": {
                     "@type": "Organization",
-                    "name": "Dream Car House"
+                    "name": "DREAM CAR HOUSE"
                 }
             },
             "image": all_images

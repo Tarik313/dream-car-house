@@ -28,41 +28,39 @@ import {
   getVisualChroniclesSection,
   getVipSanctuarySection,
   getPageSEO,
+  getSiteSettings,
+  defaultSiteSettings,
   buildMetadataFromSEO,
 } from "@/lib/server/api";
+import { buildCleanPageMetadata } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [hero, seo] = await Promise.all([
+  const [hero, seo, settings] = await Promise.all([
     getHeroSlider().catch(() => null),
     getPageSEO("home").catch(() => null),
+    getSiteSettings().catch(() => defaultSiteSettings),
   ]);
 
   const fallbackTitle = hero?.heading
-    ? `${hero.heading} | DREAM CAR HOUSE`
-    : "The Pinnacle of Luxury Automobiles | DREAM CAR HOUSE";
+    ? hero.heading
+    : "The Pinnacle of Luxury Automobiles";
+  const description =
+    "Explore luxury cars in Bangladesh with DREAM CAR HOUSE. Browse our exclusive range of brand new, reconditioned, and pre-owned premium vehicles in Kakrail and Gulshan, Dhaka.";
+  const ogDescription =
+    "Experience dedicated automotive advisory across our Kakrail and Gulshan showrooms.";
 
-  const fallback: Metadata = {
+  const fallback = buildCleanPageMetadata({
     title: fallbackTitle,
-    description:
-      "Explore luxury cars in Bangladesh with DREAM CAR HOUSE. Browse our exclusive range of brand new, reconditioned, and pre-owned premium vehicles in Kakrail and Gulshan, Dhaka.",
-    alternates: {
-      canonical: "https://dreamcarhouse.com",
-    },
-    openGraph: {
-      title: fallbackTitle,
-      description: "Experience dedicated automotive advisory across our Kakrail and Gulshan showrooms.",
-      url: "https://dreamcarhouse.com",
-      siteName: "DREAM CAR HOUSE",
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: fallbackTitle,
-      description: "Experience dedicated automotive advisory across our Kakrail and Gulshan showrooms.",
-    },
-  };
+    description,
+    ogTitle: fallbackTitle,
+    ogDescription,
+    twitterTitle: fallbackTitle,
+    twitterDescription: ogDescription,
+    path: "/",
+    settings,
+  });
 
-  return buildMetadataFromSEO(seo, fallback);
+  return buildMetadataFromSEO(seo, fallback, settings);
 }
 
 export default async function HomePage() {

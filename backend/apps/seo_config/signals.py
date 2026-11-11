@@ -1,42 +1,43 @@
-from django.db.models.signals import post_save
+from django.db.models.signals import post_delete, post_save
 from django.dispatch import receiver
-from django.conf import settings
-import requests
-import os
+
+from core.utils.revalidation import trigger_next_revalidation
+
+
+_PAGE_PATH_MAP = {
+    "home": "/",
+    "cars": "/cars/",
+    "about": "/about/",
+    "sell": "/sell/",
+    "gallery": "/gallery/",
+    "byd-cars": "/byd-cars/",
+    "contact": "/contact/",
+}
+
 
 @receiver(post_save, sender="seo_config.SEOConfig")
-def handle_seo_config_save(sender, instance, **kwargs):
-    REVALIDATE_SECRET = getattr(settings, "REVALIDATE_SECRET", "")
-    if not REVALIDATE_SECRET:
-        return
-    NEXT_REVALIDATE_URL = getattr(settings, "NEXT_REVALIDATE_URL", "http://frontend:3000/api/revalidate")
-    
-    if instance.page == "home":
-        path = "/"
-    elif instance.page == "cars":
-        path = "/cars"
-    elif instance.page == "about":
-        path = "/about"
-    elif instance.page == "sell":
-        path = "/sell"
-    elif instance.page == "gallery":
-        path = "/gallery"
-    elif instance.page == "byd-cars":
-        path = "/byd-cars"
-    elif instance.page == "contact":
-        path = "/contact"
-    else:
-        path = "/"
-
-    paths_to_revalidate = [path]
+@receiver(post_delete, sender="seo_config.SEOConfig")
+def handle_seo_config_change(sender, instance, **kwargs):
+    path = _PAGE_PATH_MAP.get(getattr(instance, "page", ""), "/")
+    paths = [path, "/sitemap.xml"]
     if path != "/":
-        paths_to_revalidate.append("/")
+        paths.append("/")
+    trigger_next_revalidation(paths=paths, tags=["seo"])
 
-    for p in paths_to_revalidate:
-        try:
-            requests.get(
-                f"{NEXT_REVALIDATE_URL}?secret={REVALIDATE_SECRET}&path={p}",
-                timeout=5
-            )
-        except Exception:
-            pass
+
+@receiver(post_save, sender="seo_config.CategoryPageSEO")
+@receiver(post_delete, sender="seo_config.CategoryPageSEO")
+def handle_category_seo_change(sender, instance, **kwargs):
+    page = getattr(instance, "page", "")
+    paths = [
+        "/cars/",
+        "/cars/brand-new/",
+        "/cars/pre-owned/",
+        "/cars/reconditioned/",
+        "/inventory/",
+        "/",
+        "/sitemap.xml",
+    ]
+    if page:
+        paths.append(f"/cars/{page}/")
+    trigger_next_revalidation(paths=paths, tags=["seo"])

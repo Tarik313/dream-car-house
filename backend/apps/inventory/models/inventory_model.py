@@ -327,12 +327,13 @@ class Inventory(BaseModel):
         if base_str:
             base_slug = slugify(base_str)
         else:
+            from apps.inventory.seo import format_engine_capacity
             brand_name = self._get_brand_name()
             model_name = self._get_model_name()
             color = self.color or ''
             year = self.year or ''
-            engine = self.engine_capacity or ''
-            base_slug = slugify(f"{year}-{brand_name}-{model_name}-{engine}cc-{color}")
+            engine = format_engine_capacity(self.engine_capacity)
+            base_slug = slugify(f"{year}-{brand_name}-{model_name}-{engine}-{color}")
             if not base_slug:
                 base_slug = slugify(self.name) or 'car'
         slug = base_slug
@@ -398,23 +399,56 @@ class Inventory(BaseModel):
         mileage = self.mileage or ''
         price = self.price or ''
 
-        # Auto-generate meta_title
-        if not self.meta_title:
-            variant = f"{engine}cc" if engine else ''
-            parts = [str(year), brand_name, model_name, variant, body_style_name]
-            title_base = ' '.join(p for p in parts if p).strip()
-            self.meta_title = f"{title_base} for Sale | Dream Car House"[:70]
+        from apps.inventory.seo import (
+            build_car_meta_title,
+            build_car_meta_description,
+            build_featured_image_alt,
+            is_malformed_auto_seo_title,
+            is_malformed_auto_seo_description,
+            is_malformed_auto_alt,
+        )
 
-        # Auto-generate meta_description
-        if not self.meta_description:
-            price_str = ''
-            if price:
-                try:
-                    price_str = f"BDT {int(float(str(price))):,}"
-                except (ValueError, TypeError):
-                    price_str = str(price)
-            desc = f"Buy this {year} {brand_name} {model_name} in {color} for {price_str}. {mileage}km driven. View full details on Dream Car House."
-            self.meta_description = desc[:500]
+        branch_name = ''
+        if self.branch_id and self.branch:
+            branch_name = self.branch.short_name or self.branch.name or ''
+
+        # Auto-generate meta_title (or repair malformed legacy auto-generated titles)
+        if not self.meta_title or is_malformed_auto_seo_title(self.meta_title):
+            self.meta_title = build_car_meta_title(
+                year=year,
+                brand_name=brand_name,
+                model_name=model_name,
+                name=self.name or '',
+                engine_capacity=engine,
+                body_style=body_style_name,
+            )[:70]
+
+        # Auto-generate meta_description (or repair malformed legacy auto-generated descriptions)
+        if not self.meta_description or is_malformed_auto_seo_description(self.meta_description):
+            self.meta_description = build_car_meta_description(
+                year=year,
+                brand_name=brand_name,
+                model_name=model_name,
+                name=self.name or '',
+                color=color,
+                engine_capacity=engine,
+                fuel_type=self.fuel_type or '',
+                body_style=body_style_name,
+                mileage=mileage,
+                price=price,
+                is_call_for_price=bool(self.is_call_for_price),
+                branch_name=branch_name,
+            )
+
+        # Auto-generate featured_image_alt (or repair malformed legacy alt text)
+        if not self.featured_image_alt or is_malformed_auto_alt(self.featured_image_alt):
+            self.featured_image_alt = build_featured_image_alt(
+                year=year,
+                brand_name=brand_name,
+                model_name=model_name,
+                name=self.name or '',
+                color=color,
+            )
 
         # Auto-generate canonical_url
         if not self.canonical_url:
@@ -427,10 +461,6 @@ class Inventory(BaseModel):
                 old_default_canonical.replace('dreamcarhouse.com', 'bigautos.com'),
             }:
                 self.canonical_url = self._build_canonical_url()
-
-        # Auto-generate featured_image_alt
-        if not self.featured_image_alt:
-            self.featured_image_alt = f"Front view of {year} {brand_name} {model_name} in {color}".strip()[:200]
 
         super().save(*args, **kwargs)
 

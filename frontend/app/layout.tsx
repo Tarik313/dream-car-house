@@ -8,7 +8,20 @@ import Footer from "@/components/Footer";
 import ModalContainer from "@/components/ModalContainer";
 import FloatingSupercarTop from "@/components/FloatingSupercarTop";
 
-import { fetchLayoutData, getShowroomStoriesSSR, defaultSiteSettings, defaultBranches } from "@/lib/server/api";
+import {
+  fetchLayoutData,
+  getShowroomStoriesSSR,
+  getSiteSettings,
+  defaultSiteSettings,
+  defaultBranches,
+} from "@/lib/server/api";
+import {
+  cleanText,
+  formatTitleWithSite,
+  getDefaultOgImage,
+  getPublicBaseUrl,
+  normalizeCanonicalUrl,
+} from "@/lib/seo";
 import { VEHICLE_DATA } from "@/lib/showroomData";
 import type { PublicSiteSettings, PublicShowroomBranch, PublicVehicle } from "@/lib/types";
 
@@ -19,8 +32,6 @@ const poppins = Poppins({
   variable: "--font-poppins",
 });
 
-export const dynamic = "force-dynamic";
-
 export const viewport: Viewport = {
   width: "device-width",
   initialScale: 1,
@@ -29,41 +40,41 @@ export const viewport: Viewport = {
 };
 
 export async function generateMetadata(): Promise<Metadata> {
-  let siteName = "DREAM CAR HOUSE";
-  let siteTagline = "The Pinnacle of Luxury Automobiles";
-  let siteWebsite = "https://dreamcarhouse.com";
-
-  try {
-    const { settings } = await fetchLayoutData();
-    siteName = settings.name || siteName;
-    siteTagline = settings.tagline || siteTagline;
-    siteWebsite = settings.website || siteWebsite;
-  } catch {
-    // Falls back safely if during initial build
-  }
+  const settings = await getSiteSettings().catch(() => defaultSiteSettings);
+  const siteName = cleanText(settings.name) || "DREAM CAR HOUSE";
+  const siteTagline = cleanText(settings.tagline) || "The Pinnacle of Luxury Automobiles";
+  const baseUrl = getPublicBaseUrl(settings.website);
+  const canonicalUrl = normalizeCanonicalUrl("/", baseUrl);
+  const defaultOgImage = getDefaultOgImage(settings, baseUrl);
+  const fullTitle = formatTitleWithSite(siteTagline, siteName);
+  const description = `Explore luxury cars in Bangladesh with ${siteName}. Browse our exclusive range of brand new, reconditioned, and pre-owned premium vehicles in Kakrail and Gulshan, Dhaka.`;
 
   return {
-    metadataBase: new URL(siteWebsite),
-    title: {
-      default: `${siteTagline} | ${siteName}`,
-      template: `%s | ${siteName}`,
-    },
-    description: `Explore luxury cars in Bangladesh with ${siteName}. Browse our exclusive range of brand new, reconditioned, and pre-owned premium vehicles in Kakrail and Gulshan, Dhaka.`,
+    metadataBase: new URL(baseUrl),
+    title: fullTitle,
+    description,
     alternates: {
-      canonical: siteWebsite,
+      canonical: canonicalUrl,
     },
     openGraph: {
-      title: `${siteTagline} | ${siteName}`,
-      description: `Explore luxury cars in Bangladesh with ${siteName}.`,
-      url: siteWebsite,
-      siteName: siteName,
+      title: fullTitle,
+      description,
+      url: canonicalUrl,
+      siteName,
       locale: "en_US",
       type: "website",
+      images: [
+        {
+          url: defaultOgImage,
+          alt: siteName,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
-      title: `${siteTagline} | ${siteName}`,
-      description: `Explore luxury cars in Bangladesh with ${siteName}.`,
+      title: fullTitle,
+      description,
+      images: [defaultOgImage],
     },
     icons: {
       icon: "/favicon.ico",
@@ -92,14 +103,15 @@ export default async function RootLayout({
       : (VEHICLE_DATA.slice(0, 10) as unknown as PublicVehicle[]);
   const stories = await getShowroomStoriesSSR().catch(() => []);
 
+  const baseUrl = getPublicBaseUrl(settings.website);
   const autoDealerSchema = {
     "@context": "https://schema.org",
     "@type": "AutoDealer",
     name: settings.name,
-    image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1600&q=85",
+    image: getDefaultOgImage(settings, baseUrl),
     telephone: settings.hotline || settings.phone,
     email: settings.email,
-    url: settings.website,
+    url: normalizeCanonicalUrl("/", baseUrl),
     address: {
       "@type": "PostalAddress",
       streetAddress: settings.primary_address,

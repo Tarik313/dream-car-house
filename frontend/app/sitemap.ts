@@ -1,14 +1,16 @@
 import { MetadataRoute } from "next";
 import { getPublicInventory, getAllPageSEO, getAllCategorySEO, getAllPublicBrands } from "@/lib/server/api";
 
+export const revalidate = 60;
+
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const baseUrl = "https://dreamcarhouse.com";
   const now = new Date();
 
   // 1. Fetch dynamic SEO configurations
   const [pageConfigs, categoryConfigs] = await Promise.all([
-    getAllPageSEO(),
-    getAllCategorySEO(),
+    getAllPageSEO().catch(() => []),
+    getAllCategorySEO().catch(() => []),
   ]);
 
   const pageConfigMap = new Map(pageConfigs.map((c) => [c.page, c]));

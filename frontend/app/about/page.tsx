@@ -4,48 +4,45 @@ import {
   getPageSEO,
   buildMetadataFromSEO,
   getSiteSettings,
+  defaultSiteSettings,
   getShowroomBranches,
   getPublicInventory,
   getAboutSection,
   getPeopleTalks,
 } from "@/lib/server/api";
+import { buildCleanPageMetadata, getDefaultOgImage } from "@/lib/seo";
 
 export async function generateMetadata(): Promise<Metadata> {
-  const [seo, aboutData] = await Promise.all([
+  const [seo, aboutData, settings] = await Promise.all([
     getPageSEO("about").catch(() => null),
     getAboutSection().catch(() => null),
+    getSiteSettings().catch(() => defaultSiteSettings),
   ]);
 
-  const fallbackMetadata: Metadata = {
-    title: aboutData?.hero_title
-      ? `${aboutData.hero_title} • The Showroom Legacy | DREAM CAR HOUSE`
-      : "About Us • The Showroom Legacy & Provenance | DREAM CAR HOUSE",
-    description:
-      aboutData?.hero_subtitle ||
-      "Learn about DREAM CAR HOUSE, Dhaka's premier luxury automotive destination with flagship showrooms in Kakrail and Gulshan, Dhaka.",
-    alternates: {
-      canonical: "https://dreamcarhouse.com/about/",
-    },
-    openGraph: {
-      title: aboutData?.hero_title
-        ? `${aboutData.hero_title} | DREAM CAR HOUSE`
-        : "About DREAM CAR HOUSE • The Showroom Legacy",
-      description:
-        aboutData?.hero_subtitle ||
-        "Dhaka's benchmark in factory-fresh zero-meter imports, bespoke executive saloons, and confidential white-glove automotive advisory.",
-      url: "https://dreamcarhouse.com/about/",
-      images: [
-        {
-          url: aboutData?.reel_image_url || "/assets/dch-logo.webp",
-          width: 1200,
-          height: 630,
-          alt: "DREAM CAR HOUSE Flagship Luxury Showroom",
-        },
-      ],
-    },
-  };
+  const title = aboutData?.hero_title
+    ? `${aboutData.hero_title} • The Showroom Legacy`
+    : "About Us • The Showroom Legacy & Provenance";
+  const ogTitle = aboutData?.hero_title
+    ? aboutData.hero_title
+    : "About DREAM CAR HOUSE • The Showroom Legacy";
+  const description =
+    aboutData?.hero_subtitle ||
+    "Learn about DREAM CAR HOUSE, Dhaka's premier luxury automotive destination with flagship showrooms in Kakrail and Gulshan, Dhaka.";
+  const ogDescription =
+    aboutData?.hero_subtitle ||
+    "Dhaka's benchmark in factory-fresh zero-meter imports, bespoke executive saloons, and confidential white-glove automotive advisory.";
 
-  return buildMetadataFromSEO(seo, fallbackMetadata);
+  const fallbackMetadata = buildCleanPageMetadata({
+    title,
+    description,
+    ogTitle,
+    ogDescription,
+    ogImage: aboutData?.reel_image_url || undefined,
+    path: "/about/",
+    settings,
+  });
+
+  return buildMetadataFromSEO(seo, fallbackMetadata, settings);
 }
 
 export default async function AboutPage() {
@@ -75,7 +72,7 @@ export default async function AboutPage() {
               "@type": "ListItem",
               position: 1,
               name: "Home",
-              item: "https://dreamcarhouse.com",
+              item: "https://dreamcarhouse.com/",
             },
             {
               "@type": "ListItem",
@@ -90,8 +87,8 @@ export default async function AboutPage() {
         "@type": "AutoDealer",
         "@id": "https://dreamcarhouse.com/#dealer",
         name: "DREAM CAR HOUSE",
-        url: "https://dreamcarhouse.com",
-        logo: "https://dreamcarhouse.com/assets/dch-logo.webp",
+        url: "https://dreamcarhouse.com/",
+        logo: getDefaultOgImage(settings),
         description:
           aboutData?.story_content_p1 ||
           "Dhaka's benchmark in factory-fresh zero-meter imports, bespoke executive saloons, and confidential white-glove automotive advisory.",

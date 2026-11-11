@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
 import InventoryClient from "./InventoryClient";
 import {
+  defaultSiteSettings,
   getPublicInventory,
   getInventoryFilters,
   getShowroomBranches,
   getSiteSettings,
 } from "@/lib/server/api";
+import { buildCleanPageMetadata, cleanText } from "@/lib/seo";
 import type {
   PublicVehicle,
   PublicInventoryFilterOptions,
   PublicShowroomBranch,
   PublicSiteSettings,
 } from "@/lib/types";
-
-export const dynamic = "force-dynamic";
 
 interface PageProps {
   searchParams: Promise<{
@@ -30,21 +30,11 @@ interface PageProps {
 }
 
 export async function generateMetadata({ searchParams }: PageProps): Promise<Metadata> {
-  const params = await searchParams;
-  let siteName = "DREAM CAR HOUSE";
-  let siteTagline = "The Pinnacle of Luxury Automobiles";
-  let siteWebsite = "https://dreamcarhouse.com";
-
-  try {
-    const settings = await getSiteSettings();
-    if (settings) {
-      siteName = settings.name || siteName;
-      siteTagline = settings.tagline || siteTagline;
-      siteWebsite = settings.website || siteWebsite;
-    }
-  } catch {
-    // Falls back safely
-  }
+  const [params, settings] = await Promise.all([
+    searchParams,
+    getSiteSettings().catch(() => defaultSiteSettings),
+  ]);
+  const siteName = cleanText(settings?.name) || "DREAM CAR HOUSE";
 
   let title = "Complete Luxury Vehicle Inventory";
   if (params.brand && params.brand !== "all") {
@@ -55,27 +45,13 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   }
 
   const description = `Explore our complete inventory of brand new and certified pre-owned luxury vehicles at ${siteName} in Dhaka, Bangladesh. Browse flagship sedans, performance SUVs, and exotic supercars with transparent specifications and concierge consultation.`;
-  const canonicalUrl = `${siteWebsite.replace(/\/$/, "")}/inventory/`;
 
-  return {
+  return buildCleanPageMetadata({
     title,
     description,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title,
-      description,
-      url: canonicalUrl,
-      siteName,
-      type: "website",
-    },
-    twitter: {
-      card: "summary_large_image",
-      title,
-      description,
-    },
-  };
+    path: "/inventory/",
+    settings,
+  });
 }
 
 export default async function InventoryPage({ searchParams }: PageProps) {

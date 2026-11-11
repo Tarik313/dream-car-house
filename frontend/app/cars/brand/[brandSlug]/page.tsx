@@ -1,12 +1,21 @@
 import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import {
+  defaultSiteSettings,
   getBrandSEODetail,
   getPublicInventory,
   getSiteSettings,
   buildMetadataFromSEO,
 } from "@/lib/server/api";
+import {
+  buildCleanPageMetadata,
+  getPublicBaseUrl,
+  normalizeCanonicalUrl,
+  resolvePublicUrl,
+} from "@/lib/seo";
 import BrandVehiclesClient from "./BrandVehiclesClient";
+
+export const revalidate = 300;
 
 interface PageProps {
   params: Promise<{
@@ -16,7 +25,10 @@ interface PageProps {
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
   const { brandSlug } = await params;
-  const brandSeo = await getBrandSEODetail(brandSlug);
+  const [brandSeo, settings] = await Promise.all([
+    getBrandSEODetail(brandSlug),
+    getSiteSettings().catch(() => defaultSiteSettings),
+  ]);
 
   if (!brandSeo) {
     return {
@@ -26,48 +38,22 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   }
 
   const brandName = brandSeo.name;
-  const canonicalUrl =
-    brandSeo.canonical_url || `https://dreamcarhouse.com/cars/brand/${brandSeo.slug || brandSlug}/`;
+  const canonicalUrl = normalizeCanonicalUrl(
+    brandSeo.canonical_url || `/cars/brand/${brandSeo.slug || brandSlug}/`,
+    settings.website
+  );
 
-  const fallback: Metadata = {
-    title: `${brandName} Luxury Vehicles for Sale in Bangladesh | DREAM CAR HOUSE`,
+  const fallback = buildCleanPageMetadata({
+    title: `${brandName} Luxury Vehicles for Sale in Bangladesh`,
     description: `Explore verified ${brandName} luxury vehicles at DREAM CAR HOUSE showrooms in Kakrail and Gulshan, Dhaka. Browse brand new zero-meter and certified pre-owned ${brandName} models with transparent provenance.`,
-    alternates: {
-      canonical: canonicalUrl,
-    },
-    openGraph: {
-      title: `${brandName} Luxury Vehicles Collection | DREAM CAR HOUSE`,
-      description: `Explore factory-fresh and certified pre-owned ${brandName} luxury motorcars in Bangladesh.`,
-      url: canonicalUrl,
-      siteName: "DREAM CAR HOUSE",
-      type: "website",
-      images: brandSeo.feature_image
-        ? [
-            {
-              url: brandSeo.feature_image,
-              alt: brandSeo.feature_image_alt || `${brandName} Collection`,
-              width: 1200,
-              height: 630,
-            },
-          ]
-        : brandSeo.image
-        ? [
-            {
-              url: brandSeo.image,
-              alt: brandSeo.logo_alt || `${brandName} Logo`,
-            },
-          ]
-        : undefined,
-    },
-    twitter: {
-      card: "summary_large_image",
-      title: `${brandName} Luxury Vehicles Collection | DREAM CAR HOUSE`,
-      description: `Explore factory-fresh and certified pre-owned ${brandName} luxury motorcars in Bangladesh.`,
-      images: brandSeo.feature_image ? [brandSeo.feature_image] : brandSeo.image ? [brandSeo.image] : undefined,
-    },
-  };
+    ogTitle: `${brandName} Luxury Vehicles Collection`,
+    ogDescription: `Explore factory-fresh and certified pre-owned ${brandName} luxury motorcars in Bangladesh.`,
+    ogImage: brandSeo.feature_image || brandSeo.image || undefined,
+    path: canonicalUrl,
+    settings,
+  });
 
-  return buildMetadataFromSEO(brandSeo, fallback);
+  return buildMetadataFromSEO(brandSeo, fallback, settings);
 }
 
 export default async function BrandVehiclesPage({ params }: PageProps) {
@@ -85,12 +71,15 @@ export default async function BrandVehiclesPage({ params }: PageProps) {
 
   const [invRes, settings] = await Promise.all([
     getPublicInventory({ brand: brandSeo.name }).catch(() => ({ items: [], totalRows: 0 })),
-    getSiteSettings().catch(() => null),
+    getSiteSettings().catch(() => defaultSiteSettings),
   ]);
 
   const matchingCars = invRes.items || [];
-  const canonicalUrl =
-    brandSeo.canonical_url || `https://dreamcarhouse.com/cars/brand/${brandSeo.slug || brandSlug}/`;
+  const baseUrl = getPublicBaseUrl(settings?.website);
+  const canonicalUrl = normalizeCanonicalUrl(
+    brandSeo.canonical_url || `/cars/brand/${brandSeo.slug || brandSlug}/`,
+    baseUrl
+  );
 
   // 1. Structured Data: BreadcrumbList
   const breadcrumbSchema = {
@@ -101,13 +90,13 @@ export default async function BrandVehiclesPage({ params }: PageProps) {
         "@type": "ListItem",
         position: 1,
         name: "Home",
-        item: "https://dreamcarhouse.com",
+        item: normalizeCanonicalUrl("/", baseUrl),
       },
       {
         "@type": "ListItem",
         position: 2,
         name: "Marques",
-        item: "https://dreamcarhouse.com/cars/brand/",
+        item: normalizeCanonicalUrl("/cars/brand/", baseUrl),
       },
       {
         "@type": "ListItem",
@@ -130,7 +119,7 @@ export default async function BrandVehiclesPage({ params }: PageProps) {
     about: {
       "@type": "Brand",
       name: brandSeo.name,
-      ...(brandSeo.image ? { logo: brandSeo.image } : {}),
+      ...(brandSeo.image ? { logo: resolvePublicUrl(brandSeo.image, baseUrl) } : {}),
     },
     mainEntity: {
       "@type": "ItemList",
@@ -138,9 +127,9 @@ export default async function BrandVehiclesPage({ params }: PageProps) {
       itemListElement: matchingCars.map((car, idx) => ({
         "@type": "ListItem",
         position: idx + 1,
-        url: `https://dreamcarhouse.com/cars/${car.slug}/`,
+        url: normalizeCanonicalUrl(`/cars/${car.slug}/`, baseUrl),
         name: car.name,
-        ...(car.image ? { image: car.image } : {}),
+        ...(car.image ? { image: resolvePublicUrl(car.image, baseUrl) } : {}),
       })),
     },
   };

@@ -84,6 +84,7 @@ export default function Hero({ initialData }: HeroProps = {}) {
                 muted
                 loop
                 playsInline
+                preload="metadata"
                 poster={theme === "dark" ? nightSrc : daySrc}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />

@@ -2,6 +2,17 @@ import "server-only";
 import { cache } from "react";
 import type { Metadata } from "next";
 import { SHOWROOM, SHOWROOM_BRANCHES, VEHICLE_DATA } from "@/lib/showroomData";
+import {
+  buildCleanPageMetadata,
+  cleanText,
+  formatEngineCapacity,
+  formatMileage,
+  formatTitleWithSite,
+  getDefaultOgImage,
+  normalizeCanonicalUrl,
+  resolvePublicUrl,
+  type CleanPageMetadataInput,
+} from "@/lib/seo";
 import type {
   PublicSiteSettings,
   PublicShowroomBranch,
@@ -154,7 +165,7 @@ function normalizeHeroPayload(data: unknown): PublicHeroSlider {
  * Deduplicated, server-only public SiteSettings fetcher.
  * - Enforces explicit backend origin (fails loudly if unset)
  * - 5-second timeout via AbortSignal.timeout(5000)
- * - Fresh reads initially (cache: 'no-store')
+ * - Cached with ISR revalidation (300s, tag: site-settings)
  * - Deduplicated within a single request via React cache()
  * - Never forwards staff credentials or cookies
  */
@@ -165,7 +176,7 @@ export const getSiteSettings = cache(async (): Promise<PublicSiteSettings> => {
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["site-settings"] },
       headers: {
         Accept: "application/json",
       },
@@ -204,7 +215,7 @@ export const getShowroomBranches = cache(async (): Promise<PublicShowroomBranch[
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["branches"] },
       headers: {
         Accept: "application/json",
       },
@@ -266,7 +277,7 @@ export const getHeroSlider = cache(async (): Promise<PublicHeroSlider | null> =>
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["sliders"] },
       headers: {
         Accept: "application/json",
       },
@@ -310,27 +321,13 @@ export function mapBackendCarToVehicle(car: Record<string, unknown>): PublicVehi
 
   const carType = car.car_type === "PRE_OWNED" ? "PRE_OWNED" : "BRAND_NEW";
 
-  let engineCapacity = "";
-  if (car.engine_capacity) {
-    const rawCap = String(car.engine_capacity).trim();
-    if (/^\d+$/.test(rawCap)) {
-      engineCapacity = `${rawCap} cc`;
-    } else {
-      engineCapacity = rawCap;
-    }
-  }
+  const engineCapacity = formatEngineCapacity(car.engine_capacity);
 
-  let mileage = "";
-  if (car.mileage) {
-    const rawMil = String(car.mileage).trim();
-    if (/^\d+$/.test(rawMil)) {
-      mileage = `${parseInt(rawMil, 10).toLocaleString()} km`;
-    } else {
-      mileage = rawMil;
-    }
-  } else {
-    mileage = carType === "BRAND_NEW" ? "Brand New (00 km)" : "Verified";
-  }
+  const mileage = car.mileage
+    ? formatMileage(car.mileage)
+    : carType === "BRAND_NEW"
+    ? "Brand New (00 km)"
+    : "Verified";
 
   const rawImages = Array.isArray(car.inventory_images) ? car.inventory_images : [];
   const images: PublicVehicleImage[] = rawImages.map((img: Record<string, unknown>) => ({
@@ -417,7 +414,7 @@ export const getFeaturedInventory = cache(async (): Promise<PublicVehicle[]> => 
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 60, tags: ["inventory", "featured-inventory"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -496,7 +493,7 @@ export const getPublicInventory = cache(
     let res: Response;
     try {
       res = await fetch(url, {
-        cache: "no-store",
+        next: { revalidate: 60, tags: ["inventory"] },
         headers: { Accept: "application/json" },
         signal: AbortSignal.timeout(5000),
       });
@@ -533,7 +530,7 @@ export const getPublicInventoryDetail = cache(async (slug: string): Promise<Publ
     const origin = getBackendOrigin();
     const url = `${origin}/api/v1/inventory/detail/${encodeURIComponent(slug)}/`;
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 60, tags: ["inventory", `car-${slug}`] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -564,7 +561,7 @@ export const getPublicRelatedVehicles = cache(async (slug: string): Promise<Publ
     const origin = getBackendOrigin();
     const url = `${origin}/api/v1/inventory/detail/${encodeURIComponent(slug)}/related/`;
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 60, tags: ["inventory", `car-${slug}`] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -600,7 +597,7 @@ export const getInventoryFilters = cache(async (): Promise<PublicInventoryFilter
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 60, tags: ["inventory", "brands"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -635,7 +632,7 @@ export const getPreferenceSection = cache(async (): Promise<PublicPreferenceSect
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["home-sections"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -678,7 +675,7 @@ export const getRunwayBrands = cache(async (): Promise<PublicBrand[]> => {
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["brands"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -709,7 +706,7 @@ export const getAllPublicBrands = cache(async (): Promise<PublicBrand[]> => {
 
   try {
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["brands"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -738,7 +735,7 @@ export const getBrandSEODetail = cache(async (slugOrId: string | number): Promis
 
   try {
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["brands", "seo"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -766,7 +763,7 @@ export const getConsultationSection = cache(async (): Promise<PublicConsultation
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["home-sections"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -815,7 +812,7 @@ export const getExperienceSection = cache(async (): Promise<PublicExperienceSect
   let res: Response;
   try {
     res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["home-sections"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -874,7 +871,7 @@ export const getVisualChroniclesSection = cache(
     let res: Response;
     try {
       res = await fetch(url, {
-        cache: "no-store",
+        next: { revalidate: 300, tags: ["home-sections"] },
         headers: { Accept: "application/json" },
         signal: AbortSignal.timeout(5000),
       });
@@ -933,7 +930,7 @@ export const getVipSanctuarySection = cache(
     let res: Response;
     try {
       res = await fetch(url, {
-        cache: "no-store",
+        next: { revalidate: 300, tags: ["home-sections"] },
         headers: { Accept: "application/json" },
         signal: AbortSignal.timeout(5000),
       });
@@ -993,7 +990,7 @@ export const getAboutSection = cache(async (): Promise<PublicAboutSection | null
 
   try {
     const res = await fetch(url, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["home-sections"] },
       headers: { Accept: "application/json" },
       signal: AbortSignal.timeout(5000),
     });
@@ -1017,7 +1014,7 @@ export const getPageSEO = cache(async (page: string): Promise<PublicPageSEO | nu
   try {
     const origin = getBackendOrigin();
     const res = await fetch(`${origin}/api/v1/site-config/seo/${encodeURIComponent(page)}/`, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["seo", `seo-${page}`] },
     });
     if (!res.ok) return null;
     const json = await res.json();
@@ -1031,7 +1028,7 @@ export const getCategorySEO = cache(async (category: string): Promise<PublicCate
   try {
     const origin = getBackendOrigin();
     const res = await fetch(`${origin}/api/v1/site-config/category-seo/${encodeURIComponent(category)}/`, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["seo", `category-seo-${category}`] },
     });
     if (!res.ok) return null;
     const json = await res.json();
@@ -1044,7 +1041,7 @@ export const getAllPageSEO = cache(async (): Promise<PublicPageSEO[]> => {
   try {
     const origin = getBackendOrigin();
     const res = await fetch(`${origin}/api/v1/site-config/seo/`, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["seo"] },
     });
     if (!res.ok) return [];
     const json = await res.json();
@@ -1059,7 +1056,7 @@ export const getAllCategorySEO = cache(async (): Promise<PublicCategorySEO[]> =>
   try {
     const origin = getBackendOrigin();
     const res = await fetch(`${origin}/api/v1/site-config/category-seo/`, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["seo"] },
     });
     if (!res.ok) return [];
     const json = await res.json();
@@ -1070,17 +1067,81 @@ export const getAllCategorySEO = cache(async (): Promise<PublicCategorySEO[]> =>
   }
 });
 
+export async function resolveSeoPageMetadata(options: {
+  key: string;
+  kind?: "page" | "category";
+  fallback: Omit<CleanPageMetadataInput, "settings">;
+}): Promise<Metadata> {
+  const kind = options.kind ?? "page";
+  const [seo, settings] = await Promise.all([
+    (kind === "category" ? getCategorySEO(options.key) : getPageSEO(options.key)).catch(() => null),
+    getSiteSettings().catch(() => defaultSiteSettings),
+  ]);
+  const baseFallback = buildCleanPageMetadata({
+    ...options.fallback,
+    settings,
+  });
+  return buildMetadataFromSEO(seo, baseFallback, settings);
+}
+
 export function buildMetadataFromSEO(
   seo: PublicPageSEO | PublicCategorySEO | PublicBrandSEO | null,
-  fallback: Metadata
+  fallback: Metadata,
+  settings?: Partial<PublicSiteSettings> | null
 ): Metadata {
+  const effectiveSettings = settings ?? defaultSiteSettings;
+  const fallbackSiteName =
+    fallback.openGraph?.siteName || effectiveSettings.name || "DREAM CAR HOUSE";
+  const defaultOgUrl = getDefaultOgImage(effectiveSettings);
+  const normalizeFallbackTitle = (t: Metadata["title"]): Metadata["title"] => {
+    if (typeof t === "string") return formatTitleWithSite(t, fallbackSiteName);
+    return t;
+  };
+  const fallbackCanonicalRaw =
+    typeof fallback.alternates?.canonical === "string"
+      ? fallback.alternates.canonical
+      : typeof fallback.openGraph?.url === "string"
+      ? fallback.openGraph.url
+      : "/";
+  const normalizedFallbackCanonical = normalizeCanonicalUrl(fallbackCanonicalRaw);
+
+  const normalizedFallbackImages =
+    fallback.openGraph?.images || [{ url: defaultOgUrl, alt: cleanText(fallback.title) || fallbackSiteName }];
+  const normalizedFallbackTwitterImages =
+    fallback.twitter?.images ||
+    (Array.isArray(normalizedFallbackImages)
+      ? normalizedFallbackImages.map((img) => (typeof img === "string" ? img : img instanceof URL ? img.toString() : img.url))
+      : [defaultOgUrl]);
+
   if (!seo || ("visibility" in seo && seo.visibility === "HIDDEN")) {
-    return fallback;
+    return {
+      ...fallback,
+      title: normalizeFallbackTitle(fallback.title),
+      alternates: {
+        ...fallback.alternates,
+        canonical: normalizedFallbackCanonical,
+      },
+      openGraph: {
+        ...fallback.openGraph,
+        url: normalizedFallbackCanonical,
+        siteName: fallbackSiteName,
+        images: normalizedFallbackImages,
+      },
+      twitter: {
+        card: "summary_large_image",
+        ...fallback.twitter,
+        images: normalizedFallbackTwitterImages,
+      },
+    };
   }
 
-  const title = seo.meta_title || fallback.title || undefined;
-  const description = seo.meta_description || fallback.description || undefined;
-  const canonicalUrl = seo.canonical_url || fallback.alternates?.canonical || undefined;
+  const ogSiteName = ("og_site_name" in seo && cleanText(seo.og_site_name)) || fallbackSiteName;
+  const rawTitle = cleanText(seo.meta_title);
+  const title = rawTitle ? formatTitleWithSite(rawTitle, ogSiteName) : normalizeFallbackTitle(fallback.title);
+  const description = cleanText(seo.meta_description) || fallback.description || undefined;
+  const canonicalUrl = normalizeCanonicalUrl(
+    cleanText(seo.canonical_url) || normalizedFallbackCanonical
+  );
 
   let robots = fallback.robots;
   if (seo.robots) {
@@ -1093,19 +1154,52 @@ export function buildMetadataFromSEO(
     };
   }
 
-  const keywords = "meta_keywords" in seo && typeof seo.meta_keywords === "string" && seo.meta_keywords.trim()
-    ? seo.meta_keywords.split(",").map((k) => k.trim())
-    : fallback.keywords;
+  const keywords =
+    "meta_keywords" in seo && typeof seo.meta_keywords === "string" && seo.meta_keywords.trim()
+      ? seo.meta_keywords.split(",").map((k) => k.trim())
+      : fallback.keywords;
 
-  const ogTitle = ("og_title" in seo && seo.og_title) || seo.meta_title || fallback.openGraph?.title;
-  const ogDescription = ("og_description" in seo && seo.og_description) || seo.meta_description || fallback.openGraph?.description;
-  const ogImage = ("og_image" in seo && seo.og_image) || ("feature_image" in seo && seo.feature_image) || ("image" in seo && seo.image) || undefined;
-  const ogType = ("og_type" in seo && seo.og_type === "article" ? "article" : "website") as "website" | "article";
-  const ogSiteName = ("og_site_name" in seo && seo.og_site_name) || "DREAM CAR HOUSE";
+  const rawOgTitle = ("og_title" in seo && cleanText(seo.og_title)) || rawTitle;
+  const ogTitle = rawOgTitle
+    ? formatTitleWithSite(rawOgTitle, ogSiteName)
+    : fallback.openGraph?.title || (typeof title === "string" ? title : undefined);
+  const ogDescription =
+    ("og_description" in seo && cleanText(seo.og_description)) ||
+    cleanText(seo.meta_description) ||
+    fallback.openGraph?.description;
+  const explicitOgImage = resolvePublicUrl(
+    ("og_image" in seo && seo.og_image) ||
+      ("feature_image" in seo && seo.feature_image) ||
+      ("image" in seo && seo.image) ||
+      ""
+  );
+  const ogAlt =
+    ("feature_image_alt" in seo && cleanText(seo.feature_image_alt)) ||
+    ("logo_alt" in seo && cleanText(seo.logo_alt)) ||
+    (typeof ogTitle === "string" ? ogTitle : ogSiteName);
+  const ogImages = explicitOgImage
+    ? [{ url: explicitOgImage, alt: ogAlt }]
+    : normalizedFallbackImages;
+  const ogType = ("og_type" in seo && seo.og_type === "article" ? "article" : "website") as
+    | "website"
+    | "article";
 
-  const twitterTitle = ("twitter_title" in seo && seo.twitter_title) || seo.meta_title || fallback.twitter?.title;
-  const twitterDescription = ("twitter_description" in seo && seo.twitter_description) || seo.meta_description || fallback.twitter?.description;
-  const twitterImage = ("twitter_image" in seo && seo.twitter_image) || ogImage;
+  const rawTwitterTitle = ("twitter_title" in seo && cleanText(seo.twitter_title)) || rawTitle;
+  const twitterTitle = rawTwitterTitle
+    ? formatTitleWithSite(rawTwitterTitle, ogSiteName)
+    : fallback.twitter?.title || (typeof ogTitle === "string" ? ogTitle : undefined);
+  const twitterDescription =
+    ("twitter_description" in seo && cleanText(seo.twitter_description)) ||
+    cleanText(seo.meta_description) ||
+    fallback.twitter?.description;
+  const explicitTwitterImage = resolvePublicUrl(
+    ("twitter_image" in seo && seo.twitter_image) || ""
+  );
+  const twitterImages = explicitTwitterImage
+    ? [explicitTwitterImage]
+    : explicitOgImage
+    ? [explicitOgImage]
+    : normalizedFallbackTwitterImages;
 
   return {
     ...fallback,
@@ -1113,22 +1207,25 @@ export function buildMetadataFromSEO(
     description,
     keywords,
     alternates: {
-      canonical: canonicalUrl as string,
+      ...fallback.alternates,
+      canonical: canonicalUrl,
     },
     robots,
     openGraph: {
+      ...fallback.openGraph,
       title: ogTitle,
       description: ogDescription,
-      url: canonicalUrl as string,
+      url: canonicalUrl,
       siteName: ogSiteName,
       type: ogType,
-      images: ogImage ? [{ url: ogImage, alt: ("feature_image_alt" in seo && seo.feature_image_alt) || ("logo_alt" in seo && seo.logo_alt) || "" }] : undefined,
+      images: ogImages,
     },
     twitter: {
       card: "summary_large_image",
+      ...fallback.twitter,
       title: twitterTitle,
       description: twitterDescription,
-      images: twitterImage ? [twitterImage] : undefined,
+      images: twitterImages,
     },
   };
 }
@@ -1161,7 +1258,7 @@ export const getSalesRepresentatives = cache(async (): Promise<PublicSalesRepres
   try {
     const origin = getBackendOrigin();
     const res = await fetch(`${origin}/api/v1/home/sales-representative/`, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["sales-representatives"] },
     });
     if (!res.ok) return [];
     const json = await res.json();
@@ -1179,7 +1276,7 @@ export const getPeopleTalks = cache(async (): Promise<PublicPeopleTalk[]> => {
   try {
     const origin = getBackendOrigin();
     const res = await fetch(`${origin}/api/v1/home/people-talk/`, {
-      cache: "no-store",
+      next: { revalidate: 300, tags: ["people-talk"] },
     });
     if (!res.ok) return [];
     const json = await res.json();
