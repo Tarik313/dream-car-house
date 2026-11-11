@@ -4,29 +4,11 @@ import React from "react";
 import Link from "next/link";
 import { Vehicle } from "@/lib/showroomData";
 import { PublicVehicle } from "@/lib/types";
+import { formatVehiclePrice } from "@/lib/utils";
 
 interface VehicleCardProps {
   car: Vehicle | PublicVehicle;
   layout?: "grid" | "carousel";
-}
-
-function formatPrice(price?: string | number | null, isCallForPrice?: boolean): string {
-  if (isCallForPrice || price === null || price === undefined) return "Call for Price";
-
-  const s = String(price).trim();
-  if (!s || s.toLowerCase().includes("call") || s === "0") return "Call for Price";
-
-  let numStr = s;
-  if (numStr.toUpperCase().startsWith("BDT")) {
-    numStr = numStr.substring(3).trim();
-  }
-
-  const num = parseFloat(numStr.replace(/,/g, ""));
-  if (!isNaN(num) && num > 0) {
-    return `BDT ${Math.round(num).toLocaleString("en-IN")}`;
-  }
-
-  return s.toUpperCase().startsWith("BDT") ? s : `BDT ${s}`;
 }
 
 export default function VehicleCard({ car }: VehicleCardProps) {
@@ -35,7 +17,7 @@ export default function VehicleCard({ car }: VehicleCardProps) {
   );
   const waUrl = `https://wa.me/8801615121312?text=${waMessage}`;
 
-  const displayPrice = formatPrice(car.price, car.is_call_for_price);
+  const displayPrice = formatVehiclePrice(car.price, car.is_call_for_price, "Call for Price");
 
   const branchLabel =
     car.branch?.short_name ||

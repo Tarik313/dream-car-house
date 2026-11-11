@@ -4,6 +4,7 @@ import Link from "next/link";
 import React, { useState, useMemo, useEffect, useRef, Suspense } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
 import { VEHICLE_DATA, Vehicle, SHOWROOM_BRANCHES } from "@/lib/showroomData";
+import { formatVehiclePrice, parseVehiclePriceNumber } from "@/lib/utils";
 import type {
   PublicVehicle,
   PublicInventoryFilterOptions,
@@ -32,18 +33,8 @@ interface InventoryClientProps {
 const MAX_PRICE_LIMIT = 50000000; // BDT 5 Crore benchmark (matching BEG Autos standard)
 
 function parseVehicleNumericPrice(car: Vehicle | PublicVehicle): number | null {
-  if (car.raw_price && typeof car.raw_price === "number") {
-    return car.raw_price;
-  }
-  if (typeof car.price === "number") {
-    return car.price;
-  }
-  if (!car.price || typeof car.price !== "string") return null;
-  const s = car.price.trim().toLowerCase();
-  if (s.includes("call") || s.includes("upon request") || s === "0") return null;
-  const clean = s.replace(/[^0-9.]/g, "");
-  const val = parseFloat(clean);
-  return isNaN(val) || val <= 0 ? null : val;
+  if (car.is_call_for_price) return null;
+  return parseVehiclePriceNumber(car.raw_price ?? car.price, car.is_call_for_price);
 }
 
 function formatPriceLakhCrore(amount: number): string {
@@ -635,12 +626,7 @@ function InventoryContent({
               SHOWROOM_BRANCHES[branchId] || SHOWROOM_BRANCHES.kakrail;
 
             const carSlug = car.slug || String(car.id);
-            const numPrice = parseVehicleNumericPrice(car);
-            const displayPrice = numPrice
-              ? `BDT ${Math.round(numPrice).toLocaleString("en-IN")}`
-              : typeof car.price === "string" && car.price.trim()
-                ? car.price
-                : "Call for Price";
+            const displayPrice = formatVehiclePrice(car.price, car.is_call_for_price, "Call for Price");
 
             return (
               <Link

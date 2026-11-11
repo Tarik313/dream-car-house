@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useUI } from "@/lib/UIContext";
 import { SHOWROOM_BRANCHES, GalleryPhoto, Vehicle } from "@/lib/showroomData";
+import { formatVehiclePrice } from "@/lib/utils";
 
 function getCarDrivetrain(car: Vehicle): string {
   const nameLower = (car.name || "").toLowerCase();
@@ -511,9 +512,11 @@ export default function CarModal({
                     </div>
 
                     <div className="dch-price-value">
-                      {selectedCar.price === "Call for Price"
-                        ? "Price Upon Request • VIP Consultation"
-                        : selectedCar.price}
+                      {formatVehiclePrice(
+                        selectedCar.price,
+                        selectedCar.is_call_for_price,
+                        "Price Upon Request • VIP Consultation"
+                      )}
                     </div>
                   </div>
                 </div>

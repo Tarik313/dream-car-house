@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { useUI } from "@/lib/UIContext";
 import { VEHICLE_DATA, Vehicle } from "@/lib/showroomData";
+import { formatVehiclePrice } from "@/lib/utils";
 
 import type { PublicVehicle } from "@/lib/types";
 
@@ -47,6 +48,7 @@ export default function CompareModal({
                 engine_capacity: c.engine_capacity ? String(c.engine_capacity) : "",
                 mileage: c.mileage ? String(c.mileage) : "",
                 price: c.price ? String(c.price) : "Call for Price",
+                is_call_for_price: Boolean(c.is_call_for_price),
                 registered: String(c.registered || "Available"),
                 branch_id: (branch?.branch_id as "kakrail" | "gulshan") || "",
                 branch_name: String(branch?.name || ""),
@@ -238,10 +240,10 @@ export default function CompareModal({
               <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <td style={{ padding: "0.75rem 1rem", color: "#9ca3af" }}>Valuation</td>
                 <td style={{ padding: "0.75rem 1rem", color: "#d97706", fontWeight: 700 }}>
-                  {car1.price === "Call for Price" ? "Price Upon Request" : car1.price}
+                  {formatVehiclePrice(car1.price, car1.is_call_for_price, "Price Upon Request")}
                 </td>
                 <td style={{ padding: "0.75rem 1rem", color: "#d97706", fontWeight: 700 }}>
-                  {car2.price === "Call for Price" ? "Price Upon Request" : car2.price}
+                  {formatVehiclePrice(car2.price, car2.is_call_for_price, "Price Upon Request")}
                 </td>
               </tr>
 

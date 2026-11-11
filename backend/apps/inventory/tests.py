@@ -135,6 +135,22 @@ class CarSEOMetadataTests(TestCase):
         self.assertNotIn("kmkm", schema["description"].lower())
         self.assertEqual(schema["mileageFromOdometer"]["value"], "0 km")
 
+    def test_price_display_and_schema_offer_when_not_call_for_price(self):
+        brand = Brand.objects.create(name="Lexus", status=BaseModel.StatusChoices.PUBLISHED)
+        car = Inventory.objects.create(
+            name="Lexus LX 600 Ultra Luxury",
+            brand=brand,
+            model_name="LX 600",
+            year=2023,
+            price="38000000.00",
+            is_call_for_price=False,
+            slug="lexus-lx-600-price-test",
+        )
+        data = InventoryDetailSerializer(car).data
+        self.assertEqual(str(data["price"]), "38000000.00")
+        self.assertFalse(data["is_call_for_price"])
+        self.assertEqual(data["schema_data"]["offers"]["price"], "38000000")
+
 
 class BrandSEOTests(TestCase):
     def setUp(self):

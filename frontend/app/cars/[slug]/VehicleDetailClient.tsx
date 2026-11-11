@@ -8,20 +8,12 @@ import { useUI } from "@/lib/UIContext";
 import VehicleCard from "@/components/VehicleCard";
 import type { PublicSiteSettings } from "@/lib/types";
 import { submitInventoryQuoteAction } from "@/app/actions/quote";
+import { formatVehiclePrice, parseVehiclePriceNumber } from "@/lib/utils";
 
 interface VehicleDetailClientProps {
   car: Vehicle;
   relatedCars: Vehicle[];
   settings?: PublicSiteSettings;
-}
-
-function parseNumericPrice(price?: string | number | null): number | null {
-  if (!price) return null;
-  const s = String(price).trim();
-  if (s.toLowerCase().includes("call")) return null;
-  const clean = s.replace(/[^0-9.]/g, "");
-  const val = parseFloat(clean);
-  return isNaN(val) || val <= 0 ? null : val;
 }
 
 function getYoutubeEmbedUrl(youtubeUrl?: string): string {
@@ -42,23 +34,6 @@ function getYoutubeEmbedUrl(youtubeUrl?: string): string {
     return url;
   }
   return "https://www.youtube-nocookie.com/embed/1F3hm6MfR1k?rel=0";
-}
-
-function formatPriceString(price?: string | number | null, isCallForPrice?: boolean): string {
-  if (isCallForPrice || !price) return "Price Upon Request • VIP Consultation";
-  const s = String(price).trim();
-  if (!s || s.toLowerCase().includes("call") || s === "0") {
-    return "Price Upon Request • VIP Consultation";
-  }
-  let numStr = s;
-  if (numStr.toUpperCase().startsWith("BDT")) {
-    numStr = numStr.substring(3).trim();
-  }
-  const num = parseFloat(numStr.replace(/,/g, ""));
-  if (!isNaN(num) && num > 0) {
-    return `BDT ${Math.round(num).toLocaleString("en-IN")}`;
-  }
-  return s.toUpperCase().startsWith("BDT") ? s : `BDT ${s}`;
 }
 
 export default function VehicleDetailClient({
@@ -104,7 +79,10 @@ export default function VehicleDetailClient({
   };
 
   // EMI Calculator States
-  const numericPrice = useMemo(() => parseNumericPrice(car.price), [car.price]);
+  const numericPrice = useMemo(
+    () => parseVehiclePriceNumber(car.price, car.is_call_for_price),
+    [car.price, car.is_call_for_price]
+  );
   const defaultLoanAmount = numericPrice ? Math.round(numericPrice * 0.7) : 5000000;
   const defaultDownPayment = numericPrice ? Math.round(numericPrice * 0.3) : 2000000;
 
@@ -173,7 +151,11 @@ export default function VehicleDetailClient({
     (car.fuel_type && car.fuel_type.toUpperCase().includes("ELECTRIC")) ||
     (car.engine_capacity && (car.engine_capacity.toLowerCase().includes("kwh") || car.engine_capacity.toLowerCase().includes("electric")))
   );
-  const displayPrice = formatPriceString(car.price, car.is_call_for_price);
+  const displayPrice = formatVehiclePrice(
+    car.price,
+    car.is_call_for_price,
+    "Price Upon Request • VIP Consultation"
+  );
 
   const handleExpandToCinema = (indexToOpen?: number) => {
     const targetIdx = typeof indexToOpen === "number" ? indexToOpen : activeImgIdx;
