@@ -1,7 +1,7 @@
 export default function Appointment() {
   return (
     <section className="dream-appointment">
-      <div className="max-w-7xl mx-auto bg-[url('/images/bg.png')]  bg-center bg-no-repeat">
+      <div className="max-w-7xl mx-auto bg-[url('/images/bg.webp')]  bg-center bg-no-repeat">
         {/* Dark space background would be set by your own image */}
         <div className="relative py-6 mb-6">
           <div className="max-w-7xl mx-auto ">

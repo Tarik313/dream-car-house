@@ -26,7 +26,7 @@ export default function MultipleInventory() {
             <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden group">
               <Link href="/cars/brand-new" className="relative block h-full">
                 <Image
-                  src="/images/car-image-left.jpg"
+                  src="/images/car-image-left.webp"
                   alt="Reconditioned Unit"
                   fill
                   priority={true}
@@ -57,7 +57,7 @@ export default function MultipleInventory() {
             <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden group">
               <Link href="cars/pre-owned" className="relative block h-full">
                 <Image
-                  src="/images/car-image-right.jpg"
+                  src="/images/car-image-right.webp"
                   alt="Luxury Car"
                   fill
                   sizes="(max-width: 768px) 100vw, 50vw"
@@ -87,7 +87,7 @@ export default function MultipleInventory() {
             <div className="relative w-full aspect-[16/9] rounded-lg overflow-hidden group">
               <Link href="/byd-cars" className="relative block h-full">
                 <Image
-                  src="/images/byd_banner.jpeg"
+                  src="/images/byd_banner.webp"
                   alt="BYD"
                   fill
                   sizes="(max-width: 768px) 100vw, 33vw"

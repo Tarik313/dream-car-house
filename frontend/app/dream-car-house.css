@@ -3,10 +3,7 @@
    Font: Poppins | Theme: Deep Midnight Black (#000000) & Minimal Luxury
    ========================================================================== */
 
-@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap');
-
 :root {
-  --font-poppins: 'Poppins', sans-serif;
   --bg-black: #0b0b0c;
   --bg-surface: #0d0d0f;
   --bg-card: #101012;

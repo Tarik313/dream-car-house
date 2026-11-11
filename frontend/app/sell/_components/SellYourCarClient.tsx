@@ -114,7 +114,7 @@ export default function SellYourCarClient() {
       <section className="dream-media relative h-[500px] md:h-screen bg-page">
         <div className="absolute inset-0 ">
           <Image
-            src="/images/sell.png"
+            src="/images/sell.webp"
             alt="Luxury cars in showroom"
             fill
             sizes="100vw"

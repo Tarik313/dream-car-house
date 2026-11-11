@@ -25,7 +25,7 @@ class Command(BaseCommand):
             "name": "DREAM CAR HOUSE",
             "tagline": "Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka.",
             "logo_text": "DREAM CAR HOUSE",
-            "logo_asset": "/assets/supercar_wheel.png",
+            "logo_asset": "/assets/supercar_wheel.webp",
             "hotline": "01615-121312",
             "phone": "+880 1615-121312",
             "email": "dreamcarhouse101@gmail.com",

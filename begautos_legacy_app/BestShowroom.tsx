@@ -30,7 +30,7 @@ export default function BestShowroom() {
           {/* First Gallery Item */}
           <div className="overflow-hidden rounded-lg h-60 sm:h-72 lg:h-80 relative">
             <Image
-              src="/images/best1.png"
+              src="/images/best1.webp"
               alt="Luxury Car Showroom"
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -41,7 +41,7 @@ export default function BestShowroom() {
           {/* Second Gallery Item */}
           <div className="overflow-hidden rounded-lg h-60 sm:h-72 lg:h-80 relative">
             <Image
-              src="/images/best2.png"
+              src="/images/best2.webp"
               alt="Showroom Team"
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -52,7 +52,7 @@ export default function BestShowroom() {
           {/* Third Gallery Item */}
           <div className="overflow-hidden rounded-lg h-60 sm:h-72 lg:h-80 relative sm:col-span-2 lg:col-span-1">
             <Image
-              src="/images/best3.png"
+              src="/images/best3.webp"
               alt="Car Delivery"
               fill
               sizes="(max-width: 640px) 100vw, (max-width: 1024px) 50vw, 33vw"

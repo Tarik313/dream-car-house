@@ -6,7 +6,7 @@ export default function FooterHero() {
       {/* Background Image */}
       <div className="absolute inset-0">
         <Image
-          src="/images/footer-hero.png"
+          src="/images/footer-hero.webp"
           alt="Luxury car showroom"
           fill
           sizes="100vw"

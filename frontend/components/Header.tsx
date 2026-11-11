@@ -214,7 +214,7 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
             >
               <div className="wheel-disc-wrapper">
                 <Image
-                  src="/assets/supercar_wheel.png"
+                  src="/assets/supercar_wheel.webp"
                   alt="Supercar Forged Wheel"
                   width={54}
                   height={54}

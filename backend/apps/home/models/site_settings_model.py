@@ -23,7 +23,7 @@ class SiteSettings(BaseModel):
     )
     logo_asset = models.CharField(
         max_length=255,
-        default="/assets/supercar_wheel.png",
+        default="/assets/supercar_wheel.webp",
         verbose_name=_("Logo Asset Path"),
     )
     logo = models.ImageField(
