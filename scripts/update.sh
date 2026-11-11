@@ -57,12 +57,16 @@ if [ -z "${REVALIDATE_SECRET:-}" ] || [[ "${REVALIDATE_SECRET}" == *"CHANGE_ME"*
     echo "[WARN] REVALIDATE_SECRET is unset or placeholder; on-demand ISR webhook purge will be disabled (60s/300s time-based ISR still active)."
 fi
 
-# 2. Compose files (HTTP first-boot vs SSL override)
+# 2. Compose files (HTTP first-boot vs Cloudflare SSL vs Let's Encrypt SSL)
 COMPOSE_FILES=("-f" "docker-compose.yml")
 SSL_MODE=false
-if [ "${ENABLE_SSL:-false}" = "true" ] || [ "${1:-}" = "--ssl" ]; then
+if [ "${1:-}" = "--letsencrypt" ] || [ "${ENABLE_SSL:-false}" = "letsencrypt" ]; then
+    echo "[*] Activating Let's Encrypt SSL override (docker-compose.letsencrypt.yml)..."
+    COMPOSE_FILES+=("-f" "docker-compose.letsencrypt.yml")
+    SSL_MODE=true
+elif [ "${ENABLE_SSL:-false}" = "true" ] || [ "${1:-}" = "--ssl" ]; then
     if [ -f "/etc/ssl/cloudflare/cert.pem" ] && [ -f "/etc/ssl/cloudflare/key.pem" ]; then
-        echo "[*] Activating SSL override (docker-compose.ssl.yml)..."
+        echo "[*] Activating Cloudflare SSL override (docker-compose.ssl.yml)..."
         COMPOSE_FILES+=("-f" "docker-compose.ssl.yml")
         SSL_MODE=true
     else

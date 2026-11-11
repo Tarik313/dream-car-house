@@ -1,0 +1,25 @@
+# ==============================================================================
+# DREAM CAR HOUSE - Production Let's Encrypt SSL Docker Compose Override
+# ==============================================================================
+# Usage with base docker-compose.yml:
+#   docker compose --env-file .env.production -f docker-compose.yml -f docker-compose.letsencrypt.yml up -d
+#
+# Prerequisites:
+#   Run `sudo bash scripts/setup_letsencrypt.sh` once after DNS points to this server
+#   so /etc/letsencrypt/live/dreamcarhouse.com/{fullchain,privkey}.pem exist in `certbot_certs`.
+# ==============================================================================
+
+services:
+  nginx:
+    ports:
+      - "443:443"
+    volumes:
+      - ./nginx/production-letsencrypt.conf:/etc/nginx/conf.d/default.conf:ro
+
+  certbot:
+    image: certbot/certbot:latest
+    profiles:
+      - certbot
+    volumes:
+      - certbot_certs:/etc/letsencrypt
+      - certbot_challenge:/var/www/certbot
