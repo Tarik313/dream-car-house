@@ -77,6 +77,18 @@ services:
         condition: service_healthy
       redis:
         condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "python",
+          "-c",
+          "import urllib.request; req=urllib.request.Request('http://127.0.0.1:8000/admin/login/', headers={'Host':'backend'}); r=urllib.request.urlopen(req, timeout=5); raise SystemExit(0 if r.status < 400 else 1)",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 90s
     logging:
       driver: "json-file"
       options:
@@ -131,6 +143,7 @@ services:
       dockerfile: Dockerfile
       args:
         - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL:?NEXT_PUBLIC_BASE_URL must be set in .env.production}
+        - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:?PUBLIC_BASE_URL must be set in .env.production}
         - INTERNAL_BACKEND_URL=${INTERNAL_BACKEND_URL:-http://backend:8000}
     container_name: dch_frontend
     restart: unless-stopped
@@ -138,9 +151,24 @@ services:
       - NODE_ENV=production
       - INTERNAL_BACKEND_URL=${INTERNAL_BACKEND_URL:-http://backend:8000}
       - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL:?NEXT_PUBLIC_BASE_URL must be set in .env.production}
+      - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:?PUBLIC_BASE_URL must be set in .env.production}
+      - REVALIDATE_SECRET=${REVALIDATE_SECRET:-}
       - PORT=3000
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://127.0.0.1:3000/',(r)=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     logging:
       driver: "json-file"
       options:
@@ -164,7 +192,20 @@ services:
       - DASHBOARD_COOKIE_SECURE=${DASHBOARD_COOKIE_SECURE:-false}
       - PORT=3100
     depends_on:
-      - backend
+      backend:
+        condition: service_healthy
+    healthcheck:
+      test:
+        [
+          "CMD",
+          "node",
+          "-e",
+          "require('http').get('http://127.0.0.1:3100/login',(r)=>process.exit(r.statusCode<400?0:1)).on('error',()=>process.exit(1))",
+        ]
+      interval: 15s
+      timeout: 10s
+      retries: 5
+      start_period: 30s
     logging:
       driver: "json-file"
       options:
@@ -187,9 +228,12 @@ services:
       - certbot_certs:/etc/letsencrypt
       - certbot_challenge:/var/www/certbot
     depends_on:
-      - frontend
-      - backend
-      - dashboard
+      frontend:
+        condition: service_healthy
+      backend:
+        condition: service_healthy
+      dashboard:
+        condition: service_healthy
     logging:
       driver: "json-file"
       options:

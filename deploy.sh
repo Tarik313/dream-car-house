@@ -59,18 +59,11 @@ else
 fi
 
 # 4. Spin up services and wait for container healthchecks
+# (backend entrypoint runs migrate --noinput and collectstatic --noinput before passing healthcheck)
 echo "[*] Building and spinning up containers (single-task build limit active)..."
 docker compose --env-file .env.production "${COMPOSE_FILES[@]}" up -d --build --wait
 
-# 5. Run Database Migrations
-echo "[*] Executing database migrations..."
-docker compose --env-file .env.production "${COMPOSE_FILES[@]}" exec -T backend python manage.py migrate --noinput
-
-# 6. Collect Static Assets
-echo "[*] Collecting Django static assets..."
-docker compose --env-file .env.production "${COMPOSE_FILES[@]}" exec -T backend python manage.py collectstatic --noinput
-
-# 7. Verify Service Status
+# 5. Verify Service Status
 echo "=========================================================="
 echo "  All Services Successfully Deployed! Status Summary:    "
 echo "=========================================================="
