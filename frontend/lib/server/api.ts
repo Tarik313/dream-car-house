@@ -47,7 +47,7 @@ export const defaultSiteSettings: PublicSiteSettings = {
   name: SHOWROOM.name,
   tagline: "The Pinnacle of Luxury Automobiles",
   logo_text: "DREAM CAR HOUSE",
-  logo_asset: "/assets/dream-car-house-logo.png",
+  logo_asset: "/assets/supercar_wheel.webp",
   logo: "/assets/dch-logo.webp",
   logo_light: "/assets/dch-logo.webp",
   hotline: SHOWROOM.hotline,

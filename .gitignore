@@ -27,8 +27,8 @@ backend/media/
 backend/images/
 backend/static_root/
 static_root/
-images/
-media/
+/images/
+/media/
 
 # Database Dumps, Fixtures & Backups
 backend/sqlite_backup.json
