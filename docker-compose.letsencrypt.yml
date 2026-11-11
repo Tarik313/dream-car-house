@@ -20,6 +20,7 @@ services:
     image: certbot/certbot:latest
     profiles:
       - certbot
+    network_mode: host
     volumes:
       - certbot_certs:/etc/letsencrypt
       - certbot_challenge:/var/www/certbot

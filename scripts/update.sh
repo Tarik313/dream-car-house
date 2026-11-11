@@ -61,9 +61,17 @@ fi
 COMPOSE_FILES=("-f" "docker-compose.yml")
 SSL_MODE=false
 if [ "${1:-}" = "--letsencrypt" ] || [ "${ENABLE_SSL:-false}" = "letsencrypt" ]; then
-    echo "[*] Activating Let's Encrypt SSL override (docker-compose.letsencrypt.yml)..."
-    COMPOSE_FILES+=("-f" "docker-compose.letsencrypt.yml")
-    SSL_MODE=true
+    if docker compose --env-file .env.production -f docker-compose.yml -f docker-compose.letsencrypt.yml \
+        run --rm --no-deps --entrypoint sh certbot -c \
+        'test -s /etc/letsencrypt/live/dreamcarhouse.com/fullchain.pem && test -s /etc/letsencrypt/live/dreamcarhouse.com/privkey.pem'; then
+        echo "[*] Activating Let's Encrypt SSL override (docker-compose.letsencrypt.yml)..."
+        COMPOSE_FILES+=("-f" "docker-compose.letsencrypt.yml")
+        SSL_MODE=true
+    else
+        echo "[ERROR] Let's Encrypt SSL mode requested, but certificate files were not found in certbot_certs!" >&2
+        echo "        Run 'sudo bash scripts/setup_letsencrypt.sh' first." >&2
+        exit 1
+    fi
 elif [ "${ENABLE_SSL:-false}" = "true" ] || [ "${1:-}" = "--ssl" ]; then
     if [ -f "/etc/ssl/cloudflare/cert.pem" ] && [ -f "/etc/ssl/cloudflare/key.pem" ]; then
         echo "[*] Activating Cloudflare SSL override (docker-compose.ssl.yml)..."
@@ -143,4 +151,3 @@ fi
 echo "=========================================================="
 echo "  Update complete ($BEFORE_COMMIT -> $AFTER_COMMIT) - All checks OK!"
 echo "=========================================================="
-
