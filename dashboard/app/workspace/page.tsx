@@ -17,6 +17,7 @@ import {
   User,
   Search,
   FileText,
+  Settings,
 } from "lucide-react";
 import { getManagementAccess } from "@/lib/server/api";
 import { hasPermission } from "@/lib/server/auth";
@@ -567,6 +568,27 @@ export default async function WorkspacePage() {
                 style={{ fontSize: "var(--font-size-xs)", display: "inline-flex", alignItems: "center", gap: "var(--space-2)", width: "fit-content" }}
               >
                 Manage Category SEO <ArrowRight size={14} />
+              </Link>
+            </div>
+          )}
+
+          {hasPermission(user, "home.view_sitesettings") && (
+            <div style={{ padding: "var(--space-3)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", background: "var(--surface)", display: "flex", flexDirection: "column", justifyContent: "space-between" }}>
+              <div>
+                <div style={{ display: "flex", alignItems: "center", gap: "var(--space-2)", marginBottom: "var(--space-1)" }}>
+                  <Settings size={18} style={{ color: "var(--accent)" }} />
+                  <h3 style={{ margin: 0, fontSize: "var(--font-size-md)" }}>Site Settings &amp; Tab Icon</h3>
+                </div>
+                <p className="muted" style={{ fontSize: "var(--font-size-sm)", margin: "0 0 var(--space-3) 0" }}>
+                  Day/Night brand logos, browser tab icon (favicon), hotline, email, and footer identity.
+                </p>
+              </div>
+              <Link
+                href="/workspace/site-settings"
+                className="button button--secondary"
+                style={{ fontSize: "var(--font-size-xs)", display: "inline-flex", alignItems: "center", gap: "var(--space-2)", width: "fit-content" }}
+              >
+                Manage Site Settings <ArrowRight size={14} />
               </Link>
             </div>
           )}
