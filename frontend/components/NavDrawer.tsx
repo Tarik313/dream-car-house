@@ -77,7 +77,6 @@ export default function NavDrawer({
                     width: "auto",
                     maxWidth: "240px",
                     objectFit: "contain",
-                    filter: "drop-shadow(0 2px 10px rgba(0,0,0,0.9)) drop-shadow(0 0 12px rgba(255,255,255,0.2))",
                   }}
                   unoptimized
                 />

@@ -203,7 +203,6 @@ export default function CarModal({
                     width: "auto",
                     maxWidth: "200px",
                     objectFit: "contain",
-                    filter: "drop-shadow(0 2px 8px rgba(0,0,0,0.85)) drop-shadow(0 0 10px rgba(255,255,255,0.15))",
                   }}
                   unoptimized
                 />
