@@ -2454,6 +2454,101 @@ class DashboardContentConfigurationTests(TestCase):
         self.assertNotIn("created_at", pub_data)
         self.assertNotIn("updated_at", pub_data)
 
+    def test_site_settings_favicon_upload_validation_and_public_api(self):
+        import io
+        from PIL import Image
+
+        settings_obj = SiteSettings.objects.create(
+            name="DREAM CAR HOUSE",
+            phone="+880 1615-121312",
+            whatsapp="+8801615121312",
+        )
+        admin_csrf = self._login_superuser()
+        anon_client = APIClient()
+
+        try:
+            # 1. Invalid extension rejected
+            bad_ext = SimpleUploadedFile("tab.txt", b"not an icon", content_type="text/plain")
+            res_bad_ext = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {"favicon": bad_ext},
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_bad_ext.status_code, 400)
+
+            # 2. Malicious SVG with script rejected
+            bad_svg = SimpleUploadedFile(
+                "bad-tab.svg",
+                b'<svg xmlns="http://www.w3.org/2000/svg"><script>alert(1)</script></svg>',
+                content_type="image/svg+xml",
+            )
+            res_bad_svg = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {"favicon": bad_svg},
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_bad_svg.status_code, 400)
+
+            # 3. Corrupt PNG bytes rejected
+            bad_png = SimpleUploadedFile("corrupt.png", b"not-real-png-bytes", content_type="image/png")
+            res_bad_png = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {"favicon": bad_png},
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_bad_png.status_code, 400)
+
+            # 4. Valid PNG icon upload succeeds and is exposed publicly
+            png_buf = io.BytesIO()
+            Image.new("RGBA", (32, 32), (245, 158, 11, 255)).save(png_buf, format="PNG")
+            valid_png = SimpleUploadedFile("tab-icon.png", png_buf.getvalue(), content_type="image/png")
+            res_png = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {"favicon": valid_png},
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_png.status_code, 200)
+            png_url = res_png.json()["data"]["favicon"]
+            self.assertTrue(png_url)
+            self.assertIn("/media/site/", png_url)
+
+            pub_res = anon_client.get("/api/v1/home/site-settings/")
+            self.assertEqual(pub_res.status_code, 200)
+            self.assertEqual(pub_res.json()["data"]["favicon"], png_url)
+
+            # 5. Valid safe SVG icon upload succeeds
+            valid_svg = SimpleUploadedFile(
+                "tab-vector.svg",
+                b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32"><circle cx="16" cy="16" r="14" fill="#f59e0b"/></svg>',
+                content_type="image/svg+xml",
+            )
+            res_svg = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {"favicon": valid_svg},
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_svg.status_code, 200)
+            self.assertIn(".svg", res_svg.json()["data"]["favicon"])
+
+            # 6. Clear favicon resets it to empty/None
+            res_clear = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {"clear_favicon": "true"},
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_clear.status_code, 200)
+            self.assertFalse(res_clear.json()["data"]["favicon"])
+        finally:
+            settings_obj.refresh_from_db()
+            if settings_obj.favicon:
+                settings_obj.favicon.delete(save=False)
+
     def test_showroom_branch_management_and_public_api(self):
         # Create initial branch for duplicate checking
         initial_branch = ShowroomBranch.objects.create(

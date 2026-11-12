@@ -1,5 +1,67 @@
 import os
 from django.conf import settings
+from django.core.exceptions import ValidationError
+
+
+ALLOWED_FAVICON_EXTENSIONS = (".ico", ".png", ".svg", ".webp", ".jpg", ".jpeg")
+
+
+def normalize_media_fields(ret: dict, field_names: tuple[str, ...]) -> dict:
+    """Normalize listed media fields in a serialized dict with build_media_url."""
+    for field_name in field_names:
+        if ret.get(field_name):
+            ret[field_name] = build_media_url(ret[field_name])
+    return ret
+
+
+def validate_icon_file(uploaded_file, max_bytes: int = 5 * 1024 * 1024):
+    """Validate uploaded browser tab icon (SVG via strict sanitizer; raster via Pillow)."""
+    if not uploaded_file:
+        return uploaded_file
+
+    file_size = getattr(uploaded_file, "size", None)
+    if file_size is not None and file_size > max_bytes:
+        max_mb = max_bytes // (1024 * 1024)
+        raise ValidationError(f"Favicon file exceeds {max_mb}MB limit.")
+
+    name_lower = str(getattr(uploaded_file, "name", "") or "").lower()
+    if not name_lower.endswith(ALLOWED_FAVICON_EXTENSIONS):
+        raise ValidationError(
+            "Unsupported icon format. Upload an .ico, .png, .svg, .webp, or .jpg file."
+        )
+
+    if hasattr(uploaded_file, "seek"):
+        uploaded_file.seek(0)
+
+    if name_lower.endswith(".svg"):
+        try:
+            content = uploaded_file.read()
+            if hasattr(uploaded_file, "seek"):
+                uploaded_file.seek(0)
+            from core.utils.svg_sanitizer import validate_and_sanitize_svg
+            from rest_framework.exceptions import ValidationError as DrfValidationError
+            validate_and_sanitize_svg(content)
+        except ValidationError:
+            raise
+        except DrfValidationError as exc:
+            detail = exc.detail
+            msg = detail[0] if isinstance(detail, (list, tuple)) and detail else str(detail)
+            raise ValidationError(str(msg))
+        except Exception as exc:
+            raise ValidationError(f"Unable to validate SVG favicon: {str(exc)}")
+        return uploaded_file
+
+    try:
+        from PIL import Image
+        with Image.open(uploaded_file) as img:
+            img.verify()
+    except Exception:
+        raise ValidationError("Invalid or corrupted raster image file for favicon.")
+    finally:
+        if hasattr(uploaded_file, "seek"):
+            uploaded_file.seek(0)
+
+    return uploaded_file
 
 
 def build_media_url(url_or_path: str) -> str:

@@ -432,6 +432,7 @@ export type SiteSettingsItem = {
   logo_asset: string;
   logo?: string | null;
   logo_light?: string | null;
+  favicon?: string | null;
   hotline: string;
   phone: string;
   email: string;

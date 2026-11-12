@@ -182,6 +182,7 @@ class PublicSiteSettingsSerializer(serializers.ModelSerializer):
             'logo_asset',
             'logo',
             'logo_light',
+            'favicon',
             'hotline',
             'phone',
             'email',
@@ -201,12 +202,9 @@ class PublicSiteSettingsSerializer(serializers.ModelSerializer):
         return None
 
     def to_representation(self, instance):
+        from core.utils.media import normalize_media_fields
         ret = super().to_representation(instance)
-        if ret.get('logo'):
-            ret['logo'] = build_media_url(ret['logo'])
-        if ret.get('logo_light'):
-            ret['logo_light'] = build_media_url(ret['logo_light'])
-        return ret
+        return normalize_media_fields(ret, ('logo', 'logo_light', 'favicon'))
 
 
 class PublicShowroomBranchSerializer(serializers.ModelSerializer):

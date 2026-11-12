@@ -50,6 +50,7 @@ export const defaultSiteSettings: PublicSiteSettings = {
   logo_asset: "/assets/supercar_wheel.webp",
   logo: "/assets/dch-logo.webp",
   logo_light: "/assets/dch-logo.webp",
+  favicon: "/favicon.ico",
   hotline: SHOWROOM.hotline,
   phone: SHOWROOM.phone,
   email: SHOWROOM.email,

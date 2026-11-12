@@ -2,6 +2,7 @@ from django.db import models
 from django.utils.translation import gettext_lazy as _
 from base.models import BaseModel
 from apps.home.models.socialmedia_model import SocialMedia
+from core.utils.media import validate_icon_file
 
 
 class SiteSettings(BaseModel):
@@ -39,6 +40,13 @@ class SiteSettings(BaseModel):
         blank=True,
         verbose_name=_("Day Mode Logo"),
         help_text=_("Alternative brand logo displayed on white/light backgrounds in Day Mode. (Recommended: dark/black/gold)."),
+    )
+    favicon = models.FileField(
+        upload_to="site/",
+        null=True,
+        blank=True,
+        verbose_name=_("Browser Tab Icon (Favicon)"),
+        help_text=_("Browser tab icon (ICO, PNG, SVG, WebP, or JPG; recommended square e.g. 64x64 or 512x512)."),
     )
     hotline = models.CharField(
         max_length=50,
@@ -98,6 +106,11 @@ class SiteSettings(BaseModel):
         verbose_name = _("Site Setting")
         verbose_name_plural = _("Site Settings")
         db_table = "tbl_site_settings"
+
+    def clean(self):
+        super().clean()
+        if self.favicon and not getattr(self.favicon, "_committed", True):
+            validate_icon_file(self.favicon)
 
     def __str__(self):
         return self.name

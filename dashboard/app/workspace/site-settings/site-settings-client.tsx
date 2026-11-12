@@ -22,6 +22,7 @@ import {
   Globe,
   Sparkles,
   Info,
+  RotateCcw,
 } from "lucide-react";
 
 interface SiteSettingsClientProps {
@@ -56,6 +57,11 @@ export function SiteSettingsClient({
 
   const [submitting, setSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
+  const [clearFavicon, setClearFavicon] = useState(false);
+
+  const activeFaviconSrc = clearFavicon
+    ? "/favicon.ico"
+    : initialSettings.favicon || "/favicon.ico";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -86,13 +92,21 @@ export function SiteSettingsClient({
       body.append("logo_light", logoDayInput.files[0]);
     }
 
+    const faviconInput = e.currentTarget.querySelector('input[name="favicon"]') as HTMLInputElement;
+    if (faviconInput?.files?.[0]) {
+      body.append("favicon", faviconInput.files[0]);
+    } else if (clearFavicon) {
+      body.append("clear_favicon", "true");
+    }
+
     try {
       const res = await updateSiteSettingsAction(body);
       if (res.ok) {
+        setClearFavicon(false);
         showToast({
           type: "success",
           title: "Settings Saved",
-          message: "Public business identity, contact details, and Day/Night logos updated successfully.",
+          message: "Public business identity, contact details, logos, and browser tab icon updated successfully.",
         });
         router.refresh();
       } else {
@@ -328,6 +342,136 @@ export function SiteSettingsClient({
                 <Upload name="logo_light" accept="image/*,.svg" disabled={!canChange || submitting} />
               </FormField>
             </div>
+          </div>
+
+          {/* 3. Browser Tab Icon (Favicon) */}
+          <div
+            style={{
+              marginTop: "1.25rem",
+              border: "1px solid var(--border-default)",
+              borderRadius: "6px",
+              padding: "1.25rem",
+              background: "var(--surface-secondary)",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))",
+              gap: "1.25rem",
+              alignItems: "start",
+            }}
+          >
+            <div style={{ display: "flex", flexDirection: "column", gap: "0.75rem" }}>
+              <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
+                <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 700, fontSize: "13px", color: "var(--text-primary)" }}>
+                  <Globe size={15} style={{ color: "var(--action-primary)" }} />
+                  Browser Tab Icon (Favicon)
+                </span>
+                <span
+                  style={{
+                    fontSize: "10px",
+                    fontWeight: 700,
+                    textTransform: "uppercase",
+                    padding: "2px 6px",
+                    borderRadius: "4px",
+                    background: initialSettings.favicon && !clearFavicon ? "rgba(245, 158, 11, 0.14)" : "var(--surface-primary)",
+                    color: initialSettings.favicon && !clearFavicon ? "#d97706" : "var(--text-muted)",
+                    border: "1px solid var(--border-default)",
+                  }}
+                >
+                  {initialSettings.favicon && !clearFavicon ? "Custom Active" : "Default Fallback"}
+                </span>
+              </div>
+              <p style={{ margin: 0, fontSize: "11px", color: "var(--text-muted)" }}>
+                Displayed in browser tabs, bookmarks, and mobile shortcuts across the public website and dashboard.
+              </p>
+
+              {/* Browser Tab Mockups (Dark + Light Chrome) */}
+              <div style={{ display: "flex", flexDirection: "column", gap: "0.6rem" }}>
+                <div
+                  style={{
+                    background: "#0f172a",
+                    border: "1px solid #1e293b",
+                    borderRadius: "6px",
+                    padding: "0.6rem 0.85rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "0.75rem",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.55rem", minWidth: 0 }}>
+                    <img
+                      src={activeFaviconSrc}
+                      alt="Browser Tab Icon Dark Preview"
+                      style={{ width: "20px", height: "20px", objectFit: "contain", flexShrink: 0 }}
+                    />
+                    <span style={{ fontSize: "12px", fontWeight: 600, color: "#f8fafc", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {formData.name || "DREAM CAR HOUSE"}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: "10px", color: "#94a3b8", flexShrink: 0 }}>Dark Tab</span>
+                </div>
+
+                <div
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "6px",
+                    padding: "0.6rem 0.85rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    gap: "0.75rem",
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.55rem", minWidth: 0 }}>
+                    <img
+                      src={activeFaviconSrc}
+                      alt="Browser Tab Icon Light Preview"
+                      style={{ width: "20px", height: "20px", objectFit: "contain", flexShrink: 0 }}
+                    />
+                    <span style={{ fontSize: "12px", fontWeight: 600, color: "#0f172a", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                      {formData.name || "DREAM CAR HOUSE"}
+                    </span>
+                  </div>
+                  <span style={{ fontSize: "10px", color: "#64748b", flexShrink: 0 }}>Light Tab</span>
+                </div>
+              </div>
+
+              {initialSettings.favicon && (
+                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
+                  <Button
+                    type="button"
+                    variant="secondary"
+                    size="sm"
+                    disabled={!canChange || submitting}
+                    onClick={() => setClearFavicon((prev) => !prev)}
+                  >
+                    <RotateCcw size={13} />
+                    <span>{clearFavicon ? "Keep Current Custom Icon" : "Reset to Default Icon"}</span>
+                  </Button>
+                  {clearFavicon && (
+                    <span style={{ fontSize: "11px", color: "#d97706", fontWeight: 600 }}>
+                      Will reset when you click Save
+                    </span>
+                  )}
+                </div>
+              )}
+            </div>
+
+            <FormField
+              label="Upload New Browser Tab Icon"
+              error={formErrors.favicon}
+              description="Square ICO, PNG, SVG, WebP, or JPG (max 5MB; recommended 64x64 or 512x512). Click Save below after selecting."
+            >
+              <Upload
+                name="favicon"
+                accept=".ico,.png,.svg,.webp,.jpg,.jpeg,image/x-icon,image/vnd.microsoft.icon,image/png,image/svg+xml,image/webp,image/jpeg"
+                maxSizeBytes={5 * 1024 * 1024}
+                onFilesSelected={(files) => {
+                  if (files.length > 0) setClearFavicon(false);
+                }}
+                disabled={!canChange || submitting}
+              />
+            </FormField>
           </div>
         </div>
 

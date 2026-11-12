@@ -1201,6 +1201,8 @@ class UserDetailManagementSerializer(serializers.ModelSerializer):
 
 
 class SiteSettingsManagementSerializer(serializers.ModelSerializer):
+    clear_favicon = serializers.BooleanField(write_only=True, required=False, default=False)
+
     class Meta:
         model = SiteSettings
         fields = [
@@ -1211,6 +1213,8 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
             "logo_asset",
             "logo",
             "logo_light",
+            "favicon",
+            "clear_favicon",
             "hotline",
             "phone",
             "email",
@@ -1227,12 +1231,27 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
         read_only_fields = ["id", "created_at", "updated_at"]
 
     def to_representation(self, instance):
+        from core.utils.media import normalize_media_fields
         ret = super().to_representation(instance)
-        if ret.get("logo"):
-            ret["logo"] = build_media_url(ret["logo"])
-        if ret.get("logo_light"):
-            ret["logo_light"] = build_media_url(ret["logo_light"])
-        return ret
+        return normalize_media_fields(ret, ("logo", "logo_light", "favicon"))
+
+    def validate_favicon(self, value):
+        if not value:
+            return value
+        from django.core.exceptions import ValidationError as DjangoValidationError
+        from core.utils.media import validate_icon_file
+        try:
+            return validate_icon_file(value)
+        except DjangoValidationError as exc:
+            raise serializers.ValidationError(exc.messages)
+
+    def update(self, instance, validated_data):
+        clear_favicon = validated_data.pop("clear_favicon", False)
+        if clear_favicon and "favicon" not in validated_data:
+            if instance.favicon:
+                instance.favicon.delete(save=False)
+            instance.favicon = None
+        return super().update(instance, validated_data)
 
     def validate_name(self, value):
         val = value.strip()
