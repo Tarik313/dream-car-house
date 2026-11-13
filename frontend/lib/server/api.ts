@@ -1111,7 +1111,7 @@ export function buildMetadataFromSEO(
   const normalizedFallbackCanonical = normalizeCanonicalUrl(fallbackCanonicalRaw);
 
   const normalizedFallbackImages =
-    fallback.openGraph?.images || [{ url: defaultOgUrl, alt: cleanText(fallback.title) || fallbackSiteName }];
+    fallback.openGraph?.images || [{ url: defaultOgUrl, alt: cleanText(fallback.title) || fallbackSiteName, width: 1200, height: 630 }];
   const normalizedFallbackTwitterImages =
     fallback.twitter?.images ||
     (Array.isArray(normalizedFallbackImages)
@@ -1183,7 +1183,7 @@ export function buildMetadataFromSEO(
     ("logo_alt" in seo && cleanText(seo.logo_alt)) ||
     (typeof ogTitle === "string" ? ogTitle : ogSiteName);
   const ogImages = explicitOgImage
-    ? [{ url: explicitOgImage, alt: ogAlt }]
+    ? [{ url: explicitOgImage, alt: ogAlt, width: 1200, height: 630 }]
     : normalizedFallbackImages;
   const ogType = ("og_type" in seo && seo.og_type === "article" ? "article" : "website") as
     | "website"

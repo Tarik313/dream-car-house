@@ -4,7 +4,7 @@ import type { PublicSiteSettings, PublicVehicle } from "./types";
 export const DEFAULT_SITE_NAME = "DREAM CAR HOUSE";
 export const DEFAULT_PUBLIC_BASE_URL = "https://dreamcarhouse.com";
 export const DEFAULT_TITLE_MAX_LEN = 60;
-export const DEFAULT_FALLBACK_OG_IMAGE_PATH = "/assets/dch-day-showroom.webp";
+export const DEFAULT_FALLBACK_OG_IMAGE_PATH = "/assets/dch-og-preview.jpg";
 
 const INTERNAL_HOSTS = new Set([
   "backend",
@@ -650,6 +650,8 @@ export function buildCleanPageMetadata(input: CleanPageMetadataInput): Metadata 
             {
               url: image,
               alt: ogTitle,
+              width: 1200,
+              height: 630,
             },
           ]
         : undefined,

@@ -54,6 +54,7 @@ export async function generateMetadata(): Promise<Metadata> {
     description,
     ogTitle: fallbackTitle,
     ogDescription,
+    ogImage: "/assets/dch-og-preview.jpg",
     twitterTitle: fallbackTitle,
     twitterDescription: ogDescription,
     path: "/",
