@@ -35,6 +35,13 @@ class Slider(models.Model):
         blank=True,
         verbose_name=_("Poster Image URL / Path"),
     )
+    poster_night = models.CharField(
+        max_length=500,
+        default="/assets/dch-night-showroom.webp",
+        blank=True,
+        verbose_name=_("Night Poster Image URL / Path"),
+        help_text=_("Luxury showroom photo path displayed in Night Mode. Default: /assets/dch-night-showroom.webp"),
+    )
     image_day = models.FileField(
         upload_to=images_path_dir,
         max_length=500,

@@ -141,6 +141,7 @@ function normalizeHeroPayload(data: unknown): PublicHeroSlider {
 
   const heading = typeof s.heading === "string" ? s.heading.trim() : "";
   const poster = typeof s.poster === "string" ? s.poster.trim() : "";
+  const posterNight = typeof s.poster_night === "string" && s.poster_night.trim() ? s.poster_night.trim() : "/assets/dch-night-showroom.webp";
   const provider = s.video_provider === "vimeo" || s.video_provider === "direct" ? s.video_provider : "youtube";
   const source = typeof s.video_source === "string" ? s.video_source.trim() : "";
   const startTime = typeof s.video_start_time === "number" ? Math.max(0, s.video_start_time) : 0;
@@ -155,6 +156,7 @@ function normalizeHeroPayload(data: unknown): PublicHeroSlider {
     id: typeof s.id === "number" ? s.id : null,
     heading,
     poster,
+    poster_night: posterNight,
     media_type: mediaType,
     image_day: imageDay,
     video_provider: provider,

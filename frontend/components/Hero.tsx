@@ -28,7 +28,7 @@ export default function Hero({ initialData }: HeroProps = {}) {
   const nightSrc =
     initialData?.image && !initialData.image.includes("maybach") && !/\.(mp4|webm|mov|m4v)$/i.test(initialData.image)
       ? initialData.image
-      : "/assets/dch-night-showroom.webp";
+      : (initialData?.poster_night || "/assets/dch-night-showroom.webp");
 
   const daySrc =
     initialData?.image_day ||

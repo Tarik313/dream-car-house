@@ -62,6 +62,7 @@ export interface PublicHeroSlider {
   heading: string;
   media_type?: "video" | "image";
   poster: string;
+  poster_night?: string;
   image_day?: string | null;
   video_provider: "youtube" | "vimeo" | "direct";
   video_source: string;

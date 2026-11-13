@@ -81,6 +81,7 @@ export function SliderClient({
   const [createMediaType, setCreateMediaType] = useState<"video" | "image">("video");
   const [createHeading, setCreateHeading] = useState("");
   const [createPoster, setCreatePoster] = useState("/assets/dch-day-showroom.webp");
+  const [createPosterNight, setCreatePosterNight] = useState("/assets/dch-night-showroom.webp");
   const [createProvider, setCreateProvider] = useState<"youtube" | "vimeo" | "direct">("youtube");
   const [createSource, setCreateSource] = useState("7cxfVWs4YGw");
   const [createStartTime, setCreateStartTime] = useState(45);
@@ -97,6 +98,7 @@ export function SliderClient({
   const [editMediaType, setEditMediaType] = useState<"video" | "image">("video");
   const [editHeading, setEditHeading] = useState("");
   const [editPoster, setEditPoster] = useState("");
+  const [editPosterNight, setEditPosterNight] = useState("");
   const [editProvider, setEditProvider] = useState<"youtube" | "vimeo" | "direct">("youtube");
   const [editSource, setEditSource] = useState("");
   const [editStartTime, setEditStartTime] = useState(0);
@@ -138,6 +140,7 @@ export function SliderClient({
     setCreateMediaType("video");
     setCreateHeading("The Pinnacle of Luxury Automobiles");
     setCreatePoster("/assets/dch-day-showroom.webp");
+    setCreatePosterNight("/assets/dch-night-showroom.webp");
     setCreateProvider("youtube");
     setCreateSource("7cxfVWs4YGw");
     setCreateStartTime(45);
@@ -158,6 +161,7 @@ export function SliderClient({
     setEditMediaType(slider.media_type === "image" ? "image" : "video");
     setEditHeading(slider.heading || "");
     setEditPoster(slider.poster || "/assets/dch-day-showroom.webp");
+    setEditPosterNight(slider.poster_night || "/assets/dch-night-showroom.webp");
     setEditProvider(slider.video_provider || "youtube");
     setEditSource(slider.video_source || "7cxfVWs4YGw");
     setEditStartTime(slider.video_start_time ?? 45);
@@ -230,6 +234,7 @@ export function SliderClient({
     formData.append("heading", createHeading.trim());
     formData.append("media_type", createMediaType);
     formData.append("poster", createPoster.trim());
+    formData.append("poster_night", createPosterNight.trim() || "/assets/dch-night-showroom.webp");
     formData.append("video_provider", createProvider);
     formData.append("video_source", createSource.trim() || "7cxfVWs4YGw");
     formData.append("video_start_time", String(createStartTime));
@@ -277,6 +282,7 @@ export function SliderClient({
     formData.append("heading", editHeading.trim());
     formData.append("media_type", editMediaType);
     formData.append("poster", editPoster.trim());
+    formData.append("poster_night", editPosterNight.trim() || "/assets/dch-night-showroom.webp");
     formData.append("video_provider", editProvider);
     formData.append("video_source", editSource.trim() || "7cxfVWs4YGw");
     formData.append("video_start_time", String(editStartTime));
@@ -672,7 +678,7 @@ export function SliderClient({
                         <Moon size={12} /> Night Mode Photo
                       </div>
                       <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-                        {activeSlider.image || "/assets/dch-night-showroom.webp"}
+                        {activeSlider.image || activeSlider.poster_night || "/assets/dch-night-showroom.webp"}
                       </div>
                     </div>
                   </div>
@@ -1013,6 +1019,18 @@ export function SliderClient({
                     onChange={(e) => setCreateFile(e.target.files?.[0] || null)}
                     accept="image/jpeg,image/png,image/webp"
                     className="input"
+                    disabled={submitting}
+                  />
+                </FormField>
+
+                <FormField
+                  label="Or Night Photo Asset Path / URL"
+                  description="Fallback path if no file is uploaded. Default: /assets/dch-night-showroom.webp"
+                >
+                  <Input
+                    value={createPosterNight}
+                    onChange={(e) => setCreatePosterNight(e.target.value)}
+                    placeholder="/assets/dch-night-showroom.webp"
                     disabled={submitting}
                   />
                 </FormField>
@@ -1471,6 +1489,18 @@ export function SliderClient({
                       }}
                       accept="image/jpeg,image/png,image/webp"
                       className="input"
+                      disabled={submitting}
+                    />
+                  </FormField>
+
+                  <FormField
+                    label="Or Night Photo Asset Path / URL"
+                    description="Fallback path if no file is uploaded. Default: /assets/dch-night-showroom.webp"
+                  >
+                    <Input
+                      value={editPosterNight}
+                      onChange={(e) => setEditPosterNight(e.target.value)}
+                      placeholder="/assets/dch-night-showroom.webp"
                       disabled={submitting}
                     />
                   </FormField>

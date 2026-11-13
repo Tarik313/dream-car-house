@@ -26,6 +26,7 @@ class SliderSerializer(serializers.ModelSerializer, OptimizedImageSerializerMixi
             'heading',
             'media_type',
             'poster',
+            'poster_night',
             'image_day',
             'video_provider',
             'video_source',

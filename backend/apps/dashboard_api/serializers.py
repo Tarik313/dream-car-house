@@ -556,6 +556,7 @@ class SliderManagementSerializer(serializers.ModelSerializer):
             "heading",
             "media_type",
             "poster",
+            "poster_night",
             "image_day",
             "clear_image_day",
             "video_provider",
@@ -676,6 +677,15 @@ class SliderManagementSerializer(serializers.ModelSerializer):
         lower_val = val.lower()
         if lower_val.startswith("javascript:") or "<script" in lower_val:
             raise serializers.ValidationError("Unsafe poster URL or executable script detected.")
+        return val
+
+    def validate_poster_night(self, value):
+        val = (value or "").strip()
+        if not val:
+            return val
+        lower_val = val.lower()
+        if lower_val.startswith("javascript:") or "<script" in lower_val:
+            raise serializers.ValidationError("Unsafe night poster URL or executable script detected.")
         return val
 
     def validate_scroll_link_target(self, value):
