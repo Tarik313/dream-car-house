@@ -250,6 +250,14 @@ export function PageSEOClient({
     if (twitterImageFile) formData.append("twitter_image", twitterImageFile);
 
     if (schemaText.trim()) {
+      try {
+        JSON.parse(schemaText.trim());
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Invalid JSON syntax";
+        setFormErrors({ schema_json: `Invalid JSON format: ${msg}` });
+        setSubmitting(false);
+        return;
+      }
       formData.append("schema_json", schemaText.trim());
     }
 
@@ -307,7 +315,19 @@ export function PageSEOClient({
     formData.append("twitter_description", twitterDescription.trim());
     if (twitterImageFile) formData.append("twitter_image", twitterImageFile);
 
-    formData.append("schema_json", schemaText.trim());
+    if (schemaText.trim()) {
+      try {
+        JSON.parse(schemaText.trim());
+      } catch (err: unknown) {
+        const msg = err instanceof Error ? err.message : "Invalid JSON syntax";
+        setFormErrors({ schema_json: `Invalid JSON format: ${msg}` });
+        setSubmitting(false);
+        return;
+      }
+      formData.append("schema_json", schemaText.trim());
+    } else {
+      formData.append("schema_json", "");
+    }
 
     try {
       const res = await updateSEOConfigAction(activeItem.id, formData);
@@ -743,7 +763,7 @@ export function PageSEOClient({
           {/* JSON-LD Schema */}
           <div style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--space-3)" }}>
             <h4 style={{ margin: "0 0 var(--space-1) 0", fontSize: "var(--font-size-sm)" }}>Structured Data (JSON-LD)</h4>
-            <FormField label="Schema.org JSON Block" error={formErrors.schema_json} description="Valid JSON object or array">
+            <FormField label="Schema.org JSON Block (Optional)" error={formErrors.schema_json} description="Optional custom schema.org structured data. Leave empty if not needed.">
               <Textarea
                 value={schemaText}
                 onChange={(e) => setSchemaText(e.target.value)}
@@ -890,7 +910,7 @@ export function PageSEOClient({
           {/* Structured Data */}
           <div style={{ borderTop: "1px solid var(--border)", paddingTop: "var(--space-3)" }}>
             <h4 style={{ margin: "0 0 var(--space-1) 0", fontSize: "var(--font-size-sm)" }}>Structured Data (JSON-LD)</h4>
-            <FormField label="Schema.org JSON Block" error={formErrors.schema_json}>
+            <FormField label="Schema.org JSON Block (Optional)" error={formErrors.schema_json} description="Optional custom schema.org structured data. Leave empty if not needed.">
               <Textarea
                 value={schemaText}
                 onChange={(e) => setSchemaText(e.target.value)}

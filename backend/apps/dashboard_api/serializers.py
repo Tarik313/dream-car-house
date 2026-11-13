@@ -116,13 +116,23 @@ class BrandManagementSerializer(serializers.ModelSerializer):
         if hasattr(data, "dict"):
             data = data.dict()
         elif hasattr(data, "copy"):
+            data = data.copy()
+        else:
             data = dict(data)
+        if "schema_json" in data:
+            val = data.get("schema_json")
+            if val is None or val == "" or (isinstance(val, str) and not val.strip()):
+                data["schema_json"] = None
+            elif isinstance(val, str):
+                try:
+                    data["schema_json"] = json.loads(val)
+                except json.JSONDecodeError as err:
+                    raise serializers.ValidationError({"schema_json": f"Invalid JSON-LD schema: {err.msg}"})
         if self.partial and isinstance(data, dict):
             for field in ["image", "feature_image"]:
                 if field in data:
                     val = data.get(field)
                     if val == "" or val is None or (hasattr(val, "size") and val.size == 0):
-                        data = data.copy() if hasattr(data, "copy") else dict(data)
                         data.pop(field, None)
         return super().to_internal_value(data)
 
@@ -870,6 +880,26 @@ class SEOConfigManagementSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Canonical URL must start with http:// or https://")
         return val
 
+    def to_internal_value(self, data):
+        if hasattr(data, "dict"):
+            data = data.dict()
+        elif hasattr(data, "copy"):
+            data = data.copy()
+        else:
+            data = dict(data)
+
+        if "schema_json" in data:
+            val = data.get("schema_json")
+            if val is None or val == "" or (isinstance(val, str) and not val.strip()):
+                data["schema_json"] = None
+            elif isinstance(val, str):
+                try:
+                    data["schema_json"] = json.loads(val)
+                except json.JSONDecodeError as err:
+                    raise serializers.ValidationError({"schema_json": f"Invalid JSON-LD schema: {err.msg}"})
+
+        return super().to_internal_value(data)
+
     def validate_schema_json(self, value):
         if value is None or value == "":
             return None
@@ -957,6 +987,32 @@ class CategoryPageSEOManagementSerializer(serializers.ModelSerializer):
             raise serializers.ValidationError("Canonical URL must start with http:// or https://")
         return val
 
+    def to_internal_value(self, data):
+        if hasattr(data, "dict"):
+            data = data.dict()
+        elif hasattr(data, "copy"):
+            data = data.copy()
+        else:
+            data = dict(data)
+
+        if "schema_json" in data:
+            val = data.get("schema_json")
+            if val is None or val == "" or (isinstance(val, str) and not val.strip()):
+                data["schema_json"] = None
+            elif isinstance(val, str):
+                try:
+                    data["schema_json"] = json.loads(val)
+                except json.JSONDecodeError as err:
+                    raise serializers.ValidationError({"schema_json": f"Invalid JSON-LD schema: {err.msg}"})
+
+        # On partial updates (PATCH), if feature_image is empty string or None, retain existing file
+        if self.partial and isinstance(data, dict) and "feature_image" in data:
+            val = data.get("feature_image")
+            if val == "" or val is None or (hasattr(val, "size") and val.size == 0):
+                data.pop("feature_image", None)
+
+        return super().to_internal_value(data)
+
     def validate_schema_json(self, value):
         if value is None or value == "":
             return None
@@ -979,15 +1035,6 @@ class CategoryPageSEOManagementSerializer(serializers.ModelSerializer):
                 f"Unsupported image format '.{ext}' for feature_image. Allowed formats: {', '.join(allowed_exts)}."
             )
         return value
-
-    def to_internal_value(self, data):
-        # On partial updates (PATCH), if feature_image is empty string or None, retain existing file
-        if self.partial and isinstance(data, dict) and "feature_image" in data:
-            val = data.get("feature_image")
-            if val == "" or val is None or (hasattr(val, "size") and val.size == 0):
-                data = data.copy() if hasattr(data, "copy") else dict(data)
-                data.pop("feature_image", None)
-        return super().to_internal_value(data)
 
 
 # ==============================================================================
