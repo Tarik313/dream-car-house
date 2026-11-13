@@ -46,7 +46,7 @@ export async function generateMetadata(): Promise<Metadata> {
   const siteTagline = cleanText(settings.tagline) || "The Pinnacle of Luxury Automobiles";
   const baseUrl = getPublicBaseUrl(settings.website);
   const canonicalUrl = normalizeCanonicalUrl("/", baseUrl);
-  const defaultOgImage = getDefaultOgImage(settings, baseUrl);
+  const defaultOgImage = resolvePublicUrl("/assets/dch-og-preview.jpg", baseUrl);
   const faviconUrl = resolvePublicUrl(cleanText(settings.favicon) || "/favicon.ico", baseUrl);
   const fullTitle = formatTitleWithSite(siteTagline, siteName);
   const description = `Explore luxury cars in Bangladesh with ${siteName}. Browse our exclusive range of brand new, reconditioned, and pre-owned premium vehicles in Kakrail and Gulshan, Dhaka.`;
@@ -68,7 +68,9 @@ export async function generateMetadata(): Promise<Metadata> {
       images: [
         {
           url: defaultOgImage,
-          alt: siteName,
+          width: 1200,
+          height: 630,
+          alt: `${siteName} — ${siteTagline}`,
         },
       ],
     },
