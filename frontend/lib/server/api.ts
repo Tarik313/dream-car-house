@@ -148,11 +148,15 @@ function normalizeHeroPayload(data: unknown): PublicHeroSlider {
   const ctas = sanitizeCtaButtons(s.cta_buttons);
   const scrollLabel = typeof s.scroll_link_label === "string" ? s.scroll_link_label.trim() : "";
   const scrollTarget = typeof s.scroll_link_target === "string" ? s.scroll_link_target.trim() : "";
+  const mediaType = s.media_type === "image" ? "image" : "video";
+  const imageDay = typeof s.image_day === "string" && s.image_day ? s.image_day : null;
 
   return {
     id: typeof s.id === "number" ? s.id : null,
     heading,
     poster,
+    media_type: mediaType,
+    image_day: imageDay,
     video_provider: provider,
     video_source: source,
     video_start_time: startTime,

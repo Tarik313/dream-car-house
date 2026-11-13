@@ -19,11 +19,29 @@ class Slider(models.Model):
         default="The Pinnacle of Luxury Automobiles",
         verbose_name=_("Heading"),
     )
+    media_type = models.CharField(
+        max_length=20,
+        choices=[
+            ("image", _("Showroom Photos (Day & Night)")),
+            ("video", _("Cinema Video")),
+        ],
+        default="video",
+        verbose_name=_("Hero Display Mode"),
+        help_text=_("Choose whether to display dual Day/Night luxury photos or play the Cinema Video."),
+    )
     poster = models.CharField(
         max_length=500,
         default="/assets/dch-day-showroom.webp",
         blank=True,
         verbose_name=_("Poster Image URL / Path"),
+    )
+    image_day = models.FileField(
+        upload_to=images_path_dir,
+        max_length=500,
+        blank=True,
+        null=True,
+        verbose_name=_("Day Mode Background Image"),
+        help_text=_("Luxury showroom photo displayed in Day Mode. (Optional - falls back to /assets/dch-day-showroom.webp)"),
     )
     video_provider = models.CharField(
         max_length=20,

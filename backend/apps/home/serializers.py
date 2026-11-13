@@ -17,13 +17,16 @@ from apps.home.models import (
 
 class SliderSerializer(serializers.ModelSerializer, OptimizedImageSerializerMixin):
     image = serializers.SerializerMethodField()
+    image_day = serializers.SerializerMethodField()
 
     class Meta:
         model = Slider
         fields = [
             'id',
             'heading',
+            'media_type',
             'poster',
+            'image_day',
             'video_provider',
             'video_source',
             'video_start_time',
@@ -38,6 +41,9 @@ class SliderSerializer(serializers.ModelSerializer, OptimizedImageSerializerMixi
 
     def get_image(self, obj):
         return self.get_optimized_image_url(obj, 'image')
+
+    def get_image_day(self, obj):
+        return self.get_optimized_image_url(obj, 'image_day')
 
 
 

@@ -60,7 +60,9 @@ export interface PublicHeroCta {
 export interface PublicHeroSlider {
   id: number | null;
   heading: string;
+  media_type?: "video" | "image";
   poster: string;
+  image_day?: string | null;
   video_provider: "youtube" | "vimeo" | "direct";
   video_source: string;
   video_start_time: number;

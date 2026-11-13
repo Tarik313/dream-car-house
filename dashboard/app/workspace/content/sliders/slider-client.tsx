@@ -25,6 +25,10 @@ import {
   Layers,
   Link as LinkIcon,
   Calendar,
+  Image as ImageIcon,
+  Sun,
+  Moon,
+  ArrowDown,
 } from "lucide-react";
 import {
   createSliderAction,
@@ -74,30 +78,38 @@ export function SliderClient({
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
 
   // Form State - Create
+  const [createMediaType, setCreateMediaType] = useState<"video" | "image">("video");
   const [createHeading, setCreateHeading] = useState("");
   const [createPoster, setCreatePoster] = useState("/assets/dch-day-showroom.webp");
   const [createProvider, setCreateProvider] = useState<"youtube" | "vimeo" | "direct">("youtube");
   const [createSource, setCreateSource] = useState("7cxfVWs4YGw");
   const [createStartTime, setCreateStartTime] = useState(45);
   const [createVideoTitle, setCreateVideoTitle] = useState("DREAM CAR HOUSE Flagship Cinema");
+  const [createShowScrollCue, setCreateShowScrollCue] = useState(true);
   const [createScrollLabel, setCreateScrollLabel] = useState("Scroll to Current Inventory");
   const [createScrollTarget, setCreateScrollTarget] = useState("#carousel-section");
   const [createIsPublished, setCreateIsPublished] = useState(true);
   const [createCtaButtons, setCreateCtaButtons] = useState<HeroCtaButton[]>(DEFAULT_CTA_BUTTONS);
   const [createFile, setCreateFile] = useState<File | null>(null);
+  const [createFileDay, setCreateFileDay] = useState<File | null>(null);
 
   // Form State - Edit
+  const [editMediaType, setEditMediaType] = useState<"video" | "image">("video");
   const [editHeading, setEditHeading] = useState("");
   const [editPoster, setEditPoster] = useState("");
   const [editProvider, setEditProvider] = useState<"youtube" | "vimeo" | "direct">("youtube");
   const [editSource, setEditSource] = useState("");
   const [editStartTime, setEditStartTime] = useState(0);
   const [editVideoTitle, setEditVideoTitle] = useState("");
+  const [editShowScrollCue, setEditShowScrollCue] = useState(true);
   const [editScrollLabel, setEditScrollLabel] = useState("");
   const [editScrollTarget, setEditScrollTarget] = useState("");
   const [editIsPublished, setEditIsPublished] = useState(true);
   const [editCtaButtons, setEditCtaButtons] = useState<HeroCtaButton[]>([]);
   const [editFile, setEditFile] = useState<File | null>(null);
+  const [editFileDay, setEditFileDay] = useState<File | null>(null);
+  const [clearImage, setClearImage] = useState(false);
+  const [clearImageDay, setClearImageDay] = useState(false);
 
   const [submitting, setSubmitting] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
@@ -123,29 +135,34 @@ export function SliderClient({
   }
 
   function handleOpenCreate() {
+    setCreateMediaType("video");
     setCreateHeading("The Pinnacle of Luxury Automobiles");
     setCreatePoster("/assets/dch-day-showroom.webp");
     setCreateProvider("youtube");
     setCreateSource("7cxfVWs4YGw");
     setCreateStartTime(45);
     setCreateVideoTitle("DREAM CAR HOUSE Flagship Cinema");
+    setCreateShowScrollCue(true);
     setCreateScrollLabel("Scroll to Current Inventory");
     setCreateScrollTarget("#carousel-section");
     setCreateIsPublished(true);
     setCreateCtaButtons(JSON.parse(JSON.stringify(DEFAULT_CTA_BUTTONS)));
     setCreateFile(null);
+    setCreateFileDay(null);
     setErrors({});
     setCreateOpen(true);
   }
 
   function handleOpenEdit(slider: SliderItem) {
     setActiveSlider(slider);
+    setEditMediaType(slider.media_type === "image" ? "image" : "video");
     setEditHeading(slider.heading || "");
     setEditPoster(slider.poster || "/assets/dch-day-showroom.webp");
     setEditProvider(slider.video_provider || "youtube");
     setEditSource(slider.video_source || "7cxfVWs4YGw");
     setEditStartTime(slider.video_start_time ?? 45);
     setEditVideoTitle(slider.video_title || "DREAM CAR HOUSE Flagship Cinema");
+    setEditShowScrollCue(Boolean(slider.scroll_link_label));
     setEditScrollLabel(slider.scroll_link_label || "Scroll to Current Inventory");
     setEditScrollTarget(slider.scroll_link_target || "#carousel-section");
     setEditIsPublished(slider.is_published ?? true);
@@ -155,6 +172,9 @@ export function SliderClient({
         : JSON.parse(JSON.stringify(DEFAULT_CTA_BUTTONS))
     );
     setEditFile(null);
+    setEditFileDay(null);
+    setClearImage(false);
+    setClearImageDay(false);
     setErrors({});
     setEditOpen(true);
   }
@@ -194,7 +214,9 @@ export function SliderClient({
     e.preventDefault();
     const newErrors: Record<string, string> = {};
     if (!createHeading.trim()) newErrors.heading = "Heading is required.";
-    if (!createSource.trim()) newErrors.video_source = "Video ID or URL is required.";
+    if (createMediaType === "video" && !createSource.trim()) {
+      newErrors.video_source = "Video ID or URL is required in Cinema Video mode.";
+    }
 
     if (Object.keys(newErrors).length > 0) {
       setErrors(newErrors);
@@ -206,15 +228,19 @@ export function SliderClient({
 
     const formData = new FormData();
     formData.append("heading", createHeading.trim());
+    formData.append("media_type", createMediaType);
     formData.append("poster", createPoster.trim());
     formData.append("video_provider", createProvider);
-    formData.append("video_source", createSource.trim());
+    formData.append("video_source", createSource.trim() || "7cxfVWs4YGw");
     formData.append("video_start_time", String(createStartTime));
     formData.append("video_title", createVideoTitle.trim());
-    formData.append("scroll_link_label", createScrollLabel.trim());
-    formData.append("scroll_link_target", createScrollTarget.trim());
+    formData.append("scroll_link_label", createShowScrollCue ? createScrollLabel.trim() : "");
+    formData.append("scroll_link_target", createShowScrollCue ? createScrollTarget.trim() : "");
     formData.append("is_published", String(createIsPublished));
     formData.append("cta_buttons", JSON.stringify(createCtaButtons));
+    if (createFileDay) {
+      formData.append("image_day", createFileDay);
+    }
     if (createFile) {
       formData.append("image", createFile);
     }
@@ -239,23 +265,37 @@ export function SliderClient({
       setErrors({ heading: "Heading is required." });
       return;
     }
+    if (editMediaType === "video" && !editSource.trim()) {
+      setErrors({ video_source: "Video ID or URL is required in Cinema Video mode." });
+      return;
+    }
 
     setSubmitting(true);
     setErrors({});
 
     const formData = new FormData();
     formData.append("heading", editHeading.trim());
+    formData.append("media_type", editMediaType);
     formData.append("poster", editPoster.trim());
     formData.append("video_provider", editProvider);
-    formData.append("video_source", editSource.trim());
+    formData.append("video_source", editSource.trim() || "7cxfVWs4YGw");
     formData.append("video_start_time", String(editStartTime));
     formData.append("video_title", editVideoTitle.trim());
-    formData.append("scroll_link_label", editScrollLabel.trim());
-    formData.append("scroll_link_target", editScrollTarget.trim());
+    formData.append("scroll_link_label", editShowScrollCue ? editScrollLabel.trim() : "");
+    formData.append("scroll_link_target", editShowScrollCue ? editScrollTarget.trim() : "");
     formData.append("is_published", String(editIsPublished));
     formData.append("cta_buttons", JSON.stringify(editCtaButtons));
+    if (editFileDay) {
+      formData.append("image_day", editFileDay);
+    }
+    if (clearImageDay) {
+      formData.append("clear_image_day", "true");
+    }
     if (editFile) {
       formData.append("image", editFile);
+    }
+    if (clearImage) {
+      formData.append("clear_image", "true");
     }
 
     const res = await updateSliderAction(activeSlider.id, formData);
@@ -321,8 +361,47 @@ export function SliderClient({
           >
             {slider.heading}
           </button>
-          <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
-            Provider: <strong style={{ textTransform: "capitalize" }}>{slider.video_provider || "youtube"}</strong> • Source: {slider.video_source || "7cxfVWs4YGw"} ({slider.video_start_time ?? 45}s)
+          <div style={{ display: "flex", alignItems: "center", gap: "6px", marginTop: "4px" }}>
+            {slider.media_type === "image" ? (
+              <span
+                style={{
+                  fontSize: "10px",
+                  padding: "1px 6px",
+                  borderRadius: "3px",
+                  background: "rgba(234, 179, 8, 0.12)",
+                  color: "#eab308",
+                  border: "1px solid rgba(234, 179, 8, 0.25)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  fontWeight: 600,
+                }}
+              >
+                <ImageIcon size={10} /> Photos (Day/Night)
+              </span>
+            ) : (
+              <span
+                style={{
+                  fontSize: "10px",
+                  padding: "1px 6px",
+                  borderRadius: "3px",
+                  background: "rgba(59, 130, 246, 0.12)",
+                  color: "#60a5fa",
+                  border: "1px solid rgba(59, 130, 246, 0.25)",
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: "4px",
+                  fontWeight: 600,
+                }}
+              >
+                <Video size={10} /> Cinema Video ({slider.video_provider || "youtube"})
+              </span>
+            )}
+            <span style={{ fontSize: "11px", color: "var(--text-muted)" }}>
+              {slider.media_type === "image"
+                ? `Day: ${slider.image_day ? "Custom Photo" : "Showroom"} • Night: ${slider.image ? "Custom Photo" : "Showroom"}`
+                : `Source: ${slider.video_source || "7cxfVWs4YGw"} (${slider.video_start_time ?? 45}s)`}
+            </span>
           </div>
         </div>
       ),
@@ -533,24 +612,95 @@ export function SliderClient({
 
               <div>
                 <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
-                  Video Configuration
+                  Showcase Display Mode
                 </span>
-                <p style={{ margin: "4px 0 0 0", fontSize: "var(--font-size-sm)" }}>
-                  <strong>Provider:</strong> {activeSlider.video_provider || "youtube"} | <strong>Source:</strong> {activeSlider.video_source || "7cxfVWs4YGw"} | <strong>Start:</strong> {activeSlider.video_start_time ?? 45}s
-                </p>
-                <p style={{ margin: "2px 0 0 0", fontSize: "var(--font-size-xs)", color: "var(--text-muted)" }}>
-                  Accessible Title: {activeSlider.video_title || "DREAM CAR HOUSE Flagship Cinema"}
+                <p style={{ margin: "4px 0 0 0", fontSize: "var(--font-size-sm)", display: "flex", alignItems: "center", gap: "6px" }}>
+                  {activeSlider.media_type === "image" ? (
+                    <span
+                      style={{
+                        background: "rgba(234, 179, 8, 0.15)",
+                        color: "#eab308",
+                        border: "1px solid rgba(234, 179, 8, 0.3)",
+                        padding: "3px 10px",
+                        borderRadius: "4px",
+                        fontSize: "var(--font-size-xs)",
+                        fontWeight: 600,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <ImageIcon size={13} /> Showroom Photos (Day & Night Mode)
+                    </span>
+                  ) : (
+                    <span
+                      style={{
+                        background: "rgba(59, 130, 246, 0.15)",
+                        color: "#60a5fa",
+                        border: "1px solid rgba(59, 130, 246, 0.3)",
+                        padding: "3px 10px",
+                        borderRadius: "4px",
+                        fontSize: "var(--font-size-xs)",
+                        fontWeight: 600,
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: "6px",
+                      }}
+                    >
+                      <Video size={13} /> Cinema Video ({activeSlider.video_provider || "youtube"})
+                    </span>
+                  )}
                 </p>
               </div>
 
-              <div>
-                <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
-                  Poster Backdrop
-                </span>
-                <p style={{ margin: "4px 0 0 0", fontSize: "var(--font-size-sm)" }}>
-                  <code>{activeSlider.poster || "/assets/dch-day-showroom.webp"}</code>
-                </p>
-              </div>
+              {activeSlider.media_type === "image" ? (
+                <div>
+                  <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
+                    Day & Night Showroom Photography
+                  </span>
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "6px" }}>
+                    <div style={{ padding: "8px", border: "1px solid var(--border)", borderRadius: "4px", background: "rgba(255,255,255,0.02)" }}>
+                      <div style={{ fontSize: "11px", fontWeight: 600, display: "flex", alignItems: "center", gap: "4px", color: "#f59e0b" }}>
+                        <Sun size={12} /> Day Mode Photo
+                      </div>
+                      <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {activeSlider.image_day || activeSlider.poster || "/assets/dch-day-showroom.webp"}
+                      </div>
+                    </div>
+                    <div style={{ padding: "8px", border: "1px solid var(--border)", borderRadius: "4px", background: "rgba(255,255,255,0.02)" }}>
+                      <div style={{ fontSize: "11px", fontWeight: 600, display: "flex", alignItems: "center", gap: "4px", color: "#818cf8" }}>
+                        <Moon size={12} /> Night Mode Photo
+                      </div>
+                      <div style={{ fontSize: "11px", color: "var(--muted)", marginTop: "4px", overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
+                        {activeSlider.image || "/assets/dch-night-showroom.webp"}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ) : (
+                <>
+                  <div>
+                    <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
+                      Video Configuration
+                    </span>
+                    <p style={{ margin: "4px 0 0 0", fontSize: "var(--font-size-sm)" }}>
+                      <strong>Provider:</strong> {activeSlider.video_provider || "youtube"} | <strong>Source:</strong> {activeSlider.video_source || "7cxfVWs4YGw"} | <strong>Start:</strong> {activeSlider.video_start_time ?? 45}s
+                    </p>
+                    <p style={{ margin: "2px 0 0 0", fontSize: "var(--font-size-xs)", color: "var(--text-muted)" }}>
+                      Accessible Title: {activeSlider.video_title || "DREAM CAR HOUSE Flagship Cinema"}
+                    </p>
+                  </div>
+
+                  <div>
+                    <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
+                      Poster Backdrop
+                    </span>
+                    <p style={{ margin: "4px 0 0 0", fontSize: "var(--font-size-sm)" }}>
+                      <code>{activeSlider.poster || "/assets/dch-day-showroom.webp"}</code>
+                    </p>
+                  </div>
+                </>
+              )}
 
               <div>
                 <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
@@ -582,10 +732,16 @@ export function SliderClient({
 
               <div>
                 <span className="muted" style={{ fontSize: "var(--font-size-xs)" }}>
-                  Scroll Down Link
+                  Scroll Down Indicator
                 </span>
                 <p style={{ margin: "4px 0 0 0", fontSize: "var(--font-size-sm)" }}>
-                  Label: &ldquo;{activeSlider.scroll_link_label || "Scroll to Current Inventory"}&rdquo; → Anchor: <code>{activeSlider.scroll_link_target || "#carousel-section"}</code>
+                  {activeSlider.scroll_link_label ? (
+                    <>
+                      Label: &ldquo;{activeSlider.scroll_link_label}&rdquo; → Anchor: <code>{activeSlider.scroll_link_target || "#carousel-section"}</code>
+                    </>
+                  ) : (
+                    <span className="muted">Disabled / Hidden on Hero Showcase</span>
+                  )}
                 </p>
               </div>
             </div>
@@ -638,80 +794,280 @@ export function SliderClient({
             />
           </FormField>
 
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
-            <FormField label="Video Provider" required>
-              <select
-                value={createProvider}
-                onChange={(e) => setCreateProvider(e.target.value as "youtube" | "vimeo" | "direct")}
-                className="input"
-                disabled={submitting}
+          {/* Hero Showcase Mode Selector */}
+          <FormField label="Hero Showcase Mode (Video vs Photography)" required>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "4px" }}>
+              <button
+                type="button"
+                onClick={() => setCreateMediaType("video")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "12px 14px",
+                  borderRadius: "var(--radius-sm)",
+                  border: createMediaType === "video" ? "2px solid #3b82f6" : "1px solid var(--border)",
+                  background: createMediaType === "video" ? "rgba(59, 130, 246, 0.12)" : "rgba(255, 255, 255, 0.02)",
+                  color: createMediaType === "video" ? "#60a5fa" : "var(--text-muted)",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  fontWeight: createMediaType === "video" ? 600 : 400,
+                  transition: "all 0.2s ease",
+                }}
               >
-                <option value="youtube">YouTube Embed (Cinema)</option>
-                <option value="vimeo">Vimeo Embed</option>
-                <option value="direct">Direct Video File / URL</option>
-              </select>
-            </FormField>
+                <Video size={18} style={{ color: createMediaType === "video" ? "#3b82f6" : "inherit", flexShrink: 0 }} />
+                <div>
+                  <div style={{ color: "var(--text)", fontWeight: 600, fontSize: "13px" }}>Cinema Video</div>
+                  <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+                    YouTube, Vimeo, or looping video
+                  </div>
+                </div>
+              </button>
 
-            <FormField label="Video Start Time (Seconds)">
-              <Input
-                type="number"
-                min={0}
-                value={createStartTime}
-                onChange={(e) => setCreateStartTime(Number(e.target.value))}
-                disabled={submitting}
-              />
-            </FormField>
-          </div>
-
-          <FormField label="Video Source (Video ID or Full URL)" required error={errors.video_source}>
-            <Input
-              value={createSource}
-              onChange={(e) => setCreateSource(e.target.value)}
-              placeholder="e.g. 7cxfVWs4YGw or https://..."
-              required
-              disabled={submitting}
-            />
+              <button
+                type="button"
+                onClick={() => setCreateMediaType("image")}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "10px",
+                  padding: "12px 14px",
+                  borderRadius: "var(--radius-sm)",
+                  border: createMediaType === "image" ? "2px solid #eab308" : "1px solid var(--border)",
+                  background: createMediaType === "image" ? "rgba(234, 179, 8, 0.12)" : "rgba(255, 255, 255, 0.02)",
+                  color: createMediaType === "image" ? "#fde047" : "var(--text-muted)",
+                  cursor: "pointer",
+                  textAlign: "left",
+                  fontWeight: createMediaType === "image" ? 600 : 400,
+                  transition: "all 0.2s ease",
+                }}
+              >
+                <ImageIcon size={18} style={{ color: createMediaType === "image" ? "#eab308" : "inherit", flexShrink: 0 }} />
+                <div>
+                  <div style={{ color: "var(--text)", fontWeight: 600, fontSize: "13px" }}>Showroom Photos</div>
+                  <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+                    Day Mode & Night Mode photos
+                  </div>
+                </div>
+              </button>
+            </div>
           </FormField>
 
-          <FormField label="Accessible Video Title">
-            <Input
-              value={createVideoTitle}
-              onChange={(e) => setCreateVideoTitle(e.target.value)}
-              placeholder="e.g. DREAM CAR HOUSE Flagship Cinema"
-              disabled={submitting}
-            />
-          </FormField>
+          {/* Mode 1: Cinema Video Config */}
+          {createMediaType === "video" && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+                padding: "14px",
+                background: "rgba(59, 130, 246, 0.04)",
+                border: "1px solid rgba(59, 130, 246, 0.25)",
+                borderRadius: "var(--radius-sm)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <Video size={16} style={{ color: "#3b82f6" }} />
+                <span style={{ fontWeight: 600, fontSize: "13px" }}>Cinema Video Configuration</span>
+              </div>
 
-          <FormField
-            label="Day Mode Background Image / Poster URL (Day Backdrop)"
-            description="Backdrop image displayed in Day Mode or before cinema video plays. Default: /assets/dch-day-showroom.webp"
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
+                <FormField label="Video Provider" required>
+                  <select
+                    value={createProvider}
+                    onChange={(e) => setCreateProvider(e.target.value as "youtube" | "vimeo" | "direct")}
+                    className="input"
+                    disabled={submitting}
+                  >
+                    <option value="youtube">YouTube Embed (Cinema)</option>
+                    <option value="vimeo">Vimeo Embed</option>
+                    <option value="direct">Direct Video File / URL</option>
+                  </select>
+                </FormField>
+
+                <FormField label="Video Start Time (Seconds)">
+                  <Input
+                    type="number"
+                    min={0}
+                    value={createStartTime}
+                    onChange={(e) => setCreateStartTime(Number(e.target.value))}
+                    disabled={submitting}
+                  />
+                </FormField>
+              </div>
+
+              <FormField label="Video Source (Video ID or Full URL)" required error={errors.video_source}>
+                <Input
+                  value={createSource}
+                  onChange={(e) => setCreateSource(e.target.value)}
+                  placeholder="e.g. 7cxfVWs4YGw or https://..."
+                  required
+                  disabled={submitting}
+                />
+              </FormField>
+
+              {createProvider === "direct" && (
+                <FormField
+                  label="Upload Direct MP4 Video File"
+                  description="Recommended: 1080p H.264 MP4 loop without audio"
+                >
+                  <input
+                    type="file"
+                    onChange={(e) => setCreateFile(e.target.files?.[0] || null)}
+                    accept="video/mp4,video/webm"
+                    className="input"
+                    disabled={submitting}
+                  />
+                </FormField>
+              )}
+
+              <FormField label="Accessible Video Title">
+                <Input
+                  value={createVideoTitle}
+                  onChange={(e) => setCreateVideoTitle(e.target.value)}
+                  placeholder="e.g. DREAM CAR HOUSE Flagship Cinema"
+                  disabled={submitting}
+                />
+              </FormField>
+
+              <FormField
+                label="Poster Backdrop URL (Before video plays)"
+                description="Default: /assets/dch-day-showroom.webp"
+              >
+                <Input
+                  value={createPoster}
+                  onChange={(e) => setCreatePoster(e.target.value)}
+                  placeholder="/assets/dch-day-showroom.webp"
+                  disabled={submitting}
+                />
+              </FormField>
+            </div>
+          )}
+
+          {/* Mode 2: Showroom Photography (Day & Night) */}
+          {createMediaType === "image" && (
+            <div
+              style={{
+                display: "flex",
+                flexDirection: "column",
+                gap: "14px",
+                padding: "14px",
+                background: "rgba(234, 179, 8, 0.04)",
+                border: "1px solid rgba(234, 179, 8, 0.25)",
+                borderRadius: "var(--radius-sm)",
+              }}
+            >
+              <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <ImageIcon size={16} style={{ color: "#eab308" }} />
+                <span style={{ fontWeight: 600, fontSize: "13px" }}>Showroom Photography (Day & Night Mode)</span>
+              </div>
+
+              {/* Day Mode Image Box */}
+              <div style={{ padding: "12px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "8px" }}>
+                  <Sun size={15} style={{ color: "#f59e0b" }} />
+                  <span style={{ fontWeight: 600, fontSize: "12px" }}>Day Mode Showroom Photo</span>
+                  <span style={{ fontSize: "11px", color: "var(--muted)", marginLeft: "auto" }}>Light Mode background</span>
+                </div>
+
+                <FormField
+                  label="Upload Day Mode Photo (.webp, .jpg, .png)"
+                  description="Recommended size: 1920x1080 (16:9). Defaults to Day showroom if empty."
+                >
+                  <input
+                    type="file"
+                    onChange={(e) => setCreateFileDay(e.target.files?.[0] || null)}
+                    accept="image/jpeg,image/png,image/webp"
+                    className="input"
+                    disabled={submitting}
+                  />
+                </FormField>
+
+                <FormField
+                  label="Or Day Photo Asset Path / URL"
+                  description="Fallback path if no file is uploaded. Default: /assets/dch-day-showroom.webp"
+                >
+                  <Input
+                    value={createPoster}
+                    onChange={(e) => setCreatePoster(e.target.value)}
+                    placeholder="/assets/dch-day-showroom.webp"
+                    disabled={submitting}
+                  />
+                </FormField>
+              </div>
+
+              {/* Night Mode Image Box */}
+              <div style={{ padding: "12px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "8px" }}>
+                  <Moon size={15} style={{ color: "#818cf8" }} />
+                  <span style={{ fontWeight: 600, fontSize: "12px" }}>Night Mode Showroom Photo</span>
+                  <span style={{ fontSize: "11px", color: "var(--muted)", marginLeft: "auto" }}>Dark Mode background</span>
+                </div>
+
+                <FormField
+                  label="Upload Night Mode Photo (.webp, .jpg, .png)"
+                  description="Recommended size: 1920x1080 (16:9). Default: /assets/dch-night-showroom.webp"
+                >
+                  <input
+                    type="file"
+                    onChange={(e) => setCreateFile(e.target.files?.[0] || null)}
+                    accept="image/jpeg,image/png,image/webp"
+                    className="input"
+                    disabled={submitting}
+                  />
+                </FormField>
+              </div>
+            </div>
+          )}
+
+          {/* Scroll Down Indicator */}
+          <div
+            style={{
+              padding: "12px",
+              background: "var(--surface)",
+              border: "1px solid var(--border)",
+              borderRadius: "var(--radius-sm)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "10px",
+            }}
           >
-            <Input
-              value={createPoster}
-              onChange={(e) => setCreatePoster(e.target.value)}
-              placeholder="e.g. /assets/dch-day-showroom.webp"
-              disabled={submitting}
-            />
-          </FormField>
-
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
-            <FormField label="Scroll Link Label" description="Text for mouse scroll indicator">
-              <Input
-                value={createScrollLabel}
-                onChange={(e) => setCreateScrollLabel(e.target.value)}
-                placeholder="Scroll to Current Inventory"
+            <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", fontWeight: 600, fontSize: "13px" }}>
+              <input
+                type="checkbox"
+                checked={createShowScrollCue}
+                onChange={(e) => setCreateShowScrollCue(e.target.checked)}
                 disabled={submitting}
+                style={{ accentColor: "var(--primary)" }}
               />
-            </FormField>
+              <ArrowDown size={14} style={{ color: "var(--primary)" }} />
+              <span>Show Animated Scroll Indicator on Homepage</span>
+            </label>
+            <div style={{ fontSize: "11px", color: "var(--muted)", marginLeft: "22px" }}>
+              Displays the luxury floating &ldquo;Scroll to Current Inventory ↓&rdquo; pill at the bottom of the hero showcase.
+            </div>
 
-            <FormField label="Scroll Link Target Anchor" description="Anchor ID to scroll down to">
-              <Input
-                value={createScrollTarget}
-                onChange={(e) => setCreateScrollTarget(e.target.value)}
-                placeholder="#carousel-section"
-                disabled={submitting}
-              />
-            </FormField>
+            {createShowScrollCue && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)", marginTop: "4px" }}>
+                <FormField label="Scroll Link Label" description="Text shown inside pill button">
+                  <Input
+                    value={createScrollLabel}
+                    onChange={(e) => setCreateScrollLabel(e.target.value)}
+                    placeholder="Scroll to Current Inventory"
+                    disabled={submitting}
+                  />
+                </FormField>
+
+                <FormField label="Scroll Target Anchor" description="Section ID to smoothly scroll to">
+                  <Input
+                    value={createScrollTarget}
+                    onChange={(e) => setCreateScrollTarget(e.target.value)}
+                    placeholder="#carousel-section"
+                    disabled={submitting}
+                  />
+                </FormField>
+              </div>
+            )}
           </div>
 
           {/* CTA Buttons Array Editor */}
@@ -785,19 +1141,6 @@ export function SliderClient({
             </div>
           </div>
 
-          <FormField
-            label="Night Mode Background Image / Direct Video File (.mp4, .webp, .jpg)"
-            description="Upload custom Night Mode showroom background image or direct MP4/WebM cinema video file. Default: /assets/dch-night-showroom.webp"
-          >
-            <input
-              type="file"
-              onChange={(e) => setCreateFile(e.target.files?.[0] || null)}
-              accept="video/mp4,video/webm,image/jpeg,image/png,image/webp"
-              className="input"
-              disabled={submitting}
-            />
-          </FormField>
-
           <div style={{ display: "flex", gap: "var(--space-2)", justifyContent: "flex-end", marginTop: "var(--space-2)" }}>
             <Button type="button" variant="ghost" onClick={() => setCreateOpen(false)} disabled={submitting}>
               Cancel
@@ -827,78 +1170,362 @@ export function SliderClient({
               />
             </FormField>
 
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
-              <FormField label="Video Provider" required>
-                <select
-                  value={editProvider}
-                  onChange={(e) => setEditProvider(e.target.value as "youtube" | "vimeo" | "direct")}
-                  className="input"
-                  disabled={submitting}
+            {/* Hero Showcase Mode Selector */}
+            <FormField label="Hero Showcase Mode (Video vs Photography)" required>
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "10px", marginTop: "4px" }}>
+                <button
+                  type="button"
+                  onClick={() => setEditMediaType("video")}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    padding: "12px 14px",
+                    borderRadius: "var(--radius-sm)",
+                    border: editMediaType === "video" ? "2px solid #3b82f6" : "1px solid var(--border)",
+                    background: editMediaType === "video" ? "rgba(59, 130, 246, 0.12)" : "rgba(255, 255, 255, 0.02)",
+                    color: editMediaType === "video" ? "#60a5fa" : "var(--text-muted)",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    fontWeight: editMediaType === "video" ? 600 : 400,
+                    transition: "all 0.2s ease",
+                  }}
                 >
-                  <option value="youtube">YouTube Embed (Cinema)</option>
-                  <option value="vimeo">Vimeo Embed</option>
-                  <option value="direct">Direct Video File / URL</option>
-                </select>
-              </FormField>
+                  <Video size={18} style={{ color: editMediaType === "video" ? "#3b82f6" : "inherit", flexShrink: 0 }} />
+                  <div>
+                    <div style={{ color: "var(--text)", fontWeight: 600, fontSize: "13px" }}>Cinema Video</div>
+                    <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+                      YouTube, Vimeo, or looping video
+                    </div>
+                  </div>
+                </button>
 
-              <FormField label="Video Start Time (Seconds)">
-                <Input
-                  type="number"
-                  min={0}
-                  value={editStartTime}
-                  onChange={(e) => setEditStartTime(Number(e.target.value))}
-                  disabled={submitting}
-                />
-              </FormField>
-            </div>
-
-            <FormField label="Video Source (Video ID or Full URL)" required error={errors.video_source}>
-              <Input
-                value={editSource}
-                onChange={(e) => setEditSource(e.target.value)}
-                required
-                disabled={submitting}
-              />
+                <button
+                  type="button"
+                  onClick={() => setEditMediaType("image")}
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "10px",
+                    padding: "12px 14px",
+                    borderRadius: "var(--radius-sm)",
+                    border: editMediaType === "image" ? "2px solid #eab308" : "1px solid var(--border)",
+                    background: editMediaType === "image" ? "rgba(234, 179, 8, 0.12)" : "rgba(255, 255, 255, 0.02)",
+                    color: editMediaType === "image" ? "#fde047" : "var(--text-muted)",
+                    cursor: "pointer",
+                    textAlign: "left",
+                    fontWeight: editMediaType === "image" ? 600 : 400,
+                    transition: "all 0.2s ease",
+                  }}
+                >
+                  <ImageIcon size={18} style={{ color: editMediaType === "image" ? "#eab308" : "inherit", flexShrink: 0 }} />
+                  <div>
+                    <div style={{ color: "var(--text)", fontWeight: 600, fontSize: "13px" }}>Showroom Photos</div>
+                    <div style={{ fontSize: "11px", color: "var(--text-muted)", marginTop: "2px" }}>
+                      Day Mode & Night Mode photos
+                    </div>
+                  </div>
+                </button>
+              </div>
             </FormField>
 
-            <FormField label="Accessible Video Title">
-              <Input
-                value={editVideoTitle}
-                onChange={(e) => setEditVideoTitle(e.target.value)}
-                disabled={submitting}
-              />
-            </FormField>
+            {/* Mode 1: Cinema Video Config */}
+            {editMediaType === "video" && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                  padding: "14px",
+                  background: "rgba(59, 130, 246, 0.04)",
+                  border: "1px solid rgba(59, 130, 246, 0.25)",
+                  borderRadius: "var(--radius-sm)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <Video size={16} style={{ color: "#3b82f6" }} />
+                  <span style={{ fontWeight: 600, fontSize: "13px" }}>Cinema Video Configuration</span>
+                </div>
 
-            <FormField
-              label="Day Mode Background Image / Poster URL (Day Backdrop)"
-              description="Backdrop image displayed in Day Mode or before cinema video plays. Default: /assets/dch-day-showroom.webp"
+                <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
+                  <FormField label="Video Provider" required>
+                    <select
+                      value={editProvider}
+                      onChange={(e) => setEditProvider(e.target.value as "youtube" | "vimeo" | "direct")}
+                      className="input"
+                      disabled={submitting}
+                    >
+                      <option value="youtube">YouTube Embed (Cinema)</option>
+                      <option value="vimeo">Vimeo Embed</option>
+                      <option value="direct">Direct Video File / URL</option>
+                    </select>
+                  </FormField>
+
+                  <FormField label="Video Start Time (Seconds)">
+                    <Input
+                      type="number"
+                      min={0}
+                      value={editStartTime}
+                      onChange={(e) => setEditStartTime(Number(e.target.value))}
+                      disabled={submitting}
+                    />
+                  </FormField>
+                </div>
+
+                <FormField label="Video Source (Video ID or Full URL)" required error={errors.video_source}>
+                  <Input
+                    value={editSource}
+                    onChange={(e) => setEditSource(e.target.value)}
+                    placeholder="e.g. 7cxfVWs4YGw or https://..."
+                    required
+                    disabled={submitting}
+                  />
+                </FormField>
+
+                {editProvider === "direct" && (
+                  <FormField
+                    label="Upload Direct MP4 Video File"
+                    description="Recommended: 1080p H.264 MP4 loop without audio"
+                  >
+                    <input
+                      type="file"
+                      onChange={(e) => setEditFile(e.target.files?.[0] || null)}
+                      accept="video/mp4,video/webm"
+                      className="input"
+                      disabled={submitting}
+                    />
+                  </FormField>
+                )}
+
+                <FormField label="Accessible Video Title">
+                  <Input
+                    value={editVideoTitle}
+                    onChange={(e) => setEditVideoTitle(e.target.value)}
+                    placeholder="e.g. DREAM CAR HOUSE Flagship Cinema"
+                    disabled={submitting}
+                  />
+                </FormField>
+
+                <FormField
+                  label="Poster Backdrop URL (Before video plays)"
+                  description="Default: /assets/dch-day-showroom.webp"
+                >
+                  <Input
+                    value={editPoster}
+                    onChange={(e) => setEditPoster(e.target.value)}
+                    placeholder="/assets/dch-day-showroom.webp"
+                    disabled={submitting}
+                  />
+                </FormField>
+              </div>
+            )}
+
+            {/* Mode 2: Showroom Photography (Day & Night) */}
+            {editMediaType === "image" && (
+              <div
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "14px",
+                  padding: "14px",
+                  background: "rgba(234, 179, 8, 0.04)",
+                  border: "1px solid rgba(234, 179, 8, 0.25)",
+                  borderRadius: "var(--radius-sm)",
+                }}
+              >
+                <div style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                  <ImageIcon size={16} style={{ color: "#eab308" }} />
+                  <span style={{ fontWeight: 600, fontSize: "13px" }}>Showroom Photography (Day & Night Mode)</span>
+                </div>
+
+                {/* Day Mode Image Box */}
+                <div style={{ padding: "12px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "8px" }}>
+                    <Sun size={15} style={{ color: "#f59e0b" }} />
+                    <span style={{ fontWeight: 600, fontSize: "12px" }}>Day Mode Showroom Photo</span>
+                    <span style={{ fontSize: "11px", color: "var(--muted)", marginLeft: "auto" }}>Light Mode background</span>
+                  </div>
+
+                  {activeSlider?.image_day && !clearImageDay && (
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px", padding: "8px", background: "rgba(255,255,255,0.03)", borderRadius: "4px" }}>
+                      <img
+                        src={activeSlider.image_day}
+                        alt="Current Day Photo"
+                        style={{ width: "80px", height: "45px", objectFit: "cover", borderRadius: "3px", border: "1px solid var(--border)" }}
+                      />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--text)" }}>Current Uploaded Day Photo</div>
+                        <div style={{ fontSize: "10px", color: "var(--muted)", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+                          {activeSlider.image_day}
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setClearImageDay(true)}
+                        style={{ color: "var(--danger)", fontSize: "11px" }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  )}
+
+                  {clearImageDay && (
+                    <div style={{ fontSize: "11px", color: "var(--warning)", marginBottom: "8px" }}>
+                      Day Photo marked for removal (will fall back to default Day Showroom).{" "}
+                      <button
+                        type="button"
+                        onClick={() => setClearImageDay(false)}
+                        style={{ textDecoration: "underline", background: "none", border: "none", color: "inherit", cursor: "pointer" }}
+                      >
+                        Undo
+                      </button>
+                    </div>
+                  )}
+
+                  <FormField
+                    label="Upload New Day Mode Photo (.webp, .jpg, .png)"
+                    description="Recommended size: 1920x1080 (16:9). Leave empty to keep current."
+                  >
+                    <input
+                      type="file"
+                      onChange={(e) => {
+                        setEditFileDay(e.target.files?.[0] || null);
+                        if (e.target.files?.[0]) setClearImageDay(false);
+                      }}
+                      accept="image/jpeg,image/png,image/webp"
+                      className="input"
+                      disabled={submitting}
+                    />
+                  </FormField>
+
+                  <FormField
+                    label="Or Day Photo Asset Path / URL"
+                    description="Fallback path if no file is uploaded. Default: /assets/dch-day-showroom.webp"
+                  >
+                    <Input
+                      value={editPoster}
+                      onChange={(e) => setEditPoster(e.target.value)}
+                      placeholder="/assets/dch-day-showroom.webp"
+                      disabled={submitting}
+                    />
+                  </FormField>
+                </div>
+
+                {/* Night Mode Image Box */}
+                <div style={{ padding: "12px", background: "var(--surface)", border: "1px solid var(--border)", borderRadius: "var(--radius-sm)" }}>
+                  <div style={{ display: "flex", alignItems: "center", gap: "6px", marginBottom: "8px" }}>
+                    <Moon size={15} style={{ color: "#818cf8" }} />
+                    <span style={{ fontWeight: 600, fontSize: "12px" }}>Night Mode Showroom Photo</span>
+                    <span style={{ fontSize: "11px", color: "var(--muted)", marginLeft: "auto" }}>Dark Mode background</span>
+                  </div>
+
+                  {activeSlider?.image && !clearImage && !/\.(mp4|webm|mov|m4v)$/i.test(activeSlider.image) && (
+                    <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "10px", padding: "8px", background: "rgba(255,255,255,0.03)", borderRadius: "4px" }}>
+                      <img
+                        src={activeSlider.image}
+                        alt="Current Night Photo"
+                        style={{ width: "80px", height: "45px", objectFit: "cover", borderRadius: "3px", border: "1px solid var(--border)" }}
+                      />
+                      <div style={{ flex: 1, minWidth: 0 }}>
+                        <div style={{ fontSize: "11px", fontWeight: 600, color: "var(--text)" }}>Current Uploaded Night Photo</div>
+                        <div style={{ fontSize: "10px", color: "var(--muted)", textOverflow: "ellipsis", overflow: "hidden", whiteSpace: "nowrap" }}>
+                          {activeSlider.image}
+                        </div>
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => setClearImage(true)}
+                        style={{ color: "var(--danger)", fontSize: "11px" }}
+                      >
+                        Remove
+                      </Button>
+                    </div>
+                  )}
+
+                  {clearImage && (
+                    <div style={{ fontSize: "11px", color: "var(--warning)", marginBottom: "8px" }}>
+                      Night Photo marked for removal (will fall back to default Night Showroom).{" "}
+                      <button
+                        type="button"
+                        onClick={() => setClearImage(false)}
+                        style={{ textDecoration: "underline", background: "none", border: "none", color: "inherit", cursor: "pointer" }}
+                      >
+                        Undo
+                      </button>
+                    </div>
+                  )}
+
+                  <FormField
+                    label="Upload New Night Mode Photo (.webp, .jpg, .png)"
+                    description="Recommended size: 1920x1080 (16:9). Default: /assets/dch-night-showroom.webp"
+                  >
+                    <input
+                      type="file"
+                      onChange={(e) => {
+                        setEditFile(e.target.files?.[0] || null);
+                        if (e.target.files?.[0]) setClearImage(false);
+                      }}
+                      accept="image/jpeg,image/png,image/webp"
+                      className="input"
+                      disabled={submitting}
+                    />
+                  </FormField>
+                </div>
+              </div>
+            )}
+
+            {/* Scroll Down Indicator */}
+            <div
+              style={{
+                padding: "12px",
+                background: "var(--surface)",
+                border: "1px solid var(--border)",
+                borderRadius: "var(--radius-sm)",
+                display: "flex",
+                flexDirection: "column",
+                gap: "10px",
+              }}
             >
-              <Input
-                value={editPoster}
-                onChange={(e) => setEditPoster(e.target.value)}
-                placeholder="/assets/dch-day-showroom.webp"
-                disabled={submitting}
-              />
-            </FormField>
-
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
-              <FormField label="Scroll Link Label" description="Text for mouse scroll indicator">
-                <Input
-                  value={editScrollLabel}
-                  onChange={(e) => setEditScrollLabel(e.target.value)}
-                  placeholder="Scroll to Current Inventory"
+              <label style={{ display: "flex", alignItems: "center", gap: "8px", cursor: "pointer", fontWeight: 600, fontSize: "13px" }}>
+                <input
+                  type="checkbox"
+                  checked={editShowScrollCue}
+                  onChange={(e) => setEditShowScrollCue(e.target.checked)}
                   disabled={submitting}
+                  style={{ accentColor: "var(--primary)" }}
                 />
-              </FormField>
+                <ArrowDown size={14} style={{ color: "var(--primary)" }} />
+                <span>Show Animated Scroll Indicator on Homepage</span>
+              </label>
+              <div style={{ fontSize: "11px", color: "var(--muted)", marginLeft: "22px" }}>
+                Displays the luxury floating &ldquo;Scroll to Current Inventory ↓&rdquo; pill at the bottom of the hero showcase.
+              </div>
 
-              <FormField label="Scroll Link Target Anchor" description="Anchor ID to scroll down to">
-                <Input
-                  value={editScrollTarget}
-                  onChange={(e) => setEditScrollTarget(e.target.value)}
-                  placeholder="#carousel-section"
-                  disabled={submitting}
-                />
-              </FormField>
+            {editShowScrollCue && (
+              <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)", marginTop: "4px" }}>
+                <FormField label="Scroll Link Label" description="Text shown inside pill button">
+                  <Input
+                    value={editScrollLabel}
+                    onChange={(e) => setEditScrollLabel(e.target.value)}
+                    placeholder="Scroll to Current Inventory"
+                    disabled={submitting}
+                  />
+                </FormField>
+
+                <FormField label="Scroll Target Anchor" description="Section ID to smoothly scroll to">
+                  <Input
+                    value={editScrollTarget}
+                    onChange={(e) => setEditScrollTarget(e.target.value)}
+                    placeholder="#carousel-section"
+                    disabled={submitting}
+                  />
+                </FormField>
+              </div>
+            )}
             </div>
 
             {/* CTA Buttons Array Editor */}
@@ -971,19 +1598,6 @@ export function SliderClient({
                 ))}
               </div>
             </div>
-
-            <FormField
-              label="Night Mode Background Image / Direct Video File (.mp4, .webp, .jpg)"
-              description="Upload custom Night Mode showroom background image or direct MP4/WebM cinema video file. Default: /assets/dch-night-showroom.webp"
-            >
-              <input
-                type="file"
-                onChange={(e) => setEditFile(e.target.files?.[0] || null)}
-                accept="video/mp4,video/webm,image/jpeg,image/png,image/webp"
-                className="input"
-                disabled={submitting}
-              />
-            </FormField>
 
             <div style={{ display: "flex", gap: "var(--space-2)", justifyContent: "flex-end", marginTop: "var(--space-2)" }}>
               <Button type="button" variant="ghost" onClick={() => setEditOpen(false)} disabled={submitting}>

@@ -203,7 +203,9 @@ export type HeroCtaButton = {
 export type SliderItem = {
   id: number;
   heading: string;
+  media_type?: "video" | "image";
   poster?: string;
+  image_day?: string | null;
   video_provider?: "youtube" | "vimeo" | "direct";
   video_source?: string;
   video_start_time?: number;

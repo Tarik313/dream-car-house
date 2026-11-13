@@ -546,13 +546,18 @@ class SubscriberManagementSerializer(serializers.ModelSerializer):
 class SliderManagementSerializer(serializers.ModelSerializer):
     is_public_active = serializers.SerializerMethodField()
     is_published = serializers.BooleanField(default=True)
+    clear_image = serializers.BooleanField(write_only=True, required=False, default=False)
+    clear_image_day = serializers.BooleanField(write_only=True, required=False, default=False)
 
     class Meta:
         model = Slider
         fields = [
             "id",
             "heading",
+            "media_type",
             "poster",
+            "image_day",
+            "clear_image_day",
             "video_provider",
             "video_source",
             "video_start_time",
@@ -562,11 +567,17 @@ class SliderManagementSerializer(serializers.ModelSerializer):
             "scroll_link_target",
             "is_published",
             "image",
+            "clear_image",
             "is_public_active",
             "created_at",
             "updated_at",
         ]
         read_only_fields = ["id", "is_public_active", "created_at", "updated_at"]
+
+    def to_representation(self, instance):
+        from core.utils.media import normalize_media_fields
+        ret = super().to_representation(instance)
+        return normalize_media_fields(ret, ("image", "image_day"))
 
     def get_is_public_active(self, obj):
         last = Slider.objects.filter(is_published=True).order_by("id").last()
@@ -582,6 +593,17 @@ class SliderManagementSerializer(serializers.ModelSerializer):
         if ext not in allowed_exts:
             raise serializers.ValidationError(
                 f"Unsupported file format '.{ext}'. Allowed formats: {', '.join(allowed_exts)}."
+            )
+        return value
+
+    def validate_image_day(self, value):
+        if not value:
+            return value
+        allowed_exts = ["jpg", "jpeg", "png", "webp"]
+        ext = value.name.split(".")[-1].lower() if "." in value.name else ""
+        if ext not in allowed_exts:
+            raise serializers.ValidationError(
+                f"Unsupported image format '.{ext}' for Day Mode image. Allowed formats: {', '.join(allowed_exts)}."
             )
         return value
 
@@ -693,13 +715,31 @@ class SliderManagementSerializer(serializers.ModelSerializer):
             except ValueError:
                 raise serializers.ValidationError({"video_start_time": "Must be a valid integer."})
 
-        # On partial updates (PATCH), if image is empty string or None, retain existing file
+        # On partial updates (PATCH), if image or image_day is empty string or None, retain existing file
         if self.partial and "image" in data:
             val = data.get("image")
             if val == "" or val is None or (hasattr(val, "size") and val.size == 0):
                 data.pop("image", None)
 
+        if self.partial and "image_day" in data:
+            val = data.get("image_day")
+            if val == "" or val is None or (hasattr(val, "size") and val.size == 0):
+                data.pop("image_day", None)
+
         return super().to_internal_value(data)
+
+    def update(self, instance, validated_data):
+        clear_image = validated_data.pop("clear_image", False)
+        clear_image_day = validated_data.pop("clear_image_day", False)
+        if clear_image:
+            if instance.image:
+                instance.image.delete(save=False)
+            instance.image = None
+        if clear_image_day:
+            if hasattr(instance, "image_day") and instance.image_day:
+                instance.image_day.delete(save=False)
+            instance.image_day = None
+        return super().update(instance, validated_data)
 
     def validate(self, attrs):
         is_published = attrs.get("is_published", self.instance.is_published if self.instance else True)

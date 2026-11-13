@@ -31,32 +31,36 @@ export default function Hero({ initialData }: HeroProps = {}) {
       : "/assets/dch-night-showroom.webp";
 
   const daySrc =
-    initialData?.poster && !initialData.poster.includes("maybach")
+    initialData?.image_day ||
+    (initialData?.poster && !initialData.poster.includes("maybach")
       ? initialData.poster
-      : "/assets/dch-day-showroom.webp";
+      : "/assets/dch-day-showroom.webp");
+
+  // Mode check: if media_type is explicitly "image", do NOT render video
+  const isPhotoMode = initialData?.media_type === "image";
 
   // Check if a video is provided
   const uploadedVideo =
-    initialData?.image && /\.(mp4|webm|mov|m4v)$/i.test(initialData.image)
+    !isPhotoMode && initialData?.image && /\.(mp4|webm|mov|m4v)$/i.test(initialData.image)
       ? initialData.image
       : null;
 
   const directVideoUrl =
-    initialData?.video_provider === "direct" && initialData?.video_source?.trim()
+    !isPhotoMode && initialData?.video_provider === "direct" && initialData?.video_source?.trim()
       ? initialData.video_source.trim()
       : null;
 
   const youtubeId =
-    initialData?.video_provider === "youtube" && initialData?.video_source?.trim()
+    !isPhotoMode && initialData?.video_provider === "youtube" && initialData?.video_source?.trim()
       ? extractYouTubeId(initialData.video_source)
       : null;
 
   const vimeoId =
-    initialData?.video_provider === "vimeo" && initialData?.video_source?.trim()
+    !isPhotoMode && initialData?.video_provider === "vimeo" && initialData?.video_source?.trim()
       ? initialData.video_source.trim()
       : null;
 
-  const hasVideo = Boolean(uploadedVideo || directVideoUrl || youtubeId || vimeoId);
+  const hasVideo = !isPhotoMode && Boolean(uploadedVideo || directVideoUrl || youtubeId || vimeoId);
 
   return (
     <section
@@ -156,9 +160,9 @@ export default function Hero({ initialData }: HeroProps = {}) {
         )}
       </div>
 
-      {heading ? (
+      {heading || ctaButtons.length > 0 || initialData?.scroll_link_label ? (
         <div className="hero-content">
-          <h1 className="hero-title sr-only">{heading}</h1>
+          {heading ? <h1 className="hero-title sr-only">{heading}</h1> : null}
           {ctaButtons.length > 0 && (
             <div className="hero-pills">
               {ctaButtons.map((btn, index) => {
@@ -185,6 +189,17 @@ export default function Hero({ initialData }: HeroProps = {}) {
               })}
             </div>
           )}
+          {initialData?.scroll_link_label ? (
+            <div className="hero-scroll-cue-wrap" style={{ marginTop: "1rem" }}>
+              <a
+                href={initialData.scroll_link_target || "#carousel-section"}
+                className="hero-scroll-cue-link"
+              >
+                <span>{initialData.scroll_link_label}</span>
+                <span className="hero-scroll-arrow-down" aria-hidden="true">↓</span>
+              </a>
+            </div>
+          ) : null}
         </div>
       ) : null}
     </section>
