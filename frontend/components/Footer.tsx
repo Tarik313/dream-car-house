@@ -147,9 +147,9 @@ export default function Footer({
                   <circle cx="12" cy="10" r="3" />
                 </svg>
                 <span>
-                  <strong>Kakrail Flagship</strong>: 18, Shaheed Captain Monsur Ali Soroni, Kakrail
+                  <strong>{kakrailBranch?.name || "Kakrail Flagship"}</strong>: {kakrailBranch?.address || "18, Shaheed Captain Monsur Ali Soroni, Kakrail"}
                   <br />
-                  <strong>Gulshan Lounge</strong>: House #07, Road #127, Gulshan Avenue
+                  <strong>{gulshanBranch?.name || "Gulshan Lounge"}</strong>: {gulshanBranch?.address || "House #07, Road #127, Gulshan Avenue"}
                 </span>
               </li>
 
@@ -218,7 +218,9 @@ export default function Footer({
                 Showroom Flagships
               </h3>
               <span className="map-subtitle">
-                {activeBranch === "kakrail"
+                {currentBranch?.address
+                  ? `${currentBranch.name} • ${currentBranch.address}`
+                  : activeBranch === "kakrail"
                   ? "Kakrail Flagship • 18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka"
                   : "Gulshan Lounge • House #07, Road #127, Gulshan Avenue, Dhaka"}
               </span>
