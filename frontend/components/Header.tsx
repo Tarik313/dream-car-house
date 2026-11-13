@@ -17,6 +17,14 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
   const logoSrc = isDayMode
     ? (settings?.logo_light || settings?.logo || "/assets/dch-logo.webp")
     : (settings?.logo || "/assets/dch-logo.webp");
+  const hasCustomMobileIcon = Boolean(
+    isDayMode
+      ? (settings?.logo_icon_light || settings?.logo_icon)
+      : settings?.logo_icon
+  );
+  const mobileIconSrc = isDayMode
+    ? (settings?.logo_icon_light || settings?.logo_icon || logoSrc)
+    : (settings?.logo_icon || logoSrc);
   const lastScrollYRef = useRef(0);
 
   useEffect(() => {
@@ -158,15 +166,28 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
           </button>
         </div>
 
-        {/* Center Logo (Strictly Centered Original Image) */}
+        {/* Center Logo (Desktop: Full Logo | Mobile: Compact Adaptive Icon/Emblem) */}
         <div className="header-logo">
           <Link href="/" className="header-logo-link" aria-label={`${brandName} Homepage`}>
+            {/* Desktop / Tablet Full Brand Logo */}
             <Image
               src={logoSrc}
               alt={`${brandName} Logo`}
               width={1020}
               height={350}
-              className="header-brand-logo-img"
+              className="header-brand-logo-img header-logo-desktop"
+              priority
+              unoptimized
+            />
+            {/* Mobile Compact Adaptive Brand Icon */}
+            <Image
+              src={mobileIconSrc}
+              alt={`${brandName} Mobile Icon`}
+              width={120}
+              height={120}
+              className={`header-brand-logo-img header-logo-mobile ${
+                hasCustomMobileIcon ? "header-logo-mobile-icon" : "header-logo-mobile-fallback"
+              }`}
               priority
               unoptimized
             />

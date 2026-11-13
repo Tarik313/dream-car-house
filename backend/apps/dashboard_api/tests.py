@@ -2544,10 +2544,53 @@ class DashboardContentConfigurationTests(TestCase):
             )
             self.assertEqual(res_clear.status_code, 200)
             self.assertFalse(res_clear.json()["data"]["favicon"])
+
+            # 7. Mobile brand icons upload and public API exposure
+            mobile_svg = SimpleUploadedFile(
+                "mobile-crest.svg",
+                b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 40 40"><polygon points="20,0 40,40 0,40" fill="#f59e0b"/></svg>',
+                content_type="image/svg+xml",
+            )
+            mobile_light_png = SimpleUploadedFile("mobile-day.png", png_buf.getvalue(), content_type="image/png")
+            res_mobile = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {
+                    "logo_icon": mobile_svg,
+                    "logo_icon_light": mobile_light_png,
+                },
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_mobile.status_code, 200)
+            self.assertIn(".svg", res_mobile.json()["data"]["logo_icon"])
+            self.assertIn("/media/site/", res_mobile.json()["data"]["logo_icon_light"])
+
+            pub_res_mobile = anon_client.get("/api/v1/home/site-settings/")
+            self.assertEqual(pub_res_mobile.status_code, 200)
+            self.assertEqual(pub_res_mobile.json()["data"]["logo_icon"], res_mobile.json()["data"]["logo_icon"])
+            self.assertEqual(pub_res_mobile.json()["data"]["logo_icon_light"], res_mobile.json()["data"]["logo_icon_light"])
+
+            # 8. Clear mobile brand icons resets to None
+            res_clear_mobile = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {
+                    "clear_logo_icon": "true",
+                    "clear_logo_icon_light": "true",
+                },
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_clear_mobile.status_code, 200)
+            self.assertFalse(res_clear_mobile.json()["data"]["logo_icon"])
+            self.assertFalse(res_clear_mobile.json()["data"]["logo_icon_light"])
         finally:
             settings_obj.refresh_from_db()
             if settings_obj.favicon:
                 settings_obj.favicon.delete(save=False)
+            if settings_obj.logo_icon:
+                settings_obj.logo_icon.delete(save=False)
+            if settings_obj.logo_icon_light:
+                settings_obj.logo_icon_light.delete(save=False)
 
     def test_showroom_branch_management_and_public_api(self):
         # Create initial branch for duplicate checking

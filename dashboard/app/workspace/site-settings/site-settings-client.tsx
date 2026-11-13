@@ -23,6 +23,7 @@ import {
   Sparkles,
   Info,
   RotateCcw,
+  Smartphone,
 } from "lucide-react";
 
 interface SiteSettingsClientProps {
@@ -58,10 +59,20 @@ export function SiteSettingsClient({
   const [submitting, setSubmitting] = useState(false);
   const [formErrors, setFormErrors] = useState<Record<string, string>>({});
   const [clearFavicon, setClearFavicon] = useState(false);
+  const [clearLogoIcon, setClearLogoIcon] = useState(false);
+  const [clearLogoIconLight, setClearLogoIconLight] = useState(false);
 
   const activeFaviconSrc = clearFavicon
     ? "/favicon.ico"
     : initialSettings.favicon || "/favicon.ico";
+
+  const activeMobileIconDark = clearLogoIcon
+    ? initialSettings.logo || "/assets/dch-logo.webp"
+    : initialSettings.logo_icon || initialSettings.logo || "/assets/dch-logo.webp";
+
+  const activeMobileIconLight = clearLogoIconLight
+    ? initialSettings.logo_light || initialSettings.logo || "/assets/dch-logo.webp"
+    : initialSettings.logo_icon_light || initialSettings.logo_icon || initialSettings.logo_light || initialSettings.logo || "/assets/dch-logo.webp";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -99,14 +110,30 @@ export function SiteSettingsClient({
       body.append("clear_favicon", "true");
     }
 
+    const logoIconInput = e.currentTarget.querySelector('input[name="logo_icon"]') as HTMLInputElement;
+    if (logoIconInput?.files?.[0]) {
+      body.append("logo_icon", logoIconInput.files[0]);
+    } else if (clearLogoIcon) {
+      body.append("clear_logo_icon", "true");
+    }
+
+    const logoIconLightInput = e.currentTarget.querySelector('input[name="logo_icon_light"]') as HTMLInputElement;
+    if (logoIconLightInput?.files?.[0]) {
+      body.append("logo_icon_light", logoIconLightInput.files[0]);
+    } else if (clearLogoIconLight) {
+      body.append("clear_logo_icon_light", "true");
+    }
+
     try {
       const res = await updateSiteSettingsAction(body);
       if (res.ok) {
         setClearFavicon(false);
+        setClearLogoIcon(false);
+        setClearLogoIconLight(false);
         showToast({
           type: "success",
           title: "Settings Saved",
-          message: "Public business identity, contact details, logos, and browser tab icon updated successfully.",
+          message: "Public business identity, contact details, desktop logos, and mobile icons updated successfully.",
         });
         router.refresh();
       } else {
@@ -341,6 +368,216 @@ export function SiteSettingsClient({
               <FormField label="Upload New Day Mode Logo" error={formErrors.logo_light} description="Transparent PNG, WebP or SVG (max 10MB). Dark/metallic artwork recommended.">
                 <Upload name="logo_light" accept="image/*,.svg" disabled={!canChange || submitting} />
               </FormField>
+            </div>
+          </div>
+
+          {/* 2. Mobile Compact Brand Icons (Day & Night Mode Adaptive for < 768px) */}
+          <div
+            style={{
+              marginTop: "1.25rem",
+              border: "1px solid var(--border-default)",
+              borderRadius: "6px",
+              padding: "1.25rem",
+              background: "var(--surface-secondary)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 700, fontSize: "13px", color: "var(--text-primary)" }}>
+                <Smartphone size={15} style={{ color: "var(--action-primary)" }} />
+                Mobile Header Icons (Compact Adaptive for Screens &lt; 768px)
+              </span>
+              <span
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  background: initialSettings.logo_icon || initialSettings.logo_icon_light ? "rgba(34, 197, 94, 0.12)" : "var(--surface-primary)",
+                  color: initialSettings.logo_icon || initialSettings.logo_icon_light ? "#16a34a" : "var(--text-muted)",
+                  border: "1px solid var(--border-default)",
+                }}
+              >
+                {initialSettings.logo_icon || initialSettings.logo_icon_light ? "Mobile Icons Set" : "Desktop Logo Fallback"}
+              </span>
+            </div>
+            <p style={{ margin: 0, fontSize: "11px", color: "var(--text-muted)" }}>
+              Shown centered in the mobile navigation bar instead of the wide horizontal logo. Square transparent SVG/PNG emblem or monogram recommended (e.g. 48x48 or 120x120).
+            </p>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.25rem" }}>
+              {/* Mobile Night Mode Icon */}
+              <div
+                style={{
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "6px",
+                  padding: "1rem",
+                  background: "var(--surface-primary)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 600, fontSize: "12px", color: "var(--text-primary)" }}>
+                    <Moon size={14} style={{ color: "#f59e0b" }} />
+                    Night Mode Mobile Icon
+                  </span>
+                  <span style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", padding: "1px 5px", borderRadius: "3px", background: "#0f172a", color: "#f8fafc" }}>
+                    Dark Mobile
+                  </span>
+                </div>
+
+                {/* Mobile Header Dark Mockup */}
+                <div
+                  style={{
+                    background: "#090d16",
+                    border: "1px solid #1e293b",
+                    borderRadius: "6px",
+                    padding: "0.6rem 0.85rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    minHeight: "56px",
+                  }}
+                >
+                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", border: "1px solid #334155", background: "#1e293b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#94a3b8" }}>
+                    ⚙
+                  </div>
+                  <img
+                    src={activeMobileIconDark}
+                    alt="Active Mobile Night Mode Icon"
+                    style={{ maxHeight: "36px", maxWidth: "60px", objectFit: "contain" }}
+                  />
+                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#1e293b", border: "1px solid #f59e0b", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#f59e0b" }}>
+                    🌙
+                  </div>
+                </div>
+
+                <FormField
+                  label="Upload Night Mode Mobile Icon"
+                  error={formErrors.logo_icon}
+                  description="Transparent SVG or PNG (max 5MB). Light/white/gold mark."
+                >
+                  <Upload
+                    name="logo_icon"
+                    accept=".ico,.png,.svg,.webp,.jpg,.jpeg,image/*"
+                    maxSizeBytes={5 * 1024 * 1024}
+                    onFilesSelected={(files) => {
+                      if (files.length > 0) setClearLogoIcon(false);
+                    }}
+                    disabled={!canChange || submitting}
+                  />
+                </FormField>
+
+                {initialSettings.logo_icon && (
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "-0.25rem" }}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      disabled={!canChange || submitting}
+                      onClick={() => setClearLogoIcon((prev) => !prev)}
+                    >
+                      <RotateCcw size={13} />
+                      <span>{clearLogoIcon ? "Keep Custom Mobile Icon" : "Reset to Desktop Fallback"}</span>
+                    </Button>
+                    {clearLogoIcon && (
+                      <span style={{ fontSize: "11px", color: "#d97706", fontWeight: 600 }}>
+                        Will reset on Save
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Mobile Day Mode Icon */}
+              <div
+                style={{
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "6px",
+                  padding: "1rem",
+                  background: "var(--surface-primary)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 600, fontSize: "12px", color: "var(--text-primary)" }}>
+                    <Sun size={14} style={{ color: "#ea580c" }} />
+                    Day Mode Mobile Icon
+                  </span>
+                  <span style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", padding: "1px 5px", borderRadius: "3px", background: "#f1f5f9", color: "#0f172a", border: "1px solid #cbd5e1" }}>
+                    Light Mobile
+                  </span>
+                </div>
+
+                {/* Mobile Header Light Mockup */}
+                <div
+                  style={{
+                    background: "#ffffff",
+                    border: "1px solid #cbd5e1",
+                    borderRadius: "6px",
+                    padding: "0.6rem 0.85rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "space-between",
+                    minHeight: "56px",
+                  }}
+                >
+                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", border: "1px solid #cbd5e1", background: "#f8fafc", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#64748b" }}>
+                    ⚙
+                  </div>
+                  <img
+                    src={activeMobileIconLight}
+                    alt="Active Mobile Day Mode Icon"
+                    style={{ maxHeight: "36px", maxWidth: "60px", objectFit: "contain" }}
+                  />
+                  <div style={{ width: "22px", height: "22px", borderRadius: "50%", background: "#f8fafc", border: "1px solid #ea580c", display: "flex", alignItems: "center", justifyContent: "center", fontSize: "10px", color: "#ea580c" }}>
+                    ☀️
+                  </div>
+                </div>
+
+                <FormField
+                  label="Upload Day Mode Mobile Icon"
+                  error={formErrors.logo_icon_light}
+                  description="Transparent SVG or PNG (max 5MB). Dark/metallic mark."
+                >
+                  <Upload
+                    name="logo_icon_light"
+                    accept=".ico,.png,.svg,.webp,.jpg,.jpeg,image/*"
+                    maxSizeBytes={5 * 1024 * 1024}
+                    onFilesSelected={(files) => {
+                      if (files.length > 0) setClearLogoIconLight(false);
+                    }}
+                    disabled={!canChange || submitting}
+                  />
+                </FormField>
+
+                {initialSettings.logo_icon_light && (
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "-0.25rem" }}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      disabled={!canChange || submitting}
+                      onClick={() => setClearLogoIconLight((prev) => !prev)}
+                    >
+                      <RotateCcw size={13} />
+                      <span>{clearLogoIconLight ? "Keep Custom Mobile Icon" : "Reset to Desktop Fallback"}</span>
+                    </Button>
+                    {clearLogoIconLight && (
+                      <span style={{ fontSize: "11px", color: "#d97706", fontWeight: 600 }}>
+                        Will reset on Save
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
             </div>
           </div>
 

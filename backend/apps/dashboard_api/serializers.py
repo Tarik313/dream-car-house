@@ -1202,6 +1202,8 @@ class UserDetailManagementSerializer(serializers.ModelSerializer):
 
 class SiteSettingsManagementSerializer(serializers.ModelSerializer):
     clear_favicon = serializers.BooleanField(write_only=True, required=False, default=False)
+    clear_logo_icon = serializers.BooleanField(write_only=True, required=False, default=False)
+    clear_logo_icon_light = serializers.BooleanField(write_only=True, required=False, default=False)
 
     class Meta:
         model = SiteSettings
@@ -1213,6 +1215,10 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
             "logo_asset",
             "logo",
             "logo_light",
+            "logo_icon",
+            "logo_icon_light",
+            "clear_logo_icon",
+            "clear_logo_icon_light",
             "favicon",
             "clear_favicon",
             "hotline",
@@ -1233,9 +1239,9 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         from core.utils.media import normalize_media_fields
         ret = super().to_representation(instance)
-        return normalize_media_fields(ret, ("logo", "logo_light", "favicon"))
+        return normalize_media_fields(ret, ("logo", "logo_light", "logo_icon", "logo_icon_light", "favicon"))
 
-    def validate_favicon(self, value):
+    def _validate_uploaded_icon(self, value, label: str):
         if not value:
             return value
         from django.core.exceptions import ValidationError as DjangoValidationError
@@ -1245,12 +1251,34 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
         except DjangoValidationError as exc:
             raise serializers.ValidationError(exc.messages)
 
+    def validate_favicon(self, value):
+        return self._validate_uploaded_icon(value, "favicon")
+
+    def validate_logo_icon(self, value):
+        return self._validate_uploaded_icon(value, "logo_icon")
+
+    def validate_logo_icon_light(self, value):
+        return self._validate_uploaded_icon(value, "logo_icon_light")
+
     def update(self, instance, validated_data):
         clear_favicon = validated_data.pop("clear_favicon", False)
         if clear_favicon and "favicon" not in validated_data:
             if instance.favicon:
                 instance.favicon.delete(save=False)
             instance.favicon = None
+
+        clear_logo_icon = validated_data.pop("clear_logo_icon", False)
+        if clear_logo_icon and "logo_icon" not in validated_data:
+            if instance.logo_icon:
+                instance.logo_icon.delete(save=False)
+            instance.logo_icon = None
+
+        clear_logo_icon_light = validated_data.pop("clear_logo_icon_light", False)
+        if clear_logo_icon_light and "logo_icon_light" not in validated_data:
+            if instance.logo_icon_light:
+                instance.logo_icon_light.delete(save=False)
+            instance.logo_icon_light = None
+
         return super().update(instance, validated_data)
 
     def validate_name(self, value):

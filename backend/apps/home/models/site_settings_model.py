@@ -41,6 +41,20 @@ class SiteSettings(BaseModel):
         verbose_name=_("Day Mode Logo"),
         help_text=_("Alternative brand logo displayed on white/light backgrounds in Day Mode. (Recommended: dark/black/gold)."),
     )
+    logo_icon = models.FileField(
+        upload_to="site/",
+        null=True,
+        blank=True,
+        verbose_name=_("Night Mode Mobile Icon"),
+        help_text=_("Compact emblem/icon for mobile header in Night Mode. (Recommended: square SVG or PNG with transparent background)."),
+    )
+    logo_icon_light = models.FileField(
+        upload_to="site/",
+        null=True,
+        blank=True,
+        verbose_name=_("Day Mode Mobile Icon"),
+        help_text=_("Compact emblem/icon for mobile header in Day Mode. (Recommended: square SVG or PNG with transparent background)."),
+    )
     favicon = models.FileField(
         upload_to="site/",
         null=True,
@@ -111,6 +125,10 @@ class SiteSettings(BaseModel):
         super().clean()
         if self.favicon and not getattr(self.favicon, "_committed", True):
             validate_icon_file(self.favicon)
+        if self.logo_icon and not getattr(self.logo_icon, "_committed", True):
+            validate_icon_file(self.logo_icon)
+        if self.logo_icon_light and not getattr(self.logo_icon_light, "_committed", True):
+            validate_icon_file(self.logo_icon_light)
 
     def __str__(self):
         return self.name
