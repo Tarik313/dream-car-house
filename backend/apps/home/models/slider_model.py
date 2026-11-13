@@ -57,12 +57,12 @@ class Slider(models.Model):
             ("vimeo", "Vimeo"),
             ("direct", "Direct File/URL"),
         ],
-        default="youtube",
+        default="direct",
         verbose_name=_("Video Provider"),
     )
     video_source = models.CharField(
         max_length=500,
-        default="",
+        default="/videos/hero-bg.mp4",
         blank=True,
         verbose_name=_("Video ID or URL"),
     )

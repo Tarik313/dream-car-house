@@ -46,8 +46,8 @@ export default function Hero({ initialData }: HeroProps = {}) {
       : null;
 
   const directVideoUrl =
-    !isPhotoMode && initialData?.video_provider === "direct" && initialData?.video_source?.trim()
-      ? initialData.video_source.trim()
+    !isPhotoMode && initialData?.video_provider === "direct"
+      ? (initialData?.video_source?.trim() || "/videos/hero-bg.mp4")
       : null;
 
   const youtubeId =
@@ -83,12 +83,12 @@ export default function Hero({ initialData }: HeroProps = {}) {
           >
             {uploadedVideo || directVideoUrl ? (
               <video
-                src={uploadedVideo || directVideoUrl || ""}
+                src={uploadedVideo || directVideoUrl || "/videos/hero-bg.mp4"}
                 autoPlay
                 muted
                 loop
                 playsInline
-                preload="metadata"
+                preload="auto"
                 poster={theme === "dark" ? nightSrc : daySrc}
                 style={{ width: "100%", height: "100%", objectFit: "cover" }}
               />

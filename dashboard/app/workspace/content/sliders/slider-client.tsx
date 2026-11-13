@@ -82,8 +82,8 @@ export function SliderClient({
   const [createHeading, setCreateHeading] = useState("");
   const [createPoster, setCreatePoster] = useState("/assets/dch-day-showroom.webp");
   const [createPosterNight, setCreatePosterNight] = useState("/assets/dch-night-showroom.webp");
-  const [createProvider, setCreateProvider] = useState<"youtube" | "vimeo" | "direct">("youtube");
-  const [createSource, setCreateSource] = useState("7cxfVWs4YGw");
+  const [createProvider, setCreateProvider] = useState<"youtube" | "vimeo" | "direct">("direct");
+  const [createSource, setCreateSource] = useState("/videos/hero-bg.mp4");
   const [createStartTime, setCreateStartTime] = useState(45);
   const [createVideoTitle, setCreateVideoTitle] = useState("DREAM CAR HOUSE Flagship Cinema");
   const [createShowScrollCue, setCreateShowScrollCue] = useState(true);
@@ -141,8 +141,8 @@ export function SliderClient({
     setCreateHeading("The Pinnacle of Luxury Automobiles");
     setCreatePoster("/assets/dch-day-showroom.webp");
     setCreatePosterNight("/assets/dch-night-showroom.webp");
-    setCreateProvider("youtube");
-    setCreateSource("7cxfVWs4YGw");
+    setCreateProvider("direct");
+    setCreateSource("/videos/hero-bg.mp4");
     setCreateStartTime(45);
     setCreateVideoTitle("DREAM CAR HOUSE Flagship Cinema");
     setCreateShowScrollCue(true);
