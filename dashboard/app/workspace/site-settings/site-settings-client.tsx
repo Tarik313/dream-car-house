@@ -1089,7 +1089,12 @@ export function SiteSettingsClient({
             </h3>
           </div>
 
-          <FormField label="Primary Showroom Address" required error={formErrors.primary_address}>
+          <FormField
+            label="Primary Showroom Address (Main Flagship / Head Office)"
+            required
+            error={formErrors.primary_address}
+            description="Registered flagship showroom address (Kakrail) used for Google Schema.org structured data and business entity verification. To manage both Kakrail & Gulshan branches individually with addresses, phone numbers, and Google Maps, visit Operations → Showroom Branches."
+          >
             <Input
               name="primary_address"
               value={formData.primary_address}
