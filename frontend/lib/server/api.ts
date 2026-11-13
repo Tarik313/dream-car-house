@@ -52,6 +52,8 @@ export const defaultSiteSettings: PublicSiteSettings = {
   logo_light: "/assets/dch-logo.webp",
   logo_icon: null,
   logo_icon_light: null,
+  logo_footer: null,
+  logo_footer_light: null,
   favicon: "/favicon.ico",
   hotline: SHOWROOM.hotline,
   phone: SHOWROOM.phone,

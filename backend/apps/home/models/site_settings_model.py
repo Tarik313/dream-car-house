@@ -55,6 +55,20 @@ class SiteSettings(BaseModel):
         verbose_name=_("Day Mode Mobile Icon"),
         help_text=_("Compact emblem/icon for mobile header in Day Mode. (Recommended: square SVG or PNG with transparent background)."),
     )
+    logo_footer = models.FileField(
+        upload_to="site/",
+        null=True,
+        blank=True,
+        verbose_name=_("Night Mode Footer Logo"),
+        help_text=_("Brand logo displayed on dark backgrounds in the showroom footer. (Optional - falls back to Night Mode Logo)."),
+    )
+    logo_footer_light = models.FileField(
+        upload_to="site/",
+        null=True,
+        blank=True,
+        verbose_name=_("Day Mode Footer Logo"),
+        help_text=_("Brand logo displayed on light backgrounds in the showroom footer in Day Mode. (Optional - falls back to Day Mode Logo)."),
+    )
     favicon = models.FileField(
         upload_to="site/",
         null=True,
@@ -129,6 +143,10 @@ class SiteSettings(BaseModel):
             validate_icon_file(self.logo_icon)
         if self.logo_icon_light and not getattr(self.logo_icon_light, "_committed", True):
             validate_icon_file(self.logo_icon_light)
+        if self.logo_footer and not getattr(self.logo_footer, "_committed", True):
+            validate_icon_file(self.logo_footer)
+        if self.logo_footer_light and not getattr(self.logo_footer_light, "_committed", True):
+            validate_icon_file(self.logo_footer_light)
 
     def __str__(self):
         return self.name

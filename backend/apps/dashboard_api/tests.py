@@ -2583,6 +2583,45 @@ class DashboardContentConfigurationTests(TestCase):
             self.assertEqual(res_clear_mobile.status_code, 200)
             self.assertFalse(res_clear_mobile.json()["data"]["logo_icon"])
             self.assertFalse(res_clear_mobile.json()["data"]["logo_icon_light"])
+
+            # 9. Dedicated Footer brand logos upload and public API exposure
+            footer_dark_png = SimpleUploadedFile("footer-dark.png", png_buf.getvalue(), content_type="image/png")
+            footer_light_svg = SimpleUploadedFile(
+                "footer-light.svg",
+                b'<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 30"><text x="0" y="20" fill="#0f172a">DCH FOOTER</text></svg>',
+                content_type="image/svg+xml",
+            )
+            res_footer = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {
+                    "logo_footer": footer_dark_png,
+                    "logo_footer_light": footer_light_svg,
+                },
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_footer.status_code, 200)
+            self.assertIn("/media/site/", res_footer.json()["data"]["logo_footer"])
+            self.assertIn(".svg", res_footer.json()["data"]["logo_footer_light"])
+
+            pub_res_footer = anon_client.get("/api/v1/home/site-settings/")
+            self.assertEqual(pub_res_footer.status_code, 200)
+            self.assertEqual(pub_res_footer.json()["data"]["logo_footer"], res_footer.json()["data"]["logo_footer"])
+            self.assertEqual(pub_res_footer.json()["data"]["logo_footer_light"], res_footer.json()["data"]["logo_footer_light"])
+
+            # 10. Clear footer brand logos resets to None
+            res_clear_footer = self.client.patch(
+                "/api/v1/dashboard/site-settings/",
+                {
+                    "clear_logo_footer": "true",
+                    "clear_logo_footer_light": "true",
+                },
+                HTTP_X_CSRFTOKEN=admin_csrf,
+                format="multipart",
+            )
+            self.assertEqual(res_clear_footer.status_code, 200)
+            self.assertFalse(res_clear_footer.json()["data"]["logo_footer"])
+            self.assertFalse(res_clear_footer.json()["data"]["logo_footer_light"])
         finally:
             settings_obj.refresh_from_db()
             if settings_obj.favicon:
@@ -2591,6 +2630,10 @@ class DashboardContentConfigurationTests(TestCase):
                 settings_obj.logo_icon.delete(save=False)
             if settings_obj.logo_icon_light:
                 settings_obj.logo_icon_light.delete(save=False)
+            if settings_obj.logo_footer:
+                settings_obj.logo_footer.delete(save=False)
+            if settings_obj.logo_footer_light:
+                settings_obj.logo_footer_light.delete(save=False)
 
     def test_showroom_branch_management_and_public_api(self):
         # Create initial branch for duplicate checking

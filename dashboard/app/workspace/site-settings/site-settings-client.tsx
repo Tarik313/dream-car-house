@@ -61,6 +61,8 @@ export function SiteSettingsClient({
   const [clearFavicon, setClearFavicon] = useState(false);
   const [clearLogoIcon, setClearLogoIcon] = useState(false);
   const [clearLogoIconLight, setClearLogoIconLight] = useState(false);
+  const [clearLogoFooter, setClearLogoFooter] = useState(false);
+  const [clearLogoFooterLight, setClearLogoFooterLight] = useState(false);
 
   const activeFaviconSrc = clearFavicon
     ? "/favicon.ico"
@@ -73,6 +75,14 @@ export function SiteSettingsClient({
   const activeMobileIconLight = clearLogoIconLight
     ? initialSettings.logo_light || initialSettings.logo || "/assets/dch-logo.webp"
     : initialSettings.logo_icon_light || initialSettings.logo_icon || initialSettings.logo_light || initialSettings.logo || "/assets/dch-logo.webp";
+
+  const activeFooterDark = clearLogoFooter
+    ? initialSettings.logo || "/assets/dch-logo.webp"
+    : initialSettings.logo_footer || initialSettings.logo || "/assets/dch-logo.webp";
+
+  const activeFooterLight = clearLogoFooterLight
+    ? initialSettings.logo_light || initialSettings.logo || "/assets/dch-logo.webp"
+    : initialSettings.logo_footer_light || initialSettings.logo_light || initialSettings.logo_footer || initialSettings.logo || "/assets/dch-logo.webp";
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -124,16 +134,32 @@ export function SiteSettingsClient({
       body.append("clear_logo_icon_light", "true");
     }
 
+    const logoFooterInput = e.currentTarget.querySelector('input[name="logo_footer"]') as HTMLInputElement;
+    if (logoFooterInput?.files?.[0]) {
+      body.append("logo_footer", logoFooterInput.files[0]);
+    } else if (clearLogoFooter) {
+      body.append("clear_logo_footer", "true");
+    }
+
+    const logoFooterLightInput = e.currentTarget.querySelector('input[name="logo_footer_light"]') as HTMLInputElement;
+    if (logoFooterLightInput?.files?.[0]) {
+      body.append("logo_footer_light", logoFooterLightInput.files[0]);
+    } else if (clearLogoFooterLight) {
+      body.append("clear_logo_footer_light", "true");
+    }
+
     try {
       const res = await updateSiteSettingsAction(body);
       if (res.ok) {
         setClearFavicon(false);
         setClearLogoIcon(false);
         setClearLogoIconLight(false);
+        setClearLogoFooter(false);
+        setClearLogoFooterLight(false);
         showToast({
           type: "success",
           title: "Settings Saved",
-          message: "Public business identity, contact details, desktop logos, and mobile icons updated successfully.",
+          message: "Public business identity, contact details, header logos, footer logos, and tab icon updated successfully.",
         });
         router.refresh();
       } else {
@@ -581,7 +607,203 @@ export function SiteSettingsClient({
             </div>
           </div>
 
-          {/* 3. Browser Tab Icon (Favicon) */}
+          {/* 3. Showroom Footer Logos (Day & Night Mode Adaptive) */}
+          <div
+            style={{
+              marginTop: "1.25rem",
+              border: "1px solid var(--border-default)",
+              borderRadius: "6px",
+              padding: "1.25rem",
+              background: "var(--surface-secondary)",
+              display: "flex",
+              flexDirection: "column",
+              gap: "1rem",
+            }}
+          >
+            <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: "0.5rem" }}>
+              <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 700, fontSize: "13px", color: "var(--text-primary)" }}>
+                <Building2 size={15} style={{ color: "var(--action-primary)" }} />
+                Showroom Footer Logos (Day & Night Mode Adaptive)
+              </span>
+              <span
+                style={{
+                  fontSize: "10px",
+                  fontWeight: 700,
+                  textTransform: "uppercase",
+                  padding: "2px 6px",
+                  borderRadius: "4px",
+                  background: initialSettings.logo_footer || initialSettings.logo_footer_light ? "rgba(34, 197, 94, 0.12)" : "var(--surface-primary)",
+                  color: initialSettings.logo_footer || initialSettings.logo_footer_light ? "#16a34a" : "var(--text-muted)",
+                  border: "1px solid var(--border-default)",
+                }}
+              >
+                {initialSettings.logo_footer || initialSettings.logo_footer_light ? "Custom Footer Logos Set" : "Header Logo Fallback"}
+              </span>
+            </div>
+            <p style={{ margin: 0, fontSize: "11px", color: "var(--text-muted)" }}>
+              Displayed in the showroom footer. In Day Mode, the footer switches to brushed platinum/light background; in Night Mode, it is obsidian black. Falls back to Header logos if left empty.
+            </p>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(300px, 1fr))", gap: "1.25rem" }}>
+              {/* Footer Night Mode Logo */}
+              <div
+                style={{
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "6px",
+                  padding: "1rem",
+                  background: "var(--surface-primary)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 600, fontSize: "12px", color: "var(--text-primary)" }}>
+                    <Moon size={14} style={{ color: "#f59e0b" }} />
+                    Night Mode Footer Logo
+                  </span>
+                  <span style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", padding: "1px 5px", borderRadius: "3px", background: "#0f172a", color: "#f8fafc" }}>
+                    Dark Footer
+                  </span>
+                </div>
+
+                {/* Footer Dark Preview */}
+                <div
+                  style={{
+                    background: "#090d16",
+                    border: "1px solid #1e293b",
+                    borderRadius: "6px",
+                    padding: "0.85rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: "65px",
+                  }}
+                >
+                  <img
+                    src={activeFooterDark}
+                    alt="Active Night Mode Footer Logo"
+                    style={{ maxHeight: "48px", maxWidth: "220px", objectFit: "contain" }}
+                  />
+                </div>
+
+                <FormField
+                  label="Upload Night Mode Footer Logo"
+                  error={formErrors.logo_footer}
+                  description="Transparent PNG, WebP or SVG (max 10MB). Light/white/gold artwork."
+                >
+                  <Upload
+                    name="logo_footer"
+                    accept="image/*,.svg"
+                    disabled={!canChange || submitting}
+                    onFilesSelected={(files) => {
+                      if (files.length > 0) setClearLogoFooter(false);
+                    }}
+                  />
+                </FormField>
+
+                {initialSettings.logo_footer && (
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "-0.25rem" }}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      disabled={!canChange || submitting}
+                      onClick={() => setClearLogoFooter((prev) => !prev)}
+                    >
+                      <RotateCcw size={13} />
+                      <span>{clearLogoFooter ? "Keep Custom Footer Logo" : "Reset to Header Fallback"}</span>
+                    </Button>
+                    {clearLogoFooter && (
+                      <span style={{ fontSize: "11px", color: "#d97706", fontWeight: 600 }}>
+                        Will reset on Save
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+
+              {/* Footer Day Mode Logo */}
+              <div
+                style={{
+                  border: "1px solid var(--border-default)",
+                  borderRadius: "6px",
+                  padding: "1rem",
+                  background: "var(--surface-primary)",
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: "0.75rem",
+                }}
+              >
+                <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "0.4rem", fontWeight: 600, fontSize: "12px", color: "var(--text-primary)" }}>
+                    <Sun size={14} style={{ color: "#ea580c" }} />
+                    Day Mode Footer Logo
+                  </span>
+                  <span style={{ fontSize: "10px", fontWeight: 700, textTransform: "uppercase", padding: "1px 5px", borderRadius: "3px", background: "#f1f5f9", color: "#0f172a", border: "1px solid #cbd5e1" }}>
+                    Light Footer
+                  </span>
+                </div>
+
+                {/* Footer Light Preview */}
+                <div
+                  style={{
+                    background: "linear-gradient(180deg, #dce3eb 0%, #ccd7e2 100%)",
+                    border: "1px solid rgba(148, 163, 184, 0.45)",
+                    borderRadius: "6px",
+                    padding: "0.85rem",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    minHeight: "65px",
+                  }}
+                >
+                  <img
+                    src={activeFooterLight}
+                    alt="Active Day Mode Footer Logo"
+                    style={{ maxHeight: "48px", maxWidth: "220px", objectFit: "contain" }}
+                  />
+                </div>
+
+                <FormField
+                  label="Upload Day Mode Footer Logo"
+                  error={formErrors.logo_footer_light}
+                  description="Transparent PNG, WebP or SVG (max 10MB). Dark/metallic artwork."
+                >
+                  <Upload
+                    name="logo_footer_light"
+                    accept="image/*,.svg"
+                    disabled={!canChange || submitting}
+                    onFilesSelected={(files) => {
+                      if (files.length > 0) setClearLogoFooterLight(false);
+                    }}
+                  />
+                </FormField>
+
+                {initialSettings.logo_footer_light && (
+                  <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginTop: "-0.25rem" }}>
+                    <Button
+                      type="button"
+                      variant="secondary"
+                      size="sm"
+                      disabled={!canChange || submitting}
+                      onClick={() => setClearLogoFooterLight((prev) => !prev)}
+                    >
+                      <RotateCcw size={13} />
+                      <span>{clearLogoFooterLight ? "Keep Custom Footer Logo" : "Reset to Header Fallback"}</span>
+                    </Button>
+                    {clearLogoFooterLight && (
+                      <span style={{ fontSize: "11px", color: "#d97706", fontWeight: 600 }}>
+                        Will reset on Save
+                      </span>
+                    )}
+                  </div>
+                )}
+              </div>
+            </div>
+          </div>
+
+          {/* 4. Browser Tab Icon (Favicon) */}
           <div
             style={{
               marginTop: "1.25rem",

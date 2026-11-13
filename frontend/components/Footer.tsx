@@ -33,7 +33,14 @@ export default function Footer({
     branches?.[0]?.hours ||
     "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
   const tagline = settings?.footer_tagline || "Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka.";
-  const logoSrc = settings?.logo || "/assets/dch-logo.webp";
+  const footerLogoNight =
+    settings?.logo_footer ||
+    settings?.logo ||
+    "/assets/dch-logo.webp";
+  const footerLogoDay =
+    settings?.logo_footer_light ||
+    settings?.logo_light ||
+    footerLogoNight;
   const fbUrl = settings?.social_media?.facebook || "https://facebook.com";
   const igUrl = settings?.social_media?.instagram || "https://instagram.com";
   const ytUrl = settings?.social_media?.youtube || "https://youtube.com";
@@ -102,17 +109,22 @@ export default function Footer({
           <div className="footer-col-contact">
             <div style={{ marginBottom: "1.1rem" }}>
               <Link href="/" aria-label="DREAM CAR HOUSE Homepage">
+                {/* Night Mode Footer Logo (Default / Dark Theme) */}
                 <Image
-                  src={logoSrc}
+                  src={footerLogoNight}
                   alt="DREAM CAR HOUSE Logo"
                   width={1020}
                   height={350}
-                  style={{
-                    height: "60px",
-                    width: "auto",
-                    maxWidth: "280px",
-                    objectFit: "contain",
-                  }}
+                  className="footer-brand-logo-img footer-logo-dark"
+                  unoptimized
+                />
+                {/* Day Mode Footer Logo (Light Theme) */}
+                <Image
+                  src={footerLogoDay}
+                  alt="DREAM CAR HOUSE Logo"
+                  width={1020}
+                  height={350}
+                  className="footer-brand-logo-img footer-logo-light"
                   unoptimized
                 />
               </Link>

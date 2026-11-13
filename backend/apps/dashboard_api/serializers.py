@@ -1204,6 +1204,8 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
     clear_favicon = serializers.BooleanField(write_only=True, required=False, default=False)
     clear_logo_icon = serializers.BooleanField(write_only=True, required=False, default=False)
     clear_logo_icon_light = serializers.BooleanField(write_only=True, required=False, default=False)
+    clear_logo_footer = serializers.BooleanField(write_only=True, required=False, default=False)
+    clear_logo_footer_light = serializers.BooleanField(write_only=True, required=False, default=False)
 
     class Meta:
         model = SiteSettings
@@ -1219,6 +1221,10 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
             "logo_icon_light",
             "clear_logo_icon",
             "clear_logo_icon_light",
+            "logo_footer",
+            "logo_footer_light",
+            "clear_logo_footer",
+            "clear_logo_footer_light",
             "favicon",
             "clear_favicon",
             "hotline",
@@ -1239,7 +1245,7 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
     def to_representation(self, instance):
         from core.utils.media import normalize_media_fields
         ret = super().to_representation(instance)
-        return normalize_media_fields(ret, ("logo", "logo_light", "logo_icon", "logo_icon_light", "favicon"))
+        return normalize_media_fields(ret, ("logo", "logo_light", "logo_icon", "logo_icon_light", "logo_footer", "logo_footer_light", "favicon"))
 
     def _validate_uploaded_icon(self, value, label: str):
         if not value:
@@ -1260,6 +1266,12 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
     def validate_logo_icon_light(self, value):
         return self._validate_uploaded_icon(value, "logo_icon_light")
 
+    def validate_logo_footer(self, value):
+        return self._validate_uploaded_icon(value, "logo_footer")
+
+    def validate_logo_footer_light(self, value):
+        return self._validate_uploaded_icon(value, "logo_footer_light")
+
     def update(self, instance, validated_data):
         clear_favicon = validated_data.pop("clear_favicon", False)
         if clear_favicon and "favicon" not in validated_data:
@@ -1278,6 +1290,18 @@ class SiteSettingsManagementSerializer(serializers.ModelSerializer):
             if instance.logo_icon_light:
                 instance.logo_icon_light.delete(save=False)
             instance.logo_icon_light = None
+
+        clear_logo_footer = validated_data.pop("clear_logo_footer", False)
+        if clear_logo_footer and "logo_footer" not in validated_data:
+            if instance.logo_footer:
+                instance.logo_footer.delete(save=False)
+            instance.logo_footer = None
+
+        clear_logo_footer_light = validated_data.pop("clear_logo_footer_light", False)
+        if clear_logo_footer_light and "logo_footer_light" not in validated_data:
+            if instance.logo_footer_light:
+                instance.logo_footer_light.delete(save=False)
+            instance.logo_footer_light = None
 
         return super().update(instance, validated_data)
 

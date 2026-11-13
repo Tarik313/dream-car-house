@@ -2444,6 +2444,29 @@ button {
 }
 
 /* ================= FOOTER (DAY MODE - BRUSHED PLATINUM & OBSIDIAN) ================= */
+.footer-brand-logo-img {
+  height: 60px;
+  width: auto;
+  max-width: 280px;
+  object-fit: contain;
+}
+
+.footer-logo-dark {
+  display: inline-block !important;
+}
+
+.footer-logo-light {
+  display: none !important;
+}
+
+[data-theme="light"] .footer-logo-dark {
+  display: none !important;
+}
+
+[data-theme="light"] .footer-logo-light {
+  display: inline-block !important;
+}
+
 [data-theme="light"] .site-footer {
   background: linear-gradient(180deg, #dce3eb 0%, #ccd7e2 100%) !important;
   color: #0f172a !important;

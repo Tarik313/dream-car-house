@@ -434,6 +434,8 @@ export type SiteSettingsItem = {
   logo_light?: string | null;
   logo_icon?: string | null;
   logo_icon_light?: string | null;
+  logo_footer?: string | null;
+  logo_footer_light?: string | null;
   favicon?: string | null;
   hotline: string;
   phone: string;
