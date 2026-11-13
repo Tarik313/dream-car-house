@@ -682,7 +682,10 @@ export function SliderClient({
             />
           </FormField>
 
-          <FormField label="Poster Backdrop URL / Asset Path">
+          <FormField
+            label="Day Mode Background Image / Poster URL (Day Backdrop)"
+            description="Backdrop image displayed in Day Mode or before cinema video plays. Default: /assets/dch-day-showroom.webp"
+          >
             <Input
               value={createPoster}
               onChange={(e) => setCreatePoster(e.target.value)}
@@ -692,7 +695,7 @@ export function SliderClient({
           </FormField>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
-            <FormField label="Scroll Link Label">
+            <FormField label="Scroll Link Label" description="Text for mouse scroll indicator">
               <Input
                 value={createScrollLabel}
                 onChange={(e) => setCreateScrollLabel(e.target.value)}
@@ -701,7 +704,7 @@ export function SliderClient({
               />
             </FormField>
 
-            <FormField label="Scroll Link Target Anchor">
+            <FormField label="Scroll Link Target Anchor" description="Anchor ID to scroll down to">
               <Input
                 value={createScrollTarget}
                 onChange={(e) => setCreateScrollTarget(e.target.value)}
@@ -714,7 +717,10 @@ export function SliderClient({
           {/* CTA Buttons Array Editor */}
           <div style={{ border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", padding: "var(--space-3)" }}>
             <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-2)" }}>
-              <span style={{ fontWeight: 600, fontSize: "var(--font-size-sm)" }}>CTA Action Buttons</span>
+              <div>
+                <span style={{ fontWeight: 600, fontSize: "var(--font-size-sm)" }}>CTA Action Buttons</span>
+                <div style={{ fontSize: "var(--font-size-xs)", color: "var(--muted)" }}>Interactive action pills on top of the hero banner</div>
+              </div>
               <Button type="button" size="sm" variant="secondary" onClick={addCreateCta} disabled={submitting}>
                 <Plus size={12} /> Add CTA Button
               </Button>
@@ -725,53 +731,64 @@ export function SliderClient({
                 <div
                   key={i}
                   style={{
-                    display: "grid",
-                    gridTemplateColumns: "1.2fr 1fr 1.5fr auto",
-                    gap: "6px",
-                    alignItems: "center",
-                    padding: "6px",
-                    background: "rgba(255,255,255,0.02)",
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: "8px",
+                    padding: "10px",
+                    background: "rgba(255,255,255,0.03)",
                     borderRadius: "var(--radius-sm)",
                     border: "1px solid var(--border)",
                   }}
                 >
-                  <Input
-                    placeholder="Label"
-                    value={btn.label}
-                    onChange={(e) => updateCreateCta(i, { label: e.target.value })}
-                    disabled={submitting}
-                  />
-                  <select
-                    className="input"
-                    value={btn.action}
-                    onChange={(e) => updateCreateCta(i, { action: e.target.value as "link" | "appointment_modal" })}
-                    disabled={submitting}
-                  >
-                    <option value="link">Link</option>
-                    <option value="appointment_modal">Appointment Modal</option>
-                  </select>
-                  <Input
-                    placeholder={btn.action === "link" ? "/destination" : "N/A (modal)"}
-                    value={btn.destination}
-                    onChange={(e) => updateCreateCta(i, { destination: e.target.value })}
-                    disabled={submitting || btn.action !== "link"}
-                  />
-                  <Button
-                    type="button"
-                    size="sm"
-                    variant="ghost"
-                    onClick={() => removeCreateCta(i)}
-                    disabled={submitting}
-                    style={{ color: "var(--danger)" }}
-                  >
-                    <Trash2 size={14} />
-                  </Button>
+                  <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                    <div style={{ flex: 1 }}>
+                      <Input
+                        placeholder="Button Label (e.g. Schedule Private Viewing)"
+                        value={btn.label}
+                        onChange={(e) => updateCreateCta(i, { label: e.target.value })}
+                        disabled={submitting}
+                        style={{ width: "100%" }}
+                      />
+                    </div>
+                    <Button
+                      type="button"
+                      size="sm"
+                      variant="ghost"
+                      onClick={() => removeCreateCta(i)}
+                      disabled={submitting}
+                      style={{ color: "var(--danger)", padding: "6px" }}
+                      title="Delete CTA Button"
+                    >
+                      <Trash2 size={15} />
+                    </Button>
+                  </div>
+
+                  <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "8px" }}>
+                    <select
+                      className="input"
+                      value={btn.action}
+                      onChange={(e) => updateCreateCta(i, { action: e.target.value as "link" | "appointment_modal" })}
+                      disabled={submitting}
+                    >
+                      <option value="link">Action: Page Link</option>
+                      <option value="appointment_modal">Action: Appointment Modal</option>
+                    </select>
+                    <Input
+                      placeholder={btn.action === "link" ? "URL e.g. /inventory or #carousel-section" : "N/A (Opens VIP Appointment Modal)"}
+                      value={btn.destination}
+                      onChange={(e) => updateCreateCta(i, { destination: e.target.value })}
+                      disabled={submitting || btn.action !== "link"}
+                    />
+                  </div>
                 </div>
               ))}
             </div>
           </div>
 
-          <FormField label="Direct Video / Media File Upload (Optional)">
+          <FormField
+            label="Night Mode Background Image / Direct Video File (.mp4, .webp, .jpg)"
+            description="Upload custom Night Mode showroom background image or direct MP4/WebM cinema video file. Default: /assets/dch-night-showroom.webp"
+          >
             <input
               type="file"
               onChange={(e) => setCreateFile(e.target.files?.[0] || null)}
@@ -852,27 +869,33 @@ export function SliderClient({
               />
             </FormField>
 
-            <FormField label="Poster Backdrop URL / Asset Path">
+            <FormField
+              label="Day Mode Background Image / Poster URL (Day Backdrop)"
+              description="Backdrop image displayed in Day Mode or before cinema video plays. Default: /assets/dch-day-showroom.webp"
+            >
               <Input
                 value={editPoster}
                 onChange={(e) => setEditPoster(e.target.value)}
+                placeholder="/assets/dch-day-showroom.webp"
                 disabled={submitting}
               />
             </FormField>
 
             <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-3)" }}>
-              <FormField label="Scroll Link Label">
+              <FormField label="Scroll Link Label" description="Text for mouse scroll indicator">
                 <Input
                   value={editScrollLabel}
                   onChange={(e) => setEditScrollLabel(e.target.value)}
+                  placeholder="Scroll to Current Inventory"
                   disabled={submitting}
                 />
               </FormField>
 
-              <FormField label="Scroll Link Target Anchor">
+              <FormField label="Scroll Link Target Anchor" description="Anchor ID to scroll down to">
                 <Input
                   value={editScrollTarget}
                   onChange={(e) => setEditScrollTarget(e.target.value)}
+                  placeholder="#carousel-section"
                   disabled={submitting}
                 />
               </FormField>
@@ -881,7 +904,10 @@ export function SliderClient({
             {/* CTA Buttons Array Editor */}
             <div style={{ border: "1px solid var(--border)", borderRadius: "var(--radius-sm)", padding: "var(--space-3)" }}>
               <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "var(--space-2)" }}>
-                <span style={{ fontWeight: 600, fontSize: "var(--font-size-sm)" }}>CTA Action Buttons</span>
+                <div>
+                  <span style={{ fontWeight: 600, fontSize: "var(--font-size-sm)" }}>CTA Action Buttons</span>
+                  <div style={{ fontSize: "var(--font-size-xs)", color: "var(--muted)" }}>Interactive action pills on top of the hero banner</div>
+                </div>
                 <Button type="button" size="sm" variant="secondary" onClick={addEditCta} disabled={submitting}>
                   <Plus size={12} /> Add CTA Button
                 </Button>
@@ -892,53 +918,64 @@ export function SliderClient({
                   <div
                     key={i}
                     style={{
-                      display: "grid",
-                      gridTemplateColumns: "1.2fr 1fr 1.5fr auto",
-                      gap: "6px",
-                      alignItems: "center",
-                      padding: "6px",
-                      background: "rgba(255,255,255,0.02)",
+                      display: "flex",
+                      flexDirection: "column",
+                      gap: "8px",
+                      padding: "10px",
+                      background: "rgba(255,255,255,0.03)",
                       borderRadius: "var(--radius-sm)",
                       border: "1px solid var(--border)",
                     }}
                   >
-                    <Input
-                      placeholder="Label"
-                      value={btn.label}
-                      onChange={(e) => updateEditCta(i, { label: e.target.value })}
-                      disabled={submitting}
-                    />
-                    <select
-                      className="input"
-                      value={btn.action}
-                      onChange={(e) => updateEditCta(i, { action: e.target.value as "link" | "appointment_modal" })}
-                      disabled={submitting}
-                    >
-                      <option value="link">Link</option>
-                      <option value="appointment_modal">Appointment Modal</option>
-                    </select>
-                    <Input
-                      placeholder={btn.action === "link" ? "/destination" : "N/A (modal)"}
-                      value={btn.destination}
-                      onChange={(e) => updateEditCta(i, { destination: e.target.value })}
-                      disabled={submitting || btn.action !== "link"}
-                    />
-                    <Button
-                      type="button"
-                      size="sm"
-                      variant="ghost"
-                      onClick={() => removeEditCta(i)}
-                      disabled={submitting}
-                      style={{ color: "var(--danger)" }}
-                    >
-                      <Trash2 size={14} />
-                    </Button>
+                    <div style={{ display: "flex", gap: "8px", alignItems: "center" }}>
+                      <div style={{ flex: 1 }}>
+                        <Input
+                          placeholder="Button Label (e.g. Schedule Private Viewing)"
+                          value={btn.label}
+                          onChange={(e) => updateEditCta(i, { label: e.target.value })}
+                          disabled={submitting}
+                          style={{ width: "100%" }}
+                        />
+                      </div>
+                      <Button
+                        type="button"
+                        size="sm"
+                        variant="ghost"
+                        onClick={() => removeEditCta(i)}
+                        disabled={submitting}
+                        style={{ color: "var(--danger)", padding: "6px" }}
+                        title="Delete CTA Button"
+                      >
+                        <Trash2 size={15} />
+                      </Button>
+                    </div>
+
+                    <div style={{ display: "grid", gridTemplateColumns: "1fr 1.5fr", gap: "8px" }}>
+                      <select
+                        className="input"
+                        value={btn.action}
+                        onChange={(e) => updateEditCta(i, { action: e.target.value as "link" | "appointment_modal" })}
+                        disabled={submitting}
+                      >
+                        <option value="link">Action: Page Link</option>
+                        <option value="appointment_modal">Action: Appointment Modal</option>
+                      </select>
+                      <Input
+                        placeholder={btn.action === "link" ? "URL e.g. /inventory or #carousel-section" : "N/A (Opens VIP Appointment Modal)"}
+                        value={btn.destination}
+                        onChange={(e) => updateEditCta(i, { destination: e.target.value })}
+                        disabled={submitting || btn.action !== "link"}
+                      />
+                    </div>
                   </div>
                 ))}
               </div>
             </div>
 
-            <FormField label="Replace Direct Video / Image File (Optional)">
+            <FormField
+              label="Night Mode Background Image / Direct Video File (.mp4, .webp, .jpg)"
+              description="Upload custom Night Mode showroom background image or direct MP4/WebM cinema video file. Default: /assets/dch-night-showroom.webp"
+            >
               <input
                 type="file"
                 onChange={(e) => setEditFile(e.target.files?.[0] || null)}
