@@ -94,7 +94,7 @@ export default function Hero({ initialData }: HeroProps = {}) {
               />
             ) : youtubeId ? (
               <iframe
-                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&playsinline=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&modestbranding=1`}
+                src={`https://www.youtube-nocookie.com/embed/${youtubeId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${youtubeId}&playsinline=1&rel=0&showinfo=0&iv_load_policy=3&disablekb=1&modestbranding=1${initialData?.video_start_time ? `&start=${initialData.video_start_time}` : ""}`}
                 title={initialData?.video_title || "DREAM CAR HOUSE Cinema"}
                 allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                 style={{
