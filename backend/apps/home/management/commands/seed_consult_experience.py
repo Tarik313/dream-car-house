@@ -14,7 +14,7 @@ class Command(BaseCommand):
     def handle(self, *args, **options):
         # 1. Seed or get a primary sales representative
         rep, _ = SalesRepresentative.objects.get_or_create(
-            name="Tahamidur Taief",
+            name="Abdur Rahman",
             defaults={
                 "phone_number": "8801615121312",
                 "status": "PUBLISHED",

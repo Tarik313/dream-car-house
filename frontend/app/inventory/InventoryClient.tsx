@@ -30,7 +30,7 @@ interface InventoryClientProps {
   };
 }
 
-const MAX_PRICE_LIMIT = 50000000; // BDT 5 Crore benchmark (matching BEG Autos standard)
+const MAX_PRICE_LIMIT = 50000000; // BDT 5 Crore benchmark
 
 function parseVehicleNumericPrice(car: Vehicle | PublicVehicle): number | null {
   if (car.is_call_for_price) return null;
@@ -296,7 +296,7 @@ function InventoryContent({
         if (cBranch !== selectedBranch.toLowerCase()) return false;
       }
 
-      // 5. BEG Autos Price Range Filter
+      // 5. Price Range Filter
       if (isPriceActive) {
         const numPrice = parseVehicleNumericPrice(car);
         if (numPrice !== null) {
@@ -404,7 +404,7 @@ function InventoryContent({
           <option value="PRE_OWNED">Certified Pre-Owned</option>
         </select>
 
-        {/* ================= BEG AUTOS STYLE LUXURY PRICE FILTER ================= */}
+        {/* ================= LUXURY PRICE FILTER ================= */}
         <div className="price-filter-container" ref={popoverRef}>
           <button
             type="button"
@@ -452,7 +452,7 @@ function InventoryContent({
                 </span>
               </div>
 
-              {/* BEG Autos Quick Preset Brackets */}
+              {/* Quick Preset Brackets */}
               <div className="price-presets-grid">
                 {PRICE_PRESETS.map((preset, idx) => {
                   const isSelected =
@@ -484,7 +484,7 @@ function InventoryContent({
                 {/* Min Price Slider Thumb */}
                 <input
                   type="range"
-                  className="beg-range-slider"
+                  className="dch-range-slider"
                   min={0}
                   max={MAX_PRICE_LIMIT}
                   step={500000} // 5 Lakh increments
@@ -502,7 +502,7 @@ function InventoryContent({
                 {/* Max Price Slider Thumb */}
                 <input
                   type="range"
-                  className="beg-range-slider"
+                  className="dch-range-slider"
                   min={0}
                   max={MAX_PRICE_LIMIT}
                   step={500000} // 5 Lakh increments

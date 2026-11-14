@@ -41,3 +41,4 @@ class Migration(migrations.Migration):
         ),
         migrations.RunPython(set_direct_video_default, reverse_code=migrations.RunPython.noop),
     ]
+

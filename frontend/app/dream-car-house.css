@@ -3059,7 +3059,7 @@ button {
   }
 }
 
-/* Luxury Showcase Card (BEG AUTOS "In the studio" Architectural Design) */
+/* Luxury Showcase Card (Architectural Design) */
 .pref-car-card {
   position: relative;
   display: flex;
@@ -3376,7 +3376,7 @@ button {
   overflow: visible;
 }
 
-/* Individual Brand Badge Card (BegAutos #101012 Titanium Obsidian) */
+/* Individual Brand Badge Card (#101012 Titanium Obsidian) */
 .runway-brand-card {
   width: 100%;
   max-width: 100%;
@@ -11167,7 +11167,7 @@ button {
 }
 
 /* ==========================================================================
-   BEG AUTOS Style Luxury Interactive Price Filter System
+   DREAM CAR HOUSE Style Luxury Interactive Price Filter System
    ========================================================================== */
 
 .price-filter-container {
@@ -11354,7 +11354,7 @@ button {
 }
 
 /* Dual Thumbs */
-.beg-range-slider {
+.dch-range-slider {
   position: absolute;
   inset: 0;
   width: 100%;
@@ -11366,16 +11366,16 @@ button {
   appearance: none;
 }
 
-.beg-range-slider::-webkit-slider-runnable-track {
+.dch-range-slider::-webkit-slider-runnable-track {
   background: transparent;
   height: 100%;
 }
 
-.beg-range-slider::-moz-range-track {
+.dch-range-slider::-moz-range-track {
   background: transparent;
 }
 
-.beg-range-slider::-webkit-slider-thumb {
+.dch-range-slider::-webkit-slider-thumb {
   -webkit-appearance: none;
   appearance: none;
   pointer-events: auto;
@@ -11390,17 +11390,17 @@ button {
   transition: transform 0.15s ease, background 0.15s ease;
 }
 
-.beg-range-slider::-webkit-slider-thumb:hover {
+.dch-range-slider::-webkit-slider-thumb:hover {
   transform: scale(1.2);
   background: #ffffff;
 }
 
-.beg-range-slider::-webkit-slider-thumb:active {
+.dch-range-slider::-webkit-slider-thumb:active {
   cursor: grabbing;
   transform: scale(1.3);
 }
 
-.beg-range-slider::-moz-range-thumb {
+.dch-range-slider::-moz-range-thumb {
   pointer-events: auto;
   width: 18px;
   height: 18px;
