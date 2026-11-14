@@ -106,7 +106,8 @@ export default async function BrandsDirectoryPage() {
         {brandsList.map((brand) => (
           <Link
             key={brand.slug}
-            href={`/cars/brand/${brand.slug}`}
+            href={`/cars/brand/${brand.slug}/`}
+            prefetch={true}
             className="brand-card-box group"
             style={{
               background: "linear-gradient(180deg, #111317 0%, #0d0f12 100%)",

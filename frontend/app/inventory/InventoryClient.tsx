@@ -630,7 +630,8 @@ function InventoryContent({
 
             return (
               <Link
-                href={`/cars/${carSlug}`}
+                href={`/cars/${carSlug}/`}
+                prefetch={true}
                 key={car.id}
                 className="group inventory-card-box block"
                 style={{ textDecoration: "none", color: "inherit" }}

@@ -44,6 +44,7 @@ export default function VehicleDetailClient({
   const { openAppointmentModal, openGalleryLightbox } = useUI();
   const [activeImgIdx, setActiveImgIdx] = useState(0);
   const [isCopied, setIsCopied] = useState(false);
+  const [isVideoPlaying, setIsVideoPlaying] = useState(false);
 
   // Quote Request States
   const [isQuoteOpen, setIsQuoteOpen] = useState(false);
@@ -314,6 +315,8 @@ export default function VehicleDetailClient({
                     src={img.url}
                     alt={img.caption || car.name}
                     fill
+                    loading="lazy"
+                    sizes="(max-width: 768px) 50vw, 25vw"
                     unoptimized
                     className="dch-vignette-img"
                   />
@@ -359,6 +362,7 @@ export default function VehicleDetailClient({
                     alt={photo.caption || car.name}
                     width={90}
                     height={60}
+                    loading="lazy"
                     unoptimized
                     className="dch-rail-img"
                   />
@@ -879,13 +883,89 @@ export default function VehicleDetailClient({
           </p>
         </div>
         <div className="dch-video-container">
-          <iframe
-            src={getYoutubeEmbedUrl(car.youtube)}
-            title={`${car.name} Video Walkaround`}
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-            allowFullScreen
-            className="dch-video-frame"
-          />
+          {isVideoPlaying ? (
+            <iframe
+              src={`${getYoutubeEmbedUrl(car.youtube)}&autoplay=1`}
+              title={`${car.name} Video Walkaround`}
+              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+              allowFullScreen
+              className="dch-video-frame"
+            />
+          ) : (
+            <div
+              className="dch-video-facade group"
+              onClick={() => setIsVideoPlaying(true)}
+              role="button"
+              tabIndex={0}
+              aria-label="Play official video walkaround"
+              style={{
+                position: "relative",
+                width: "100%",
+                aspectRatio: "16 / 9",
+                borderRadius: "8px",
+                overflow: "hidden",
+                cursor: "pointer",
+                background: "#0d0d10",
+              }}
+            >
+              <img
+                src={currentHeroImage.url}
+                alt={`${car.name} Video Walkaround`}
+                loading="lazy"
+                style={{
+                  width: "100%",
+                  height: "100%",
+                  objectFit: "cover",
+                  filter: "brightness(0.65)",
+                  transition: "transform 0.5s ease, filter 0.5s ease",
+                }}
+                className="group-hover:scale-105 group-hover:brightness-75"
+              />
+              <div
+                style={{
+                  position: "absolute",
+                  inset: 0,
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  background: "radial-gradient(circle, rgba(0,0,0,0.2) 0%, rgba(0,0,0,0.7) 100%)",
+                }}
+              >
+                <div
+                  style={{
+                    width: "72px",
+                    height: "72px",
+                    borderRadius: "50%",
+                    background: "rgba(234, 179, 8, 0.95)",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    boxShadow: "0 0 30px rgba(234, 179, 8, 0.6)",
+                    transition: "transform 0.2s ease, box-shadow 0.2s ease",
+                  }}
+                  className="group-hover:scale-110"
+                >
+                  <svg width="28" height="28" viewBox="0 0 24 24" fill="#000" style={{ marginLeft: "3px" }}>
+                    <polygon points="5 3 19 12 5 21 5 3" />
+                  </svg>
+                </div>
+                <span
+                  style={{
+                    marginTop: "1rem",
+                    color: "#ffffff",
+                    fontSize: "0.9rem",
+                    fontWeight: 600,
+                    letterSpacing: "0.08em",
+                    textTransform: "uppercase",
+                    textShadow: "0 2px 8px rgba(0,0,0,0.8)",
+                  }}
+                >
+                  Play Cinematic Walkaround
+                </span>
+              </div>
+            </div>
+          )}
         </div>
       </section>
 

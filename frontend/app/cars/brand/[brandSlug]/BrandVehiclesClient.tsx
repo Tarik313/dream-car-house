@@ -59,7 +59,7 @@ export default function BrandVehiclesClient({
       <nav aria-label="Breadcrumb" style={{ marginBottom: "1.75rem", fontSize: "0.85rem", color: "#9ca3af" }}>
         <Link href="/" style={{ color: "#d1d5db", textDecoration: "none" }}>Home</Link>
         <span style={{ margin: "0 0.5rem", color: "#6b7280" }}>/</span>
-        <Link href="/cars/brand" style={{ color: "#d1d5db", textDecoration: "none" }}>Marques</Link>
+        <Link href="/cars/brand/" style={{ color: "#d1d5db", textDecoration: "none" }}>Marques</Link>
         <span style={{ margin: "0 0.5rem", color: "#6b7280" }}>/</span>
         <span style={{ color: "#ffffff", fontWeight: 600 }}>{brandSeo.name}</span>
       </nav>

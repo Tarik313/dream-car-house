@@ -41,7 +41,8 @@ export default function VehicleCard({ car }: VehicleCardProps) {
   return (
     <article className="pref-car-card group">
       <Link
-        href={`/cars/${carSlug}`}
+        href={`/cars/${carSlug}/`}
+        prefetch={true}
         className="pref-car-link-wrap"
         style={{ textDecoration: "none", color: "inherit", display: "block" }}
       >
@@ -111,7 +112,8 @@ export default function VehicleCard({ car }: VehicleCardProps) {
         {/* Price & Action Row with Hairline Divider */}
         <div className="pref-price-row">
           <Link
-            href={`/cars/${carSlug}`}
+            href={`/cars/${carSlug}/`}
+            prefetch={true}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <span className="pref-price-val">{displayPrice}</span>

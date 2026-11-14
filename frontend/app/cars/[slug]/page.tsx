@@ -2,14 +2,28 @@ import type { Metadata } from "next";
 import { notFound, permanentRedirect } from "next/navigation";
 import {
   defaultSiteSettings,
+  getPublicInventory,
   getPublicInventoryDetail,
   getPublicRelatedVehicles,
   getSiteSettings,
 } from "@/lib/server/api";
+import { VEHICLE_DATA } from "@/lib/showroomData";
 import { buildCarSeo, cleanText, getPublicBaseUrl, normalizeCanonicalUrl } from "@/lib/seo";
 import VehicleDetailClient from "./VehicleDetailClient";
 
 export const revalidate = 60;
+
+export async function generateStaticParams() {
+  try {
+    const { items } = await getPublicInventory();
+    if (items && items.length > 0) {
+      return items.map((car) => ({ slug: car.slug || String(car.id) }));
+    }
+  } catch {
+    // Backend may be offline during static build; fallback safely to authentic showroom data
+  }
+  return VEHICLE_DATA.map((car) => ({ slug: car.slug || String(car.id) }));
+}
 
 interface PageProps {
   params: Promise<{

@@ -271,7 +271,7 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehic
   // Card Click: Navigate to full car detail page if not dragging/swiping
   const handleCardClick = (car: Vehicle | PublicVehicle) => {
     if (hasDraggedRef.current) return;
-    router.push(`/cars/${car.slug || car.id}`);
+    router.push(`/cars/${car.slug || car.id}/`);
   };
 
   return (
