@@ -47,7 +47,10 @@ export async function generateMetadata(): Promise<Metadata> {
   const baseUrl = getPublicBaseUrl(settings.website);
   const canonicalUrl = normalizeCanonicalUrl("/", baseUrl);
   const defaultOgImage = resolvePublicUrl("/assets/dch-og-preview.jpg", baseUrl);
-  const faviconUrl = resolvePublicUrl(cleanText(settings.favicon) || "/favicon.ico", baseUrl);
+  const faviconUrl = resolvePublicUrl(
+    cleanText(settings.favicon) || cleanText(settings.logo_icon) || "/favicon.ico",
+    baseUrl
+  );
   const fullTitle = formatTitleWithSite(siteTagline, siteName);
   const description = `Explore luxury cars in Bangladesh with ${siteName}. Browse our exclusive range of brand new, reconditioned, and pre-owned premium vehicles in Kakrail and Gulshan, Dhaka.`;
 
