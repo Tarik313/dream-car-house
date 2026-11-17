@@ -4,7 +4,12 @@ import React from "react";
 import Link from "next/link";
 import { Vehicle } from "@/lib/showroomData";
 import { PublicVehicle } from "@/lib/types";
-import { formatVehiclePrice } from "@/lib/utils";
+import {
+  formatVehiclePrice,
+  formatCompactMileage,
+  formatEngineDisplay,
+  formatFuelDisplay,
+} from "@/lib/utils";
 
 interface VehicleCardProps {
   car: Vehicle | PublicVehicle;
@@ -89,19 +94,19 @@ export default function VehicleCard({ car }: VehicleCardProps) {
             <div className="pref-spec-item">
               <span className="pref-spec-label">{engineLabel}</span>
               <span className="pref-spec-val" title={car.engine_capacity || "—"}>
-                {car.engine_capacity || "—"}
+                {formatEngineDisplay(car.engine_capacity, isElectric)}
               </span>
             </div>
             <div className="pref-spec-item">
               <span className="pref-spec-label">Mileage</span>
               <span className="pref-spec-val" title={car.mileage || "—"}>
-                {car.mileage || "—"}
+                {formatCompactMileage(car.mileage, car.car_type === "BRAND_NEW")}
               </span>
             </div>
             <div className="pref-spec-item">
               <span className="pref-spec-label">Fuel</span>
               <span className="pref-spec-val" title={car.fuel_type || "—"}>
-                {car.fuel_type || "—"}
+                {formatFuelDisplay(car.fuel_type)}
               </span>
             </div>
           </div>
