@@ -8,13 +8,7 @@ import { useUI } from "@/lib/UIContext";
 import VehicleCard from "@/components/VehicleCard";
 import type { PublicSiteSettings } from "@/lib/types";
 import { submitInventoryQuoteAction } from "@/app/actions/quote";
-import {
-  formatVehiclePrice,
-  parseVehiclePriceNumber,
-  formatCompactMileage,
-  formatEngineDisplay,
-  formatFuelDisplay,
-} from "@/lib/utils";
+import { formatVehiclePrice, parseVehiclePriceNumber } from "@/lib/utils";
 
 interface VehicleDetailClientProps {
   car: Vehicle;
@@ -402,26 +396,26 @@ export default function VehicleDetailClient({
         </p>
       </div>
 
-      {/* Quick Specifications Bar (Model year, Mileage, Engine, Fuel - Beg Autos standard) */}
-      <div className="dch-quick-stats-row" aria-label="Key Vehicle Specifications">
+      {/* Quick Specifications Bar (Clean, Minimal, No Captions) */}
+      <div className="dch-quick-stats-row">
         <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">Model year</span>
-          <span className="dch-stat-val">{car.year || "—"}</span>
+          <span className="dch-stat-label">{isElectric ? "BATTERY CAPACITY" : "ENGINE DISPLACEMENT"}</span>
+          <span className="dch-stat-val">{car.engine_capacity || "—"}</span>
         </div>
 
         <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">Mileage</span>
-          <span className="dch-stat-val">{formatCompactMileage(car.mileage, isBrandNew)}</span>
+          <span className="dch-stat-label">ODOMETER MILEAGE</span>
+          <span className="dch-stat-val">{car.mileage || (isBrandNew ? "0 km" : "—")}</span>
         </div>
 
         <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">Engine</span>
-          <span className="dch-stat-val">{formatEngineDisplay(car.engine_capacity, isElectric)}</span>
+          <span className="dch-stat-label">FUEL ARCHITECTURE</span>
+          <span className="dch-stat-val">{car.fuel_type || "Petrol"}</span>
         </div>
 
         <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">Fuel</span>
-          <span className="dch-stat-val">{formatFuelDisplay(car.fuel_type)}</span>
+          <span className="dch-stat-label">TRANSMISSION</span>
+          <span className="dch-stat-val">{car.transmission || "Automatic"}</span>
         </div>
       </div>
 

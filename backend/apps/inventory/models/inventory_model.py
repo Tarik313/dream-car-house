@@ -97,18 +97,18 @@ class Inventory(BaseModel):
     year = models.PositiveIntegerField(
         null=True,
         blank=True,
-        verbose_name=_("Model Year")
+        verbose_name=_("Reg. Year")
     )
     engine_capacity = models.CharField(
         max_length=100,
         null=True,
         blank=True,
-        verbose_name=_("Engine Capacity")
+        verbose_name=_("Engine Capacity (cc)")
     )
     fuel_type = models.CharField(
         max_length=30,
         choices=FuelTypeChoices.choices,
-        verbose_name=_("Fuel")
+        verbose_name=_("Fuel Type")
     )
     mileage = models.CharField(
         max_length=20,

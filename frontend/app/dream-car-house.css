@@ -10224,33 +10224,25 @@ button {
   background: #111215;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 12px;
-  padding: 1.25rem 1.35rem;
+  padding: 1.15rem 1.25rem;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 4px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6);
-  transition: border-color 0.2s ease, transform 0.2s ease;
-}
-
-.dch-quick-stat-card:hover {
-  border-color: rgba(255, 255, 255, 0.16);
 }
 
 .dch-stat-label {
-  font-size: 0.6875rem;
-  font-weight: 600;
-  letter-spacing: 0.18em;
-  color: rgba(255, 255, 255, 0.5);
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.75px;
+  color: #a1a1aa;
   text-transform: uppercase;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .dch-stat-val {
-  font-size: clamp(1.35rem, 2vw, 1.7rem);
+  font-size: 1.22rem;
   font-weight: 700;
-  color: #f4f1ec;
-  line-height: 1.15;
-  letter-spacing: -0.01em;
+  color: #ffffff;
 }
 
 .dch-stat-caption {
