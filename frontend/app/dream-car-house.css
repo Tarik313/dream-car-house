@@ -1256,9 +1256,9 @@ button {
 .hero-showcase-section {
   position: relative;
   width: 100%;
-  height: 100vh;
-  height: 100dvh;
-  min-height: 600px;
+  aspect-ratio: 1920 / 738;
+  height: auto;
+  max-height: calc(100vh - 70px);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -1309,38 +1309,9 @@ button {
 
 .hero-bg-image {
   object-fit: cover;
-  object-position: 50% center;
+  object-position: center center;
   width: 100%;
   height: 100%;
-}
-
-@media (max-width: 1024px) {
-  .hero-showcase-section {
-    height: 100vh;
-    height: 100dvh;
-    min-height: 540px;
-  }
-
-  .hero-bg-image {
-    object-position: 54% center;
-  }
-}
-
-@media (max-width: 768px) {
-  .hero-showcase-section {
-    aspect-ratio: auto;
-    height: 100vh;
-    height: 100dvh;
-    min-height: 480px;
-  }
-
-  .hero-bg-image {
-    object-position: 58% center;
-  }
-
-  .hero-content {
-    bottom: 1.5rem;
-  }
 }
 
 /* Atmospheric Vignettes - completely disabled for clean pure images */
@@ -1352,7 +1323,7 @@ button {
 /* ================= Hero Dock & Floating Actions ================= */
 .hero-content {
   position: absolute;
-  bottom: 2.25rem;
+  bottom: 2rem;
   left: 50%;
   transform: translateX(-50%);
   z-index: 20;
@@ -1360,7 +1331,7 @@ button {
   flex-direction: column;
   align-items: center;
   width: auto;
-  max-width: 92vw;
+  max-width: 95vw;
   pointer-events: auto;
 }
 
@@ -1375,7 +1346,7 @@ button {
   -webkit-backdrop-filter: none;
   box-shadow: none;
   gap: 0.85rem;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
   justify-content: center;
 }
 
@@ -1391,8 +1362,8 @@ button {
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #ffffff;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.38);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.06) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.42);
   backdrop-filter: blur(16px) saturate(180%);
   -webkit-backdrop-filter: blur(16px) saturate(180%);
   box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.35);
@@ -1422,25 +1393,98 @@ button {
 }
 
 [data-theme="light"] .hero-pill-btn {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.12) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.45) 0%, rgba(255, 255, 255, 0.18) 100%) !important;
   backdrop-filter: blur(16px) saturate(180%) !important;
   -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
   color: #0f172a !important;
   font-family: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   font-weight: 500 !important;
   letter-spacing: 0.16em !important;
-  border: 1px solid rgba(255, 255, 255, 0.65) !important;
-  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.75) !important;
+  border: 1px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.10), inset 0 1px 1px #ffffff !important;
   opacity: 1 !important;
   text-shadow: 0 0 12px rgba(255, 255, 255, 0.8) !important;
 }
 
 [data-theme="light"] .hero-pill-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.25) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.30) 100%) !important;
   color: #000000 !important;
   border-color: rgba(255, 255, 255, 0.95) !important;
   transform: translateY(-2px);
-  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.14), inset 0 1px 1px #ffffff !important;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.16), inset 0 1px 1px #ffffff !important;
+}
+
+/* Responsive Breakpoints for Tablet & Mobile */
+@media (max-width: 1024px) {
+  .hero-showcase-section {
+    aspect-ratio: 1920 / 738;
+    height: auto;
+    min-height: auto;
+    max-height: none;
+  }
+  .hero-bg-image {
+    object-position: center center;
+  }
+  .hero-content {
+    bottom: 1.35rem;
+  }
+  .hero-pills {
+    gap: 0.6rem;
+  }
+  .hero-pill-btn {
+    padding: 0.55rem 1.25rem;
+    font-size: 0.76rem;
+    letter-spacing: 0.14em;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-showcase-section {
+    aspect-ratio: 1920 / 738;
+    height: auto;
+    min-height: auto;
+    max-height: none;
+  }
+  .hero-bg-image {
+    object-position: center center;
+  }
+  .hero-content {
+    bottom: 0.75rem;
+  }
+  .hero-pills {
+    gap: 0.45rem;
+  }
+  .hero-pill-btn {
+    padding: 0.38rem 0.85rem;
+    font-size: 0.68rem;
+    letter-spacing: 0.10em;
+  }
+  .hero-scroll-cue-wrap {
+    display: none !important;
+  }
+}
+
+@media (max-width: 480px) {
+  .hero-showcase-section {
+    aspect-ratio: 1920 / 738;
+    height: auto;
+    min-height: auto;
+    max-height: none;
+  }
+  .hero-bg-image {
+    object-position: center center;
+  }
+  .hero-content {
+    bottom: 0.35rem;
+  }
+  .hero-pills {
+    gap: 0.3rem;
+  }
+  .hero-pill-btn {
+    padding: 0.22rem 0.5rem;
+    font-size: 0.56rem;
+    letter-spacing: 0.06em;
+  }
 }
 
 /* Hero Foreground Stage (Cleaned for pure showcase) */
