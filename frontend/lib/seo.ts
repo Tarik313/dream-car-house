@@ -192,8 +192,16 @@ export function getDefaultOgImage(
 export function formatEngineCapacity(value: unknown): string {
   const cleaned = cleanText(value);
   if (!cleaned) return "";
+  // If string contains digits followed by cc, strip anything after cc and format cleanly (e.g. "3000 cc Twin Turbo" -> "3,000 cc")
+  const ccMatch = /^([\d,]+)\s*cc\b.*$/i.exec(cleaned);
+  if (ccMatch && ccMatch[1]) {
+    const digits = ccMatch[1];
+    const num = Number(digits.replace(/,/g, ""));
+    return Number.isFinite(num) ? `${num.toLocaleString("en-US")} cc` : `${digits} cc`;
+  }
   if (PURE_INT_RE.test(cleaned)) {
-    return `${cleaned.replace(/,/g, "")} cc`;
+    const num = Number(cleaned.replace(/,/g, ""));
+    return Number.isFinite(num) ? `${num.toLocaleString("en-US")} cc` : `${cleaned} cc`;
   }
   return cleaned;
 }

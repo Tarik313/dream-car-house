@@ -26,19 +26,31 @@ export default function Hero({ initialData }: HeroProps = {}) {
 
   const defaultCtaButtons: PublicHeroCta[] = [
     { label: "Brand New", action: "link", destination: "/inventory?type=BRAND_NEW" },
-    { label: "Pre-Owned", action: "link", destination: "/inventory?type=PRE_OWNED" },
     { label: "Reconditioned", action: "link", destination: "/inventory?type=RECONDITIONED" },
+    { label: "Pre-Owned", action: "link", destination: "/inventory?type=PRE_OWNED" },
   ];
 
   let resolvedButtons: PublicHeroCta[] =
     ctaButtons.length > 0 ? [...ctaButtons] : defaultCtaButtons;
 
   if (!resolvedButtons.some((b) => /recondition/i.test(b.label))) {
-    resolvedButtons.push({
+    resolvedButtons.splice(1, 0, {
       label: "Reconditioned",
       action: "link",
       destination: "/inventory?type=RECONDITIONED",
     });
+  }
+
+  // Ensure visual symmetry: Brand New (left), Reconditioned (center), Pre-Owned (right)
+  const brandNewBtn = resolvedButtons.find((b) => /brand\s*new/i.test(b.label));
+  const reconditionedBtn = resolvedButtons.find((b) => /recondition/i.test(b.label));
+  const preOwnedBtn = resolvedButtons.find((b) => /pre-?owned/i.test(b.label));
+  const otherBtns = resolvedButtons.filter(
+    (b) => !/brand\s*new/i.test(b.label) && !/recondition/i.test(b.label) && !/pre-?owned/i.test(b.label)
+  );
+
+  if (brandNewBtn && reconditionedBtn && preOwnedBtn) {
+    resolvedButtons = [brandNewBtn, reconditionedBtn, preOwnedBtn, ...otherBtns];
   }
 
   // Dual Showroom Background Images (Day vs Night)

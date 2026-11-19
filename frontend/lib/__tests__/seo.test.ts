@@ -281,9 +281,9 @@ test("builds clean SEO metadata for all 12 real cars without unit or whitespace 
 });
 
 test("unit formatters handle numeric-only cc, kWh, kmkm, and missing optionals", () => {
-  assert.equal(formatEngineCapacity("2900"), "2900 cc");
+  assert.equal(formatEngineCapacity("2900"), "2,900 cc");
   assert.equal(formatEngineCapacity("116 kWh EQ Technology"), "116 kWh EQ Technology");
-  assert.equal(formatEngineCapacity("3000 cc TwinPower Turbo"), "3000 cc TwinPower Turbo");
+  assert.equal(formatEngineCapacity("3000 cc TwinPower Turbo"), "3,000 cc");
 
   assert.equal(formatMileage("0 kmkm"), "0 km");
   assert.equal(formatMileage("5000km"), "5000 km");

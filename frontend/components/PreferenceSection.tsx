@@ -47,7 +47,7 @@ export default function PreferenceSection({
             </h2>
           </div>
 
-          {/* Segment Switcher Controller (3 tabs: Brand New, Pre-Owned, Reconditioned) */}
+          {/* Segment Switcher Controller (3 tabs: Brand New, Reconditioned, Certified Pre-Owned) */}
           <div className="segment-switcher" role="tablist">
             <button
               id="tab-brand-new"
@@ -62,18 +62,6 @@ export default function PreferenceSection({
               </span>
             </button>
             <button
-              id="tab-pre-owned"
-              className={`segment-btn ${activeTab === "PRE_OWNED" ? "active" : ""}`}
-              onClick={() => setActiveTab("PRE_OWNED")}
-              role="tab"
-              aria-selected={activeTab === "PRE_OWNED"}
-            >
-              <span className="segment-label">Certified Pre-Owned</span>
-              <span className="segment-count" id="count-pre-owned">
-                {preOwnedCars.length}
-              </span>
-            </button>
-            <button
               id="tab-reconditioned"
               className={`segment-btn ${activeTab === "RECONDITIONED" ? "active" : ""}`}
               onClick={() => setActiveTab("RECONDITIONED")}
@@ -83,6 +71,18 @@ export default function PreferenceSection({
               <span className="segment-label">Reconditioned</span>
               <span className="segment-count" id="count-reconditioned">
                 {reconditionedCars.length}
+              </span>
+            </button>
+            <button
+              id="tab-pre-owned"
+              className={`segment-btn ${activeTab === "PRE_OWNED" ? "active" : ""}`}
+              onClick={() => setActiveTab("PRE_OWNED")}
+              role="tab"
+              aria-selected={activeTab === "PRE_OWNED"}
+            >
+              <span className="segment-label">Certified Pre-Owned</span>
+              <span className="segment-count" id="count-pre-owned">
+                {preOwnedCars.length}
               </span>
             </button>
           </div>

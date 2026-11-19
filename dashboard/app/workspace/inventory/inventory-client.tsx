@@ -136,6 +136,20 @@ export function InventoryListClient({
       ),
     },
     {
+      id: "car_type",
+      header: "Category",
+      accessor: (row) => {
+        const type = (row.car_type || "").toUpperCase();
+        if (type === "BRAND_NEW") {
+          return <Badge tone="brand">Brand New</Badge>;
+        }
+        if (type === "RECONDITIONED") {
+          return <Badge tone="warning">Reconditioned</Badge>;
+        }
+        return <Badge tone="neutral">Pre-Owned</Badge>;
+      },
+    },
+    {
       id: "availability",
       header: "Availability",
       accessor: (row) => {
@@ -200,6 +214,36 @@ export function InventoryListClient({
 
   return (
     <div style={{ display: "flex", flexDirection: "column", gap: "var(--space-4)" }}>
+      {/* 3 Categories Isolation Quick Switcher */}
+      <div style={{ display: "flex", gap: "var(--space-2)", flexWrap: "wrap", alignItems: "center" }}>
+        {[
+          { label: "All Vehicles", value: "" },
+          { label: "Brand New", value: "BRAND_NEW" },
+          { label: "Reconditioned", value: "RECONDITIONED" },
+          { label: "Pre-Owned", value: "PRE_OWNED" },
+        ].map((tab) => {
+          const isActive = (carType || "") === tab.value;
+          return (
+            <button
+              key={tab.value}
+              type="button"
+              onClick={() => handleFilterChange("car_type", tab.value)}
+              className={`button ${isActive ? "button--primary" : "button--secondary"}`}
+              style={{
+                borderRadius: "9999px",
+                padding: "6px 16px",
+                fontSize: "var(--font-size-sm)",
+                fontWeight: isActive ? 600 : 500,
+                cursor: "pointer",
+                transition: "all 0.2s ease",
+              }}
+            >
+              {tab.label}
+            </button>
+          );
+        })}
+      </div>
+
       <FilterBar
         searchValue={q}
         onSearchChange={handleSearch}
@@ -238,8 +282,8 @@ export function InventoryListClient({
             label: "Car Type",
             value: carType,
             options: [
-              { label: "Reconditioned", value: "RECONDITIONED" },
               { label: "Brand New", value: "BRAND_NEW" },
+              { label: "Reconditioned", value: "RECONDITIONED" },
               { label: "Pre-Owned", value: "PRE_OWNED" },
             ],
           },

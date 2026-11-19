@@ -121,6 +121,22 @@ export function InventoryFormClient({
       formData.delete("feature_image");
     }
 
+    // Clean engine_capacity so nothing follows 'cc' (e.g. 3500 cc Twin Turbo -> 3,500 cc)
+    const rawEngine = formData.get("engine_capacity");
+    if (typeof rawEngine === "string" && rawEngine.trim()) {
+      let cleanedEngine = rawEngine.trim();
+      const ccMatch = /^([\d,]+)\s*cc\b.*$/i.exec(cleanedEngine);
+      if (ccMatch && ccMatch[1]) {
+        const digits = ccMatch[1];
+        const num = Number(digits.replace(/,/g, ""));
+        cleanedEngine = Number.isFinite(num) ? `${num.toLocaleString("en-US")} cc` : `${digits} cc`;
+      } else if (/^\d+$/.test(cleanedEngine.replace(/,/g, ""))) {
+        const num = Number(cleanedEngine.replace(/,/g, ""));
+        cleanedEngine = Number.isFinite(num) ? `${num.toLocaleString("en-US")} cc` : `${cleanedEngine} cc`;
+      }
+      formData.set("engine_capacity", cleanedEngine);
+    }
+
     // Validate JSON-LD override
     if (schemaText.trim()) {
       try {
@@ -343,11 +359,11 @@ export function InventoryFormClient({
               <Select
                 name="car_type"
                 options={[
-                  { label: "Reconditioned", value: "RECONDITIONED" },
                   { label: "Brand New", value: "BRAND_NEW" },
+                  { label: "Reconditioned", value: "RECONDITIONED" },
                   { label: "Pre-Owned", value: "PRE_OWNED" },
                 ]}
-                defaultValue={initialCar?.car_type || "RECONDITIONED"}
+                defaultValue={initialCar?.car_type || "BRAND_NEW"}
               />
             </FormField>
           </div>
@@ -412,7 +428,7 @@ export function InventoryFormClient({
       <div style={{ display: activeTab === "specs" ? "flex" : "none", flexDirection: "column", gap: "var(--space-4)", background: "var(--surface)", padding: "var(--space-4)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
             <FormField label="Engine Capacity (cc)" error={fieldErrors.engine_capacity}>
-              <Input name="engine_capacity" defaultValue={initialCar?.engine_capacity || ""} maxLength={100} placeholder="e.g. 3500 cc Twin Turbo V6" />
+              <Input name="engine_capacity" defaultValue={initialCar?.engine_capacity || ""} maxLength={100} placeholder="e.g. 3,000 cc (or 116 kWh for EV)" />
             </FormField>
 
             <FormField label="Mileage" error={fieldErrors.mileage}>
