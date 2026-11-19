@@ -89,7 +89,7 @@ export interface PublicVehicle {
   brand: string;
   model: string;
   year: number;
-  car_type: "BRAND_NEW" | "PRE_OWNED";
+  car_type: "BRAND_NEW" | "PRE_OWNED" | "RECONDITIONED";
   fuel_type: string;
   engine_capacity: string;
   mileage: string;

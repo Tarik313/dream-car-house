@@ -24,6 +24,23 @@ export default function Hero({ initialData }: HeroProps = {}) {
   const heading = initialData?.heading;
   const ctaButtons: PublicHeroCta[] = initialData?.cta_buttons || [];
 
+  const defaultCtaButtons: PublicHeroCta[] = [
+    { label: "Brand New", action: "link", destination: "/inventory?type=BRAND_NEW" },
+    { label: "Pre-Owned", action: "link", destination: "/inventory?type=PRE_OWNED" },
+    { label: "Reconditioned", action: "link", destination: "/inventory?type=RECONDITIONED" },
+  ];
+
+  let resolvedButtons: PublicHeroCta[] =
+    ctaButtons.length > 0 ? [...ctaButtons] : defaultCtaButtons;
+
+  if (!resolvedButtons.some((b) => /recondition/i.test(b.label))) {
+    resolvedButtons.push({
+      label: "Reconditioned",
+      action: "link",
+      destination: "/inventory?type=RECONDITIONED",
+    });
+  }
+
   // Dual Showroom Background Images (Day vs Night)
   const nightSrc =
     initialData?.image && !initialData.image.includes("maybach") && !/\.(mp4|webm|mov|m4v)$/i.test(initialData.image)
@@ -160,35 +177,34 @@ export default function Hero({ initialData }: HeroProps = {}) {
         )}
       </div>
 
-      {heading || ctaButtons.length > 0 || initialData?.scroll_link_label ? (
-        <div className="hero-content">
-          {heading ? <h1 className="hero-title sr-only">{heading}</h1> : null}
-          {ctaButtons.length > 0 && (
-            <div className="hero-pills">
-              {ctaButtons.map((btn, index) => {
-                if (btn.action === "appointment_modal") {
-                  return (
-                    <button
-                      key={index}
-                      className="hero-pill-btn"
-                      onClick={() => openAppointmentModal()}
-                    >
-                      {btn.label}
-                    </button>
-                  );
-                }
+      <div className="hero-content">
+        {heading ? <h1 className="hero-title sr-only">{heading}</h1> : null}
+        {resolvedButtons.length > 0 && (
+          <div className="hero-pills">
+            {resolvedButtons.map((btn, index) => {
+              if (btn.action === "appointment_modal") {
                 return (
-                  <Link
+                  <button
                     key={index}
                     className="hero-pill-btn"
-                    href={btn.destination || "/"}
+                    onClick={() => openAppointmentModal()}
                   >
                     {btn.label}
-                  </Link>
+                  </button>
                 );
-              })}
-            </div>
-          )}
+              }
+              return (
+                <Link
+                  key={index}
+                  className="hero-pill-btn"
+                  href={btn.destination || "/inventory"}
+                >
+                  {btn.label}
+                </Link>
+              );
+            })}
+          </div>
+        )}
           {initialData?.scroll_link_label ? (
             <div className="hero-scroll-cue-wrap" style={{ marginTop: "1rem" }}>
               <a
@@ -201,7 +217,6 @@ export default function Hero({ initialData }: HeroProps = {}) {
             </div>
           ) : null}
         </div>
-      ) : null}
     </section>
   );
 }

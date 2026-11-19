@@ -6,6 +6,7 @@ import { useRouter } from "next/navigation";
 import { VEHICLE_DATA, Vehicle } from "@/lib/showroomData";
 import type { PublicVehicle } from "@/lib/types";
 import { useUI } from "@/lib/UIContext";
+import VehicleCard from "./VehicleCard";
 
 export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehicle[] } = {}) {
   const { openCarModal } = useUI();
@@ -300,35 +301,22 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehic
           onTouchMove={handleTouchMove}
           onTouchEnd={handleTouchEnd}
           onTouchCancel={handleTouchEnd}
+          onClickCapture={(e) => {
+            if (hasDraggedRef.current) {
+              e.preventDefault();
+              e.stopPropagation();
+            }
+          }}
         >
-          {marqueeData.map((car, index) => {
-            const branchName =
-              car.branch_name ||
-              (car.branch_id === "kakrail" ? "Kakrail Branch" : "Gulshan Branch");
-            return (
-              <div key={`${car.id}-${index}`} className="card-item-slider">
-                <div
-                  className="group"
-                  onClick={() => handleCardClick(car)}
-                  style={{ cursor: isGrabbing ? "grabbing" : "pointer" }}
-                >
-                  <div
-                    className="portrait-image-wrapper"
-                    style={{ position: "relative" }}
-                  >
-                    <img
-                      src={car.image}
-                      alt={car.name}
-                      loading="lazy"
-                      draggable={false}
-                    />
-                    <span className="card-branch-tag">{branchName}</span>
-                  </div>
-                  <h3 className="card-car-title">{car.name}</h3>
-                </div>
-              </div>
-            );
-          })}
+          {marqueeData.map((car, index) => (
+            <div
+              key={`${car.id}-${index}`}
+              className="card-item-slider"
+              style={{ cursor: isGrabbing ? "grabbing" : "pointer" }}
+            >
+              <VehicleCard car={car} layout="carousel" showBranch={false} />
+            </div>
+          ))}
         </div>
       </div>
     </section>

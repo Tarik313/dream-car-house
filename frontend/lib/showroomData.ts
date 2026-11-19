@@ -82,7 +82,7 @@ export interface Vehicle {
   brand: string;
   model: string;
   year: number;
-  car_type: "BRAND_NEW" | "PRE_OWNED";
+  car_type: "BRAND_NEW" | "PRE_OWNED" | "RECONDITIONED";
   fuel_type: string;
   engine_capacity: string;
   mileage: string;
@@ -222,10 +222,10 @@ export const VEHICLE_DATA: Vehicle[] = [
     brand: "Lexus",
     model: "LX 600",
     year: 2023,
-    car_type: "BRAND_NEW",
+    car_type: "RECONDITIONED",
     fuel_type: "Octane",
     engine_capacity: "3500 cc Twin Turbo V6",
-    mileage: "Brand New (00 km)",
+    mileage: "Reconditioned (Grade 5A)",
     price: "Call for Price",
     registered: "Available",
     branch_id: "gulshan",
@@ -411,10 +411,10 @@ export const VEHICLE_DATA: Vehicle[] = [
     brand: "Toyota",
     model: "Land Cruiser 300",
     year: 2024,
-    car_type: "BRAND_NEW",
+    car_type: "RECONDITIONED",
     fuel_type: "Octane",
     engine_capacity: "3500 cc Twin Turbo V6",
-    mileage: "Brand New (00 km)",
+    mileage: "Reconditioned (Grade 6)",
     price: "Call for Price",
     registered: "Available",
     branch_id: "kakrail",

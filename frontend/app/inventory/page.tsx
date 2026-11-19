@@ -40,7 +40,12 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
   if (params.brand && params.brand !== "all") {
     title = `${params.brand} Luxury Vehicles`;
   } else if (params.type && params.type !== "all") {
-    const typeLabel = params.type === "BRAND_NEW" ? "Brand New" : "Certified Pre-Owned";
+    const typeLabel =
+      params.type === "BRAND_NEW"
+        ? "Brand New"
+        : params.type === "RECONDITIONED"
+          ? "Reconditioned"
+          : "Certified Pre-Owned";
     title = `${typeLabel} Luxury Vehicles`;
   }
 

@@ -9,9 +9,14 @@ import { formatVehiclePrice } from "@/lib/utils";
 interface VehicleCardProps {
   car: Vehicle | PublicVehicle;
   layout?: "grid" | "carousel";
+  showBranch?: boolean;
 }
 
-export default function VehicleCard({ car }: VehicleCardProps) {
+export default function VehicleCard({
+  car,
+  layout = "grid",
+  showBranch = true,
+}: VehicleCardProps) {
   const waMessage = encodeURIComponent(
     `Hello DREAM CAR HOUSE, I am inquiring about the ${car.name} (${car.year}).`
   );
@@ -54,7 +59,7 @@ export default function VehicleCard({ car }: VehicleCardProps) {
             className="pref-car-img"
           />
           <div className="pref-img-gradient" />
-          {branchLabel ? (
+          {showBranch && branchLabel ? (
             <span className="pref-branch-tag">
               <svg
                 width="10"

@@ -280,11 +280,14 @@ function InventoryContent({
 
       // 3. Type filter
       if (selectedType !== "all") {
-        const cType = String(car.car_type || "");
+        const cType = String(car.car_type || "").toUpperCase();
+        const cCond = String(car.condition || "").toUpperCase();
         if (selectedType === "BRAND_NEW") {
-          if (cType !== "BRAND_NEW" && cType !== "RECONDITIONED") return false;
+          if (cType !== "BRAND_NEW") return false;
         } else if (selectedType === "PRE_OWNED") {
           if (cType !== "PRE_OWNED") return false;
+        } else if (selectedType === "RECONDITIONED") {
+          if (cType !== "RECONDITIONED" && !cCond.includes("RECONDITION")) return false;
         } else if (cType !== selectedType) {
           return false;
         }
@@ -400,8 +403,9 @@ function InventoryContent({
           className="filter-select"
         >
           <option value="all">All Types</option>
-          <option value="BRAND_NEW">Brand New & Reconditioned</option>
+          <option value="BRAND_NEW">Brand New</option>
           <option value="PRE_OWNED">Certified Pre-Owned</option>
+          <option value="RECONDITIONED">Reconditioned</option>
         </select>
 
         {/* ================= LUXURY PRICE FILTER ================= */}
