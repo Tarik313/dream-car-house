@@ -45,7 +45,7 @@ export const navigation: readonly NavigationItem[] = [
   { href: "/workspace/sell-cars", label: "Sell Car Leads", symbol: "ðŸ¤", permission: "home.view_sellcar" },
   { href: "/workspace/inbox/contact", label: "Contact Inbox", symbol: "ðŸ“¬", permission: "home.view_contactmessage" },
   { href: "/workspace/content/sliders", label: "Slider Videos", symbol: "ðŸŽ¬", permission: "home.view_slider" },
-  { href: "/workspace/content/stories", label: "Showroom Stories", symbol: "ðŸ“±", permission: "home.view_showroomstory" },
+  // { href: "/workspace/content/stories", label: "Showroom Stories", symbol: "ðŸ“±", permission: "home.view_showroomstory" },
   { href: "/workspace/content/preferences", label: "Preference Section", symbol: "âš™ï¸", permission: "home.view_preferencesection" },
   { href: "/workspace/content/consultation", label: "Consultation", symbol: "ðŸ’¬", permission: "home.view_consultationsection" },
   { href: "/workspace/content/experience", label: "Experience Pillars", symbol: "ðŸ›ï¸", permission: "home.view_experiencesection" },

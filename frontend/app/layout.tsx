@@ -11,7 +11,6 @@ import FloatingSupercarTop from "@/components/FloatingSupercarTop";
 
 import {
   fetchLayoutData,
-  getShowroomStoriesSSR,
   getSiteSettings,
   defaultSiteSettings,
   defaultBranches,
@@ -111,7 +110,6 @@ export default async function RootLayout({
     layoutData?.featuredVehicles && layoutData.featuredVehicles.length > 0
       ? layoutData.featuredVehicles
       : (VEHICLE_DATA.slice(0, 10) as unknown as PublicVehicle[]);
-  const stories = await getShowroomStoriesSSR().catch(() => []);
 
   const baseUrl = getPublicBaseUrl(settings.website);
   const autoDealerSchema = {
@@ -149,7 +147,6 @@ export default async function RootLayout({
             settings={settings}
             branches={branches}
             featuredVehicles={featuredVehicles}
-            stories={stories}
           />
           <FloatingSupercarTop />
         </UIProvider>

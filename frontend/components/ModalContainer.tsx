@@ -7,7 +7,6 @@ import AppointmentModal from "./AppointmentModal";
 import VideoModal from "./VideoModal";
 import GalleryLightbox from "./GalleryLightbox";
 import CompareModal from "./CompareModal";
-import ShowroomStories from "./ShowroomStories";
 import type {
   PublicSiteSettings,
   PublicShowroomBranch,
@@ -19,7 +18,6 @@ export default function ModalContainer({
   settings,
   branches,
   featuredVehicles,
-  stories,
 }: {
   settings?: PublicSiteSettings;
   branches?: PublicShowroomBranch[];
@@ -34,7 +32,6 @@ export default function ModalContainer({
       <VideoModal settings={settings} branches={branches} />
       <GalleryLightbox />
       <CompareModal initialVehicles={featuredVehicles} />
-      <ShowroomStories settings={settings} vehicles={featuredVehicles} stories={stories} />
     </>
   );
 }

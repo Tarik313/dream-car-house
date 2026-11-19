@@ -376,141 +376,81 @@ button {
   flex-shrink: 0;
 }
 
-/* ================= 3D Photorealistic Supercar Wheel Trigger (No 'MENU' Text) ================= */
-.header-wheel-trigger {
+/* ================= Luxury 3-Line Hamburger Menu Trigger ================= */
+.header-hamburger-btn {
   position: relative;
-  background: transparent;
-  border: none;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
   padding: 0;
   cursor: pointer;
-  outline: none;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  z-index: 1006;
+  border: 1.5px solid rgba(255, 255, 255, 0.22);
+  background: rgba(10, 15, 26, 0.65);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  color: #ffffff;
+  transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+  user-select: none;
   -webkit-tap-highlight-color: transparent;
+  z-index: 1006;
 }
 
-.wheel-disc-wrapper {
+.header-hamburger-btn:hover {
+  border-color: rgba(255, 255, 255, 0.65);
+  transform: scale(1.08);
+  box-shadow: 0 0 20px rgba(255, 255, 255, 0.25), 0 4px 18px rgba(0, 0, 0, 0.6);
+}
+
+.header-hamburger-btn:active {
+  transform: scale(0.96);
+}
+
+.hamburger-box {
+  width: 20px;
+  height: 14px;
   position: relative;
-  width: 52px;
-  height: 52px;
-  border-radius: 50%;
   display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   align-items: center;
-  justify-content: center;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.95), 0 0 16px rgba(255, 255, 255, 0.35);
-  border: 2px solid rgba(255, 255, 255, 0.7);
-  background: radial-gradient(circle, #1a1e24 0%, #050608 70%);
-  overflow: visible;
-  transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s ease, border-color 0.35s ease;
 }
 
-/* Outer friction & spark ring */
-.wheel-disc-wrapper::after {
-  content: '';
-  position: absolute;
-  inset: -6px;
-  border-radius: 50%;
-  border: 2px dashed rgba(255, 255, 255, 0);
-  pointer-events: none;
-  transition: opacity 0.3s;
-}
-
-/* 1. Normal/Idle State: Wheel is stationary and still */
-.realistic-wheel-img {
-  width: 100%;
-  height: 100%;
-  border-radius: 50%;
-  object-fit: cover;
+.hamburger-line {
   display: block;
+  width: 20px;
+  height: 2px;
+  border-radius: 2px;
+  background-color: #ffffff;
+  transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1),
+              opacity 0.25s ease,
+              background-color 0.25s ease;
+  transform-origin: center;
+}
+
+/* Morph to Elegant 'X' on Active/Drawer Open */
+.header-hamburger-btn.is-active .hamburger-line.line-1 {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.header-hamburger-btn.is-active .hamburger-line.line-2 {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.header-hamburger-btn.is-active .hamburger-line.line-3 {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+.header-left-slot {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
   pointer-events: none;
-  transform-origin: center center;
-  filter: drop-shadow(0 2px 8px rgba(0, 0, 0, 0.9));
-  transition: filter 0.3s ease;
-  animation: none;
-}
-
-/* 2. Hover: Accelerates into an energetic spin with brilliant silver halo */
-.header-wheel-trigger:hover .wheel-disc-wrapper {
-  transform: scale(1.15);
-  box-shadow: 0 0 35px rgba(255, 255, 255, 0.9), 0 0 65px rgba(255, 255, 255, 0.55);
-  border-color: #ffffff;
-}
-
-.header-wheel-trigger:hover .realistic-wheel-img {
-  animation: wheelCruiseSpin 1.1s linear infinite !important;
-}
-
-@keyframes wheelCruiseSpin {
-  0% {
-    transform: rotate(0deg);
-  }
-
-  100% {
-    transform: rotate(360deg);
-  }
-}
-
-/* 2. Click Burnout: Rapid High-Speed Spin with Acceleration (1440 deg over 1.2s) */
-.header-wheel-trigger.wheel-spinning .realistic-wheel-img {
-  animation: wheelBurnoutSpin 1.2s cubic-bezier(0.2, 0.85, 0.25, 1.1) forwards !important;
-}
-
-.header-wheel-trigger.wheel-spinning .wheel-disc-wrapper {
-  transform: scale(1.18);
-  box-shadow: 0 0 45px rgba(255, 255, 255, 1), 0 0 85px rgba(255, 255, 255, 0.85), 0 0 120px rgba(255, 255, 255, 0.6);
-  border-color: #ffffff;
-}
-
-.header-wheel-trigger.wheel-spinning .wheel-disc-wrapper::after {
-  border-color: rgba(255, 255, 255, 0.95);
-  animation: burnoutFrictionPulse 0.35s linear infinite;
-}
-
-@keyframes burnoutFrictionPulse {
-  0% {
-    transform: scale(1) rotate(0deg);
-    opacity: 0.85;
-  }
-
-  50% {
-    transform: scale(1.3) rotate(180deg);
-    opacity: 1;
-    filter: drop-shadow(0 0 10px #ffffff);
-  }
-
-  100% {
-    transform: scale(1.5) rotate(360deg);
-    opacity: 0;
-  }
-}
-
-@keyframes wheelBurnoutSpin {
-  0% {
-    transform: rotate(0deg) scale(1);
-    filter: brightness(1);
-  }
-
-  20% {
-    transform: rotate(360deg) scale(1.15);
-    filter: brightness(1.4) drop-shadow(0 0 20px #ffffff);
-  }
-
-  55% {
-    transform: rotate(1000deg) scale(1.12);
-    filter: brightness(1.3) drop-shadow(0 0 25px rgba(255, 255, 255, 0.9));
-  }
-
-  85% {
-    transform: rotate(1360deg) scale(1.05);
-    filter: brightness(1.1);
-  }
-
-  100% {
-    transform: rotate(1440deg) scale(1);
-    filter: brightness(1);
-  }
+  visibility: hidden;
 }
 
 /* ================= Supercar Sound Engine HUD Toast ================= */
@@ -1132,19 +1072,37 @@ button {
     height: 38px;
   }
 
-  .header-wheel-trigger {
-    width: 44px;
-    height: 44px;
+  .header-hamburger-btn {
+    width: 38px !important;
+    height: 38px !important;
   }
 
-  .wheel-disc-wrapper {
-    width: 44px !important;
-    height: 44px !important;
+  .header-theme-toggle {
+    width: 38px !important;
+    height: 38px !important;
   }
 
-  .realistic-wheel-img {
-    width: 40px !important;
-    height: 40px !important;
+  .header-left-slot {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
+  .hamburger-box {
+    width: 18px;
+    height: 12px;
+  }
+
+  .hamburger-line {
+    width: 18px;
+    height: 2px;
+  }
+
+  .header-hamburger-btn.is-active .hamburger-line.line-1 {
+    transform: translateY(5px) rotate(45deg);
+  }
+
+  .header-hamburger-btn.is-active .hamburger-line.line-3 {
+    transform: translateY(-5px) rotate(-45deg);
   }
 
   .nav-drawer {
@@ -1877,6 +1835,21 @@ button {
   border-color: #f59e0b !important;
   box-shadow: 0 0 18px rgba(245, 158, 11, 0.35), 0 4px 15px rgba(15, 23, 42, 0.12) !important;
   color: #b45309 !important;
+}
+
+[data-theme="light"] .header-hamburger-btn {
+  background: rgba(255, 255, 255, 0.8) !important;
+  border: 1.5px solid rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 4px 15px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+}
+
+[data-theme="light"] .header-hamburger-btn:hover {
+  border-color: rgba(15, 23, 42, 0.45) !important;
+  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.12) !important;
+}
+
+[data-theme="light"] .header-hamburger-btn .hamburger-line {
+  background-color: #0b0f19 !important;
 }
 
 [data-theme="light"] .header-logo a:hover .logo-text,
