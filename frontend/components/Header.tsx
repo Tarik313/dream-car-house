@@ -127,7 +127,7 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
             )}
           </button>
 
-          {/* Luxury 3-Line Hamburger Menu Trigger */}
+          {/* Bugatti-Style 2-Line Luxury Menu Trigger */}
           <button
             type="button"
             className={`header-hamburger-btn ${isDrawerOpen ? "is-active" : ""}`}
@@ -139,7 +139,6 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
             <span className="hamburger-box">
               <span className="hamburger-line line-1"></span>
               <span className="hamburger-line line-2"></span>
-              <span className="hamburger-line line-3"></span>
             </span>
           </button>
         </div>
