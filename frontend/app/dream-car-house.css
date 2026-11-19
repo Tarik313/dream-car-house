@@ -1309,7 +1309,7 @@ button {
 
 .hero-bg-image {
   object-fit: cover;
-  object-position: left center;
+  object-position: 50% center;
   width: 100%;
   height: 100%;
 }
@@ -1319,6 +1319,10 @@ button {
     height: 100vh;
     height: 100dvh;
     min-height: 540px;
+  }
+
+  .hero-bg-image {
+    object-position: 54% center;
   }
 }
 
@@ -1331,7 +1335,7 @@ button {
   }
 
   .hero-bg-image {
-    object-position: left center;
+    object-position: 58% center;
   }
 
   .hero-content {
@@ -1379,31 +1383,33 @@ button {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 0.75rem 1.65rem;
+  padding: 0.72rem 1.75rem;
   border-radius: 9999px;
-  font-size: 0.82rem;
-  font-weight: 700;
-  letter-spacing: 0.08em;
+  font-family: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  font-size: 0.84rem;
+  font-weight: 500;
+  letter-spacing: 0.16em;
   text-transform: uppercase;
   color: #ffffff;
-  background: rgba(255, 255, 255, 0.12);
-  border: 1px solid rgba(255, 255, 255, 0.35);
-  backdrop-filter: blur(16px);
-  -webkit-backdrop-filter: blur(16px);
-  box-shadow: 0 8px 28px rgba(0, 0, 0, 0.45);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.16) 0%, rgba(255, 255, 255, 0.05) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.38);
+  backdrop-filter: blur(16px) saturate(180%);
+  -webkit-backdrop-filter: blur(16px) saturate(180%);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.35), inset 0 1px 1px rgba(255, 255, 255, 0.35);
   cursor: pointer;
   transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
   text-decoration: none;
   white-space: nowrap;
   opacity: 1;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.6);
 }
 
 .hero-pill-btn:hover {
-  background: rgba(255, 255, 255, 0.26);
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.12) 100%);
   border-color: rgba(255, 255, 255, 0.75);
   color: #ffffff;
   transform: translateY(-2px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.55), 0 0 20px rgba(255, 255, 255, 0.25);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.5), inset 0 1px 1px rgba(255, 255, 255, 0.5);
 }
 
 [data-theme="light"] .hero-pills {
@@ -1416,22 +1422,25 @@ button {
 }
 
 [data-theme="light"] .hero-pill-btn {
-  background: rgba(255, 255, 255, 0.82) !important;
-  backdrop-filter: blur(16px) !important;
-  -webkit-backdrop-filter: blur(16px) !important;
-  color: #0a0f1d !important;
-  font-weight: 800 !important;
-  border: 1px solid rgba(255, 255, 255, 0.95) !important;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.1) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.12) 100%) !important;
+  backdrop-filter: blur(16px) saturate(180%) !important;
+  -webkit-backdrop-filter: blur(16px) saturate(180%) !important;
+  color: #0f172a !important;
+  font-family: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
+  font-weight: 500 !important;
+  letter-spacing: 0.16em !important;
+  border: 1px solid rgba(255, 255, 255, 0.65) !important;
+  box-shadow: 0 8px 26px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.75) !important;
   opacity: 1 !important;
+  text-shadow: 0 0 12px rgba(255, 255, 255, 0.8) !important;
 }
 
 [data-theme="light"] .hero-pill-btn:hover {
-  background: #0a0f1d !important;
-  color: #ffffff !important;
-  border-color: #0a0f1d !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.55) 0%, rgba(255, 255, 255, 0.25) 100%) !important;
+  color: #000000 !important;
+  border-color: rgba(255, 255, 255, 0.95) !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(10, 15, 29, 0.25) !important;
+  box-shadow: 0 10px 28px rgba(15, 23, 42, 0.14), inset 0 1px 1px #ffffff !important;
 }
 
 /* Hero Foreground Stage (Cleaned for pure showcase) */

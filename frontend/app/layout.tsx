@@ -1,6 +1,7 @@
 import type { Metadata, Viewport } from "next";
 import { Poppins } from "next/font/google";
 import "./globals.css";
+import "./dream-fonts.css";
 import "./dream-car-house.css";
 import { UIProvider } from "@/lib/UIContext";
 import Header from "@/components/Header";
