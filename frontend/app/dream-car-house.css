@@ -458,11 +458,14 @@ button {
 }
 
 .header-left-slot {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
   width: 44px;
   height: 44px;
   flex-shrink: 0;
-  pointer-events: none;
-  visibility: hidden;
+  pointer-events: auto;
+  visibility: visible;
 }
 
 /* ================= Supercar Sound Engine HUD Toast ================= */
@@ -596,7 +599,7 @@ button {
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
-  padding: 3.5rem 2.5rem;
+  padding: 3.5rem 1.6rem;
   text-decoration: none;
   border-right: 1px solid rgba(255, 255, 255, 0.08);
   background: linear-gradient(180deg, rgba(8, 12, 20, 0.92) 0%, rgba(4, 6, 10, 0.96) 100%);
@@ -668,12 +671,12 @@ button {
 .stair-col-top {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
 }
 
 .stair-col-num {
   font-family: var(--font-cinzel, "Cinzel", serif);
-  font-size: 2.2rem;
+  font-size: 2.6rem;
   font-weight: 700;
   color: rgba(255, 255, 255, 0.22);
   letter-spacing: 0.05em;
@@ -686,22 +689,7 @@ button {
 }
 
 .stair-col-badge {
-  font-size: 0.62rem;
-  font-weight: 700;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  padding: 0.3rem 0.65rem;
-  border-radius: 999px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: #94a3b8;
-  transition: all 0.35s ease;
-}
-
-.stair-cat-col:hover .stair-col-badge {
-  background: rgba(217, 119, 6, 0.2);
-  border-color: rgba(217, 119, 6, 0.5);
-  color: #fbbf24;
+  display: none;
 }
 
 .stair-col-bottom {
@@ -711,13 +699,15 @@ button {
 
 .stair-col-title {
   font-family: var(--font-cinzel, "Cinzel", serif);
-  font-size: 1.65rem;
+  font-size: clamp(1.05rem, 1.25vw, 1.35rem);
   font-weight: 700;
   color: #ffffff;
   letter-spacing: 0.02em;
-  margin: 0 0 0.5rem 0;
-  line-height: 1.15;
+  margin: 0 0 1rem 0;
+  line-height: 1.2;
   transition: color 0.3s ease;
+  word-break: normal;
+  white-space: normal;
 }
 
 .stair-cat-col:hover .stair-col-title {
@@ -1089,6 +1079,11 @@ button {
     height: 38px !important;
   }
 
+  .header-right-group {
+    width: 38px !important;
+    height: 38px !important;
+  }
+
   .hamburger-box {
     width: 18px;
     height: 8px;
@@ -1149,11 +1144,14 @@ button {
   }
 }
 
-/* ================= Header Day/Night Theme Switcher ================= */
+/* ================= Header Right Trigger Group ================= */
 .header-right-group {
   display: flex;
   align-items: center;
-  gap: 0.85rem;
+  justify-content: flex-end;
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
 }
 
 /* ================= Day / Night Luxury Circular Icon Orb (No Text) ================= */

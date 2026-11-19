@@ -66,8 +66,35 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
       className={`header ${isScrolled ? "header-scrolled" : ""} ${shouldHide ? "header-hidden" : ""}`}
     >
       <div className="header-container">
-        {/* Left Slot for perfect visual balance */}
-        <div className="header-left-slot" aria-hidden="true" />
+        {/* Left Slot: Day / Night Smooth Luxury Toggle (Icon-Only Luxury Orb) */}
+        <div className="header-left-slot">
+          <button
+            type="button"
+            onClick={toggleTheme}
+            className={`header-theme-toggle ${theme === "dark" ? "mode-dark" : "mode-light"}`}
+            aria-label={theme === "dark" ? "Switch to Day Mode" : "Switch to Night Mode"}
+            title={theme === "dark" ? "Switch to Day Mode (সূর্য)" : "Switch to Night Mode (চাঁদ)"}
+            id="header-theme-btn"
+          >
+            {theme === "dark" ? (
+              <svg className="theme-icon moon-icon" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-3.37.73A8.15 8.15 0 0 1 9.08 5.49a8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05z" />
+              </svg>
+            ) : (
+              <svg className="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
+                <circle cx="12" cy="12" r="5" />
+                <line x1="12" y1="1" x2="12" y2="3" />
+                <line x1="12" y1="21" x2="12" y2="23" />
+                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
+                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
+                <line x1="1" y1="12" x2="3" y2="12" />
+                <line x1="21" y1="12" x2="23" y2="12" />
+                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
+                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
+              </svg>
+            )}
+          </button>
+        </div>
 
         {/* Center Logo (Desktop: Full Logo | Mobile: Compact Adaptive Icon/Emblem) */}
         <div className="header-logo">
@@ -97,37 +124,8 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
           </Link>
         </div>
 
-        {/* Right Corner: Theme Toggle & Luxury 3-Line Hamburger Menu Trigger */}
+        {/* Right Corner: Bugatti-Style 2-Line Luxury Menu Trigger */}
         <div className="header-right-group">
-          {/* Day / Night Smooth Luxury Toggle (Icon-Only Luxury Orb) */}
-          <button
-            type="button"
-            onClick={toggleTheme}
-            className={`header-theme-toggle ${theme === "dark" ? "mode-dark" : "mode-light"}`}
-            aria-label={theme === "dark" ? "Switch to Day Mode" : "Switch to Night Mode"}
-            title={theme === "dark" ? "Switch to Day Mode (সূর্য)" : "Switch to Night Mode (চাঁদ)"}
-            id="header-theme-btn"
-          >
-            {theme === "dark" ? (
-              <svg className="theme-icon moon-icon" viewBox="0 0 24 24" fill="currentColor">
-                <path d="M21.64 13a1 1 0 0 0-1.05-.14 8 8 0 0 1-3.37.73A8.15 8.15 0 0 1 9.08 5.49a8.59 8.59 0 0 1 .25-2A1 1 0 0 0 8 2.36a10.14 10.14 0 1 0 14 11.69 1 1 0 0 0-.36-1.05z" />
-              </svg>
-            ) : (
-              <svg className="theme-icon sun-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round">
-                <circle cx="12" cy="12" r="5" />
-                <line x1="12" y1="1" x2="12" y2="3" />
-                <line x1="12" y1="21" x2="12" y2="23" />
-                <line x1="4.22" y1="4.22" x2="5.64" y2="5.64" />
-                <line x1="18.36" y1="18.36" x2="19.78" y2="19.78" />
-                <line x1="1" y1="12" x2="3" y2="12" />
-                <line x1="21" y1="12" x2="23" y2="12" />
-                <line x1="4.22" y1="19.78" x2="5.64" y2="18.36" />
-                <line x1="18.36" y1="5.64" x2="19.78" y2="4.22" />
-              </svg>
-            )}
-          </button>
-
-          {/* Bugatti-Style 2-Line Luxury Menu Trigger */}
           <button
             type="button"
             className={`header-hamburger-btn ${isDrawerOpen ? "is-active" : ""}`}

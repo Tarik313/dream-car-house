@@ -44,30 +44,22 @@ export default function NavDrawer({
     {
       num: "01",
       title: "BRAND NEW",
-      sub: "Zero Mileage Global Imports",
       href: "/inventory?type=BRAND_NEW",
-      badge: "EXCLUSIVE",
     },
     {
       num: "02",
       title: "RECONDITIONED",
-      sub: "Premium Flagship SUVs & Sedans",
       href: "/inventory?type=RECONDITIONED",
-      badge: "SHOWROOM",
     },
     {
       num: "03",
       title: "PRE-OWNED",
-      sub: "150-Point Certified Selection",
       href: "/inventory?type=PRE_OWNED",
-      badge: "VERIFIED",
     },
     {
       num: "04",
       title: "COMPARE CARS",
-      sub: "Side-by-Side Spec Analyzer",
       action: "compare" as const,
-      badge: "ATELIER",
     },
   ];
 
@@ -111,11 +103,9 @@ export default function NavDrawer({
                 <div className="stair-col-inner">
                   <div className="stair-col-top">
                     <span className="stair-col-num">{cat.num}</span>
-                    <span className="stair-col-badge">{cat.badge}</span>
                   </div>
                   <div className="stair-col-bottom">
                     <h3 className="stair-col-title">{cat.title}</h3>
-                    <p className="stair-col-sub">{cat.sub}</p>
                     <div className="stair-col-arrow">
                       <span>Explore</span>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -136,11 +126,9 @@ export default function NavDrawer({
                 <div className="stair-col-inner">
                   <div className="stair-col-top">
                     <span className="stair-col-num">{cat.num}</span>
-                    <span className="stair-col-badge">{cat.badge}</span>
                   </div>
                   <div className="stair-col-bottom">
                     <h3 className="stair-col-title">{cat.title}</h3>
-                    <p className="stair-col-sub">{cat.sub}</p>
                     <div className="stair-col-arrow">
                       <span>Explore</span>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
