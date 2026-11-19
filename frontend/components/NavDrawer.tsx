@@ -1,41 +1,21 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useUI } from "@/lib/UIContext";
 import type { PublicSiteSettings, PublicShowroomBranch } from "@/lib/types";
-import { parseShowroomHours } from "@/lib/utils/openingHours";
 
 export default function NavDrawer({
   settings,
-  branches,
 }: {
   settings?: PublicSiteSettings | null;
   branches?: PublicShowroomBranch[] | null;
 } = {}) {
-  const { isDrawerOpen, closeDrawer, openAppointmentModal } = useUI();
-  const rawHours =
-    settings?.opening_hours_text ||
-    branches?.[0]?.hours ||
-    "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
-  const phone = settings?.hotline || branches?.[0]?.phone || "01615-121312";
+  const { isDrawerOpen, closeDrawer, openAppointmentModal, openCompareModal } = useUI();
   const logoSrc = settings?.logo || "/assets/dch-logo.webp";
-
-  const [isOpen, setIsOpen] = useState(true);
-  const [displayHours, setDisplayHours] = useState("10:00 AM – 10:00 PM");
-
-  useEffect(() => {
-    const evaluateStatus = () => {
-      const parsed = parseShowroomHours(rawHours);
-      setIsOpen(parsed.isOpen);
-      setDisplayHours(parsed.displayHours);
-    };
-
-    evaluateStatus();
-    const interval = setInterval(evaluateStatus, 30000);
-    return () => clearInterval(interval);
-  }, [rawHours]);
+  const rawWa = settings?.whatsapp || settings?.hotline || "8801615121312";
+  const waNumber = rawWa.replace(/[^\d]/g, "") || "8801615121312";
 
   return (
     <>
@@ -66,7 +46,7 @@ export default function NavDrawer({
           <div className="supercar-headlight-beam"></div>
           <div className="supercar-banner-overlay">
             <div className="supercar-brand-row">
-              <div style={{ display: "flex", flexDirection: "column", gap: "0.4rem" }}>
+              <div style={{ display: "flex", flexDirection: "column" }}>
                 <Image
                   src={logoSrc}
                   alt="DREAM CAR HOUSE Logo"
@@ -80,14 +60,7 @@ export default function NavDrawer({
                   }}
                   unoptimized
                 />
-                <span className="drawer-brand-sub">
-                  Premier Luxury Automotive Showroom • Kakrail & Gulshan
-                </span>
               </div>
-            </div>
-            <div className="supercar-badge-pill">
-              <span className="pulse-spark"></span>
-              <span>HYPERCAR SHOWROOM VAULT</span>
             </div>
           </div>
           <button
@@ -114,8 +87,6 @@ export default function NavDrawer({
 
         {/* Navigation Links */}
         <div className="drawer-nav-container">
-          <span className="drawer-section-label">SHOWROOM DIRECTORY</span>
-
           <ul className="drawer-nav-list">
             <li>
               <Link href="/" onClick={closeDrawer} className="drawer-nav-item">
@@ -125,7 +96,7 @@ export default function NavDrawer({
                     <polyline points="9 22 9 12 15 12 15 22"></polyline>
                   </svg>
                 </div>
-                <span className="drawer-item-title">SHOWROOM HOME</span>
+                <span className="drawer-item-title">Home</span>
                 <span className="drawer-item-arrow">→</span>
               </Link>
             </li>
@@ -140,9 +111,32 @@ export default function NavDrawer({
                     <rect x="3" y="14" width="7" height="7"></rect>
                   </svg>
                 </div>
-                <span className="drawer-item-title">COMPLETE INVENTORY</span>
+                <span className="drawer-item-title">Inventory</span>
                 <span className="drawer-item-arrow">→</span>
               </Link>
+            </li>
+
+            <li>
+              <button
+                type="button"
+                onClick={() => {
+                  closeDrawer();
+                  openCompareModal();
+                }}
+                className="drawer-nav-item"
+                style={{ width: "100%", textAlign: "left", cursor: "pointer" }}
+              >
+                <div className="drawer-item-icon">
+                  <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                    <rect x="3" y="4" width="7" height="16" rx="1.5"></rect>
+                    <rect x="14" y="4" width="7" height="16" rx="1.5"></rect>
+                    <line x1="6.5" y1="9" x2="6.5" y2="9.01"></line>
+                    <line x1="17.5" y1="9" x2="17.5" y2="9.01"></line>
+                  </svg>
+                </div>
+                <span className="drawer-item-title">Compare Vehicles</span>
+                <span className="drawer-item-arrow">→</span>
+              </button>
             </li>
 
             <li>
@@ -154,7 +148,7 @@ export default function NavDrawer({
                     <polyline points="21 15 16 10 5 21"></polyline>
                   </svg>
                 </div>
-                <span className="drawer-item-title">SHOWROOM GALLERY & MEDIA</span>
+                <span className="drawer-item-title">Gallery & Media</span>
                 <span className="drawer-item-arrow">→</span>
               </Link>
             </li>
@@ -168,7 +162,7 @@ export default function NavDrawer({
                     <path d="M12 18V6"></path>
                   </svg>
                 </div>
-                <span className="drawer-item-title">SELL YOUR LUXURY CAR</span>
+                <span className="drawer-item-title">Sell Your Luxury Car</span>
                 <span className="drawer-item-arrow">→</span>
               </Link>
             </li>
@@ -182,7 +176,7 @@ export default function NavDrawer({
                     <line x1="12" y1="8" x2="12.01" y2="8"></line>
                   </svg>
                 </div>
-                <span className="drawer-item-title">ABOUT US</span>
+                <span className="drawer-item-title">About Us</span>
                 <span className="drawer-item-arrow">→</span>
               </Link>
             </li>
@@ -195,44 +189,18 @@ export default function NavDrawer({
                     <circle cx="12" cy="10" r="3"></circle>
                   </svg>
                 </div>
-                <span className="drawer-item-title">LOCATION & CONTACT</span>
+                <span className="drawer-item-title">Location & Contact</span>
                 <span className="drawer-item-arrow">→</span>
               </Link>
             </li>
           </ul>
         </div>
 
-        {/* Drawer Footer: Live Concierge Card & Quick Actions */}
+        {/* Drawer Footer: Quick Action CTAs */}
         <div className="drawer-footer-card">
-          <div className="drawer-live-status">
-            <span className={`drawer-status-dot ${isOpen ? "open" : "closed"}`}></span>
-            <span className={`drawer-status-text ${isOpen ? "status-open" : "status-closed"}`}>
-              {isOpen
-                ? `SHOWROOM OPEN TODAY • ${displayHours}`
-                : `SHOWROOM CLOSED NOW • ${displayHours}`}
-            </span>
-          </div>
-
-          <div className="drawer-concierge-phone">
-            <span className="drawer-phone-label">VIP Concierge Line</span>
-            <a href={`tel:${phone.replace(/\s+/g, "")}`} className="drawer-phone-val">
-              <svg
-                width="15"
-                height="15"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                strokeWidth="2.2"
-                style={{ display: "inline-block", verticalAlign: "-2px", marginRight: "4px" }}
-              >
-                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-              </svg>
-              {phone}
-            </a>
-          </div>
-
           <div className="drawer-cta-group">
             <button
+              type="button"
               className="drawer-consult-btn"
               onClick={() => {
                 closeDrawer();
@@ -246,7 +214,7 @@ export default function NavDrawer({
             </button>
 
             <a
-              href="https://wa.me/8801615121312?text=Hello%20DREAM%20CAR%20HOUSE,%20I%20would%20like%20to%20inquire%20about%20a%20luxury%20vehicle"
+              href={`https://wa.me/${waNumber}?text=Hello%20DREAM%20CAR%20HOUSE,%20I%20would%20like%20to%20inquire%20about%20a%20luxury%20vehicle`}
               target="_blank"
               rel="noopener noreferrer"
               className="drawer-wa-btn"
