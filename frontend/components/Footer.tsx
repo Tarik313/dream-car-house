@@ -105,8 +105,8 @@ export default function Footer({
 
         {/* Main 3-Column Luxury Architecture */}
         <div className="footer-grid-3col">
-          {/* Col 1: Brand & Contact Info */}
-          <div className="footer-col-contact">
+          {/* Col 1 (Left): Brand Logo & Showroom Black Map */}
+          <div className="footer-col-map">
             <div style={{ marginBottom: "1.1rem" }}>
               <Link href="/" aria-label="DREAM CAR HOUSE Homepage">
                 {/* Night Mode Footer Logo (Default / Dark Theme) */}
@@ -130,6 +130,78 @@ export default function Footer({
               </Link>
             </div>
 
+            {/* Showroom Map Tabs (Kakrail Showroom & Gulshan Showroom - No Flagship text) */}
+            <div className="footer-branch-tabs">
+              <button
+                type="button"
+                className={`footer-branch-tab ${activeBranch === "kakrail" ? "active" : ""}`}
+                onClick={() => setActiveBranch("kakrail")}
+              >
+                Kakrail Showroom
+              </button>
+              <button
+                type="button"
+                className={`footer-branch-tab ${activeBranch === "gulshan" ? "active" : ""}`}
+                onClick={() => setActiveBranch("gulshan")}
+              >
+                Gulshan Showroom
+              </button>
+            </div>
+
+            {/* Beg Autos Style Black Map with Prominent Red Location Marker */}
+            <div className="map-embed-wrapper-modern">
+              <iframe
+                src={
+                  activeBranch === "kakrail"
+                    ? "https://maps.google.com/maps?width=600&height=400&hl=en&q=Dream%20Car%20House%20Kakrail%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+                    : "https://maps.google.com/maps?width=600&height=400&hl=en&q=Dream%20Car%20House%20Gulshan%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+                }
+                loading="lazy"
+                title={`DREAM CAR HOUSE Showroom Location - ${currentBranch.name}`}
+                allowFullScreen
+              />
+              <div className="map-glow-border"></div>
+
+              {/* Prominent Red Pin Marker Sign */}
+              <div className="map-red-marker-overlay">
+                <span className="map-marker-pulse"></span>
+                <div className="map-marker-pin">
+                  <svg width="18" height="18" viewBox="0 0 24 24" fill="#ef4444">
+                    <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                    <circle cx="12" cy="9" r="2.8" fill="#ffffff" />
+                  </svg>
+                </div>
+                <span className="map-marker-label">
+                  DREAM CAR HOUSE • {activeBranch === "kakrail" ? "Kakrail" : "Gulshan"}
+                </span>
+              </div>
+            </div>
+
+            <div className="map-actions-row">
+              <a
+                href={
+                  activeBranch === "kakrail"
+                    ? "https://maps.google.com/?q=Dream+Car+House+Kakrail+Dhaka"
+                    : "https://maps.google.com/?q=Dream+Car+House+Gulshan+Dhaka"
+                }
+                target="_blank"
+                rel="noopener noreferrer"
+                className="map-directions-btn"
+              >
+                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <polygon points="3 11 22 2 13 21 11 13 3 11" />
+                </svg>
+                <span>Get Live Directions</span>
+                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+                </svg>
+              </a>
+            </div>
+          </div>
+
+          {/* Col 2 (Middle): Showroom Locations & Contact Info */}
+          <div className="footer-col-contact">
+            <h3 className="footer-heading">Showrooms & Inquiries</h3>
             <p className="footer-brand-tagline">{tagline}</p>
 
             <ul className="contact-list">
@@ -147,9 +219,9 @@ export default function Footer({
                   <circle cx="12" cy="10" r="3" />
                 </svg>
                 <span>
-                  <strong>{kakrailBranch?.name || "Kakrail Flagship"}</strong>: {kakrailBranch?.address || "18, Shaheed Captain Monsur Ali Soroni, Kakrail"}
+                  <strong>Kakrail Showroom</strong>: {kakrailBranch?.address || "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000"}
                   <br />
-                  <strong>{gulshanBranch?.name || "Gulshan Lounge"}</strong>: {gulshanBranch?.address || "House #07, Road #127, Gulshan Avenue"}
+                  <strong>Gulshan Showroom</strong>: {gulshanBranch?.address || "House #07, Road #127, Gulshan Avenue, Dhaka-1212"}
                 </span>
               </li>
 
@@ -209,66 +281,6 @@ export default function Footer({
                 </span>
               </li>
             </ul>
-          </div>
-
-          {/* Col 2: Showroom Google Map (Interactive Branch Tabs) */}
-          <div className="footer-col-map">
-            <div className="map-col-header">
-              <h3 className="footer-heading" style={{ marginBottom: "0.25rem" }}>
-                Showroom Flagships
-              </h3>
-              <span className="map-subtitle">
-                {currentBranch?.address
-                  ? `${currentBranch.name} • ${currentBranch.address}`
-                  : activeBranch === "kakrail"
-                  ? "Kakrail Flagship • 18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka"
-                  : "Gulshan Lounge • House #07, Road #127, Gulshan Avenue, Dhaka"}
-              </span>
-            </div>
-
-            <div className="footer-branch-tabs">
-              <button
-                type="button"
-                className={`footer-branch-tab ${activeBranch === "kakrail" ? "active" : ""}`}
-                onClick={() => setActiveBranch("kakrail")}
-              >
-                Kakrail Flagship
-              </button>
-              <button
-                type="button"
-                className={`footer-branch-tab ${activeBranch === "gulshan" ? "active" : ""}`}
-                onClick={() => setActiveBranch("gulshan")}
-              >
-                Gulshan Lounge
-              </button>
-            </div>
-
-            <div className="map-embed-wrapper-modern">
-              <iframe
-                src={currentBranch.embed_map}
-                loading="lazy"
-                title={`DREAM CAR HOUSE Showroom Location - ${currentBranch.name}`}
-                allowFullScreen
-              />
-              <div className="map-glow-border"></div>
-            </div>
-
-            <div className="map-actions-row">
-              <a
-                href={currentBranch.map_link}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="map-directions-btn"
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <polygon points="3 11 22 2 13 21 11 13 3 11" />
-                </svg>
-                <span>Get Live Directions</span>
-                <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
-                  <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
-                </svg>
-              </a>
-            </div>
           </div>
 
           {/* Col 3: Curated Luxury Shortcut Links & VIP Viewing */}
