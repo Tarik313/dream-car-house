@@ -11917,42 +11917,41 @@ button {
 }
 
 /* ================= Beg Autos Style Luxury Footer CTA Banner ================= */
+/* Dream Car House Bespoke Luxury CTA Banner */
 .footer-cta-banner {
   display: flex;
   flex-direction: column;
-  gap: 1.75rem;
-  padding-bottom: clamp(2.5rem, 4.5vw, 3.8rem);
+  gap: 1.5rem;
+  padding: clamp(1.5rem, 3vw, 2.25rem) clamp(1.5rem, 3.5vw, 2.75rem);
   margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
   box-shadow: none !important;
 }
 
 @media (min-width: 992px) {
   .footer-cta-banner {
     flex-direction: row;
-    align-items: flex-end;
+    align-items: center;
     justify-content: space-between;
     gap: 2.5rem;
   }
 }
 
-.footer-cta-tagline {
-  display: block;
-  font-size: 0.72rem;
-  font-weight: 500;
-  text-transform: uppercase;
-  letter-spacing: 0.22em;
-  color: #d4af37;
-  margin-bottom: 0.85rem;
+.footer-cta-text-wrap {
+  flex: 1;
 }
 
 .footer-cta-title {
-  font-size: clamp(1.85rem, 3.5vw, 2.85rem);
+  font-size: clamp(1.35rem, 2.5vw, 2.15rem);
   font-weight: 300;
-  line-height: 1.15;
-  letter-spacing: -0.02em;
+  line-height: 1.25;
+  letter-spacing: -0.01em;
   color: #ffffff;
   margin: 0;
+  box-shadow: none !important;
+  text-shadow: none !important;
 }
 
 .footer-cta-em {
@@ -11969,54 +11968,60 @@ button {
   flex-wrap: wrap;
 }
 
-/* Beg Autos Solid WhatsApp Button */
+/* Bespoke Luxury WhatsApp Button */
 .footer-cta-btn-wa {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 13px 26px;
+  padding: 11px 22px;
   border-radius: 8px;
-  background: #25d366;
-  color: #08140c;
-  font-size: 0.92rem;
+  background: rgba(37, 211, 102, 0.12);
+  color: #ffffff;
+  font-size: 0.88rem;
   font-weight: 500;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   box-shadow: none !important;
-  border: 1px solid #25d366;
+  text-shadow: none !important;
+  border: 1px solid rgba(37, 211, 102, 0.35);
   white-space: nowrap;
 }
 
 .footer-cta-btn-wa:hover {
-  background: #20ba59;
-  border-color: #20ba59;
-  color: #000000;
+  background: #25d366;
+  border-color: #25d366;
+  color: #05070a;
   transform: translateY(-1px);
 }
 
-/* Outline Hotline Button */
+.footer-cta-btn-wa:hover svg {
+  fill: #05070a;
+}
+
+/* Luxury Outline Hotline Button */
 .footer-cta-btn-phone {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 0.65rem;
-  padding: 13px 26px;
+  padding: 11px 22px;
   border-radius: 8px;
   background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.22);
-  color: #ffffff;
-  font-size: 0.92rem;
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #f1f5f9;
+  font-size: 0.88rem;
   font-weight: 400;
   text-decoration: none;
-  transition: all 0.2s ease;
+  transition: all 0.25s ease;
   box-shadow: none !important;
+  text-shadow: none !important;
   white-space: nowrap;
 }
 
 .footer-cta-btn-phone:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: #ffffff;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.35);
   color: #ffffff;
   transform: translateY(-1px);
 }
@@ -12030,11 +12035,8 @@ button {
 
 /* Day Mode styling for Footer CTA Banner */
 [data-theme="light"] .footer-cta-banner {
-  border-bottom-color: rgba(148, 163, 184, 0.35);
-}
-
-[data-theme="light"] .footer-cta-tagline {
-  color: #b45309;
+  background: rgba(15, 23, 42, 0.02);
+  border-color: rgba(15, 23, 42, 0.09);
 }
 
 [data-theme="light"] .footer-cta-title {
@@ -12045,15 +12047,32 @@ button {
   color: #b45309;
 }
 
+[data-theme="light"] .footer-cta-btn-wa {
+  background: rgba(37, 211, 102, 0.14);
+  border-color: rgba(37, 211, 102, 0.45);
+  color: #064e3b;
+}
+
+[data-theme="light"] .footer-cta-btn-wa:hover {
+  background: #25d366;
+  border-color: #25d366;
+  color: #ffffff;
+}
+
+[data-theme="light"] .footer-cta-btn-wa:hover svg {
+  fill: #ffffff;
+}
+
 [data-theme="light"] .footer-cta-btn-phone {
   background: rgba(15, 23, 42, 0.04);
-  border-color: rgba(15, 23, 42, 0.25);
+  border-color: rgba(15, 23, 42, 0.2);
   color: #0a0f1d;
 }
 
 [data-theme="light"] .footer-cta-btn-phone:hover {
-  background: rgba(15, 23, 42, 0.1);
+  background: rgba(15, 23, 42, 0.08);
   border-color: #0a0f1d;
+  color: #0a0f1d;
 }
 
 .footer-social-section {

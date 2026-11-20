@@ -25,7 +25,7 @@ export const SHOWROOM_BRANCHES: Record<string, ShowroomBranch> = {
     phone: "01615-121312",
     hotline: "+880 1615-121312",
     email: "dreamcarhouse101@gmail.com",
-    hours: "Saturday – Thursday: 10:00 AM – 11:00 PM (Friday Closed)",
+    hours: "Sat – Fri : 10:00 AM – 11:00 PM",
     map_link: "https://maps.google.com/?q=Dream+Car+House+Kakrail+Dhaka",
     embed_map:
       "https://maps.google.com/maps?width=600&height=400&hl=en&q=Dream%20Car%20House%20Kakrail%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed",
@@ -39,7 +39,7 @@ export const SHOWROOM_BRANCHES: Record<string, ShowroomBranch> = {
     phone: "01615-121312",
     hotline: "+880 1615-121312",
     email: "dreamcarhouse101@gmail.com",
-    hours: "Saturday – Thursday: 10:00 AM – 11:00 PM (Friday Closed)",
+    hours: "Sat – Fri : 10:00 AM – 10:00 PM",
     map_link: "https://maps.google.com/?q=Dream+Car+House+Gulshan+Dhaka",
     embed_map:
       "https://maps.google.com/maps?width=600&height=400&hl=en&q=Dream%20Car%20House%20Gulshan%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed",
