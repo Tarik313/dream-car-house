@@ -12,8 +12,11 @@ export default function NavDrawer({
   settings?: PublicSiteSettings | null;
   branches?: PublicShowroomBranch[] | null;
 } = {}) {
-  const { isDrawerOpen, closeDrawer, openAppointmentModal, openCompareModal } = useUI();
-  const logoSrc = settings?.logo || "/assets/dch-logo.webp";
+  const { isDrawerOpen, closeDrawer, openAppointmentModal, openCompareModal, theme } = useUI();
+  const isDayMode = theme === "light";
+  const logoSrc = isDayMode
+    ? (settings?.logo_light || settings?.logo || "/assets/dch-logo.webp")
+    : (settings?.logo || "/assets/dch-logo.webp");
   const rawWa = settings?.whatsapp || settings?.hotline || "8801615121312";
   const waNumber = rawWa.replace(/[^\d]/g, "") || "8801615121312";
 
@@ -104,8 +107,10 @@ export default function NavDrawer({
                   <div className="stair-col-top">
                     <span className="stair-col-num">{cat.num}</span>
                   </div>
-                  <div className="stair-col-bottom">
+                  <div className="stair-col-middle">
                     <h3 className="stair-col-title">{cat.title}</h3>
+                  </div>
+                  <div className="stair-col-bottom">
                     <div className="stair-col-arrow">
                       <span>Explore</span>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -127,8 +132,10 @@ export default function NavDrawer({
                   <div className="stair-col-top">
                     <span className="stair-col-num">{cat.num}</span>
                   </div>
-                  <div className="stair-col-bottom">
+                  <div className="stair-col-middle">
                     <h3 className="stair-col-title">{cat.title}</h3>
+                  </div>
+                  <div className="stair-col-bottom">
                     <div className="stair-col-arrow">
                       <span>Explore</span>
                       <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
