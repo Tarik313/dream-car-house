@@ -1345,25 +1345,25 @@ button {
 }
 
 [data-theme="light"] .hero-pill-btn {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.18) 0%, rgba(255, 255, 255, 0.05) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.22) 0%, rgba(255, 255, 255, 0.08) 100%) !important;
   backdrop-filter: blur(12px) saturate(170%) !important;
   -webkit-backdrop-filter: blur(12px) saturate(170%) !important;
   color: #0b0f19 !important;
   font-family: "Outfit", "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif !important;
   font-weight: 700 !important;
   letter-spacing: 0.14em !important;
-  border: 1px solid rgba(255, 255, 255, 0.65) !important;
-  box-shadow: 0 4px 18px rgba(15, 23, 42, 0.08), inset 0 1px 1px rgba(255, 255, 255, 0.85) !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.75) !important;
+  box-shadow: none !important;
   opacity: 1 !important;
   text-shadow: none !important;
 }
 
 [data-theme="light"] .hero-pill-btn:hover {
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.28) 0%, rgba(255, 255, 255, 0.10) 100%) !important;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.35) 0%, rgba(255, 255, 255, 0.15) 100%) !important;
   color: #000000 !important;
   border-color: rgba(255, 255, 255, 0.95) !important;
   transform: translateY(-2px);
-  box-shadow: 0 8px 24px rgba(15, 23, 42, 0.12), inset 0 1px 1px #ffffff !important;
+  box-shadow: none !important;
 }
 
 /* Responsive Breakpoints for Tablet & Mobile */
@@ -2258,23 +2258,42 @@ button {
   color: #475569 !important;
 }
 
-/* ================= DUAL-STAIRCASE FULLSCREEN MENU (DAY MODE - CLEAR LIQUID FROSTED GLASS) ================= */
+/* ================= DUAL-STAIRCASE FULLSCREEN MENU (DAY MODE - CLEAR LIQUID FROSTED GLASS - HEAVY BLUR & ZERO SHADOW) ================= */
+[data-theme="light"] .mega-menu-overlay {
+  box-shadow: none !important;
+}
+
 [data-theme="light"] .mega-menu-backdrop {
-  background: rgba(15, 23, 42, 0.08) !important;
-  backdrop-filter: blur(10px) !important;
-  -webkit-backdrop-filter: blur(10px) !important;
+  background: rgba(255, 255, 255, 0.32) !important;
+  backdrop-filter: blur(36px) saturate(170%) !important;
+  -webkit-backdrop-filter: blur(36px) saturate(170%) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .mega-menu-staircase {
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .stair-left-panel {
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-cat-col {
-  background: rgba(255, 255, 255, 0.08) !important;
-  backdrop-filter: blur(14px) !important;
-  -webkit-backdrop-filter: blur(14px) !important;
+  background: rgba(255, 255, 255, 0.16) !important;
+  backdrop-filter: blur(40px) !important;
+  -webkit-backdrop-filter: blur(40px) !important;
   border-right: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .stair-cat-col::before {
+  display: none !important;
 }
 
 [data-theme="light"] .stair-cat-col:hover {
-  background: rgba(255, 255, 255, 0.22) !important;
-  border-right-color: rgba(217, 119, 6, 0.5) !important;
+  background: rgba(255, 255, 255, 0.36) !important;
+  border-right-color: rgba(217, 119, 6, 0.45) !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-col-num {
@@ -2284,114 +2303,162 @@ button {
 
 [data-theme="light"] .stair-cat-col:hover .stair-col-num {
   color: #d97706 !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-col-title {
-  color: rgba(15, 23, 42, 0.68) !important;
+  color: rgba(15, 23, 42, 0.70) !important;
   text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-cat-col:hover .stair-col-title {
   color: #d97706 !important;
   opacity: 1 !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-col-arrow {
-  color: rgba(15, 23, 42, 0.55) !important;
+  color: rgba(15, 23, 42, 0.58) !important;
   text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-cat-col:hover .stair-col-arrow {
   color: #d97706 !important;
   opacity: 1 !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-right-drawer {
-  background: linear-gradient(180deg, rgba(255, 255, 255, 0.72) 0%, rgba(241, 245, 249, 0.8) 100%) !important;
-  backdrop-filter: blur(28px) !important;
-  -webkit-backdrop-filter: blur(28px) !important;
-  border-left: 1px solid rgba(15, 23, 42, 0.1) !important;
-  box-shadow: -20px 0 60px rgba(15, 23, 42, 0.14) !important;
+  background: linear-gradient(180deg, rgba(255, 255, 255, 0.88) 0%, rgba(248, 250, 252, 0.94) 100%) !important;
+  backdrop-filter: blur(40px) !important;
+  -webkit-backdrop-filter: blur(40px) !important;
+  border-left: 1px solid rgba(15, 23, 42, 0.08) !important;
+  box-shadow: none !important; /* ZERO SHADOW */
 }
 
 [data-theme="light"] .stair-drawer-header {
-  border-bottom-color: rgba(148, 163, 184, 0.3) !important;
+  border-bottom-color: rgba(148, 163, 184, 0.25) !important;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .stair-logo-img {
+  filter: none !important;
 }
 
 [data-theme="light"] .stair-close-btn {
-  background: rgba(15, 23, 42, 0.06) !important;
-  border-color: rgba(148, 163, 184, 0.4) !important;
+  background: rgba(15, 23, 42, 0.04) !important;
+  border-color: rgba(148, 163, 184, 0.35) !important;
   color: #0f172a !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-close-btn:hover {
   background: #d97706 !important;
   border-color: #d97706 !important;
   color: #ffffff !important;
-  box-shadow: 0 0 16px rgba(217, 119, 6, 0.35) !important;
+  box-shadow: none !important; /* ZERO SHADOW */
+}
+
+[data-theme="light"] .stair-nav-links {
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-nav-link {
   color: #0f172a !important;
+  box-shadow: none !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-nav-link:hover {
   background: rgba(15, 23, 42, 0.04) !important;
   border-color: rgba(217, 119, 6, 0.35) !important;
   color: #d97706 !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-link-arrow {
   color: rgba(15, 23, 42, 0.25) !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-nav-link:hover .stair-link-arrow {
   color: #d97706 !important;
+  text-shadow: none !important;
+}
+
+[data-theme="light"] .stair-drawer-ctas {
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .stair-cta-book {
+  box-shadow: none !important; /* ZERO SHADOW */
+  text-shadow: none !important;
+}
+
+[data-theme="light"] .stair-cta-book:hover {
+  box-shadow: none !important; /* ZERO SHADOW */
+}
+
+[data-theme="light"] .stair-cta-wa {
+  box-shadow: none !important; /* ZERO SHADOW */
+}
+
+[data-theme="light"] .stair-cta-wa:hover {
+  box-shadow: none !important; /* ZERO SHADOW */
 }
 
 [data-theme="light"] .stair-mobile-grid-label {
   color: #64748b !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-grid-card {
   background: #ffffff !important;
   border-color: rgba(148, 163, 184, 0.35) !important;
   color: #0f172a !important;
-  box-shadow: 0 2px 6px rgba(15, 23, 42, 0.04) !important;
+  box-shadow: none !important; /* ZERO SHADOW */
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-grid-card:hover {
   background: #ffffff !important;
   border-color: #d97706 !important;
   color: #d97706 !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-card-chevron {
   color: rgba(15, 23, 42, 0.3) !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-grid-card:hover .stair-card-chevron {
   color: #d97706 !important;
+  text-shadow: none !important;
 }
 
 [data-theme="light"] .stair-drawer-footer {
-  border-top-color: rgba(148, 163, 184, 0.3) !important;
+  border-top-color: rgba(148, 163, 184, 0.25) !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-social-icon {
-  background: rgba(15, 23, 42, 0.05) !important;
-  border-color: rgba(148, 163, 184, 0.35) !important;
+  background: rgba(15, 23, 42, 0.04) !important;
+  border-color: rgba(148, 163, 184, 0.3) !important;
   color: #475569 !important;
+  box-shadow: none !important; /* ZERO SHADOW */
 }
 
 [data-theme="light"] .stair-social-icon:hover {
   background: #0f172a !important;
   border-color: #0f172a !important;
   color: #ffffff !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .stair-copyright {
   color: #64748b !important;
+  text-shadow: none !important;
 }
 
 /* ================= MODALS (DAY MODE - PLATINUM & OBSIDIAN) ================= */
