@@ -111,6 +111,24 @@ class SiteSettings(BaseModel):
         default="Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka.",
         verbose_name=_("Footer Tagline"),
     )
+    footer_cta_tagline = models.CharField(
+        max_length=150,
+        blank=True,
+        default="Visit · Call · Chat",
+        verbose_name=_("Footer CTA Tagline"),
+    )
+    footer_cta_title = models.CharField(
+        max_length=250,
+        blank=True,
+        default="Your dream car is one message away.",
+        verbose_name=_("Footer CTA Heading"),
+    )
+    footer_cta_btn_text = models.CharField(
+        max_length=100,
+        blank=True,
+        default="Chat on WhatsApp",
+        verbose_name=_("Footer WhatsApp Button Text"),
+    )
     footer_copy_text = models.CharField(
         max_length=300,
         default="© 2026 DREAM CAR HOUSE. All rights reserved. Kakrail & Gulshan, Dhaka, Bangladesh.",

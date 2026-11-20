@@ -447,6 +447,9 @@ export type SiteSettingsItem = {
   website: string;
   primary_address: string;
   footer_tagline: string;
+  footer_cta_tagline?: string;
+  footer_cta_title?: string;
+  footer_cta_btn_text?: string;
   footer_copy_text: string;
   opening_hours_text: string;
   social_media: number | null;

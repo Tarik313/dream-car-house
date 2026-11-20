@@ -53,6 +53,9 @@ export function SiteSettingsClient({
     primary_address: initialSettings.primary_address || "",
     opening_hours_text: initialSettings.opening_hours_text || "",
     footer_tagline: initialSettings.footer_tagline || "",
+    footer_cta_tagline: initialSettings.footer_cta_tagline || "Visit · Call · Chat",
+    footer_cta_title: initialSettings.footer_cta_title || "Your dream car is one message away.",
+    footer_cta_btn_text: initialSettings.footer_cta_btn_text || "Chat on WhatsApp",
     footer_copy_text: initialSettings.footer_copy_text || "",
   });
 
@@ -1126,6 +1129,44 @@ export function SiteSettingsClient({
                 required
               />
             </FormField>
+          </div>
+
+          {/* Footer Call-to-Action Banner (Beg Autos Style) */}
+          <div style={{ marginTop: "1.25rem", paddingTop: "1.25rem", borderTop: "1px solid var(--border-default)" }}>
+            <h4 style={{ margin: "0 0 0.75rem 0", fontSize: "14px", fontWeight: 600, color: "var(--text-primary)" }}>
+              Footer Call-to-Action (Visit · Call · Chat Banner)
+            </h4>
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr 1fr", gap: "1rem" }}>
+              <FormField label="CTA Eyebrow" error={formErrors.footer_cta_tagline}>
+                <Input
+                  name="footer_cta_tagline"
+                  value={formData.footer_cta_tagline}
+                  onChange={(e) => setFormData({ ...formData, footer_cta_tagline: e.target.value })}
+                  placeholder="Visit · Call · Chat"
+                  disabled={!canChange || submitting}
+                />
+              </FormField>
+
+              <FormField label="CTA Main Heading" error={formErrors.footer_cta_title}>
+                <Input
+                  name="footer_cta_title"
+                  value={formData.footer_cta_title}
+                  onChange={(e) => setFormData({ ...formData, footer_cta_title: e.target.value })}
+                  placeholder="Your dream car is one message away."
+                  disabled={!canChange || submitting}
+                />
+              </FormField>
+
+              <FormField label="WhatsApp Button Text" error={formErrors.footer_cta_btn_text}>
+                <Input
+                  name="footer_cta_btn_text"
+                  value={formData.footer_cta_btn_text}
+                  onChange={(e) => setFormData({ ...formData, footer_cta_btn_text: e.target.value })}
+                  placeholder="Chat on WhatsApp"
+                  disabled={!canChange || submitting}
+                />
+              </FormField>
+            </div>
           </div>
         </div>
 

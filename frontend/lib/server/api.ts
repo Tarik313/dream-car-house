@@ -62,6 +62,9 @@ export const defaultSiteSettings: PublicSiteSettings = {
   website: SHOWROOM.website,
   primary_address: SHOWROOM.address,
   footer_tagline: "The Pinnacle of Luxury Automobiles",
+  footer_cta_tagline: "Visit · Call · Chat",
+  footer_cta_title: "Your dream car is one message away.",
+  footer_cta_btn_text: "Chat on WhatsApp",
   footer_copy_text: "© 2026 DREAM CAR HOUSE. All rights reserved.",
   opening_hours_text: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
   social_media: {

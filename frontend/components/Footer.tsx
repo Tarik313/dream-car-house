@@ -48,6 +48,28 @@ export default function Footer({
   const igUrl = settings?.social_media?.instagram || "https://instagram.com";
   const ytUrl = settings?.social_media?.youtube || "https://youtube.com";
 
+  const ctaTagline = settings?.footer_cta_tagline || "Visit · Call · Chat";
+  const ctaTitle = settings?.footer_cta_title || "Your dream car is one message away.";
+  const ctaBtnText = settings?.footer_cta_btn_text || "Chat on WhatsApp";
+
+  const renderCtaTitle = () => {
+    const target = "one message";
+    const idx = ctaTitle.toLowerCase().indexOf(target);
+    if (idx !== -1) {
+      const before = ctaTitle.slice(0, idx);
+      const matched = ctaTitle.slice(idx, idx + target.length);
+      const after = ctaTitle.slice(idx + target.length);
+      return (
+        <>
+          {before}
+          <em className="footer-cta-em">{matched}</em>
+          {after}
+        </>
+      );
+    }
+    return ctaTitle;
+  };
+
   const [isOpen, setIsOpen] = useState(true);
 
   useEffect(() => {
@@ -78,30 +100,38 @@ export default function Footer({
   return (
     <footer className="site-footer" id="contact">
       <div className="luxury-container px-4 sm:px-6 lg:px-8">
-        {/* VIP Top Concierge Ribbon */}
-        <div className="footer-vip-ribbon">
-          <div className="footer-ribbon-left">
-            <span className="ribbon-badge">VIP CONCIERGE</span>
-            <span className="ribbon-text">
-              Private Showroom Viewing & Nationwide Enquiries:{" "}
-              <a href={`tel:${hotline.replace(/[^0-9]/g, "")}`} className="ribbon-hotline">
-                {hotline}
-              </a>
-            </span>
+        {/* Beg Autos Style Luxury Call-to-Action Banner */}
+        <div className="footer-cta-banner">
+          <div>
+            <span className="footer-cta-tagline">{ctaTagline}</span>
+            <h2 className="footer-cta-title">
+              {renderCtaTitle()}
+            </h2>
           </div>
 
-          <div className="footer-ribbon-right">
+          <div className="footer-cta-actions">
             <a
               href={waUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="footer-wa-chat-btn"
-              aria-label="Chat on WhatsApp"
+              className="footer-cta-btn-wa"
+              aria-label={ctaBtnText}
             >
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+              <svg width="19" height="19" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12.031 6.172c-3.181 0-5.767 2.586-5.768 5.766-.001 1.298.38 2.27 1.019 3.287l-.711 2.592 2.654-.696c1 .587 1.78.893 2.806.893 3.182 0 5.768-2.586 5.768-5.766.001-3.181-2.585-5.776-5.768-5.776zm3.435 8.163c-.144.404-.836.774-1.17.822-.311.045-.71.07-2.13-.518-1.815-.751-2.986-2.59-3.077-2.711-.091-.121-.739-.984-.739-1.877 0-.893.469-1.332.636-1.514.167-.182.365-.228.487-.228.122 0 .243.002.35.007.112.005.263-.042.412.315.152.365.518 1.265.564 1.356.045.091.076.197.015.318-.061.121-.091.197-.182.303-.091.106-.192.237-.274.318-.091.091-.186.19-.08.372.106.182.471.777 1.011 1.258.697.621 1.284.814 1.466.905.182.091.289.076.395-.045.106-.121.456-.531.577-.713.121-.182.243-.152.41-.091.167.061 1.062.5 1.244.591.182.091.304.136.35.212.045.076.045.44-.099.844zM12 2C6.477 2 2 6.477 2 12c0 1.891.524 3.662 1.435 5.176L2 22l4.957-1.399C8.414 21.499 10.151 22 12 22c5.523 0 10-4.477 10-10S17.523 2 12 2z" />
               </svg>
-              <span>Chat on WhatsApp</span>
+              <span>{ctaBtnText}</span>
+            </a>
+
+            <a
+              href={`tel:${hotline.replace(/[^0-9]/g, "")}`}
+              className="footer-cta-btn-phone"
+              aria-label="Direct Phone Inquiries"
+            >
+              <svg width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8">
+                <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z" />
+              </svg>
+              <span>{hotline}</span>
             </a>
           </div>
         </div>
@@ -203,8 +233,8 @@ export default function Footer({
             </div>
           </div>
 
-          {/* Col 2 (Middle): Discovery */}
-          <div className="footer-col-links">
+          {/* Col 2 (Middle): Discovery (Shifted gracefully right) */}
+          <div className="footer-col-links footer-col-discovery">
             <h3 className="footer-heading">Discovery</h3>
             <ul className="footer-shortcut-list">
               <li>

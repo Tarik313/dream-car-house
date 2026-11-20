@@ -11916,86 +11916,144 @@ button {
   color: #b45309 !important;
 }
 
-/* ================= Redesigned VIP Footer Architecture ================= */
-.footer-vip-ribbon {
+/* ================= Beg Autos Style Luxury Footer CTA Banner ================= */
+.footer-cta-banner {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  align-items: flex-start;
-  justify-content: space-between;
-  padding: 1.15rem 1.5rem;
-  margin-bottom: 3rem;
-  border-radius: 12px;
-  background: radial-gradient(circle at 10% 50%, rgba(245, 158, 11, 0.08), transparent 40%),
-              linear-gradient(135deg, rgba(255, 255, 255, 0.03) 0%, rgba(255, 255, 255, 0.01) 100%);
-  border: 1px solid rgba(245, 158, 11, 0.22);
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  gap: 1.75rem;
+  padding-bottom: clamp(2.5rem, 4.5vw, 3.8rem);
+  margin-bottom: clamp(2.5rem, 4vw, 3.5rem);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: none !important;
 }
 
-@media (min-width: 768px) {
-  .footer-vip-ribbon {
+@media (min-width: 992px) {
+  .footer-cta-banner {
     flex-direction: row;
-    align-items: center;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 2.5rem;
   }
 }
 
-.footer-ribbon-left {
+.footer-cta-tagline {
+  display: block;
+  font-size: 0.72rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.22em;
+  color: #d4af37;
+  margin-bottom: 0.85rem;
+}
+
+.footer-cta-title {
+  font-size: clamp(1.85rem, 3.5vw, 2.85rem);
+  font-weight: 300;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+  color: #ffffff;
+  margin: 0;
+}
+
+.footer-cta-em {
+  font-style: italic;
+  font-family: Georgia, 'Playfair Display', serif;
+  font-weight: 400;
+  color: #e6cfa3;
+}
+
+.footer-cta-actions {
   display: flex;
   align-items: center;
   gap: 0.85rem;
   flex-wrap: wrap;
 }
 
-.ribbon-badge {
-  font-size: 0.7rem;
-  font-weight: 800;
-  letter-spacing: 0.16em;
-  text-transform: uppercase;
-  color: #fbbf24;
-  background: rgba(245, 158, 11, 0.15);
-  border: 1px solid rgba(245, 158, 11, 0.35);
-  padding: 3px 10px;
-  border-radius: 999px;
-  white-space: nowrap;
-}
-
-.ribbon-text {
-  font-size: 0.88rem;
-  color: #e2e8f0;
-}
-
-.ribbon-hotline {
-  color: #fbbf24;
-  font-weight: 700;
-  text-decoration: none;
-  transition: color 0.2s ease;
-}
-
-.ribbon-hotline:hover {
-  color: #ffffff;
-}
-
-.footer-wa-chat-btn {
+/* Beg Autos Solid WhatsApp Button */
+.footer-cta-btn-wa {
   display: inline-flex;
   align-items: center;
-  gap: 0.55rem;
-  padding: 8px 18px;
-  background: #25d366;
-  color: #ffffff !important;
-  font-size: 0.86rem;
-  font-weight: 700;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 13px 26px;
   border-radius: 8px;
+  background: #25d366;
+  color: #08140c;
+  font-size: 0.92rem;
+  font-weight: 500;
   text-decoration: none;
-  box-shadow: 0 4px 18px rgba(37, 211, 102, 0.35);
-  transition: all 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+  border: 1px solid #25d366;
   white-space: nowrap;
 }
 
-.footer-wa-chat-btn:hover {
-  background: #20ba5a;
-  box-shadow: 0 6px 24px rgba(37, 211, 102, 0.55);
-  transform: translateY(-2px);
-  color: #ffffff !important;
+.footer-cta-btn-wa:hover {
+  background: #20ba59;
+  border-color: #20ba59;
+  color: #000000;
+  transform: translateY(-1px);
+}
+
+/* Outline Hotline Button */
+.footer-cta-btn-phone {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.65rem;
+  padding: 13px 26px;
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  color: #ffffff;
+  font-size: 0.92rem;
+  font-weight: 400;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  box-shadow: none !important;
+  white-space: nowrap;
+}
+
+.footer-cta-btn-phone:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: #ffffff;
+  color: #ffffff;
+  transform: translateY(-1px);
+}
+
+/* Shifting Discovery column gracefully right */
+@media (min-width: 992px) {
+  .footer-col-discovery {
+    padding-left: clamp(1.5rem, 3.5vw, 4rem);
+  }
+}
+
+/* Day Mode styling for Footer CTA Banner */
+[data-theme="light"] .footer-cta-banner {
+  border-bottom-color: rgba(148, 163, 184, 0.35);
+}
+
+[data-theme="light"] .footer-cta-tagline {
+  color: #b45309;
+}
+
+[data-theme="light"] .footer-cta-title {
+  color: #0a0f1d;
+}
+
+[data-theme="light"] .footer-cta-em {
+  color: #b45309;
+}
+
+[data-theme="light"] .footer-cta-btn-phone {
+  background: rgba(15, 23, 42, 0.04);
+  border-color: rgba(15, 23, 42, 0.25);
+  color: #0a0f1d;
+}
+
+[data-theme="light"] .footer-cta-btn-phone:hover {
+  background: rgba(15, 23, 42, 0.1);
+  border-color: #0a0f1d;
 }
 
 .footer-social-section {
@@ -12096,17 +12154,7 @@ button {
   transform: translateY(-2px);
 }
 
-/* Light Theme overrides for Footer VIP Ribbon and Socials */
-[data-theme="light"] .footer-vip-ribbon {
-  background: #ffffff !important;
-  border-color: rgba(217, 119, 6, 0.25) !important;
-  box-shadow: 0 6px 20px rgba(15, 23, 42, 0.05) !important;
-}
-
-[data-theme="light"] .ribbon-text {
-  color: #1e293b !important;
-}
-
+/* Light Theme overrides for Socials */
 [data-theme="light"] .footer-social-title {
   color: #64748b !important;
 }
