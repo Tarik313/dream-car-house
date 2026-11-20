@@ -29,8 +29,8 @@ export default function Footer({
   const hotline = settings?.hotline || "01615-121312";
   const email = settings?.email || "dreamcarhouse101@gmail.com";
   const hours =
+    currentBranch?.hours ||
     settings?.opening_hours_text ||
-    branches?.[0]?.hours ||
     "Saturday – Thursday: 10:00 AM – 11:00 PM (Friday Closed)";
   const hoursMatch = hours.match(/\(([^)]+)\)/);
   const mainHours = hoursMatch ? hours.replace(/\s*\([^)]*\)/g, "").trim() : hours;
