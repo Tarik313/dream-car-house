@@ -32,6 +32,9 @@ export default function Footer({
     settings?.opening_hours_text ||
     branches?.[0]?.hours ||
     "Saturday – Thursday: 10:00 AM – 11:00 PM (Friday Closed)";
+  const hoursMatch = hours.match(/\(([^)]+)\)/);
+  const mainHours = hoursMatch ? hours.replace(/\s*\([^)]*\)/g, "").trim() : hours;
+  const subHours = hoursMatch ? hoursMatch[0] : "";
   const tagline = settings?.footer_tagline || "Where Extraordinary Dreams Meet The Road";
   const footerLogoNight =
     settings?.logo_footer ||
@@ -298,8 +301,8 @@ export default function Footer({
                     </span>
                   </div>
                   <div className="contact-clean-val hours-val">
-                    <span>Saturday – Thursday: 10:00 AM – 11:00 PM</span>
-                    <span className="hours-subtext">(Friday Closed)</span>
+                    <span>{mainHours}</span>
+                    {subHours ? <span className="hours-subtext">{subHours}</span> : null}
                   </div>
                 </div>
               </div>
