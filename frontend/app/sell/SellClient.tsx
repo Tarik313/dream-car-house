@@ -331,7 +331,7 @@ export default function SellClient({
               2
             </div>
             <div>
-              <div style={{ fontWeight: 700, fontSize: "0.88rem", color: colors.textPrimary }}>Certified Appraisal</div>
+              <div style={{ fontWeight: 700, fontSize: "0.88rem", color: colors.textPrimary }}>Official Appraisal</div>
               <div style={{ fontSize: "0.78rem", color: colors.textMuted }}>Kakrail or Gulshan lounge</div>
             </div>
           </div>

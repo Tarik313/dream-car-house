@@ -29,7 +29,8 @@ class VisualChroniclesSection(models.Model):
         verbose_name=_("Section Heading"),
     )
     subtitle = models.TextField(
-        default="Curated high-resolution photography, delivery spotlights, and automotive cinema from our Kakrail & Gulshan showrooms.",
+        default="",
+        blank=True,
         verbose_name=_("Section Subtitle"),
     )
     stats_number = models.CharField(

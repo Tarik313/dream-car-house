@@ -13,7 +13,7 @@ export async function generateMetadata(): Promise<Metadata> {
     fallback: {
       title: "Sell Your Luxury Car & Trade-In Valuation",
       description:
-        "Confidential valuation and trade-in services for your luxury car in Bangladesh. Direct acquisition, rapid appraisal, and certified verification at DREAM CAR HOUSE.",
+        "Confidential valuation and trade-in services for your luxury car in Bangladesh. Direct acquisition, rapid appraisal, and expert verification at DREAM CAR HOUSE.",
       path: "/sell/",
     },
   });

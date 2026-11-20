@@ -97,7 +97,7 @@ export default function AboutClient({
     "DREAM CAR HOUSE was founded with a singular, uncompromising vision: to establish Dhaka’s foremost luxury automotive destination where discerning connoisseurs can explore, acquire, and commission the world's most coveted motorcars with absolute peace of mind.";
   const storyP2 =
     aboutData?.story_content_p2 ||
-    "Operating across two flagship showrooms in Kakrail (Shaheed Captain Monsur Ali Soroni) and Gulshan Avenue (Road #127), our curated portfolio encompasses zero-meter factory imports, bespoke executive saloons, track-bred supercars, and certified pre-owned collectors' editions from Mercedes-Maybach, Rolls-Royce, Porsche, Lexus, BMW, and Toyota.";
+    "Operating across two flagship showrooms in Kakrail (Shaheed Captain Monsur Ali Soroni) and Gulshan Avenue (Road #127), our curated portfolio encompasses zero-meter factory imports, bespoke executive saloons, track-bred supercars, and pre-owned collectors' editions from Mercedes-Maybach, Rolls-Royce, Porsche, Lexus, BMW, and Toyota.";
   const quoteText =
     aboutData?.quote_text ||
     "We do not merely deliver motorcars; we curate trust, pedigree, and lifelong relationships for Dhaka's most discerning motorists.";

@@ -200,10 +200,10 @@ export default function CompareModal({
               <tr style={{ borderBottom: "1px solid rgba(255,255,255,0.06)" }}>
                 <td style={{ padding: "0.75rem 1rem", color: "#9ca3af" }}>Condition</td>
                 <td style={{ padding: "0.75rem 1rem", fontWeight: 600 }}>
-                  {car1.car_type === "BRAND_NEW" ? "Brand New (00 km)" : "Certified Pre-Owned"}
+                  {car1.car_type === "BRAND_NEW" ? "Brand New (00 km)" : car1.car_type === "RECONDITIONED" ? "Reconditioned" : "Pre-Owned"}
                 </td>
                 <td style={{ padding: "0.75rem 1rem", fontWeight: 600 }}>
-                  {car2.car_type === "BRAND_NEW" ? "Brand New (00 km)" : "Certified Pre-Owned"}
+                  {car2.car_type === "BRAND_NEW" ? "Brand New (00 km)" : car2.car_type === "RECONDITIONED" ? "Reconditioned" : "Pre-Owned"}
                 </td>
               </tr>
 

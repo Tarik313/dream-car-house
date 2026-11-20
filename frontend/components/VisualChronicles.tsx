@@ -20,9 +20,8 @@ export default function VisualChronicles({
   };
 
   const heading = chronicles?.heading || "DREAM CAR HOUSE Visual Chronicles";
-  const subtitle =
-    chronicles?.subtitle ||
-    "Curated high-resolution photography, delivery spotlights, and automotive cinema from our Kakrail & Gulshan showrooms.";
+  const rawSubtitle = chronicles?.subtitle || "";
+  const subtitle = rawSubtitle.includes("Curated high-resolution photography") ? "" : rawSubtitle;
   const statsNumber = chronicles?.stats_number || "19+";
   const statsLabel = chronicles?.stats_label || "Curated Masterpieces";
 
@@ -158,7 +157,7 @@ export default function VisualChronicles({
             <h2 className="section-h2" style={{ marginBottom: "0.35rem" }}>
               {heading}
             </h2>
-            <p className="socials-subtitle">{subtitle}</p>
+            {subtitle ? <p className="socials-subtitle">{subtitle}</p> : null}
           </div>
           <div className="socials-stats-badge">
             <span className="stats-num">{statsNumber}</span>

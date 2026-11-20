@@ -381,9 +381,6 @@ export default function BrandRunway({
           <h2 className="section-h2" style={{ marginBottom: "0.35rem" }}>
             Prestigious Automotive Marques
           </h2>
-          <p className="runway-subtext">
-            Official luxury dealerships & certified engineering partners at DREAM CAR HOUSE.
-          </p>
         </div>
 
         {/* Asphalt Runway Track */}

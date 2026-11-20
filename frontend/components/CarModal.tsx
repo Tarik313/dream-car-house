@@ -126,6 +126,7 @@ export default function CarModal({
   const branch =
     SHOWROOM_BRANCHES[selectedCar.branch_id] || SHOWROOM_BRANCHES["kakrail"];
   const isBrandNew = selectedCar.car_type === "BRAND_NEW";
+  const isReconditioned = selectedCar.car_type === "RECONDITIONED";
   const drivetrain = getCarDrivetrain(selectedCar);
   const regText = isBrandNew
     ? "Unregistered Direct Import"
@@ -212,9 +213,13 @@ export default function CarModal({
                   <span className="car-badge-pill pill-brandnew">
                     BRAND NEW • ZERO METER
                   </span>
+                ) : isReconditioned ? (
+                  <span className="car-badge-pill pill-brandnew">
+                    RECONDITIONED
+                  </span>
                 ) : (
                   <span className="car-badge-pill pill-preowned">
-                    CERTIFIED PRE-OWNED
+                    PRE-OWNED
                   </span>
                 )}
                 <div className="dch-showroom-beacon">
@@ -650,7 +655,7 @@ export default function CarModal({
                     </div>
                     <div className="dch-spec-texts">
                       <span className="dch-spec-label">INSPECTION AUDIT</span>
-                      <span className="dch-spec-value">150-Point Certified</span>
+                      <span className="dch-spec-value">150-Point Inspection</span>
                     </div>
                   </div>
 

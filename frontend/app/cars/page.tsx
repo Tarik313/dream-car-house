@@ -14,9 +14,9 @@ export async function generateMetadata(): Promise<Metadata> {
     fallback: {
       title: "Luxury Vehicles Collection",
       description:
-        "Explore our complete collection of brand new and certified pre-owned luxury vehicles in Bangladesh. Mercedes-Benz, BMW, Lexus, Toyota, Land Rover, and Porsche.",
+        "Explore our complete collection of brand new, reconditioned, and pre-owned luxury vehicles in Bangladesh. Mercedes-Benz, BMW, Lexus, Toyota, Land Rover, and Porsche.",
       ogDescription:
-        "Explore our complete collection of brand new and certified pre-owned luxury vehicles in Bangladesh.",
+        "Explore our complete collection of brand new, reconditioned, and pre-owned luxury vehicles in Bangladesh.",
       path: "/cars/",
     },
   });

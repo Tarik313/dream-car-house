@@ -4,29 +4,23 @@ import type {
   PublicVehicle,
   PublicPreferenceSection,
   PublicBrand,
-  PublicConsultationSection,
   PublicExperienceSection,
   PublicVisualChroniclesSection,
-  PublicVipSanctuarySection,
 } from "@/lib/types";
 import Hero from "@/components/Hero";
 import InventoryCarousel from "@/components/InventoryCarousel";
 import PreferenceSection from "@/components/PreferenceSection";
 import BrandRunway from "@/components/BrandRunway";
-import ConnectConsult from "@/components/ConnectConsult";
 import ExperiencePillars from "@/components/ExperiencePillars";
 import VisualChronicles from "@/components/VisualChronicles";
-import VipSanctuary from "@/components/VipSanctuary";
 import {
   getHeroSlider,
   getFeaturedInventory,
   getPublicInventory,
   getPreferenceSection,
   getRunwayBrands,
-  getConsultationSection,
   getExperienceSection,
   getVisualChroniclesSection,
-  getVipSanctuarySection,
   getPageSEO,
   getSiteSettings,
   defaultSiteSettings,
@@ -70,33 +64,27 @@ export default async function HomePage() {
   let allPublishedCars: PublicVehicle[] = [];
   let preferenceSectionData: PublicPreferenceSection | null = null;
   let runwayBrands: PublicBrand[] = [];
-  let consultationData: PublicConsultationSection | null = null;
   let experienceData: PublicExperienceSection | null = null;
   let chroniclesData: PublicVisualChroniclesSection | null = null;
-  let sanctuaryData: PublicVipSanctuarySection | null = null;
 
   try {
-    const [hero, featured, inventory, preference, brands, consultation, experience, chronicles, sanctuary] =
+    const [hero, featured, inventory, preference, brands, experience, chronicles] =
       await Promise.all([
         getHeroSlider().catch(() => null),
         getFeaturedInventory().catch(() => []),
         getPublicInventory().catch(() => ({ items: [] })),
         getPreferenceSection().catch(() => null),
         getRunwayBrands().catch(() => []),
-        getConsultationSection().catch(() => null),
         getExperienceSection().catch(() => null),
         getVisualChroniclesSection().catch(() => null),
-        getVipSanctuarySection().catch(() => null),
       ]);
     heroData = hero;
     featuredCars = featured;
     allPublishedCars = inventory.items;
     preferenceSectionData = preference;
     runwayBrands = brands;
-    consultationData = consultation;
     experienceData = experience;
     chroniclesData = chronicles;
-    sanctuaryData = sanctuary;
   } catch (error) {
     console.error("[HomePage] Failed to fetch homepage data:", error);
   }
@@ -111,7 +99,7 @@ export default async function HomePage() {
       {/* 2. Current Inventory Carousel */}
       <InventoryCarousel vehicles={carouselVehicles} />
 
-      {/* 3. Studio Preference Switcher (Brand New vs Certified Pre-Owned) */}
+      {/* 3. Studio Preference Switcher (Brand New vs Pre-Owned) */}
       <PreferenceSection
         vehicles={allPublishedCars}
         sectionData={preferenceSectionData}
@@ -120,17 +108,11 @@ export default async function HomePage() {
       {/* 4. Prestigious Automotive Marques Runway */}
       <BrandRunway brands={runwayBrands} />
 
-      {/* 5. Private Automotive Concierge: Connect to Consult */}
-      <ConnectConsult consultation={consultationData} />
-
-      {/* 6. Experience Beyond Ordinary: 3 Atelier Pillars */}
+      {/* 5. Inside Our Showrooms: Experience Pillars */}
       <ExperiencePillars experience={experienceData} />
 
-      {/* 7. Showroom Atelier Visual Chronicles (Interactive 3D Flip Cards) */}
+      {/* 6. Showroom Atelier Visual Chronicles (Interactive 3D Flip Cards) */}
       <VisualChronicles chronicles={chroniclesData} />
-
-      {/* 8. VIP Showroom Invitation & Private Sanctuary Suite */}
-      <VipSanctuary sanctuary={sanctuaryData} />
     </div>
   );
 }

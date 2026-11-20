@@ -12,10 +12,10 @@ export type NavigationItem = Readonly<{
     | "/workspace/content/sliders"
     | "/workspace/content/stories"
     | "/workspace/content/preferences"
-    | "/workspace/content/consultation"
+  // | "/workspace/content/consultation"
     | "/workspace/content/experience"
     | "/workspace/content/visual-chronicles"
-    | "/workspace/content/vip-sanctuary"
+  // | "/workspace/content/vip-sanctuary"
     | "/workspace/content/about-us"
     | "/workspace/content/social-media"
     | "/workspace/content/social-features"
@@ -47,10 +47,10 @@ export const navigation: readonly NavigationItem[] = [
   { href: "/workspace/content/sliders", label: "Slider Videos", symbol: "ðŸŽ¬", permission: "home.view_slider" },
   // { href: "/workspace/content/stories", label: "Showroom Stories", symbol: "ðŸ“±", permission: "home.view_showroomstory" },
   { href: "/workspace/content/preferences", label: "Preference Section", symbol: "âš™ï¸", permission: "home.view_preferencesection" },
-  { href: "/workspace/content/consultation", label: "Consultation", symbol: "ðŸ’¬", permission: "home.view_consultationsection" },
+  // { href: "/workspace/content/consultation", label: "Consultation", symbol: "ðŸ’¬", permission: "home.view_consultationsection" },
   { href: "/workspace/content/experience", label: "Experience Pillars", symbol: "ðŸ›ï¸", permission: "home.view_experiencesection" },
   { href: "/workspace/content/visual-chronicles", label: "Visual Chronicles", symbol: "ðŸ“¸", permission: "home.view_visualchroniclessection" },
-  { href: "/workspace/content/vip-sanctuary", label: "VIP Sanctuary", symbol: "ðŸ‘‘", permission: "home.view_vipsanctuarysection" },
+  // { href: "/workspace/content/vip-sanctuary", label: "VIP Sanctuary", symbol: "ðŸ‘‘", permission: "home.view_vipsanctuarysection" },
   { href: "/workspace/content/about-us", label: "About Us Page", symbol: "ðŸ“–", permission: "home.view_aboutsection" },
   { href: "/workspace/content/social-media", label: "Social Links", symbol: "ðŸŒ", permission: "home.view_socialmedia" },
   { href: "/workspace/content/social-features", label: "Social Features", symbol: "ðŸ‘¥", permission: "home.view_peopletalkaboutus" },
@@ -77,10 +77,10 @@ export const allRoutes: Record<string, { label: string; symbol: string }> = {
   "/workspace/content/sliders": { label: "Slider Videos", symbol: "ðŸŽ¬" },
   "/workspace/content/stories": { label: "Showroom Stories", symbol: "ðŸ“±" },
   "/workspace/content/preferences": { label: "Preference Section", symbol: "âš™ï¸" },
-  "/workspace/content/consultation": { label: "Consultation Section", symbol: "ðŸ’¬" },
+  // "/workspace/content/consultation": { label: "Consultation Section", symbol: "ðŸ’¬" },
   "/workspace/content/experience": { label: "Experience Pillars", symbol: "ðŸ›ï¸" },
   "/workspace/content/visual-chronicles": { label: "Visual Chronicles", symbol: "ðŸ“¸" },
-  "/workspace/content/vip-sanctuary": { label: "VIP Sanctuary", symbol: "ðŸ‘‘" },
+  // "/workspace/content/vip-sanctuary": { label: "VIP Sanctuary", symbol: "ðŸ‘‘" },
   "/workspace/content/about-us": { label: "About Us Page", symbol: "ðŸ“–" },
   "/workspace/content/social-media": { label: "Social Links", symbol: "ðŸŒ" },
   "/workspace/content/social-features": { label: "Social Features", symbol: "ðŸ‘¥" },

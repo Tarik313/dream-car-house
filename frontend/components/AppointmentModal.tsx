@@ -131,7 +131,7 @@ export default function AppointmentModal({
                 className="appt-input appt-select"
               >
                 <option value="Brand New & Reconditioned Import">Brand New & Reconditioned Import</option>
-                <option value="Certified Pre-Owned Selection">Certified Pre-Owned Selection</option>
+                <option value="Pre-Owned Selection">Pre-Owned Selection</option>
                 <option value="Sell / Trade-In Valuation">Sell / Trade-In Valuation</option>
                 <option value="General Showroom VIP Tour">General Showroom VIP Tour</option>
               </select>

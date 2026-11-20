@@ -404,8 +404,8 @@ function InventoryContent({
         >
           <option value="all">All Types</option>
           <option value="BRAND_NEW">Brand New</option>
-          <option value="PRE_OWNED">Certified Pre-Owned</option>
           <option value="RECONDITIONED">Reconditioned</option>
+          <option value="PRE_OWNED">Pre-Owned</option>
         </select>
 
         {/* ================= LUXURY PRICE FILTER ================= */}

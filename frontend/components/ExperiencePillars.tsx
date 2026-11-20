@@ -13,7 +13,10 @@ export default function ExperiencePillars({
   const { openAppointmentModal } = useUI();
 
   const title = experience?.title || "Inside Our Showrooms";
-  const subtitle = experience?.subtitle || "Kakrail & Gulshan • Dhaka, Bangladesh";
+  const rawSubtitle = experience?.subtitle || "Kakrail & Gulshan • Dhaka, Bangladesh";
+  const subtitle = rawSubtitle.includes("benchmark in high-luxury")
+    ? "Kakrail & Gulshan • Dhaka, Bangladesh"
+    : rawSubtitle;
   const ctaLabel = experience?.video_cta_label || "Schedule a Visit";
 
   const defaultPillars: PublicExperiencePillar[] = [

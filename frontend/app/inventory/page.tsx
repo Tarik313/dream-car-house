@@ -45,11 +45,11 @@ export async function generateMetadata({ searchParams }: PageProps): Promise<Met
         ? "Brand New"
         : params.type === "RECONDITIONED"
           ? "Reconditioned"
-          : "Certified Pre-Owned";
+          : "Pre-Owned";
     title = `${typeLabel} Luxury Vehicles`;
   }
 
-  const description = `Explore our complete inventory of brand new and certified pre-owned luxury vehicles at ${siteName} in Dhaka, Bangladesh. Browse flagship sedans, performance SUVs, and exotic supercars with transparent specifications and concierge consultation.`;
+  const description = `Explore our complete inventory of brand new, reconditioned, and pre-owned luxury vehicles at ${siteName} in Dhaka, Bangladesh. Browse flagship sedans, performance SUVs, and exotic supercars with transparent specifications and concierge consultation.`;
 
   return buildCleanPageMetadata({
     title,

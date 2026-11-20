@@ -47,7 +47,7 @@ export default function PreferenceSection({
             </h2>
           </div>
 
-          {/* Segment Switcher Controller (3 tabs: Brand New, Reconditioned, Certified Pre-Owned) */}
+          {/* Segment Switcher Controller (3 tabs: Brand New, Reconditioned, Pre-Owned) */}
           <div className="segment-switcher" role="tablist">
             <button
               id="tab-brand-new"
@@ -80,7 +80,7 @@ export default function PreferenceSection({
               role="tab"
               aria-selected={activeTab === "PRE_OWNED"}
             >
-              <span className="segment-label">Certified Pre-Owned</span>
+              <span className="segment-label">Pre-Owned</span>
               <span className="segment-count" id="count-pre-owned">
                 {preOwnedCars.length}
               </span>
@@ -106,7 +106,7 @@ export default function PreferenceSection({
               {activeTab === "BRAND_NEW"
                 ? `Explore All Brand New Collection (${brandNewCars.length} Units)`
                 : activeTab === "PRE_OWNED"
-                  ? `Explore All Certified Pre-Owned Collection (${preOwnedCars.length} Units)`
+                  ? `Explore All Pre-Owned Collection (${preOwnedCars.length} Units)`
                   : `Explore All Reconditioned Collection (${reconditionedCars.length} Units)`}
             </span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">

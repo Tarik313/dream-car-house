@@ -10,7 +10,7 @@ class ExperienceSection(models.Model):
         verbose_name=_("Section Title"),
     )
     subtitle = models.TextField(
-        default="Dhaka's benchmark in high-luxury automotive delivery, certified diagnostic inspection, and bespoke global procurement.",
+        default="Kakrail & Gulshan • Dhaka, Bangladesh",
         verbose_name=_("Section Subtitle"),
     )
     video_cta_label = models.CharField(
