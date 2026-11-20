@@ -5,7 +5,6 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/Button";
 import { FormField } from "@/components/ui/FormField";
 import { Input } from "@/components/ui/Input";
-import { Textarea } from "@/components/ui/Textarea";
 import { Switch } from "@/components/ui/Switch";
 import { useToast } from "@/components/ui/Toast";
 import {
@@ -13,7 +12,7 @@ import {
   updateExperiencePillarAction,
 } from "@/app/actions/consultation_experience";
 import type { ExperienceSectionItem, ExperiencePillarItem } from "@/lib/types";
-import { Save, Layers, Upload, Image as ImageIcon, Video, ShieldCheck } from "lucide-react";
+import { Save, Layers, Upload, Image as ImageIcon, MapPin } from "lucide-react";
 
 interface ExperienceClientProps {
   initialData: ExperienceSectionItem;
@@ -33,19 +32,44 @@ export function ExperienceClient({
     userPermissions.includes("home.change_experiencepillar");
 
   const [sectionData, setSectionData] = useState({
-    title: initialData?.title || "Experience Beyond Ordinary",
-    subtitle:
-      initialData?.subtitle ||
-      "Dhaka's benchmark in high-luxury automotive delivery, certified diagnostic inspection, and bespoke global procurement.",
-    video_cta_label: initialData?.video_cta_label || "Watch Showroom Reel",
-    video_target: initialData?.video_target || "reel",
+    title: initialData?.title || "Inside Our Showrooms",
+    subtitle: initialData?.subtitle || "",
+    video_cta_label: initialData?.video_cta_label || "Schedule a Visit",
+    video_target: initialData?.video_target || "visit",
     is_active: initialData?.is_active ?? true,
   });
 
-  const pillars = initialData?.pillars || [];
+  // Exactly 2 showroom cards: Kakrail & Gulshan
+  const rawPillars = initialData?.pillars || [];
+  const defaultShowroomFallbacks = [
+    {
+      id: rawPillars[0]?.id || 1,
+      pillar_number: "01",
+      badge: "MAIN FLAGSHIP",
+      title: rawPillars[0]?.title || "Kakrail Flagship Showroom",
+      description: rawPillars[0]?.description || "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka",
+      tags: [],
+      image: rawPillars[0]?.image || "/assets/dch-night-showroom.webp",
+      image_url: rawPillars[0]?.image_url || rawPillars[0]?.image || "/assets/dch-night-showroom.webp",
+      is_active: rawPillars[0]?.is_active ?? true,
+    },
+    {
+      id: rawPillars[1]?.id || 2,
+      pillar_number: "02",
+      badge: "GULSHAN AVENUE",
+      title: rawPillars[1]?.title || "Gulshan Avenue Showroom",
+      description: rawPillars[1]?.description || "House #07, Road #127, Gulshan Avenue, Dhaka",
+      tags: [],
+      image: rawPillars[1]?.image || "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=85",
+      image_url: rawPillars[1]?.image_url || rawPillars[1]?.image || "https://images.unsplash.com/photo-1568605117036-5fe5e7bab0b7?auto=format&fit=crop&w=1200&q=85",
+      is_active: rawPillars[1]?.is_active ?? true,
+    },
+  ];
+
+  const pillars = rawPillars.length >= 2 ? rawPillars.slice(0, 2) : defaultShowroomFallbacks;
   const [activePillarIndex, setActivePillarIndex] = useState<number>(0);
 
-  // Forms state for pillars
+  // Forms state for 2 showrooms
   const [pillarForms, setPillarForms] = useState<
     Record<
       number,
@@ -69,10 +93,10 @@ export function ExperienceClient({
       map[idx] = {
         id: p.id,
         pillar_number: p.pillar_number || String(idx + 1).padStart(2, "0"),
-        badge: p.badge || "",
-        title: p.title || "",
-        description: p.description || "",
-        tags: Array.isArray(p.tags) && p.tags.length > 0 ? [...p.tags] : ["", ""],
+        badge: p.badge || (idx === 0 ? "MAIN FLAGSHIP" : "GULSHAN AVENUE"),
+        title: p.title || (idx === 0 ? "Kakrail Flagship Showroom" : "Gulshan Avenue Showroom"),
+        description: p.description || (idx === 0 ? "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka" : "House #07, Road #127, Gulshan Avenue, Dhaka"),
+        tags: Array.isArray(p.tags) && p.tags.length > 0 ? [...p.tags] : [],
         image: p.image || "",
         image_url: p.image_url || p.image || "",
         imageFile: null,
@@ -89,10 +113,10 @@ export function ExperienceClient({
   const currentPillar = pillarForms[activePillarIndex] || {
     id: 0,
     pillar_number: "01",
-    badge: "",
-    title: "",
-    description: "",
-    tags: ["", ""],
+    badge: "MAIN FLAGSHIP",
+    title: "Kakrail Flagship Showroom",
+    description: "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka",
+    tags: [],
     image: "",
     image_url: "",
     imageFile: null,
@@ -109,22 +133,6 @@ export function ExperienceClient({
         [activePillarIndex]: {
           ...current,
           [field]: value,
-        },
-      };
-    });
-  };
-
-  const handleTagChange = (tagIdx: number, val: string) => {
-    setPillarForms((prev) => {
-      const current = prev[activePillarIndex];
-      if (!current) return prev;
-      const nextTags = [...current.tags];
-      nextTags[tagIdx] = val;
-      return {
-        ...prev,
-        [activePillarIndex]: {
-          ...current,
-          tags: nextTags,
         },
       };
     });
@@ -160,7 +168,8 @@ export function ExperienceClient({
     try {
       const fd = new FormData();
       fd.append("title", sectionData.title);
-      fd.append("subtitle", sectionData.subtitle);
+      // Subtitle is removed from UI as requested
+      fd.append("subtitle", "");
       fd.append("video_cta_label", sectionData.video_cta_label);
       fd.append("video_target", sectionData.video_target);
       fd.append("is_active", sectionData.is_active ? "true" : "false");
@@ -170,14 +179,14 @@ export function ExperienceClient({
         showToast({
           type: "success",
           title: "Section Updated",
-          message: "Experience section header content saved successfully.",
+          message: "Showroom section header saved successfully.",
         });
         router.refresh();
       } else {
         showToast({
           type: "error",
           title: "Update Failed",
-          message: res.error.message || "Failed to update experience header.",
+          message: res.error.message || "Failed to update showroom header.",
         });
       }
     } catch (err: any) {
@@ -193,24 +202,25 @@ export function ExperienceClient({
 
   const handleSavePillar = async () => {
     if (!canChange) {
-      showToast({ type: "error", title: "Forbidden", message: "You lack permission to modify experience pillars." });
+      showToast({ type: "error", title: "Forbidden", message: "You lack permission to modify showroom cards." });
       return;
     }
 
     const form = pillarForms[activePillarIndex];
     if (!form || !form.id) {
-      showToast({ type: "error", title: "Error", message: "Pillar ID not found." });
+      showToast({ type: "error", title: "Error", message: "Showroom card ID not found." });
       return;
     }
 
     setSavingPillar(true);
     try {
       const fd = new FormData();
-      fd.append("pillar_number", form.pillar_number);
-      fd.append("badge", form.badge);
+      fd.append("pillar_number", form.pillar_number || String(activePillarIndex + 1).padStart(2, "0"));
       fd.append("title", form.title);
-      fd.append("description", form.description);
-      fd.append("tags", JSON.stringify(form.tags.filter((t) => t.trim().length > 0)));
+      // Preserve default values for backend model schema while keeping them hidden from UI
+      fd.append("badge", form.badge || (activePillarIndex === 0 ? "MAIN FLAGSHIP" : "GULSHAN AVENUE"));
+      fd.append("description", form.description || (activePillarIndex === 0 ? "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka" : "House #07, Road #127, Gulshan Avenue, Dhaka"));
+      fd.append("tags", JSON.stringify(form.tags || []));
       fd.append("is_active", form.is_active ? "true" : "false");
 
       if (form.imageFile) {
@@ -221,15 +231,15 @@ export function ExperienceClient({
       if (res.ok) {
         showToast({
           type: "success",
-          title: "Pillar Saved",
-          message: `Pillar ${form.pillar_number} (${form.title}) updated successfully.`,
+          title: "Showroom Saved",
+          message: `Showroom card (${form.title}) updated successfully.`,
         });
         router.refresh();
       } else {
         showToast({
           type: "error",
           title: "Update Failed",
-          message: res.error.message || "Failed to update pillar.",
+          message: res.error.message || "Failed to update showroom card.",
         });
       }
     } catch (err: any) {
@@ -245,16 +255,16 @@ export function ExperienceClient({
 
   return (
     <div className="space-y-10 pb-16">
-      {/* 1. Experience Header Configuration */}
+      {/* 1. Showrooms Header Configuration */}
       <form onSubmit={handleSaveSection} className="bg-surface border border-border rounded-xl p-6 shadow-sm space-y-6">
         <div className="flex items-center justify-between border-b border-border pb-4">
           <div>
             <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
               <Layers className="w-5 h-5 text-accent" />
-              Experience Section Header & Video Trigger
+              Showrooms Section Header
             </h3>
             <p className="text-sm text-text-secondary mt-1">
-              Controls the title, intro subtitle, and interactive video reel CTA atop the 3 atelier pillars.
+              Controls the section heading and the visit scheduling button.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -272,32 +282,22 @@ export function ExperienceClient({
             <Input
               value={sectionData.title}
               onChange={(e) => setSectionData({ ...sectionData, title: e.target.value })}
-              placeholder="Experience Beyond Ordinary"
+              placeholder="Inside Our Showrooms"
               required
               disabled={!canChange}
             />
           </FormField>
 
-          <FormField label="Video CTA Button Label">
+          <FormField label="Visit CTA Button Label">
             <Input
               value={sectionData.video_cta_label}
               onChange={(e) => setSectionData({ ...sectionData, video_cta_label: e.target.value })}
-              placeholder="Watch Showroom Reel"
+              placeholder="Schedule a Visit"
               required
               disabled={!canChange}
             />
           </FormField>
         </div>
-
-        <FormField label="Section Subtitle" description="Introductory copy under the title">
-          <Textarea
-            rows={2}
-            value={sectionData.subtitle}
-            onChange={(e) => setSectionData({ ...sectionData, subtitle: e.target.value })}
-            placeholder="Dhaka's benchmark in high-luxury automotive delivery..."
-            disabled={!canChange}
-          />
-        </FormField>
 
         <div className="flex justify-end">
           <Button
@@ -311,23 +311,24 @@ export function ExperienceClient({
         </div>
       </form>
 
-      {/* 2. Three Architectural Delivery Pillars */}
+      {/* 2. Showroom Showcase Cards (2 Showrooms) */}
       <div className="bg-surface border border-border rounded-xl p-6 shadow-sm space-y-6">
         <div className="border-b border-border pb-4">
           <h3 className="text-lg font-semibold text-text-primary flex items-center gap-2">
-            <ShieldCheck className="w-5 h-5 text-accent" />
-            Architectural Atelier Pillars (3 Key Experience Tenets)
+            <MapPin className="w-5 h-5 text-accent" />
+            Showroom Showcase Cards (Kakrail & Gulshan)
           </h3>
           <p className="text-sm text-text-secondary mt-1">
-            Dhaka's hallmark automotive sanctuary tenets: Private VIP Vault, Certified 150-Point Audit, and Global Bespoke Concierge.
+            Manage high-resolution photography and showroom naming for the 2 showroom cards. Card text is hidden on the homepage for a pure photographic luxury aesthetic.
           </p>
         </div>
 
-        {/* Pillar Tabs */}
+        {/* 2 Showroom Tabs */}
         <div className="flex flex-wrap gap-2 border-b border-border pb-3">
           {pillars.map((pillar, idx) => {
             const num = pillar.pillar_number || `0${idx + 1}`;
             const isActive = activePillarIndex === idx;
+            const label = idx === 0 ? "Kakrail Flagship Showroom" : "Gulshan Avenue Showroom";
             return (
               <button
                 key={pillar.id || idx}
@@ -339,85 +340,31 @@ export function ExperienceClient({
                     : "bg-surface-subtle text-text-secondary hover:text-text-primary"
                 }`}
               >
-                Pillar {num}: {pillar.title || `Pillar ${num}`}
+                Showroom {num}: {pillarForms[idx]?.title || label}
               </button>
             );
           })}
         </div>
 
-        {/* Selected Pillar Editor Form */}
+        {/* Selected Showroom Editor */}
         <div className="space-y-6 pt-2">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <FormField label="Pillar Index (2-digit)" description="e.g. 01, 02, 03">
-              <Input
-                value={currentPillar.pillar_number}
-                onChange={(e) => handlePillarFieldChange("pillar_number", e.target.value)}
-                placeholder="01"
-                required
-                disabled={!canChange}
-              />
-            </FormField>
-
-            <FormField label="Pillar Category Badge" description="e.g. PRIVATE SANCTUARY, PRECISION AUDIT">
-              <Input
-                value={currentPillar.badge}
-                onChange={(e) => handlePillarFieldChange("badge", e.target.value)}
-                placeholder="PRIVATE SANCTUARY"
-                required
-                disabled={!canChange}
-              />
-            </FormField>
-
-            <FormField label="Pillar Title" description="e.g. The VIP Delivery Vault">
-              <Input
-                value={currentPillar.title}
-                onChange={(e) => handlePillarFieldChange("title", e.target.value)}
-                placeholder="The VIP Delivery Vault"
-                required
-                disabled={!canChange}
-              />
-            </FormField>
-          </div>
-
-          <FormField label="Pillar Description" description="Elaborates on the experience standard">
-            <Textarea
-              rows={3}
-              value={currentPillar.description}
-              onChange={(e) => handlePillarFieldChange("description", e.target.value)}
-              placeholder="An exclusive private handover suite..."
+          <FormField label="Showroom Title / Name" description="Used for identification, image accessibility alt text, and visit scheduling modal context.">
+            <Input
+              value={currentPillar.title}
+              onChange={(e) => handlePillarFieldChange("title", e.target.value)}
+              placeholder={activePillarIndex === 0 ? "Kakrail Flagship Showroom" : "Gulshan Avenue Showroom"}
               required
               disabled={!canChange}
             />
           </FormField>
 
-          {/* Tags */}
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <FormField label="Feature Tag 1">
-              <Input
-                value={currentPillar.tags[0] || ""}
-                onChange={(e) => handleTagChange(0, e.target.value)}
-                placeholder="e.g. Soundproof Suite"
-                disabled={!canChange}
-              />
-            </FormField>
-
-            <FormField label="Feature Tag 2">
-              <Input
-                value={currentPillar.tags[1] || ""}
-                onChange={(e) => handleTagChange(1, e.target.value)}
-                placeholder="e.g. Ceremonial Reveal"
-                disabled={!canChange}
-              />
-            </FormField>
-          </div>
-
-          {/* Media Image */}
+          {/* Showroom Media Image Upload */}
           <div className="space-y-3">
             <label className="text-sm font-semibold text-text-primary block">
-              Pillar Card Background Media Image
+              Showroom Photographic Image
             </label>
             <div className="flex flex-col sm:flex-row items-start sm:items-center gap-6 p-4 border border-border rounded-xl bg-surface-subtle">
-              <div className="w-48 h-32 rounded-lg overflow-hidden border border-border bg-surface flex-shrink-0 relative">
+              <div className="w-56 h-36 rounded-lg overflow-hidden border border-border bg-surface flex-shrink-0 relative">
                 {currentPillar.imagePreview || currentPillar.image_url ? (
                   <img
                     src={currentPillar.imagePreview || currentPillar.image_url}
@@ -434,12 +381,12 @@ export function ExperienceClient({
 
               <div className="space-y-3 flex-1">
                 <p className="text-xs text-text-secondary">
-                  Recommended size: 1000×667px (or 600×400px aspect ratio). Supports JPG, PNG, WEBP up to 10MB.
+                  Recommended size: 1200×800px (16:10 aspect ratio). Supports high-resolution JPG, PNG, WEBP up to 10MB.
                 </p>
                 <div className="flex items-center gap-3">
                   <label className="inline-flex items-center gap-2 px-4 py-2 border border-border rounded-lg bg-surface text-sm font-medium hover:bg-surface-hover cursor-pointer transition">
                     <Upload className="w-4 h-4 text-text-muted" />
-                    <span>Upload New Image</span>
+                    <span>Upload New Showroom Image</span>
                     <input
                       type="file"
                       accept="image/*"
@@ -456,7 +403,7 @@ export function ExperienceClient({
             </div>
           </div>
 
-          {/* Save Pillar Button */}
+          {/* Save Showroom Button */}
           <div className="flex justify-end pt-4 border-t border-border">
             <Button
               type="button"
@@ -465,7 +412,7 @@ export function ExperienceClient({
               className="flex items-center gap-2 min-w-[150px]"
             >
               <Save className="w-4 h-4" />
-              {savingPillar ? "Saving Pillar..." : `Save Pillar ${currentPillar.pillar_number}`}
+              {savingPillar ? "Saving Showroom..." : `Save Showroom (${currentPillar.title})`}
             </Button>
           </div>
         </div>

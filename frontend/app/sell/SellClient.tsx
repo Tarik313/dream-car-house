@@ -590,8 +590,8 @@ export default function SellClient({
                     background: isDragging
                       ? colors.pillActiveBg
                       : isLight
-                      ? "rgba(248, 250, 252, 0.7)"
-                      : "rgba(18, 21, 28, 0.6)",
+                        ? "rgba(248, 250, 252, 0.7)"
+                        : "rgba(18, 21, 28, 0.6)",
                     borderRadius: "10px",
                     padding: "1.25rem 1rem",
                     textAlign: "center",

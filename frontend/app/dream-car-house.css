@@ -4451,7 +4451,7 @@ button {
 
 @media (min-width: 1024px) {
   .showroom-showcase-grid {
-    grid-template-columns: repeat(3, 1fr);
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 
@@ -4476,9 +4476,16 @@ button {
 .showroom-photo-wrap {
   position: relative;
   width: 100%;
-  height: 290px;
+  aspect-ratio: 16 / 10;
+  min-height: 280px;
   overflow: hidden;
   background: #0a0b0e;
+}
+
+@media (min-width: 768px) {
+  .showroom-photo-wrap {
+    min-height: 380px;
+  }
 }
 
 .showroom-img {
@@ -4489,13 +4496,14 @@ button {
 }
 
 .showroom-photo-card:hover .showroom-img {
-  transform: scale(1.08);
+  transform: scale(1.06);
 }
 
 .showroom-photo-gradient {
   position: absolute;
   inset: 0;
-  background: linear-gradient(180deg, rgba(0, 0, 0, 0.05) 0%, rgba(10, 12, 16, 0.6) 100%);
+  background: linear-gradient(180deg, rgba(0, 0, 0, 0) 50%, rgba(10, 12, 16, 0.35) 100%);
+  pointer-events: none;
 }
 
 .showroom-badge {

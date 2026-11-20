@@ -845,7 +845,7 @@ export const getExperienceSection = cache(async (): Promise<PublicExperienceSect
     const errorJson = (await res.json().catch(() => ({}))) as { error?: string };
     throw new Error(
       errorJson.error ||
-        "Published Experience Section requires at least 3 active pillars (HTTP 422 Unprocessable Entity)."
+        "Published Experience Section requires at least 2 active pillars (HTTP 422 Unprocessable Entity)."
     );
   }
 

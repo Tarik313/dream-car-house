@@ -15,7 +15,7 @@ export default async function ExperienceSectionPage() {
     }
     return (
       <>
-        <PageHeader href="/workspace/content/experience" description="Homepage Experience Pillars" />
+        <PageHeader href="/workspace/content/experience" description="Homepage Showrooms" />
         <State title="Access Forbidden" tone="error">
           <p>{access.error.message}</p>
         </State>
@@ -27,7 +27,7 @@ export default async function ExperienceSectionPage() {
   if (!res.ok) {
     return (
       <>
-        <PageHeader href="/workspace/content/experience" description="Homepage Experience Pillars" />
+        <PageHeader href="/workspace/content/experience" description="Homepage Showrooms" />
         <State title="Failed to Load Experience Section" tone="error">
           <p>{res.error.message}</p>
         </State>
@@ -39,7 +39,7 @@ export default async function ExperienceSectionPage() {
     <>
       <PageHeader
         href="/workspace/content/experience"
-        description="Configure homepage Experience Beyond Ordinary: Section title, subtitle, showroom video reel trigger, and the 3 architectural delivery pillars (VIP Vault, Certified Audit, Bespoke Import)."
+        description="Configure homepage Showrooms section: Section title, visit CTA button, and the 2 showroom photo showcase cards (Kakrail Flagship & Gulshan Avenue)."
       />
       <ExperienceClient
         initialData={res.data}

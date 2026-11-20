@@ -35,9 +35,9 @@ class ExperienceSection(models.Model):
         if self.is_active and self.pk:
             from django.core.exceptions import ValidationError
             active_pillars = self.pillars.filter(is_active=True).count()
-            if active_pillars < 3:
+            if active_pillars < 2:
                 raise ValidationError({
-                    "is_active": _(f"Cannot publish Experience Section with fewer than 3 active pillars (currently has {active_pillars}).")
+                    "is_active": _(f"Cannot publish Experience Section with fewer than 2 active pillars (currently has {active_pillars}).")
                 })
 
     def __str__(self):

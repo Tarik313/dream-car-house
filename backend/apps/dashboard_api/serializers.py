@@ -1669,9 +1669,9 @@ class ExperiencePillarManagementSerializer(serializers.ModelSerializer, Optimize
         if "is_active" in attrs and attrs["is_active"] is False and self.instance:
             if self.instance.section and self.instance.section.is_active:
                 remaining_active = self.instance.section.pillars.filter(is_active=True).exclude(pk=self.instance.pk).count()
-                if remaining_active < 3:
+                if remaining_active < 2:
                     raise serializers.ValidationError({
-                        "is_active": "Cannot deactivate pillar: published Experience Section requires at least 3 active pillars."
+                        "is_active": "Cannot deactivate pillar: published Experience Section requires at least 2 active pillars."
                     })
         return attrs
 
@@ -1718,13 +1718,13 @@ class ExperienceSectionManagementSerializer(serializers.ModelSerializer):
             section = self.instance or ExperienceSection.objects.first()
             if section:
                 active_count = section.pillars.filter(is_active=True).count()
-                if active_count < 3:
+                if active_count < 2:
                     raise serializers.ValidationError({
-                        "is_active": "Cannot publish Experience Section with fewer than 3 active pillars. Please ensure at least 3 pillars are active."
+                        "is_active": "Cannot publish Experience Section with fewer than 2 active pillars. Please ensure at least 2 pillars are active."
                     })
             else:
                 raise serializers.ValidationError({
-                    "is_active": "Cannot publish Experience Section with fewer than 3 active pillars. Please create and activate at least 3 pillars first."
+                    "is_active": "Cannot publish Experience Section with fewer than 2 active pillars. Please create and activate at least 2 pillars first."
                 })
         return attrs
 

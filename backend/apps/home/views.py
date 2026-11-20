@@ -279,13 +279,13 @@ class PublicExperienceSectionAPIView(APIView):
                 status=status.HTTP_404_NOT_FOUND,
             )
         active_pillars = section.pillars.filter(is_active=True).count()
-        if active_pillars < 3:
+        if active_pillars < 2:
             return Response(
                 {
                     "success": False,
                     "error": {
                         "code": "UNPROCESSABLE_ENTITY",
-                        "message": f"Experience section configuration error: requires at least 3 active pillars (found {active_pillars}).",
+                        "message": f"Experience section configuration error: requires at least 2 active pillars (found {active_pillars}).",
                     },
                 },
                 status=status.HTTP_422_UNPROCESSABLE_ENTITY,

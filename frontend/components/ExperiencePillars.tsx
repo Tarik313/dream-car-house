@@ -13,10 +13,6 @@ export default function ExperiencePillars({
   const { openAppointmentModal } = useUI();
 
   const title = experience?.title || "Inside Our Showrooms";
-  const rawSubtitle = experience?.subtitle || "Kakrail & Gulshan • Dhaka, Bangladesh";
-  const subtitle = rawSubtitle.includes("benchmark in high-luxury")
-    ? "Kakrail & Gulshan • Dhaka, Bangladesh"
-    : rawSubtitle;
   const ctaLabel = experience?.video_cta_label || "Schedule a Visit";
 
   const defaultPillars: PublicExperiencePillar[] = [
@@ -40,22 +36,14 @@ export default function ExperiencePillars({
       tags: ["Executive Consultation", "VIP Coffee Bar"],
       order: 2,
     },
-    {
-      id: 3,
-      pillar_number: "03",
-      badge: "VIP SANCTUARY",
-      title: "Private Handover Lounge",
-      description: "Ceremonial Unveiling & VIP Delivery Suite",
-      image: "https://images.unsplash.com/photo-1618843479313-40f8afb4b4d8?auto=format&fit=crop&w=1200&q=85",
-      tags: ["Soundproof Suite", "Ceremonial Reveal"],
-      order: 3,
-    },
   ];
 
-  const pillars =
+  // Exactly 2 showroom cards (Kakrail & Gulshan)
+  const rawPillars =
     experience?.pillars && experience.pillars.length > 0
       ? experience.pillars
       : defaultPillars;
+  const pillars = rawPillars.slice(0, 2);
 
   return (
     <section className="experience-section w-full" id="experience">
@@ -63,7 +51,6 @@ export default function ExperiencePillars({
         <div className="experience-header">
           <div className="experience-header-text">
             <h2 className="experience-title">{title}</h2>
-            <p className="experience-subtitle">{subtitle}</p>
           </div>
           <div className="experience-header-action">
             <button
@@ -80,7 +67,7 @@ export default function ExperiencePillars({
           </div>
         </div>
 
-        {/* Photo-First Showroom Showcase Grid */}
+        {/* 2 Photographic Showroom Showcase Cards - No card text */}
         <div className="showroom-showcase-grid">
           {pillars.map((pillar) => {
             const isGulshan = pillar.title.toLowerCase().includes("gulshan");
@@ -99,6 +86,7 @@ export default function ExperiencePillars({
                 }
                 role="button"
                 tabIndex={0}
+                aria-label={pillar.title}
                 onKeyDown={(e) => {
                   if (e.key === "Enter" || e.key === " ") {
                     openAppointmentModal({
@@ -118,13 +106,6 @@ export default function ExperiencePillars({
                     className="showroom-img"
                   />
                   <div className="showroom-photo-gradient"></div>
-                  <span className="showroom-badge">
-                    {pillar.badge || pillar.pillar_number || "FEATURE"}
-                  </span>
-                </div>
-                <div className="showroom-card-footer">
-                  <h3 className="showroom-card-title">{pillar.title}</h3>
-                  <p className="showroom-card-addr">{pillar.description}</p>
                 </div>
               </div>
             );
