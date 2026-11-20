@@ -13,7 +13,6 @@ export default function ExperiencePillars({
   const { openAppointmentModal } = useUI();
 
   const title = experience?.title || "Inside Our Showrooms";
-  const ctaLabel = experience?.video_cta_label || "Schedule a Visit";
 
   const defaultPillars: PublicExperiencePillar[] = [
     {
@@ -51,19 +50,6 @@ export default function ExperiencePillars({
         <div className="experience-header">
           <div className="experience-header-text">
             <h2 className="experience-title">{title}</h2>
-          </div>
-          <div className="experience-header-action">
-            <button
-              type="button"
-              className="experience-vip-consult-btn"
-              onClick={() => openAppointmentModal({ carName: "Showroom Visit" })}
-              aria-label={ctaLabel}
-            >
-              <span>{ctaLabel}</span>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="experience-btn-arrow">
-                <path d="M5 12h14M12 5l7 7-7 7" />
-              </svg>
-            </button>
           </div>
         </div>
 

@@ -1711,6 +1711,11 @@ class ExperienceSectionManagementSerializer(serializers.ModelSerializer):
             "updated_at",
         ]
         read_only_fields = ["id", "pillars", "updated_at"]
+        extra_kwargs = {
+            "subtitle": {"required": False, "allow_blank": True},
+            "video_cta_label": {"required": False, "allow_blank": True},
+            "video_target": {"required": False, "allow_blank": True},
+        }
 
     def validate(self, attrs):
         is_active = attrs.get("is_active", self.instance.is_active if self.instance else False)

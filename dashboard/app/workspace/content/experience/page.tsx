@@ -39,7 +39,7 @@ export default async function ExperienceSectionPage() {
     <>
       <PageHeader
         href="/workspace/content/experience"
-        description="Configure homepage Showrooms section: Section title, visit CTA button, and the 2 showroom photo showcase cards (Kakrail Flagship & Gulshan Avenue)."
+        description="Configure homepage Showrooms section: Section title and the 2 showroom photo showcase cards (Kakrail Flagship & Gulshan Avenue)."
       />
       <ExperienceClient
         initialData={res.data}

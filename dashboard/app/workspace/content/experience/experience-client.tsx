@@ -33,9 +33,6 @@ export function ExperienceClient({
 
   const [sectionData, setSectionData] = useState({
     title: initialData?.title || "Inside Our Showrooms",
-    subtitle: initialData?.subtitle || "",
-    video_cta_label: initialData?.video_cta_label || "Schedule a Visit",
-    video_target: initialData?.video_target || "visit",
     is_active: initialData?.is_active ?? true,
   });
 
@@ -168,10 +165,9 @@ export function ExperienceClient({
     try {
       const fd = new FormData();
       fd.append("title", sectionData.title);
-      // Subtitle is removed from UI as requested
       fd.append("subtitle", "");
-      fd.append("video_cta_label", sectionData.video_cta_label);
-      fd.append("video_target", sectionData.video_target);
+      fd.append("video_cta_label", "");
+      fd.append("video_target", "");
       fd.append("is_active", sectionData.is_active ? "true" : "false");
 
       const res = await updateExperienceSectionAction(fd);
@@ -264,7 +260,7 @@ export function ExperienceClient({
               Showrooms Section Header
             </h3>
             <p className="text-sm text-text-secondary mt-1">
-              Controls the section heading and the visit scheduling button.
+              Controls the section heading on the homepage.
             </p>
           </div>
           <div className="flex items-center gap-3">
@@ -277,27 +273,15 @@ export function ExperienceClient({
           </div>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <FormField label="Section Title">
-            <Input
-              value={sectionData.title}
-              onChange={(e) => setSectionData({ ...sectionData, title: e.target.value })}
-              placeholder="Inside Our Showrooms"
-              required
-              disabled={!canChange}
-            />
-          </FormField>
-
-          <FormField label="Visit CTA Button Label">
-            <Input
-              value={sectionData.video_cta_label}
-              onChange={(e) => setSectionData({ ...sectionData, video_cta_label: e.target.value })}
-              placeholder="Schedule a Visit"
-              required
-              disabled={!canChange}
-            />
-          </FormField>
-        </div>
+        <FormField label="Section Title">
+          <Input
+            value={sectionData.title}
+            onChange={(e) => setSectionData({ ...sectionData, title: e.target.value })}
+            placeholder="Inside Our Showrooms"
+            required
+            disabled={!canChange}
+          />
+        </FormField>
 
         <div className="flex justify-end">
           <Button

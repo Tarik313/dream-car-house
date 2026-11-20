@@ -10,17 +10,20 @@ class ExperienceSection(models.Model):
         verbose_name=_("Section Title"),
     )
     subtitle = models.TextField(
-        default="Kakrail & Gulshan • Dhaka, Bangladesh",
+        default="",
+        blank=True,
         verbose_name=_("Section Subtitle"),
     )
     video_cta_label = models.CharField(
         max_length=100,
-        default="Watch Showroom Reel",
+        default="",
+        blank=True,
         verbose_name=_("Video Button Label"),
     )
     video_target = models.CharField(
         max_length=255,
-        default="reel",
+        default="",
+        blank=True,
         verbose_name=_("Video Modal Identifier / URL"),
         help_text=_("Key passed to video modal (e.g. 'reel') or external video URL."),
     )
