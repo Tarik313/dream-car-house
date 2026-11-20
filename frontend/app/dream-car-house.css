@@ -2765,6 +2765,59 @@ button {
   font-weight: 700 !important;
 }
 
+[data-theme="light"] .footer-brand-tagline {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .contact-clean-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .contact-clean-val {
+  color: #0f172a !important;
+}
+
+[data-theme="light"] .contact-clean-val:hover {
+  color: #d97706 !important;
+}
+
+[data-theme="light"] .hours-subtext {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .footer-compare-btn {
+  color: #1e293b !important;
+  font-weight: 600 !important;
+}
+
+[data-theme="light"] .footer-compare-btn:hover {
+  color: #d97706 !important;
+}
+
+[data-theme="light"] .social-icon-circle {
+  background: rgba(15, 23, 42, 0.05) !important;
+  border: 1px solid rgba(15, 23, 42, 0.16) !important;
+  color: #475569 !important;
+}
+
+[data-theme="light"] .social-icon-circle.social-fb:hover {
+  background: #1877f2 !important;
+  border-color: #1877f2 !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .social-icon-circle.social-ig:hover {
+  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
+  border-color: transparent !important;
+  color: #ffffff !important;
+}
+
+[data-theme="light"] .social-icon-circle.social-yt:hover {
+  background: #ff0000 !important;
+  border-color: #ff0000 !important;
+  color: #ffffff !important;
+}
+
 [data-theme="light"] .footer-bottom-modern,
 [data-theme="light"] .footer-bottom {
   border-top-color: rgba(148, 163, 184, 0.4) !important;
@@ -6608,8 +6661,8 @@ button {
 
 @media (min-width: 992px) {
   .footer-grid-3col {
-    grid-template-columns: minmax(280px, 330px) minmax(160px, 220px) 1.35fr;
-    gap: clamp(2rem, 3.2vw, 3.8rem);
+    grid-template-columns: minmax(280px, 330px) minmax(180px, 220px) minmax(280px, 1.25fr);
+    gap: clamp(2.5rem, 4.5vw, 5rem);
     align-items: start;
   }
 }
@@ -6711,74 +6764,144 @@ button {
   white-space: nowrap;
 }
 
-/* Official Social Media Marque Icons (Smaller Size on the Right) */
-.footer-social-icons-row {
+/* Footer Brand Header: Logo flush with Col 2 & 3 top, Tagline underneath */
+.footer-brand-head {
+  margin-top: -6px;
+  margin-bottom: 0.85rem;
+}
+
+.footer-logo-link {
+  display: inline-block;
+  line-height: 1;
+}
+
+.footer-brand-tagline {
+  font-size: 0.84rem;
+  color: #94a3b8;
+  margin: 0.5rem 0 0.25rem 0;
+  line-height: 1.45;
+  max-width: 320px;
+}
+
+/* Footer Clean Contact Details Column (No cluttered addresses) */
+.footer-contact-clean-wrap {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: 1.5rem;
+}
+
+.contact-clean-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.85rem;
+}
+
+.contact-clean-icon {
+  flex-shrink: 0;
+  margin-top: 3px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.contact-clean-body {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.contact-clean-label {
+  font-size: 0.72rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: #94a3b8;
+}
+
+.contact-clean-val {
+  font-size: 0.94rem;
+  color: #f1f5f9;
+  text-decoration: none;
+  line-height: 1.45;
+  transition: color 0.2s ease;
+}
+
+.contact-clean-val:hover {
+  color: #ffffff;
+}
+
+.contact-hours-row {
   display: flex;
   align-items: center;
   gap: 0.55rem;
-  margin-top: 1.25rem;
-  padding-top: 0.2rem;
+  flex-wrap: wrap;
 }
 
-.social-icon-btn {
+.hours-val {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.hours-subtext {
+  font-size: 0.82rem;
+  color: #94a3b8;
+}
+
+/* Official Social Media Marque Icons (Minimal Luxury Glass Circles) */
+.footer-social-icons-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding-top: 0.25rem;
+}
+
+.social-icon-circle {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+  color: #9ca3af;
   text-decoration: none;
-  transition: all 0.22s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: all 0.24s cubic-bezier(0.16, 1, 0.3, 1);
   box-sizing: border-box;
   flex-shrink: 0;
 }
 
-.social-icon-btn.social-fb {
-  background: #1877f2 !important;
-  border: 1px solid #1877f2 !important;
-  color: #ffffff !important;
-  box-shadow: 0 3px 10px rgba(24, 119, 242, 0.3);
-}
-
-.social-icon-btn.social-fb:hover {
-  background: #166fe5 !important;
-  border-color: #166fe5 !important;
-  box-shadow: 0 5px 14px rgba(24, 119, 242, 0.45);
-  transform: translateY(-2px) scale(1.06);
-}
-
-.social-icon-btn.social-ig {
-  background: linear-gradient(45deg, #f09433 0%, #e6683c 25%, #dc2743 50%, #cc2366 75%, #bc1888 100%) !important;
-  border: 1px solid transparent !important;
-  color: #ffffff !important;
-  box-shadow: 0 3px 10px rgba(220, 39, 67, 0.3);
-}
-
-.social-icon-btn.social-ig:hover {
-  filter: brightness(1.12);
-  box-shadow: 0 5px 14px rgba(225, 48, 108, 0.45);
-  transform: translateY(-2px) scale(1.06);
-}
-
-.social-icon-btn.social-yt {
-  background: #ff0000 !important;
-  border: 1px solid #ff0000 !important;
-  color: #ffffff !important;
-  box-shadow: 0 3px 10px rgba(255, 0, 0, 0.3);
-}
-
-.social-icon-btn.social-yt:hover {
-  background: #e60000 !important;
-  border-color: #e60000 !important;
-  box-shadow: 0 5px 14px rgba(255, 0, 0, 0.45);
-  transform: translateY(-2px) scale(1.06);
-}
-
-.social-icon-btn svg {
+.social-icon-circle svg {
   fill: currentColor !important;
-  width: 15px;
-  height: 15px;
-  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  transition: transform 0.2s ease;
+}
+
+.social-icon-circle.social-fb:hover {
+  background: rgba(24, 119, 242, 0.15) !important;
+  border-color: #1877f2 !important;
+  color: #1877f2 !important;
+  box-shadow: 0 4px 14px rgba(24, 119, 242, 0.35);
+  transform: translateY(-2px);
+}
+
+.social-icon-circle.social-ig:hover {
+  background: rgba(225, 48, 108, 0.15) !important;
+  border-color: #e1306c !important;
+  color: #e1306c !important;
+  box-shadow: 0 4px 14px rgba(225, 48, 108, 0.35);
+  transform: translateY(-2px);
+}
+
+.social-icon-circle.social-yt:hover {
+  background: rgba(255, 0, 0, 0.15) !important;
+  border-color: #ff0000 !important;
+  color: #ff0000 !important;
+  box-shadow: 0 4px 14px rgba(255, 0, 0, 0.35);
+  transform: translateY(-2px);
 }
 
 .footer-heading {
@@ -6807,16 +6930,39 @@ button {
   display: block;
 }
 
+/* Universal Map Embed Wrapper */
 .map-embed-wrapper-modern {
   position: relative;
+  width: 100%;
+  border-radius: 12px;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  background: #111111;
+  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5);
+}
+
+/* Footer specific compact sizing */
+.footer-col-map .map-embed-wrapper-modern {
   width: 100%;
   max-width: 330px;
   height: 165px;
   border-radius: 10px;
-  overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  background: #111111;
   box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.45);
+}
+
+/* Contact Page full-width, large immersive map */
+.contact-map-card .map-embed-wrapper-modern {
+  width: 100% !important;
+  max-width: 100% !important;
+  height: 480px !important;
+  border-radius: 14px;
+  box-shadow: 0 12px 35px rgba(0, 0, 0, 0.55);
+}
+
+@media (max-width: 768px) {
+  .contact-map-card .map-embed-wrapper-modern {
+    height: 340px !important;
+  }
 }
 
 .map-embed-wrapper-modern iframe {
@@ -6924,7 +7070,9 @@ button {
   gap: 0.7rem;
 }
 
-.footer-shortcut-list a {
+.footer-shortcut-list a,
+.footer-shortcut-list button,
+.footer-compare-btn {
   color: #d1d5db;
   text-decoration: none;
   font-size: 0.92rem;
@@ -6932,6 +7080,12 @@ button {
   align-items: center;
   gap: 0.5rem;
   transition: all 0.2s ease;
+  background: none;
+  border: none;
+  padding: 0;
+  cursor: pointer;
+  font-family: inherit;
+  text-align: left;
 }
 
 .shortcut-arrow {
@@ -6940,12 +7094,16 @@ button {
   transition: transform 0.2s;
 }
 
-.footer-shortcut-list a:hover {
+.footer-shortcut-list a:hover,
+.footer-shortcut-list button:hover,
+.footer-compare-btn:hover {
   color: #ffffff;
   transform: translateX(4px);
 }
 
-.footer-shortcut-list a:hover .shortcut-arrow {
+.footer-shortcut-list a:hover .shortcut-arrow,
+.footer-shortcut-list button:hover .shortcut-arrow,
+.footer-compare-btn:hover .shortcut-arrow {
   transform: translateX(2px);
 }
 

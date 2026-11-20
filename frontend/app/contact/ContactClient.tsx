@@ -222,13 +222,28 @@ export default function ContactClient({
             </div>
           </div>
 
-          <div className="map-embed-wrapper-modern" style={{ height: "400px" }}>
+          <div className="map-embed-wrapper-modern" style={{ height: "480px" }}>
             <iframe
               src={currentBranch.embed_map || "https://maps.google.com"}
               loading="lazy"
               title={`DREAM CAR HOUSE Location - ${currentBranch.name}`}
               allowFullScreen
             />
+            <div className="map-glow-border"></div>
+
+            {/* Beg Autos Style Prominent Red Pin Marker Sign */}
+            <div className="map-red-marker-overlay">
+              <span className="map-marker-pulse"></span>
+              <div className="map-marker-pin">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="#ef4444">
+                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7z" />
+                  <circle cx="12" cy="9" r="2.8" fill="#ffffff" />
+                </svg>
+              </div>
+              <span className="map-marker-label">
+                DREAM CAR HOUSE • {currentBranch.short_name || currentBranch.name}
+              </span>
+            </div>
           </div>
 
           <div className="contact-map-footer">

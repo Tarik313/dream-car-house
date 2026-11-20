@@ -13,7 +13,7 @@ export interface ParsedHours {
 }
 
 export function parseShowroomHours(hoursText?: string | null): ParsedHours {
-  const defaultText = "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)";
+  const defaultText = "Saturday – Thursday: 10:00 AM – 11:00 PM (Friday Closed)";
   const raw = (hoursText && hoursText.trim().length > 0 ? hoursText.trim() : defaultText);
 
   // Check if Friday is explicitly marked as closed
@@ -25,8 +25,8 @@ export function parseShowroomHours(hoursText?: string | null): ParsedHours {
   );
 
   let openMinutes = 10 * 60; // 10:00 AM
-  let closeMinutes = 22 * 60; // 10:00 PM (22:00)
-  let displayHours = "10:00 AM – 10:00 PM";
+  let closeMinutes = 23 * 60; // 11:00 PM (23:00)
+  let displayHours = "10:00 AM – 11:00 PM";
 
   if (timeMatch) {
     let startHour = parseInt(timeMatch[1], 10);
