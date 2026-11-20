@@ -2191,29 +2191,72 @@ button {
   background: #e8edf3 !important;
 }
 
-[data-theme="light"] .socials-header-text h2 {
+[data-theme="light"] .socials-header-text h2,
+[data-theme="light"] .socials-header-text .section-h2 {
   color: #0a0f1d !important;
 }
 
-[data-theme="light"] .socials-header-text p {
+[data-theme="light"] .socials-header-text p,
+[data-theme="light"] .socials-subtitle {
   color: #475569 !important;
 }
 
-[data-theme="light"] .atelier-journal-card {
-  background: linear-gradient(155deg, #ffffff 0%, #f4f7fb 100%) !important;
-  border: 1px solid rgba(148, 163, 184, 0.32) !important;
-  box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08), inset 0 1px 0 rgba(255, 255, 255, 0.95) !important;
+[data-theme="light"] .socials-stats-badge {
+  background: #ffffff !important;
+  border: 1px solid rgba(148, 163, 184, 0.4) !important;
+  box-shadow: 0 4px 14px rgba(15, 23, 42, 0.06) !important;
 }
 
-[data-theme="light"] .journal-car-title {
+[data-theme="light"] .stats-num {
   color: #0a0f1d !important;
 }
 
-[data-theme="light"] .atelier-back-title {
+[data-theme="light"] .stats-label {
+  color: #475569 !important;
+  font-weight: 600;
+}
+
+[data-theme="light"] .atelier-flip-back {
+  background: #ffffff !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 16px 36px rgba(15, 23, 42, 0.12) !important;
   color: #0a0f1d !important;
 }
 
-[data-theme="light"] .atelier-back-header p {
+[data-theme="light"] .atelier-back-title,
+[data-theme="light"] .atelier-back-title-sm {
+  color: #0a0f1d !important;
+}
+
+[data-theme="light"] .atelier-back-desc {
+  color: #475569 !important;
+}
+
+[data-theme="light"] .atelier-back-num {
+  color: #94a3b8 !important;
+}
+
+[data-theme="light"] .atelier-spec-box,
+[data-theme="light"] .spec-tag-item {
+  background: #f1f5f9 !important;
+  border: 1px solid rgba(148, 163, 184, 0.28) !important;
+}
+
+[data-theme="light"] .spec-label {
+  color: #64748b !important;
+}
+
+[data-theme="light"] .spec-value {
+  color: #0a0f1d !important;
+}
+
+[data-theme="light"] .atelier-media-footer {
+  background: #ffffff !important;
+  border: 1px solid rgba(148, 163, 184, 0.35) !important;
+  box-shadow: 0 4px 20px rgba(15, 23, 42, 0.06) !important;
+}
+
+[data-theme="light"] .media-footer-desc {
   color: #475569 !important;
 }
 
