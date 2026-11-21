@@ -187,7 +187,7 @@ export default function BrandRunway({
   }, [calculatePageSize]);
 
   const filterByBrand = (brandName: string) => {
-    router.push(`/inventory?brand=${encodeURIComponent(brandName)}`);
+    router.push(`/inventory/?brand=${encodeURIComponent(brandName)}`);
   };
 
   // Run the majestic luxury car cruise with real-time wake synchronization

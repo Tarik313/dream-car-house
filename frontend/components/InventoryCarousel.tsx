@@ -304,7 +304,7 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehic
       <div className="luxury-container px-4 sm:px-6 lg:px-8">
         <div className="section-head">
           <h2 className="section-h2">Current Inventory</h2>
-          <Link className="see-all-link" href="/inventory">
+          <Link className="see-all-link" href="/inventory/" prefetch={true}>
             See All ({allInventory.length})
           </Link>
         </div>

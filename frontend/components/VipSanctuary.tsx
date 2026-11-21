@@ -66,7 +66,7 @@ export default function VipSanctuary({
 
   const primaryCtaLabel = sanctuary?.primary_cta_label || "Schedule Private Viewing";
   const secondaryCtaLabel = sanctuary?.secondary_cta_label || "Browse Available Vault →";
-  const secondaryCtaUrl = sanctuary?.secondary_cta_url || "/inventory";
+  const secondaryCtaUrl = sanctuary?.secondary_cta_url || "/inventory/";
 
   const bgImage =
     sanctuary?.background_image ||
@@ -162,7 +162,7 @@ export default function VipSanctuary({
                 </button>
               )}
 
-              <Link href={secondaryCtaUrl} className="vip-secondary-btn">
+              <Link href={secondaryCtaUrl} prefetch={true} className="vip-secondary-btn">
                 <span>{secondaryCtaLabel}</span>
               </Link>
             </div>

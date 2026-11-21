@@ -25,9 +25,9 @@ export default function Hero({ initialData }: HeroProps = {}) {
   const ctaButtons: PublicHeroCta[] = initialData?.cta_buttons || [];
 
   const defaultCtaButtons: PublicHeroCta[] = [
-    { label: "Brand New", action: "link", destination: "/inventory?type=BRAND_NEW" },
-    { label: "Reconditioned", action: "link", destination: "/inventory?type=RECONDITIONED" },
-    { label: "Pre-Owned", action: "link", destination: "/inventory?type=PRE_OWNED" },
+    { label: "Brand New", action: "link", destination: "/inventory/?type=BRAND_NEW" },
+    { label: "Reconditioned", action: "link", destination: "/inventory/?type=RECONDITIONED" },
+    { label: "Pre-Owned", action: "link", destination: "/inventory/?type=PRE_OWNED" },
   ];
 
   let resolvedButtons: PublicHeroCta[] =
@@ -37,7 +37,7 @@ export default function Hero({ initialData }: HeroProps = {}) {
     resolvedButtons.splice(1, 0, {
       label: "Reconditioned",
       action: "link",
-      destination: "/inventory?type=RECONDITIONED",
+      destination: "/inventory/?type=RECONDITIONED",
     });
   }
 
@@ -209,7 +209,8 @@ export default function Hero({ initialData }: HeroProps = {}) {
                 <Link
                   key={index}
                   className="hero-pill-btn"
-                  href={btn.destination || "/inventory"}
+                  href={btn.destination || "/inventory/"}
+                  prefetch={true}
                 >
                   {btn.label}
                 </Link>

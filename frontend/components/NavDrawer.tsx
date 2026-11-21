@@ -47,17 +47,17 @@ export default function NavDrawer({
     {
       num: "01",
       title: "BRAND NEW",
-      href: "/inventory?type=BRAND_NEW",
+      href: "/inventory/?type=BRAND_NEW",
     },
     {
       num: "02",
       title: "RECONDITIONED",
-      href: "/inventory?type=RECONDITIONED",
+      href: "/inventory/?type=RECONDITIONED",
     },
     {
       num: "03",
       title: "PRE-OWNED",
-      href: "/inventory?type=PRE_OWNED",
+      href: "/inventory/?type=PRE_OWNED",
     },
     {
       num: "04",
@@ -68,11 +68,11 @@ export default function NavDrawer({
 
   const mainLinks = [
     { label: "Home", href: "/" },
-    { label: "Inventory", href: "/inventory" },
-    { label: "Gallery & Media", href: "/gallery" },
-    { label: "Sell Your Luxury Car", href: "/sell" },
-    { label: "About Us", href: "/about" },
-    { label: "Location & Contact", href: "/contact" },
+    { label: "Inventory", href: "/inventory/" },
+    { label: "Gallery & Media", href: "/gallery/" },
+    { label: "Sell Your Luxury Car", href: "/sell/" },
+    { label: "About Us", href: "/about/" },
+    { label: "Location & Contact", href: "/contact/" },
   ];
 
   return (
@@ -124,7 +124,8 @@ export default function NavDrawer({
             ) : (
               <Link
                 key={cat.title}
-                href={cat.href || "/inventory"}
+                href={cat.href || "/inventory/"}
+                prefetch={true}
                 className={`stair-cat-col stair-col-${idx + 1}`}
                 onClick={closeDrawer}
               >
@@ -184,6 +185,7 @@ export default function NavDrawer({
               <Link
                 key={item.label}
                 href={item.href}
+                prefetch={true}
                 onClick={closeDrawer}
                 className="stair-nav-link"
                 style={{ transitionDelay: `${0.18 + i * 0.04}s` }}
@@ -198,15 +200,15 @@ export default function NavDrawer({
           <div className="stair-mobile-grid">
             <span className="stair-mobile-grid-label">COLLECTIONS</span>
             <div className="stair-grid-cards">
-              <Link href="/inventory?type=BRAND_NEW" onClick={closeDrawer} className="stair-grid-card">
+              <Link href="/inventory/?type=BRAND_NEW" prefetch={true} onClick={closeDrawer} className="stair-grid-card">
                 <span>BRAND NEW</span>
                 <span className="stair-card-chevron">→</span>
               </Link>
-              <Link href="/inventory?type=RECONDITIONED" onClick={closeDrawer} className="stair-grid-card">
+              <Link href="/inventory/?type=RECONDITIONED" prefetch={true} onClick={closeDrawer} className="stair-grid-card">
                 <span>RECONDITIONED</span>
                 <span className="stair-card-chevron">→</span>
               </Link>
-              <Link href="/inventory?type=PRE_OWNED" onClick={closeDrawer} className="stair-grid-card">
+              <Link href="/inventory/?type=PRE_OWNED" prefetch={true} onClick={closeDrawer} className="stair-grid-card">
                 <span>PRE-OWNED</span>
                 <span className="stair-card-chevron">→</span>
               </Link>

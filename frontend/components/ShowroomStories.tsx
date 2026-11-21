@@ -352,7 +352,7 @@ export default function ShowroomStories({
               className="story-primary-cta"
               onClick={(e) => {
                 e.stopPropagation();
-                handleCtaClick(current.cta_link || "/inventory");
+                handleCtaClick(current.cta_link || "/inventory/");
               }}
             >
               <span>{current.cta_text || "Inspect Vehicle"}</span>

@@ -253,22 +253,22 @@ export default function Footer({
                 </Link>
               </li>
               <li>
-                <Link href="/inventory">
+                <Link href="/inventory/" prefetch={true}>
                   <span className="shortcut-arrow">›</span> Inventory
                 </Link>
               </li>
               <li>
-                <Link href="/gallery">
+                <Link href="/gallery/" prefetch={true}>
                   <span className="shortcut-arrow">›</span> Gallery & Media
                 </Link>
               </li>
               <li>
-                <Link href="/about">
+                <Link href="/about/" prefetch={true}>
                   <span className="shortcut-arrow">›</span> About Us
                 </Link>
               </li>
               <li>
-                <Link href="/contact">
+                <Link href="/contact/" prefetch={true}>
                   <span className="shortcut-arrow">›</span> Contact
                 </Link>
               </li>
@@ -282,7 +282,7 @@ export default function Footer({
                 </button>
               </li>
               <li>
-                <Link href="/sell">
+                <Link href="/sell/" prefetch={true}>
                   <span className="shortcut-arrow">›</span> Sell Your Car
                 </Link>
               </li>
@@ -407,7 +407,7 @@ export default function Footer({
           <div className="footer-sub-links">
             <span className="footer-sub-label">Confidential Private Concierge Advisory</span>
             <span className="sep">•</span>
-            <Link href="/about" className="footer-sub-link">
+            <Link href="/about/" prefetch={true} className="footer-sub-link">
               Showroom Heritage
             </Link>
           </div>

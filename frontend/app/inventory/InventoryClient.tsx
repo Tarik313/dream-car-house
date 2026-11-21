@@ -191,7 +191,7 @@ function InventoryContent({
           sp.delete("q");
         }
         const qs = sp.toString();
-        router.replace(`/inventory${qs ? `?${qs}` : ""}`, { scroll: false });
+        router.replace(`/inventory/${qs ? `?${qs}` : ""}`, { scroll: false });
       }
     }, 380);
 
@@ -255,7 +255,7 @@ function InventoryContent({
     if (pStr) sp.set("price_range", pStr);
 
     const qs = sp.toString();
-    router.replace(`/inventory${qs ? `?${qs}` : ""}`, { scroll: false });
+    router.replace(`/inventory/${qs ? `?${qs}` : ""}`, { scroll: false });
   };
 
   const isPriceActive = priceRange[0] > 0 || priceRange[1] < MAX_PRICE_LIMIT;
@@ -335,7 +335,7 @@ function InventoryContent({
     setPriceRange([0, MAX_PRICE_LIMIT]);
     setTempPriceRange([0, MAX_PRICE_LIMIT]);
     setIsPriceOpen(false);
-    router.replace("/inventory", { scroll: false });
+    router.replace("/inventory/", { scroll: false });
   };
 
   // Dual thumb position percentage

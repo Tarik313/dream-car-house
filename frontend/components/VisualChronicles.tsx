@@ -53,7 +53,7 @@ export default function VisualChronicles({
         { label: "Induction", value: "Showroom Vault" },
       ],
       cta_label: "Explore Available Inventory",
-      cta_url: "/inventory",
+      cta_url: "/inventory/",
     },
     {
       id: 2,
@@ -94,7 +94,7 @@ export default function VisualChronicles({
         { label: "Spec 3", value: "Sport Chrono" },
       ],
       cta_label: "View Spotlight",
-      cta_url: "/inventory",
+      cta_url: "/inventory/",
     },
     {
       id: 4,
@@ -114,7 +114,7 @@ export default function VisualChronicles({
         { label: "Spec 3", value: "Ambient 64" },
       ],
       cta_label: "View Spotlight",
-      cta_url: "/gallery",
+      cta_url: "/gallery/",
     },
     {
       id: 5,
@@ -134,7 +134,7 @@ export default function VisualChronicles({
         { label: "Spec 3", value: "All-Wheel Steer" },
       ],
       cta_label: "View Spotlight",
-      cta_url: "/inventory",
+      cta_url: "/inventory/",
     },
   ];
 
@@ -213,7 +213,8 @@ export default function VisualChronicles({
 
                 <div className="atelier-back-footer">
                   <Link
-                    href={heroItem.cta_url || "/inventory"}
+                    href={heroItem.cta_url || "/inventory/"}
+                    prefetch={true}
                     className="atelier-flip-action-btn"
                     onClick={(e) => e.stopPropagation()}
                   >
@@ -336,7 +337,8 @@ export default function VisualChronicles({
 
                   <div className="atelier-back-footer">
                     <Link
-                      href={triItem.cta_url || "/inventory"}
+                      href={triItem.cta_url || "/inventory/"}
+                      prefetch={true}
                       className="atelier-flip-action-btn"
                       onClick={(e) => e.stopPropagation()}
                     >
