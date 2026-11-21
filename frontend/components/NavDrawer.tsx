@@ -3,6 +3,7 @@
 import React, { useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
+import { usePathname } from "next/navigation";
 import { useUI } from "@/lib/UIContext";
 import type { PublicSiteSettings, PublicShowroomBranch } from "@/lib/types";
 
@@ -13,12 +14,25 @@ export default function NavDrawer({
   branches?: PublicShowroomBranch[] | null;
 } = {}) {
   const { isDrawerOpen, closeDrawer, openAppointmentModal, openCompareModal, theme } = useUI();
+  const pathname = usePathname();
   const isDayMode = theme === "light";
   const logoSrc = isDayMode
     ? (settings?.logo_light || settings?.logo || "/assets/dch-logo.webp")
     : (settings?.logo || "/assets/dch-logo.webp");
   const rawWa = settings?.whatsapp || settings?.hotline || "8801615121312";
   const waNumber = rawWa.replace(/[^\d]/g, "") || "8801615121312";
+
+  // Auto-close drawer whenever pathname/route changes
+  useEffect(() => {
+    closeDrawer();
+  }, [pathname]);
+
+  // Graceful navigation click handler to ensure Next.js starts soft transition before drawer hides
+  const handleNavClick = () => {
+    setTimeout(() => {
+      closeDrawer();
+    }, 120);
+  };
 
   // Close on Escape key press
   useEffect(() => {
@@ -127,7 +141,7 @@ export default function NavDrawer({
                 href={cat.href || "/inventory/"}
                 prefetch={true}
                 className={`stair-cat-col stair-col-${idx + 1}`}
-                onClick={closeDrawer}
+                onClick={handleNavClick}
               >
                 <div className="stair-col-inner">
                   <div className="stair-col-top">
@@ -155,7 +169,7 @@ export default function NavDrawer({
         <aside className="stair-right-drawer" aria-label="Main Navigation">
           {/* Header Row: Brand Logo & Circular Close Button */}
           <div className="stair-drawer-header">
-            <Link href="/" onClick={closeDrawer} className="stair-drawer-logo">
+            <Link href="/" onClick={handleNavClick} className="stair-drawer-logo">
               <Image
                 src={logoSrc}
                 alt="DREAM CAR HOUSE Logo"
@@ -186,7 +200,7 @@ export default function NavDrawer({
                 key={item.label}
                 href={item.href}
                 prefetch={true}
-                onClick={closeDrawer}
+                onClick={handleNavClick}
                 className="stair-nav-link"
                 style={{ transitionDelay: `${0.18 + i * 0.04}s` }}
               >
@@ -200,15 +214,15 @@ export default function NavDrawer({
           <div className="stair-mobile-grid">
             <span className="stair-mobile-grid-label">COLLECTIONS</span>
             <div className="stair-grid-cards">
-              <Link href="/inventory/?type=BRAND_NEW" prefetch={true} onClick={closeDrawer} className="stair-grid-card">
+              <Link href="/inventory/?type=BRAND_NEW" prefetch={true} onClick={handleNavClick} className="stair-grid-card">
                 <span>BRAND NEW</span>
                 <span className="stair-card-chevron">→</span>
               </Link>
-              <Link href="/inventory/?type=RECONDITIONED" prefetch={true} onClick={closeDrawer} className="stair-grid-card">
+              <Link href="/inventory/?type=RECONDITIONED" prefetch={true} onClick={handleNavClick} className="stair-grid-card">
                 <span>RECONDITIONED</span>
                 <span className="stair-card-chevron">→</span>
               </Link>
-              <Link href="/inventory/?type=PRE_OWNED" prefetch={true} onClick={closeDrawer} className="stair-grid-card">
+              <Link href="/inventory/?type=PRE_OWNED" prefetch={true} onClick={handleNavClick} className="stair-grid-card">
                 <span>PRE-OWNED</span>
                 <span className="stair-card-chevron">→</span>
               </Link>

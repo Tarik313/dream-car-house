@@ -417,9 +417,8 @@ function InventoryContent({
               setTempPriceRange(priceRange);
               setIsPriceOpen((prev) => !prev);
             }}
-            className={`price-popover-trigger ${isPriceActive ? "is-active" : ""} ${
-              isPriceOpen ? "is-open" : ""
-            }`}
+            className={`price-popover-trigger ${isPriceActive ? "is-active" : ""} ${isPriceOpen ? "is-open" : ""
+              }`}
             aria-expanded={isPriceOpen}
             aria-haspopup="true"
           >

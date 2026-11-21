@@ -59,24 +59,17 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehic
   useEffect(() => {
     measureWidth();
     // Re-measure after initial renders and image loads
-    const t1 = setTimeout(measureWidth, 200);
-    const t2 = setTimeout(measureWidth, 600);
-    const t3 = setTimeout(measureWidth, 1200);
-
-    let ro: ResizeObserver | null = null;
-    if (typeof ResizeObserver !== "undefined" && trackRef.current) {
-      ro = new ResizeObserver(() => {
-        measureWidth();
-      });
-      ro.observe(trackRef.current);
-    }
+    const t1 = setTimeout(measureWidth, 150);
+    const t2 = setTimeout(measureWidth, 500);
+    const t3 = setTimeout(measureWidth, 1000);
+    const t4 = setTimeout(measureWidth, 2000);
 
     window.addEventListener("resize", measureWidth);
     return () => {
       clearTimeout(t1);
       clearTimeout(t2);
       clearTimeout(t3);
-      if (ro) ro.disconnect();
+      clearTimeout(t4);
       window.removeEventListener("resize", measureWidth);
     };
   }, [measureWidth]);
