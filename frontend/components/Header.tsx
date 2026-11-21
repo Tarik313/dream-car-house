@@ -28,6 +28,7 @@ export default function Header({ settings }: { settings?: PublicSiteSettings } =
 
   useEffect(() => {
     let ticking = false;
+    lastScrollYRef.current = window.scrollY || 0;
     const handleScroll = () => {
       if (!ticking) {
         window.requestAnimationFrame(() => {

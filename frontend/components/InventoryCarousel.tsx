@@ -58,11 +58,25 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehic
 
   useEffect(() => {
     measureWidth();
-    // Re-measure after images load
-    const timer = setTimeout(measureWidth, 500);
+    // Re-measure after initial renders and image loads
+    const t1 = setTimeout(measureWidth, 200);
+    const t2 = setTimeout(measureWidth, 600);
+    const t3 = setTimeout(measureWidth, 1200);
+
+    let ro: ResizeObserver | null = null;
+    if (typeof ResizeObserver !== "undefined" && trackRef.current) {
+      ro = new ResizeObserver(() => {
+        measureWidth();
+      });
+      ro.observe(trackRef.current);
+    }
+
     window.addEventListener("resize", measureWidth);
     return () => {
-      clearTimeout(timer);
+      clearTimeout(t1);
+      clearTimeout(t2);
+      clearTimeout(t3);
+      if (ro) ro.disconnect();
       window.removeEventListener("resize", measureWidth);
     };
   }, [measureWidth]);
@@ -73,7 +87,17 @@ export default function InventoryCarousel({ vehicles }: { vehicles?: PublicVehic
 
     const tick = () => {
       const track = trackRef.current;
-      const singleWidth = singleWidthRef.current;
+      let singleWidth = singleWidthRef.current;
+
+      // On-the-fly recovery if initial layout was delayed
+      if (track && singleWidth <= 0 && track.scrollWidth > 0) {
+        singleWidth = track.scrollWidth / 3;
+        singleWidthRef.current = singleWidth;
+        if (posRef.current === 0) {
+          posRef.current = -singleWidth;
+          track.style.transform = `translate3d(${posRef.current}px, 0, 0)`;
+        }
+      }
 
       if (track && singleWidth > 0) {
         if (!isDraggingRef.current) {
