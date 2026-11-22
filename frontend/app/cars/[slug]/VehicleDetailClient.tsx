@@ -153,28 +153,28 @@ export default function VehicleDetailClient({
 
   const branch = car.branch
     ? {
-        id: car.branch.branch_id || car.branch_id || "",
-        name: car.branch.name || car.branch_name || "",
-        short_name: car.branch.short_name || car.branch.name || "",
-        tag: car.branch.tag || "Flagship Showroom Allocation",
-        address: car.branch.address || car.branch_address || "",
-        phone: car.branch.phone || "+880 1615-121312",
-        hotline: car.branch.hotline || "+880 1615-121312",
-        hours: car.branch.hours || "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
-        map_link: car.branch.map_link || "https://maps.google.com/?q=Kakrail+Dhaka",
-      }
+      id: car.branch.branch_id || car.branch_id || "",
+      name: car.branch.name || car.branch_name || "",
+      short_name: car.branch.short_name || car.branch.name || "",
+      tag: car.branch.tag || "Flagship Showroom Allocation",
+      address: car.branch.address || car.branch_address || "",
+      phone: car.branch.phone || "+880 1615-121312",
+      hotline: car.branch.hotline || "+880 1615-121312",
+      hours: car.branch.hours || "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
+      map_link: car.branch.map_link || "https://maps.google.com/?q=Kakrail+Dhaka",
+    }
     : {
-        id: car.branch_id || "kakrail",
-        name: car.branch_name || "Kakrail Branch & Showroom",
-        short_name: "Kakrail Branch",
-        tag: "Main Flagship Showroom",
-        address:
-          car.branch_address || "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000",
-        phone: "+880 1615-121312",
-        hotline: "+880 1615-121312",
-        hours: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
-        map_link: "https://maps.google.com/?q=18+Shaheed+Captain+Mansur+Ali+Soroni+Kakrail+Dhaka",
-      };
+      id: car.branch_id || "kakrail",
+      name: car.branch_name || "Kakrail Branch & Showroom",
+      short_name: "Kakrail Branch",
+      tag: "Main Flagship Showroom",
+      address:
+        car.branch_address || "18, Shaheed Captain Monsur Ali Soroni, Kakrail, Dhaka-1000",
+      phone: "+880 1615-121312",
+      hotline: "+880 1615-121312",
+      hours: "Saturday – Thursday: 10:00 AM – 10:00 PM (Friday Closed)",
+      map_link: "https://maps.google.com/?q=18+Shaheed+Captain+Mansur+Ali+Soroni+Kakrail+Dhaka",
+    };
 
   const isBrandNew = car.car_type === "BRAND_NEW";
   const isElectric = Boolean(
@@ -587,8 +587,8 @@ export default function VehicleDetailClient({
                   {car.car_type === "BRAND_NEW"
                     ? "NEW"
                     : car.car_type === "RECONDITIONED"
-                    ? "RECONDITIONED"
-                    : car.condition || "USED"}
+                      ? "RECONDITIONED"
+                      : car.condition || "USED"}
                 </dd>
               </div>
             </dl>
@@ -760,13 +760,33 @@ export default function VehicleDetailClient({
                       Reset
                     </button>
                   ) : null}
+                  <div className="dch-stepper-btn-group">
+                    <button
+                      type="button"
+                      onClick={() => setCustomPrice((prev) => Math.max(100000, (prev || 0) - 50000))}
+                      className="dch-stepper-btn"
+                      aria-label="Decrease price"
+                      title="Decrease by BDT 50,000"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setCustomPrice((prev) => (prev || 0) + 50000)}
+                      className="dch-stepper-btn"
+                      aria-label="Increase price"
+                      title="Increase by BDT 50,000"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15" /></svg>
+                    </button>
+                  </div>
                 </div>
                 <div className="dch-calc-sub-amount">
                   {customPrice >= 10000000
                     ? `~ ${(customPrice / 10000000).toFixed(2)} Crore`
                     : customPrice >= 100000
-                    ? `~ ${(customPrice / 100000).toFixed(2)} Lakh`
-                    : "Direct customizable purchase valuation"}
+                      ? `~ ${(customPrice / 100000).toFixed(2)} Lakh`
+                      : "Direct customizable purchase valuation"}
                 </div>
               </div>
 
@@ -794,16 +814,36 @@ export default function VehicleDetailClient({
                     placeholder="Enter months (e.g. 30)"
                   />
                   <span className="dch-calc-input-suffix">Months</span>
+                  <div className="dch-stepper-btn-group">
+                    <button
+                      type="button"
+                      onClick={() => setLoanTenureMonths((prev) => Math.max(1, (prev || 1) - 1))}
+                      className="dch-stepper-btn"
+                      aria-label="Decrease months"
+                      title="Decrease 1 month"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setLoanTenureMonths((prev) => Math.min(120, (prev || 0) + 1))}
+                      className="dch-stepper-btn"
+                      aria-label="Increase months"
+                      title="Increase 1 month"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15" /></svg>
+                    </button>
+                  </div>
                 </div>
                 <div className="dch-tenure-pills-row">
-                  {[12, 24, 30, 36, 48, 60].map((months) => (
+                  {[12, 24, 36, 48, 60].map((months) => (
                     <button
                       key={months}
                       type="button"
                       className={`dch-tenure-pill ${loanTenureMonths === months ? "is-selected" : ""}`}
                       onClick={() => setLoanTenureMonths(months)}
                     >
-                      {months}m{months === 30 ? " (2.5y)" : ""}
+                      {months}m
                     </button>
                   ))}
                 </div>
@@ -833,6 +873,26 @@ export default function VehicleDetailClient({
                     placeholder="e.g. 9.50"
                   />
                   <span className="dch-calc-input-suffix">% p.a.</span>
+                  <div className="dch-stepper-btn-group">
+                    <button
+                      type="button"
+                      onClick={() => setInterestRate((prev) => Math.max(0.01, parseFloat(((prev || 0) - 0.01).toFixed(2))))}
+                      className="dch-stepper-btn"
+                      aria-label="Decrease interest rate"
+                      title="Decrease 0.01%"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9" /></svg>
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => setInterestRate((prev) => Math.min(15, parseFloat(((prev || 0) + 0.01).toFixed(2))))}
+                      className="dch-stepper-btn"
+                      aria-label="Increase interest rate"
+                      title="Increase 0.01%"
+                    >
+                      <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="18 15 12 9 6 15" /></svg>
+                    </button>
+                  </div>
                 </div>
                 <input
                   type="range"
