@@ -231,71 +231,139 @@ export default function VehicleDetailClient({
         <span className="dch-crumb-current">{car.name}</span>
       </nav>
 
-      {/* 2. Pure Clean Gallery (BegAutos Clean Style - Zero Text Plastered on Photos) */}
+      {/* 2. Symmetrical 2 - 1 - 2 Gallery Stage (Clean, Zero Text Plastered on Photos) */}
       <section className="dch-luxury-gallery-showcase" aria-label="Vehicle Photographic Showcase">
-        <div className="dch-gallery-mosaic-grid">
-          {/* Main Cinema View (Left Column) */}
-          <div
-            className="dch-gallery-hero-frame group"
-            onClick={() => handleExpandToCinema(activeImgIdx)}
-            role="button"
-            tabIndex={0}
-            title="Click to view full photo gallery"
-          >
-            <Image
-              src={currentHeroImage.url}
-              alt={car.name}
-              fill
-              priority
-              unoptimized
-              className="dch-gallery-hero-img"
-            />
-          </div>
+        {galleryList.length >= 5 ? (
+          <div className="dch-gallery-symmetrical-grid">
+            {/* Slot Left 1 (Left Top) */}
+            <div
+              className={`dch-symm-slot dch-symm-slot-left-1 ${activeImgIdx === 1 ? "is-selected" : ""}`}
+              onClick={() => setActiveImgIdx(1)}
+              role="button"
+              tabIndex={0}
+              title="View angle 2"
+            >
+              <Image
+                src={galleryList[1].url}
+                alt={galleryList[1].caption || car.name}
+                fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 25vw, 15vw"
+                unoptimized
+                className="dch-symm-img"
+              />
+            </div>
 
-          {/* Right 2x2 Curated Angles Grid (4 Slots) */}
-          <div className="dch-gallery-vignette-grid">
-            {galleryList.slice(1, 5).map((img, idx) => {
-              const actualIndex = idx + 1;
-              const isFourthSlot = idx === 3;
-              const hasMorePhotos = galleryList.length > 5;
+            {/* Slot Left 2 (Left Bottom) */}
+            <div
+              className={`dch-symm-slot dch-symm-slot-left-2 ${activeImgIdx === 2 ? "is-selected" : ""}`}
+              onClick={() => setActiveImgIdx(2)}
+              role="button"
+              tabIndex={0}
+              title="View angle 3"
+            >
+              <Image
+                src={galleryList[2].url}
+                alt={galleryList[2].caption || car.name}
+                fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 25vw, 15vw"
+                unoptimized
+                className="dch-symm-img"
+              />
+            </div>
 
-              return (
-                <div
-                  key={actualIndex}
-                  className={`dch-gallery-vignette-slot ${actualIndex === activeImgIdx ? "is-selected" : ""}`}
-                  onClick={() => {
-                    if (isFourthSlot && hasMorePhotos) {
-                      handleExpandToCinema(actualIndex);
-                    } else {
-                      setActiveImgIdx(actualIndex);
-                    }
-                  }}
-                  role="button"
-                  tabIndex={0}
-                  title={`View photo ${actualIndex + 1}`}
-                >
-                  <Image
-                    src={img.url}
-                    alt={img.caption || car.name}
-                    fill
-                    loading="lazy"
-                    sizes="(max-width: 768px) 50vw, 25vw"
-                    unoptimized
-                    className="dch-vignette-img"
-                  />
+            {/* Centerpiece Grand Hero Stage (Center Big) */}
+            <div
+              className="dch-symm-hero group"
+              onClick={() => handleExpandToCinema(activeImgIdx)}
+              role="button"
+              tabIndex={0}
+              title="Click to inspect full high-resolution Cinema Gallery"
+            >
+              <Image
+                src={currentHeroImage.url}
+                alt={car.name}
+                fill
+                priority
+                unoptimized
+                className="dch-symm-img"
+              />
+            </div>
 
-                  {/* 4th Slot "+X Photos" Clean Minimal Overlay */}
-                  {isFourthSlot && hasMorePhotos ? (
-                    <div className="dch-vignette-more-overlay">
-                      <span className="dch-more-count">+{galleryList.length - 4}</span>
-                      <span className="dch-more-subtext">View All</span>
-                    </div>
-                  ) : null}
+            {/* Slot Right 1 (Right Top) */}
+            <div
+              className={`dch-symm-slot dch-symm-slot-right-1 ${activeImgIdx === 3 ? "is-selected" : ""}`}
+              onClick={() => setActiveImgIdx(3)}
+              role="button"
+              tabIndex={0}
+              title="View angle 4"
+            >
+              <Image
+                src={galleryList[3].url}
+                alt={galleryList[3].caption || car.name}
+                fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 25vw, 15vw"
+                unoptimized
+                className="dch-symm-img"
+              />
+            </div>
+
+            {/* Slot Right 2 (Right Bottom - with +X More Photos overlay if > 5) */}
+            <div
+              className={`dch-symm-slot dch-symm-slot-right-2 ${activeImgIdx === 4 ? "is-selected" : ""}`}
+              onClick={() => {
+                if (galleryList.length > 5) {
+                  handleExpandToCinema(4);
+                } else {
+                  setActiveImgIdx(4);
+                }
+              }}
+              role="button"
+              tabIndex={0}
+              title={galleryList.length > 5 ? "View all photos" : "View angle 5"}
+            >
+              <Image
+                src={galleryList[4].url}
+                alt={galleryList[4].caption || car.name}
+                fill
+                loading="lazy"
+                sizes="(max-width: 1024px) 25vw, 15vw"
+                unoptimized
+                className="dch-symm-img"
+              />
+
+              {/* Clean Frosted +X Photos Overlay */}
+              {galleryList.length > 5 ? (
+                <div className="dch-symm-more-overlay">
+                  <span className="dch-more-count">+{galleryList.length - 5}</span>
+                  <span className="dch-more-subtext">View All</span>
                 </div>
-              );
-            })}
+              ) : null}
+            </div>
           </div>
-        </div>
+        ) : (
+          /* Graceful Fallback for fewer than 5 images */
+          <div className="dch-gallery-mosaic-grid">
+            <div
+              className="dch-gallery-hero-frame group"
+              onClick={() => handleExpandToCinema(activeImgIdx)}
+              role="button"
+              tabIndex={0}
+              title="Click to view full photo gallery"
+            >
+              <Image
+                src={currentHeroImage.url}
+                alt={car.name}
+                fill
+                priority
+                unoptimized
+                className="dch-gallery-hero-img"
+              />
+            </div>
+          </div>
+        )}
 
         {/* Bottom Horizontal Quick Thumbnail Ribbon (Clean, without noisy labels) */}
         {galleryList.length > 1 && (
