@@ -36,6 +36,101 @@ function getYoutubeEmbedUrl(youtubeUrl?: string): string {
   return "https://www.youtube-nocookie.com/embed/1F3hm6MfR1k?rel=0";
 }
 
+function decodeHtmlEntities(str: string): string {
+  return str
+    .replace(/&amp;/g, "&")
+    .replace(/&lt;/g, "<")
+    .replace(/&gt;/g, ">")
+    .replace(/&quot;/g, '"')
+    .replace(/&#39;/g, "'")
+    .replace(/&nbsp;/g, " ");
+}
+
+function renderFormattedDescription(rawDesc?: string | null) {
+  if (!rawDesc || !rawDesc.trim()) {
+    return <p className="dch-desc-p">No vehicle description provided.</p>;
+  }
+
+  // If text already contains HTML tags (like <p>, <ul>, <br>, <div>), render safely as HTML
+  if (/<(p|br|div|ul|ol|li|h[1-6]|span|strong|em)\b[^>]*>/i.test(rawDesc)) {
+    return (
+      <div
+        className="dch-editorial-body dch-editorial-rich"
+        dangerouslySetInnerHTML={{ __html: rawDesc }}
+      />
+    );
+  }
+
+  const cleanText = decodeHtmlEntities(rawDesc);
+  const lines = cleanText.split(/\r?\n/);
+
+  const blocks: React.ReactNode[] = [];
+  let currentList: string[] = [];
+  let blockKey = 0;
+
+  const flushList = () => {
+    if (currentList.length > 0) {
+      blocks.push(
+        <ul key={`ul-${blockKey++}`} className="dch-desc-list">
+          {currentList.map((item, idx) => (
+            <li key={idx} className="dch-desc-list-item">
+              <span className="dch-desc-bullet" />
+              <span>{item}</span>
+            </li>
+          ))}
+        </ul>
+      );
+      currentList = [];
+    }
+  };
+
+  for (let i = 0; i < lines.length; i++) {
+    const rawLine = lines[i];
+    const trimmed = rawLine.trim();
+
+    if (!trimmed) {
+      flushList();
+      continue;
+    }
+
+    // Check if line is a bullet item (starts with -, •, *, or digit.)
+    const bulletMatch = trimmed.match(/^([-•*]|\d+\.)\s*(.*)$/);
+    if (bulletMatch) {
+      currentList.push(bulletMatch[2] || trimmed.slice(1).trim());
+      continue;
+    }
+
+    // Not a bullet line. Flush any open list.
+    flushList();
+
+    // Check if line looks like a sub-heading:
+    // e.g. "Primary Features", "Safety Features", "Key Highlights", or ending with ":" or short line (<40 chars) followed by bullets
+    const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : "";
+    const isHeading =
+      /^(primary|safety|key|interior|exterior|engine|performance|comfort|technology|specifications|features|overview|package|options)[\w\s&/]*:?$/i.test(trimmed) ||
+      (trimmed.length <= 40 && trimmed.endsWith(":")) ||
+      (trimmed.length <= 35 && nextLine.length > 0 && /^[-•*]/.test(nextLine));
+
+    if (isHeading) {
+      blocks.push(
+        <h4 key={`h4-${blockKey++}`} className="dch-desc-subhead">
+          {trimmed.replace(/:$/, "")}
+        </h4>
+      );
+    } else {
+      blocks.push(
+        <p key={`p-${blockKey++}`} className="dch-desc-p">
+          {trimmed}
+        </p>
+      );
+    }
+  }
+
+  flushList();
+
+  return <div className="dch-editorial-body">{blocks}</div>;
+}
+
 export default function VehicleDetailClient({
   car,
   relatedCars,
@@ -708,14 +803,7 @@ export default function VehicleDetailClient({
             <h2 className="dch-section-title">DESCRIPTION</h2>
           </div>
           <div className="dch-editorial-card">
-            {car.description && car.description.includes("<") && car.description.includes(">") ? (
-              <div
-                dangerouslySetInnerHTML={{ __html: car.description }}
-                className="dch-editorial-body"
-              />
-            ) : (
-              <p className="dch-editorial-body">{car.description}</p>
-            )}
+            {renderFormattedDescription(car.description)}
           </div>
         </section>
 
