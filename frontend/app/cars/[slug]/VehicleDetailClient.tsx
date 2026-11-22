@@ -490,10 +490,7 @@ export default function VehicleDetailClient({
           {/* Specifications Matrix with COMPREHENSIVE TECHNICAL MATRIX + 4 Bespoke Chapters */}
           <section className="dch-specs-matrix-section">
             <div className="dch-section-heading-wrap">
-              <h2 className="dch-section-title">COMPREHENSIVE TECHNICAL MATRIX</h2>
-              <p className="dch-section-subtext">
-                Detailed factory engineering data, certified physical inspection grades, and authentic showroom provenance records.
-              </p>
+              <h2 className="dch-section-title">Specification</h2>
             </div>
 
             <div className="dch-full-specs-table-card">
