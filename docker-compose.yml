@@ -145,6 +145,7 @@ services:
         - NEXT_PUBLIC_BASE_URL=${NEXT_PUBLIC_BASE_URL:?NEXT_PUBLIC_BASE_URL must be set in .env.production}
         - PUBLIC_BASE_URL=${PUBLIC_BASE_URL:?PUBLIC_BASE_URL must be set in .env.production}
         - INTERNAL_BACKEND_URL=${INTERNAL_BACKEND_URL:-http://backend:8000}
+        - BUILD_ID=${BUILD_ID:-1}
     container_name: dch_frontend
     restart: unless-stopped
     environment:
