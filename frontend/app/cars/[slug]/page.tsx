@@ -11,7 +11,7 @@ import { VEHICLE_DATA } from "@/lib/showroomData";
 import { buildCarSeo, cleanText, getPublicBaseUrl, normalizeCanonicalUrl } from "@/lib/seo";
 import VehicleDetailClient from "./VehicleDetailClient";
 
-export const revalidate = 60;
+export const revalidate = 10;
 
 export async function generateStaticParams() {
   try {

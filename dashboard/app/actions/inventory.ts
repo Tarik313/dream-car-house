@@ -231,6 +231,21 @@ export async function updateInventoryAction(id: number, formData: FormData): Pro
   if (res.ok) {
     revalidatePath("/workspace/inventory");
     revalidatePath(`/workspace/inventory/${id}`);
+
+    // Trigger instant revalidation on public frontend
+    try {
+      const frontendUrl = process.env.FRONTEND_INTERNAL_URL || "http://frontend:3000";
+      const secret = process.env.REVALIDATE_SECRET || "eb1135ca6af00c3bb94920940351dc12";
+      const slug = res.data?.slug;
+      if (slug) {
+        fetch(`${frontendUrl}/api/revalidate?path=/cars/${slug}/&tag=inventory&tag=car-${slug}`, {
+          headers: { Authorization: `Bearer ${secret}` },
+          signal: AbortSignal.timeout(3000),
+        }).catch(() => {});
+      }
+    } catch {
+      // Fire-and-forget fallback
+    }
   }
   return res;
 }

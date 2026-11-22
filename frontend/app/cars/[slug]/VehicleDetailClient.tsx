@@ -48,7 +48,7 @@ function decodeHtmlEntities(str: string): string {
 
 function renderFormattedDescription(rawDesc?: string | null) {
   if (!rawDesc || !rawDesc.trim()) {
-    return <p className="dch-desc-p">No vehicle description provided.</p>;
+    return <p className="dch-editorial-body">No description provided.</p>;
   }
 
   // If text already contains HTML tags (like <p>, <ul>, <br>, <div>), render safely as HTML
@@ -61,74 +61,9 @@ function renderFormattedDescription(rawDesc?: string | null) {
     );
   }
 
+  // Plain text from dashboard textarea: decode entities and render line-by-line just like Beg Autos
   const cleanText = decodeHtmlEntities(rawDesc);
-  const lines = cleanText.split(/\r?\n/);
-
-  const blocks: React.ReactNode[] = [];
-  let currentList: string[] = [];
-  let blockKey = 0;
-
-  const flushList = () => {
-    if (currentList.length > 0) {
-      blocks.push(
-        <ul key={`ul-${blockKey++}`} className="dch-desc-list">
-          {currentList.map((item, idx) => (
-            <li key={idx} className="dch-desc-list-item">
-              <span className="dch-desc-bullet" />
-              <span>{item}</span>
-            </li>
-          ))}
-        </ul>
-      );
-      currentList = [];
-    }
-  };
-
-  for (let i = 0; i < lines.length; i++) {
-    const rawLine = lines[i];
-    const trimmed = rawLine.trim();
-
-    if (!trimmed) {
-      flushList();
-      continue;
-    }
-
-    // Check if line is a bullet item (starts with -, •, *, or digit.)
-    const bulletMatch = trimmed.match(/^([-•*]|\d+\.)\s*(.*)$/);
-    if (bulletMatch) {
-      currentList.push(bulletMatch[2] || trimmed.slice(1).trim());
-      continue;
-    }
-
-    // Not a bullet line. Flush any open list.
-    flushList();
-
-    // Check if line looks like a sub-heading:
-    // e.g. "Primary Features", "Safety Features", "Key Highlights", or ending with ":" or short line (<40 chars) followed by bullets
-    const nextLine = i + 1 < lines.length ? lines[i + 1].trim() : "";
-    const isHeading =
-      /^(primary|safety|key|interior|exterior|engine|performance|comfort|technology|specifications|features|overview|package|options)[\w\s&/]*:?$/i.test(trimmed) ||
-      (trimmed.length <= 40 && trimmed.endsWith(":")) ||
-      (trimmed.length <= 35 && nextLine.length > 0 && /^[-•*]/.test(nextLine));
-
-    if (isHeading) {
-      blocks.push(
-        <h4 key={`h4-${blockKey++}`} className="dch-desc-subhead">
-          {trimmed.replace(/:$/, "")}
-        </h4>
-      );
-    } else {
-      blocks.push(
-        <p key={`p-${blockKey++}`} className="dch-desc-p">
-          {trimmed}
-        </p>
-      );
-    }
-  }
-
-  flushList();
-
-  return <div className="dch-editorial-body">{blocks}</div>;
+  return <div className="dch-editorial-body">{cleanText}</div>;
 }
 
 export default function VehicleDetailClient({
@@ -800,7 +735,7 @@ export default function VehicleDetailClient({
         {/* Left: Description */}
         <section className="dch-editorial-section">
           <div className="dch-section-heading-wrap">
-            <h2 className="dch-section-title">DESCRIPTION</h2>
+            <h2 className="dch-section-title">Description</h2>
           </div>
           <div className="dch-editorial-card">
             {renderFormattedDescription(car.description)}
@@ -1031,29 +966,6 @@ export default function VehicleDetailClient({
                   </div>
                   <span className="dch-metric-sub">Bank interest charges above principal</span>
                 </div>
-              </div>
-
-              <div className="dch-calc-action-row">
-                <p className="dch-result-disclaimer">
-                  Calculated for standard banking partner allocations in Bangladesh. Final terms subject to credit verification.
-                </p>
-
-                <button
-                  type="button"
-                  className="dch-calc-apply-btn"
-                  onClick={() =>
-                    openAppointmentModal({
-                      carName: car.name,
-                      carYear: car.year,
-                      branchId: car.branch_id,
-                    })
-                  }
-                >
-                  <span>Apply for Loan Advisory</span>
-                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                    <path d="M5 12h14M12 5l7 7-7 7" />
-                  </svg>
-                </button>
               </div>
             </div>
           </div>
