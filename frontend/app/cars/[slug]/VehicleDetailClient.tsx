@@ -231,7 +231,7 @@ export default function VehicleDetailClient({
         <span className="dch-crumb-current">{car.name}</span>
       </nav>
 
-      {/* 2. Top Multi-Image Gallery Showcase */}
+      {/* 2. Pure Clean Gallery (BegAutos Clean Style - Zero Text Plastered on Photos) */}
       <section className="dch-luxury-gallery-showcase" aria-label="Vehicle Photographic Showcase">
         <div className="dch-gallery-mosaic-grid">
           {/* Main Cinema View (Left Column) */}
@@ -240,7 +240,7 @@ export default function VehicleDetailClient({
             onClick={() => handleExpandToCinema(activeImgIdx)}
             role="button"
             tabIndex={0}
-            title="Click to launch high-resolution Cinema Lightbox"
+            title="Click to view full photo gallery"
           >
             <Image
               src={currentHeroImage.url}
@@ -250,42 +250,6 @@ export default function VehicleDetailClient({
               unoptimized
               className="dch-gallery-hero-img"
             />
-            <div className="dch-gallery-img-gradient" />
-
-            {/* Top Left Tag */}
-            <div className="dch-gallery-angle-tag">
-              <span className="dch-angle-dot" />
-              <span>{currentHeroImage.tag || "EXTERIOR ARCHITECTURE"}</span>
-            </div>
-
-            {/* Top Right Counter & Expand Control */}
-            <div className="dch-gallery-top-controls">
-              <span className="dch-photo-counter-badge">
-                {activeImgIdx + 1} / {galleryList.length}
-              </span>
-              <button
-                type="button"
-                className="dch-cinema-expand-btn"
-                onClick={(e) => {
-                  e.stopPropagation();
-                  handleExpandToCinema(activeImgIdx);
-                }}
-                title="Fullscreen Cinema Inspection"
-                aria-label="Fullscreen Cinema Inspection"
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.4">
-                  <polyline points="15 3 21 3 21 9" />
-                  <polyline points="9 21 3 21 3 15" />
-                  <line x1="21" y1="3" x2="14" y2="10" />
-                  <line x1="3" y1="21" x2="10" y2="14" />
-                </svg>
-              </button>
-            </div>
-
-            {/* Bottom Caption Pill */}
-            <div className="dch-gallery-bottom-caption">
-              <span>{currentHeroImage.caption || `${car.name} • Official Atelier Portfolio`}</span>
-            </div>
           </div>
 
           {/* Right 2x2 Curated Angles Grid (4 Slots) */}
@@ -308,7 +272,7 @@ export default function VehicleDetailClient({
                   }}
                   role="button"
                   tabIndex={0}
-                  title={`View photo: ${img.caption || img.tag}`}
+                  title={`View photo ${actualIndex + 1}`}
                 >
                   <Image
                     src={img.url}
@@ -319,23 +283,12 @@ export default function VehicleDetailClient({
                     unoptimized
                     className="dch-vignette-img"
                   />
-                  <div className="dch-vignette-gradient" />
 
-                  {/* Tag Pill */}
-                  <span className="dch-vignette-tag">{img.tag || `ANGLE 0${actualIndex + 1}`}</span>
-
-                  {/* 4th Slot "+X More Photos" Overlay */}
+                  {/* 4th Slot "+X Photos" Clean Minimal Overlay */}
                   {isFourthSlot && hasMorePhotos ? (
                     <div className="dch-vignette-more-overlay">
-                      <div className="dch-more-icon-wrap">
-                        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
-                          <rect x="3" y="3" width="18" height="18" rx="2" ry="2" />
-                          <circle cx="8.5" cy="8.5" r="1.5" />
-                          <polyline points="21 15 16 10 5 21" />
-                        </svg>
-                      </div>
-                      <span className="dch-more-count">+{galleryList.length - 4} Photos</span>
-                      <span className="dch-more-subtext">View Full Gallery</span>
+                      <span className="dch-more-count">+{galleryList.length - 4}</span>
+                      <span className="dch-more-subtext">View All</span>
                     </div>
                   ) : null}
                 </div>
@@ -344,7 +297,7 @@ export default function VehicleDetailClient({
           </div>
         </div>
 
-        {/* Bottom Horizontal Quick Thumbnail Ribbon */}
+        {/* Bottom Horizontal Quick Thumbnail Ribbon (Clean, without noisy labels) */}
         {galleryList.length > 1 && (
           <div className="dch-gallery-rail-wrap">
             <div className="dch-gallery-rail">
@@ -365,7 +318,6 @@ export default function VehicleDetailClient({
                     unoptimized
                     className="dch-rail-img"
                   />
-                  <span className="dch-rail-label">{photo.tag || `Angle ${i + 1}`}</span>
                 </button>
               ))}
             </div>
@@ -386,35 +338,31 @@ export default function VehicleDetailClient({
         )}
       </section>
 
-      {/* 3. Car Title & Quick Specifications Bar across the top */}
+      {/* 3. BegAutos-Style Clean Car Title Underneath Gallery */}
       <div className="dch-vehicle-headline-box">
         <h1 className="dch-car-main-title">{car.name}</h1>
-
-        <p className="dch-car-subtitle">
-          {car.brand.toUpperCase()}{car.year ? ` • REGISTRATION ${car.year}` : ""}
-        </p>
       </div>
 
-      {/* Quick Specifications Bar (Clean, Minimal, No Captions) */}
-      <div className="dch-quick-stats-row">
-        <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">{isElectric ? "BATTERY CAPACITY" : "ENGINE DISPLACEMENT"}</span>
-          <span className="dch-stat-val">{car.engine_capacity || "—"}</span>
+      {/* 4. BegAutos-Style 4 Dynamic Specification Cards (Border-divided, 100% Dynamic from Dashboard) */}
+      <div className="dch-beg-specs-bar">
+        <div className="dch-beg-spec-item">
+          <span className="dch-beg-spec-label">Model year</span>
+          <p className="dch-beg-spec-val">{car.year || "—"}</p>
         </div>
 
-        <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">ODOMETER MILEAGE</span>
-          <span className="dch-stat-val">{car.mileage || (isBrandNew ? "0 km" : "—")}</span>
+        <div className="dch-beg-spec-item">
+          <span className="dch-beg-spec-label">Mileage</span>
+          <p className="dch-beg-spec-val">{car.mileage || (isBrandNew ? "0 km" : "—")}</p>
         </div>
 
-        <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">FUEL ARCHITECTURE</span>
-          <span className="dch-stat-val">{car.fuel_type || "Petrol"}</span>
+        <div className="dch-beg-spec-item">
+          <span className="dch-beg-spec-label">Engine</span>
+          <p className="dch-beg-spec-val">{car.engine_capacity || "—"}</p>
         </div>
 
-        <div className="dch-quick-stat-card">
-          <span className="dch-stat-label">TRANSMISSION</span>
-          <span className="dch-stat-val">{car.transmission || "Automatic"}</span>
+        <div className="dch-beg-spec-item">
+          <span className="dch-beg-spec-label">Fuel</span>
+          <p className="dch-beg-spec-val">{car.fuel_type || "Petrol"}</p>
         </div>
       </div>
 
