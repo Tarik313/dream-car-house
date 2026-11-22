@@ -10914,15 +10914,24 @@ button {
   align-items: baseline;
   justify-content: space-between;
   gap: 1rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  padding: 0.85rem 0;
-  font-size: 0.875rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.9rem 0.65rem;
+  margin: 0 -0.65rem;
+  font-size: 0.885rem;
   box-shadow: none !important;
+  border-radius: 4px;
+  transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+
+.dch-beg-spec-row:hover {
+  background-color: rgba(229, 207, 155, 0.035);
+  border-bottom-color: rgba(229, 207, 155, 0.25);
 }
 
 .dch-beg-spec-dt {
-  color: rgba(255, 255, 255, 0.5);
+  color: rgba(244, 241, 236, 0.55);
   font-weight: 400;
+  letter-spacing: 0.01em;
   margin: 0;
   box-shadow: none !important;
 }
@@ -10932,19 +10941,35 @@ button {
   font-weight: 500;
   text-align: right;
   margin: 0;
+  font-variant-numeric: tabular-nums;
   box-shadow: none !important;
 }
 
+.dch-beg-spec-dd.is-gold {
+  color: #dfca9a;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
 [data-theme="light"] .dch-beg-spec-row {
-  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+  border-bottom-color: rgba(0, 0, 0, 0.07) !important;
+}
+
+[data-theme="light"] .dch-beg-spec-row:hover {
+  background-color: rgba(201, 176, 122, 0.06) !important;
+  border-bottom-color: rgba(201, 176, 122, 0.25) !important;
 }
 
 [data-theme="light"] .dch-beg-spec-dt {
-  color: rgba(0, 0, 0, 0.55) !important;
+  color: #64748b !important;
 }
 
 [data-theme="light"] .dch-beg-spec-dd {
   color: #0f172a !important;
+}
+
+[data-theme="light"] .dch-beg-spec-dd.is-gold {
+  color: #997323 !important;
 }
 
 /* Quick Stats Bar (Fallback) */

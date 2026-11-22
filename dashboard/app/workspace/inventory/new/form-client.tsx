@@ -427,12 +427,20 @@ export function InventoryFormClient({
       {/* 2. Specifications Tab */}
       <div style={{ display: activeTab === "specs" ? "flex" : "none", flexDirection: "column", gap: "var(--space-4)", background: "var(--surface)", padding: "var(--space-4)", borderRadius: "var(--radius-sm)", border: "1px solid var(--border)" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "var(--space-4)" }}>
-            <FormField label="Engine Capacity (cc)" error={fieldErrors.engine_capacity}>
-              <Input name="engine_capacity" defaultValue={initialCar?.engine_capacity || ""} maxLength={100} placeholder="e.g. 3,000 cc (or 116 kWh for EV)" />
+            <FormField
+              label="Engine Capacity / Battery"
+              error={fieldErrors.engine_capacity}
+              description="e.g. 3,500 cc for petrol/hybrid, or 116 kWh for Electric vehicles"
+            >
+              <Input name="engine_capacity" defaultValue={initialCar?.engine_capacity || ""} maxLength={100} placeholder="e.g. 3,500 cc (or 116 kWh for EV)" />
             </FormField>
 
-            <FormField label="Mileage" error={fieldErrors.mileage}>
-              <Input name="mileage" defaultValue={initialCar?.mileage || ""} maxLength={20} placeholder="e.g. 12000" />
+            <FormField
+              label="Mileage"
+              error={fieldErrors.mileage}
+              description="e.g. 0 km for Brand New, or 12,000 km"
+            >
+              <Input name="mileage" defaultValue={initialCar?.mileage || ""} maxLength={20} placeholder="e.g. 0 km or 12,000 km" />
             </FormField>
           </div>
 
@@ -460,16 +468,24 @@ export function InventoryFormClient({
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: "var(--space-4)" }}>
-            <FormField label="Color / Exterior" error={fieldErrors.color}>
-              <Input name="color" defaultValue={initialCar?.color || ""} maxLength={30} placeholder="e.g. Pearl White" />
+            <FormField label="Exterior Color" error={fieldErrors.color}>
+              <Input name="color" defaultValue={initialCar?.color || ""} maxLength={50} placeholder="e.g. Obsidian Black, Pearl White" />
             </FormField>
 
-            <FormField label="Drive Train / Type" error={fieldErrors.drive_type}>
-              <Input name="drive_type" defaultValue={initialCar?.drive_type || ""} maxLength={150} placeholder="e.g. 4WD, AWD, FWD" />
+            <FormField
+              label="Drive Type / Drivetrain"
+              error={fieldErrors.drive_type}
+              description="e.g. 4WD, AWD, RWD"
+            >
+              <Input name="drive_type" defaultValue={initialCar?.drive_type || ""} maxLength={150} placeholder="e.g. 4WD, AWD, RWD" />
             </FormField>
 
-            <FormField label="Wheel Base" error={fieldErrors.wheel_base}>
-              <Input name="wheel_base" defaultValue={initialCar?.wheel_base || ""} maxLength={20} placeholder="e.g. 2850mm" />
+            <FormField
+              label="Wheel / Rim Specification"
+              error={fieldErrors.wheel_base}
+              description="Alloy rim size displayed under Wheel spec"
+            >
+              <Input name="wheel_base" defaultValue={initialCar?.wheel_base || ""} maxLength={50} placeholder="e.g. 20 Inch Alloys, 22 Inch" />
             </FormField>
           </div>
         </div>

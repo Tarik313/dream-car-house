@@ -553,7 +553,7 @@ export default function VehicleDetailClient({
 
               <div className="dch-beg-spec-row">
                 <dt className="dch-beg-spec-dt">Condition</dt>
-                <dd className="dch-beg-spec-dd">
+                <dd className={`dch-beg-spec-dd ${car.car_type === "BRAND_NEW" ? "is-gold" : ""}`}>
                   {car.car_type === "BRAND_NEW"
                     ? "NEW"
                     : car.car_type === "RECONDITIONED"
