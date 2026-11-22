@@ -565,14 +565,16 @@ export default function VehicleDetailClient({
           </section>
         </div>
 
-        {/* Right Column: Slimmer Valuation Suite & Verified Auction Sheet (Matching Width) */}
+        {/* Right Column: Pricing & VIP Concierge Suite */}
         <aside className="dch-vehicle-sidebar-col">
-          {/* 1. Showroom Valuation & VIP Concierge Suite */}
+          {/* 1. Showroom Pricing & VIP Concierge Suite */}
           <div className="dch-sticky-pricing-card">
-            {/* Showroom Valuation Box */}
+            {/* Showroom Pricing Box */}
             <div className="dch-sidebar-pricing-box">
               <div className="dch-valuation-head-row">
-                <span className="dch-pricing-eyebrow">SHOWROOM VALUATION</span>
+                <div className="dch-sidebar-price-amount">
+                  {displayPrice}
+                </div>
                 <button
                   type="button"
                   onClick={handleShare}
@@ -601,18 +603,6 @@ export default function VehicleDetailClient({
                   )}
                 </button>
               </div>
-
-              {/* Bespoke Royal Price Typography */}
-              <div className="dch-sidebar-price-amount">
-                {displayPrice}
-              </div>
-
-              {calculatedEmi ? (
-                <div className="dch-sidebar-emi-cue">
-                  <span className="dch-emi-badge">EST. FINANCING</span>
-                  <span>From ~BDT {calculatedEmi.toLocaleString("en-IN")}/mo</span>
-                </div>
-              ) : null}
             </div>
 
             {/* Concierge VIP Action Suite */}
@@ -676,81 +666,8 @@ export default function VehicleDetailClient({
                   <span className="btn-sub-caption">+880 1615-121312</span>
                 </div>
               </a>
-
-              {/* Quaternary: Request Written Official Quotation */}
-              <button
-                type="button"
-                className="dch-sidebar-vip-btn"
-                onClick={() => {
-                  setQuoteSuccess(false);
-                  setQuoteError("");
-                  setIsQuoteOpen(true);
-                }}
-                style={{
-                  background: "rgba(255, 255, 255, 0.04)",
-                  border: "1px solid rgba(255, 255, 255, 0.14)",
-                  color: "#cbd5e1",
-                  cursor: "pointer",
-                }}
-              >
-                <div className="dch-vip-btn-icon">
-                  <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#38bdf8" strokeWidth="2.2">
-                    <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                    <polyline points="14 2 14 8 20 8" />
-                    <line x1="16" y1="13" x2="8" y2="13" />
-                    <line x1="16" y1="17" x2="8" y2="17" />
-                    <polyline points="10 9 9 9 8 9" />
-                  </svg>
-                </div>
-                <div className="dch-vip-btn-text">
-                  <span className="btn-main-title" style={{ color: "#38bdf8" }}>GET FORMAL QUOTATION</span>
-                  <span className="btn-sub-caption">Pro-Forma Invoice & Specs</span>
-                </div>
-              </button>
             </div>
           </div>
-
-          {/* 2. Verified Auction Sheet & Technical Inspection (Matching Sidebar Width) */}
-          <section className="dch-auction-sheet-section">
-            <div className="dch-auction-sheet-card">
-              <div className="dch-auction-header-row">
-                <div className="dch-auction-badge-icon">
-                  <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#e5cf9b" strokeWidth="2">
-                    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-                    <polyline points="9 12 11 14 15 10" />
-                  </svg>
-                </div>
-                <span className="dch-auction-score-pill">
-                  {isBrandNew ? "GRADE S • FACTORY FRESH" : "GRADE 4.5 • POINT VERIFIED"}
-                </span>
-              </div>
-
-              <div className="dch-auction-body">
-                <h3 className="dch-auction-heading">Verified Auction Sheet & Inspection</h3>
-                <p className="dch-auction-desc">
-                  Authentic international auction manifest verification, genuine odometer certification, and comprehensive 150+ point showroom physical inspection report.
-                </p>
-              </div>
-
-              <a
-                href={`https://wa.me/${waPhone}?text=${encodeURIComponent(
-                  `Hello DREAM CAR HOUSE, I would like to inspect the official Verified Auction Sheet and 150+ Point Inspection Report for the ${car.name} (${car.year}).`
-                )}`}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="dch-auction-req-btn"
-              >
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.2">
-                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z" />
-                  <polyline points="14 2 14 8 20 8" />
-                  <line x1="16" y1="13" x2="8" y2="13" />
-                  <line x1="16" y1="17" x2="8" y2="17" />
-                  <polyline points="10 9 9 9 8 9" />
-                </svg>
-                <span>Request Auction Sheet (PDF)</span>
-              </a>
-            </div>
-          </section>
         </aside>
       </div>
 

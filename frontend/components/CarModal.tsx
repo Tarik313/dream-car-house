@@ -469,8 +469,7 @@ export default function CarModal({
                   </div>
                   <h2 className="dch-car-title">{selectedCar.name}</h2>
                   <div className="dch-car-price-row">
-                    <div className="dch-valuation-top-bar">
-                      <span className="dch-price-label">SHOWROOM VALUATION</span>
+                    <div className="dch-valuation-top-bar" style={{ justifyContent: "flex-end" }}>
                       <button
                         type="button"
                         id="car-modal-share-btn"
