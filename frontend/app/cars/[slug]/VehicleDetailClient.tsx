@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { Vehicle, GalleryPhoto } from "@/lib/showroomData";
@@ -83,27 +83,57 @@ export default function VehicleDetailClient({
     () => parseVehiclePriceNumber(car.price, car.is_call_for_price),
     [car.price, car.is_call_for_price]
   );
-  const defaultLoanAmount = numericPrice ? Math.round(numericPrice * 0.7) : 5000000;
-  const defaultDownPayment = numericPrice ? Math.round(numericPrice * 0.3) : 2000000;
 
+  const [customPrice, setCustomPrice] = useState<number>(() => {
+    return parseVehiclePriceNumber(car.price, car.is_call_for_price) || 5000000;
+  });
   const [loanTenureMonths, setLoanTenureMonths] = useState<number>(36);
   const [interestRate, setInterestRate] = useState<number>(9.5);
-  const [downPaymentPercent, setDownPaymentPercent] = useState<number>(30);
 
-  // Calculate monthly EMI
-  const calculatedEmi = useMemo(() => {
-    if (!numericPrice) return null;
-    const downAmount = Math.round((numericPrice * downPaymentPercent) / 100);
-    const principal = numericPrice - downAmount;
-    if (principal <= 0) return 0;
+  // Sync customPrice if car price loads/changes
+  useEffect(() => {
+    if (numericPrice && customPrice === 5000000) {
+      setCustomPrice(numericPrice);
+    }
+  }, [numericPrice, customPrice]);
+
+  // Calculate monthly EMI, Total Repayment, and Total Extra Interest
+  const { calculatedEmi, totalPayment, totalInterest } = useMemo(() => {
+    const principal = customPrice > 0 ? customPrice : 0;
+    const months = loanTenureMonths > 0 ? loanTenureMonths : 1;
+
+    if (principal <= 0) {
+      return { calculatedEmi: 0, totalPayment: 0, totalInterest: 0 };
+    }
+
+    if (interestRate <= 0) {
+      const emi = Math.round(principal / months);
+      return {
+        calculatedEmi: emi,
+        totalPayment: principal,
+        totalInterest: 0,
+      };
+    }
 
     const monthlyRate = interestRate / 12 / 100;
-    const emi =
-      (principal * monthlyRate * Math.pow(1 + monthlyRate, loanTenureMonths)) /
-      (Math.pow(1 + monthlyRate, loanTenureMonths) - 1);
+    const emiExact =
+      (principal * monthlyRate * Math.pow(1 + monthlyRate, months)) /
+      (Math.pow(1 + monthlyRate, months) - 1);
 
-    return isNaN(emi) ? null : Math.round(emi);
-  }, [numericPrice, downPaymentPercent, loanTenureMonths, interestRate]);
+    if (isNaN(emiExact) || !isFinite(emiExact)) {
+      return { calculatedEmi: 0, totalPayment: 0, totalInterest: 0 };
+    }
+
+    const emi = Math.round(emiExact);
+    const totalPay = Math.round(emi * months);
+    const totalExtra = Math.max(0, totalPay - principal);
+
+    return {
+      calculatedEmi: emi,
+      totalPayment: totalPay,
+      totalInterest: totalExtra,
+    };
+  }, [customPrice, loanTenureMonths, interestRate]);
 
   // Gallery list construction
   const galleryList = useMemo(() => {
@@ -670,15 +700,12 @@ export default function VehicleDetailClient({
         </aside>
       </div>
 
-      {/* 5. Story & Financing Suite: Description & Atelier Story + EMI Calculator (Equal 50/50 Split) */}
+      {/* 5. Story & Financing Suite: Description + EMI Calculator */}
       <div className="dch-story-financing-grid">
-        {/* Left: Description & Atelier Story */}
+        {/* Left: Description */}
         <section className="dch-editorial-section">
           <div className="dch-section-heading-wrap">
-            <h2 className="dch-section-title">DESCRIPTION & ATELIER STORY</h2>
-            <p className="dch-section-subtext">
-              Comprehensive vehicle overview, handcrafted cabin finishes, and exclusive showroom pedigree.
-            </p>
+            <h2 className="dch-section-title">DESCRIPTION</h2>
           </div>
           <div className="dch-editorial-card">
             {car.description && car.description.includes("<") && car.description.includes(">") ? (
@@ -696,110 +723,190 @@ export default function VehicleDetailClient({
         <section className="dch-financing-calculator-section" id="financing-calculator">
           <div className="dch-section-heading-wrap">
             <h2 className="dch-section-title">ESTIMATED MONTHLY INSTALLMENT (EMI)</h2>
-            <p className="dch-section-subtext">
-              Transparent auto loan structuring tailored for premier private banking partners in Bangladesh.
-            </p>
           </div>
 
           <div className="dch-calculator-card">
             <div className="dch-calc-inputs-grid">
-              {/* Down Payment Slider */}
+              {/* 1. Vehicle Price / Loan Principal */}
               <div className="dch-calc-control-group">
                 <div className="dch-calc-label-row">
-                  <label htmlFor="down-payment-range">Down Payment</label>
-                  <span className="dch-calc-value-badge">{downPaymentPercent}%</span>
+                  <label htmlFor="loan-price-input">Vehicle Price / Loan Principal</label>
+                  <span className="dch-calc-value-badge">
+                    BDT {customPrice > 0 ? customPrice.toLocaleString("en-IN") : "0"}
+                  </span>
                 </div>
-                <input
-                  id="down-payment-range"
-                  type="range"
-                  min="15"
-                  max="60"
-                  step="5"
-                  value={downPaymentPercent}
-                  onChange={(e) => setDownPaymentPercent(parseInt(e.target.value, 10))}
-                  className="dch-slider"
-                />
+                <div className="dch-calc-input-wrap">
+                  <span className="dch-calc-input-prefix">BDT</span>
+                  <input
+                    id="loan-price-input"
+                    type="number"
+                    min="100000"
+                    step="50000"
+                    value={customPrice || ""}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setCustomPrice(isNaN(val) ? 0 : Math.max(0, val));
+                    }}
+                    className="dch-calc-number-input"
+                    placeholder="Enter customized price"
+                  />
+                  {numericPrice && customPrice !== numericPrice ? (
+                    <button
+                      type="button"
+                      onClick={() => setCustomPrice(numericPrice)}
+                      className="dch-calc-reset-btn"
+                      title="Reset to Showroom Price"
+                    >
+                      Reset
+                    </button>
+                  ) : null}
+                </div>
                 <div className="dch-calc-sub-amount">
-                  {numericPrice
-                    ? `~BDT ${Math.round((numericPrice * downPaymentPercent) / 100).toLocaleString("en-IN")}`
-                    : "Customizable upon private negotiation"}
+                  {customPrice >= 10000000
+                    ? `~ ${(customPrice / 10000000).toFixed(2)} Crore`
+                    : customPrice >= 100000
+                    ? `~ ${(customPrice / 100000).toFixed(2)} Lakh`
+                    : "Direct customizable purchase valuation"}
                 </div>
               </div>
 
-              {/* Tenure Selector */}
+              {/* 2. Tenure / Duration Selector (Custom entry supported) */}
               <div className="dch-calc-control-group">
                 <div className="dch-calc-label-row">
-                  <span>Loan Duration</span>
-                  <span className="dch-calc-value-badge">{loanTenureMonths} Months ({loanTenureMonths / 12} Yrs)</span>
+                  <label htmlFor="loan-tenure-input">Loan Duration</label>
+                  <span className="dch-calc-value-badge">
+                    {loanTenureMonths} Months ({(loanTenureMonths / 12).toFixed(1).replace(/\.0$/, "")} Yrs)
+                  </span>
+                </div>
+                <div className="dch-calc-input-wrap">
+                  <input
+                    id="loan-tenure-input"
+                    type="number"
+                    min="1"
+                    max="120"
+                    step="1"
+                    value={loanTenureMonths || ""}
+                    onChange={(e) => {
+                      const val = parseInt(e.target.value, 10);
+                      setLoanTenureMonths(isNaN(val) ? 1 : Math.max(1, Math.min(120, val)));
+                    }}
+                    className="dch-calc-number-input"
+                    placeholder="Enter months (e.g. 30)"
+                  />
+                  <span className="dch-calc-input-suffix">Months</span>
                 </div>
                 <div className="dch-tenure-pills-row">
-                  {[12, 24, 36, 48, 60].map((months) => (
+                  {[12, 24, 30, 36, 48, 60].map((months) => (
                     <button
                       key={months}
                       type="button"
                       className={`dch-tenure-pill ${loanTenureMonths === months ? "is-selected" : ""}`}
                       onClick={() => setLoanTenureMonths(months)}
                     >
-                      {months}m
+                      {months}m{months === 30 ? " (2.5y)" : ""}
                     </button>
                   ))}
                 </div>
               </div>
 
-              {/* Interest Rate */}
+              {/* 3. Interest Rate (.01 step, up to 15%, custom entry) */}
               <div className="dch-calc-control-group">
                 <div className="dch-calc-label-row">
-                  <span>Bank Interest Rate</span>
-                  <span className="dch-calc-value-badge">{interestRate}% p.a.</span>
+                  <label htmlFor="loan-interest-input">Bank Interest Rate</label>
+                  <span className="dch-calc-value-badge">
+                    {interestRate.toFixed(2)}% p.a.
+                  </span>
+                </div>
+                <div className="dch-calc-input-wrap">
+                  <input
+                    id="loan-interest-input"
+                    type="number"
+                    min="0.01"
+                    max="15"
+                    step="0.01"
+                    value={interestRate || ""}
+                    onChange={(e) => {
+                      const val = parseFloat(e.target.value);
+                      setInterestRate(isNaN(val) ? 0 : Math.max(0.01, Math.min(15, parseFloat(val.toFixed(2)))));
+                    }}
+                    className="dch-calc-number-input"
+                    placeholder="e.g. 9.50"
+                  />
+                  <span className="dch-calc-input-suffix">% p.a.</span>
                 </div>
                 <input
                   type="range"
-                  min="7"
-                  max="14"
-                  step="0.5"
+                  min="1"
+                  max="15"
+                  step="0.01"
                   value={interestRate}
                   onChange={(e) => setInterestRate(parseFloat(e.target.value))}
                   className="dch-slider"
                 />
-                <div className="dch-calc-sub-amount">Standard Bangladesh Auto Loan Benchmark</div>
+                <div className="dch-calc-sub-amount">Adjustable up to 15.00% (0.01% fine-tuning)</div>
               </div>
             </div>
 
-            {/* Calculated EMI Display */}
+            {/* Calculated Results Suite: 3 Financial Figures */}
             <div className="dch-calc-result-box">
-              <div className="dch-result-meta">
-                <span className="dch-result-label">ESTIMATED MONTHLY INSTALLMENT</span>
-                <div className="dch-result-emi-val">
-                  {calculatedEmi ? (
-                    <>
-                      <span className="emi-currency">BDT</span> {calculatedEmi.toLocaleString("en-IN")}
-                      <span className="emi-period"> / month</span>
-                    </>
-                  ) : (
-                    "Contact Financial Concierge"
-                  )}
+              <div className="dch-result-metrics-grid">
+                {/* 1. Monthly EMI */}
+                <div className="dch-metric-card is-primary">
+                  <span className="dch-metric-label">ESTIMATED MONTHLY INSTALLMENT</span>
+                  <div className="dch-result-emi-val">
+                    {calculatedEmi ? (
+                      <>
+                        <span className="emi-currency">BDT</span> {calculatedEmi.toLocaleString("en-IN")}
+                        <span className="emi-period"> / mo</span>
+                      </>
+                    ) : (
+                      "BDT 0 / mo"
+                    )}
+                  </div>
+                  <span className="dch-metric-sub">Monthly installment for {loanTenureMonths} months</span>
                 </div>
-                <p className="dch-result-disclaimer">
-                  Calculated for standard banking partner allocations. Subject to credit verification.
-                </p>
+
+                {/* 2. Total Repayment */}
+                <div className="dch-metric-card">
+                  <span className="dch-metric-label">TOTAL REPAYMENT ({loanTenureMonths} MOS)</span>
+                  <div className="dch-metric-val">
+                    <span className="emi-currency">BDT</span> {totalPayment.toLocaleString("en-IN")}
+                  </div>
+                  <span className="dch-metric-sub">Total amount payable over full tenure</span>
+                </div>
+
+                {/* 3. Extra / Total Interest */}
+                <div className="dch-metric-card">
+                  <span className="dch-metric-label">TOTAL EXTRA COST (INTEREST)</span>
+                  <div className="dch-metric-val is-gold">
+                    <span className="emi-currency">+BDT</span> {totalInterest.toLocaleString("en-IN")}
+                  </div>
+                  <span className="dch-metric-sub">Bank interest charges above principal</span>
+                </div>
               </div>
 
-              <button
-                type="button"
-                className="dch-calc-apply-btn"
-                onClick={() =>
-                  openAppointmentModal({
-                    carName: car.name,
-                    carYear: car.year,
-                    branchId: car.branch_id,
-                  })
-                }
-              >
-                <span>Apply for Loan Advisory</span>
-                <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
-                  <path d="M5 12h14M12 5l7 7-7 7" />
-                </svg>
-              </button>
+              <div className="dch-calc-action-row">
+                <p className="dch-result-disclaimer">
+                  Calculated for standard banking partner allocations in Bangladesh. Final terms subject to credit verification.
+                </p>
+
+                <button
+                  type="button"
+                  className="dch-calc-apply-btn"
+                  onClick={() =>
+                    openAppointmentModal({
+                      carName: car.name,
+                      carYear: car.year,
+                      branchId: car.branch_id,
+                    })
+                  }
+                >
+                  <span>Apply for Loan Advisory</span>
+                  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                    <path d="M5 12h14M12 5l7 7-7 7" />
+                  </svg>
+                </button>
+              </div>
             </div>
           </div>
         </section>
