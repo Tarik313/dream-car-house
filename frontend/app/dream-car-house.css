@@ -11103,31 +11103,36 @@ button {
 .dch-story-financing-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 2.25rem;
-  margin-top: 2.75rem;
-  align-items: stretch;
+  gap: 2rem;
+  margin-top: 2rem;
+  align-items: start;
 }
 
 @media (max-width: 1024px) {
   .dch-story-financing-grid {
     grid-template-columns: 1fr;
-    gap: 2.25rem;
+    gap: 2rem;
   }
 }
 
-.dch-editorial-section,
+.dch-editorial-section {
+  display: flex;
+  flex-direction: column;
+}
+
 .dch-financing-calculator-section {
   display: flex;
   flex-direction: column;
+  position: sticky;
+  top: 85px;
 }
 
 .dch-editorial-card {
   background: #111215;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  padding: 2rem;
-  box-shadow: 0 16px 45px rgba(0, 0, 0, 0.6);
-  flex: 1;
+  padding: 1.75rem;
+  box-shadow: none !important;
   display: flex;
   flex-direction: column;
   box-sizing: border-box;
@@ -11257,26 +11262,20 @@ button {
   background: #111215;
   border: 1px solid rgba(255, 255, 255, 0.08);
   border-radius: 16px;
-  padding: 2rem;
+  padding: 1.5rem;
   box-shadow: none !important;
-  flex: 1;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
+  justify-content: flex-start;
+  gap: 1.15rem;
   box-sizing: border-box;
 }
 
 .dch-calc-inputs-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: 1.25rem;
-  margin-bottom: 1.25rem;
-}
-
-@media (max-width: 860px) {
-  .dch-calc-inputs-grid {
-    grid-template-columns: 1fr;
-  }
+  display: flex;
+  flex-direction: column;
+  gap: 1.1rem;
+  margin-bottom: 0;
 }
 
 .dch-calc-control-group {
@@ -11856,7 +11855,7 @@ button {
 [data-theme="light"] .dch-sticky-pricing-card {
   background: #ffffff !important;
   border-color: rgba(0, 0, 0, 0.1) !important;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.05) !important;
+  box-shadow: none !important;
 }
 
 [data-theme="light"] .dch-car-main-title,
