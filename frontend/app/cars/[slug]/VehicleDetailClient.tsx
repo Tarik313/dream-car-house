@@ -493,121 +493,75 @@ export default function VehicleDetailClient({
               <h2 className="dch-section-title">Specification</h2>
             </div>
 
-            <div className="dch-full-specs-table-card">
-              <div className="dch-full-specs-grid">
-                {/* Chapter I: Marque & Provenance */}
-                <div className="dch-specs-chapter-header">
-                  <span className="chapter-bullet">◆</span>
-                  <span>I. MARQUE & PROVENANCE</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">PRESTIGE MARQUE</span>
-                  <span className="spec-value">{car.brand}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">SERIES & MODEL</span>
-                  <span className="spec-value">{car.model || car.name}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">REGISTRATION TIMELINE</span>
-                  <span className="spec-value">{car.year}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">VEHICLE PEDIGREE</span>
-                  <span className="spec-value highlight-gold">
-                    {isBrandNew ? "BRAND NEW (ZERO METER)" : (car.condition || "CERTIFIED PRE-OWNED")}
-                  </span>
-                </div>
-
-                {/* Chapter II: Powertrain & Dynamics */}
-                <div className="dch-specs-chapter-header">
-                  <span className="chapter-bullet">◆</span>
-                  <span>II. POWERTRAIN & DYNAMICS</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">{isElectric ? "BATTERY CAPACITY" : "ENGINE DISPLACEMENT"}</span>
-                  <span className="spec-value">{isElectric ? evBattery : (car.engine_capacity || "—")}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">{isElectric ? "ESTIMATED RANGE" : "PROPULSION ARCHITECTURE"}</span>
-                  <span className="spec-value">{isElectric ? evRange : (car.fuel_type || "Petrol")}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">TRANSMISSION GEARBOX</span>
-                  <span className="spec-value">{car.transmission || "Automatic Tiptronic"}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">DRIVETRAIN / TRACTION</span>
-                  <span className="spec-value">{car.drivetrain || "All-Wheel Drive (AWD)"}</span>
-                </div>
-
-                {/* Chapter III: Coachwork & Aesthetics */}
-                <div className="dch-specs-chapter-header">
-                  <span className="chapter-bullet">◆</span>
-                  <span>III. COACHWORK & AESTHETICS</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">AERODYNAMIC PROFILE</span>
-                  <span className="spec-value">{car.body_style || "Luxury SUV"}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">EXTERIOR ATELIER SHADE</span>
-                  <span className="spec-value">{car.color || "Obsidian Metallic"}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">ALLOY WHEEL SPEC</span>
-                  <span className="spec-value">{car.wheel_base || "Factory Monoblock Alloys"}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">CERTIFIED ODOMETER</span>
-                  <span className="spec-value">{car.mileage || (isBrandNew ? "0 km (Zero Meter)" : "Verified Genuine")}</span>
-                </div>
-
-                {/* Chapter IV: Certification & Allocation */}
-                <div className="dch-specs-chapter-header">
-                  <span className="chapter-bullet">◆</span>
-                  <span>IV. CERTIFICATION & ALLOCATION</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">JAPAN AUCTION GRADE</span>
-                  <span className="spec-value highlight-green">
-                    {isBrandNew ? "Grade S • Factory Fresh" : "Grade 4.5 / 5.0 Point"}
-                  </span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">BRTA REGISTRATION STATUS</span>
-                  <span className="spec-value">
-                    {car.registration_number || (isBrandNew ? "Unregistered • First Owner Allocation" : "Dhaka Metro Registered")}
-                  </span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">SHOWROOM ALLOCATION</span>
-                  <span className="spec-value">{branch.name}</span>
-                </div>
-
-                <div className="dch-spec-cell">
-                  <span className="spec-label">PORTFOLIO AVAILABILITY</span>
-                  <span className="spec-value highlight-green">
-                    {car.registered || "In Stock • Immediate Physical Delivery"}
-                  </span>
-                </div>
+            <dl className="dch-beg-spec-list">
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Brand</dt>
+                <dd className="dch-beg-spec-dd">{car.brand || "—"}</dd>
               </div>
-            </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Model</dt>
+                <dd className="dch-beg-spec-dd">{car.model || car.name || "—"}</dd>
+              </div>
+
+              {!isBrandNew && car.year ? (
+                <div className="dch-beg-spec-row">
+                  <dt className="dch-beg-spec-dt">Reg. year</dt>
+                  <dd className="dch-beg-spec-dd">{car.registration_number || car.year}</dd>
+                </div>
+              ) : null}
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Mileage</dt>
+                <dd className="dch-beg-spec-dd">{car.mileage || (isBrandNew ? "0 km" : "—")}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Engine (CC)</dt>
+                <dd className="dch-beg-spec-dd">{isElectric ? evBattery : (car.engine_capacity || "—")}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Transmission</dt>
+                <dd className="dch-beg-spec-dd">{car.transmission || "Automatic"}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Fuel type</dt>
+                <dd className="dch-beg-spec-dd">{isElectric ? "Electric" : (car.fuel_type || "Petrol")}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Drive type</dt>
+                <dd className="dch-beg-spec-dd">{car.drivetrain || "4WD"}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Wheel</dt>
+                <dd className="dch-beg-spec-dd">{car.wheel_base || "Factory Standard"}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Exterior</dt>
+                <dd className="dch-beg-spec-dd">{car.color || "—"}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Body style</dt>
+                <dd className="dch-beg-spec-dd">{car.body_style || "SUV"}</dd>
+              </div>
+
+              <div className="dch-beg-spec-row">
+                <dt className="dch-beg-spec-dt">Condition</dt>
+                <dd className="dch-beg-spec-dd">
+                  {car.car_type === "BRAND_NEW"
+                    ? "NEW"
+                    : car.car_type === "RECONDITIONED"
+                    ? "RECONDITIONED"
+                    : car.condition || "USED"}
+                </dd>
+              </div>
+            </dl>
           </section>
         </div>
 

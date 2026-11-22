@@ -10891,6 +10891,62 @@ button {
   margin: 0;
 }
 
+/* Beg Autos Exact Specification List (Simple, Ultra-Clean 2-Column Grid) */
+.dch-beg-spec-list {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  column-gap: 3.5rem;
+  row-gap: 0;
+  width: 100%;
+  margin-top: 1.25rem;
+  padding: 0;
+}
+
+@media (max-width: 768px) {
+  .dch-beg-spec-list {
+    grid-template-columns: 1fr;
+    column-gap: 0;
+  }
+}
+
+.dch-beg-spec-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  padding: 0.85rem 0;
+  font-size: 0.875rem;
+  box-shadow: none !important;
+}
+
+.dch-beg-spec-dt {
+  color: rgba(255, 255, 255, 0.5);
+  font-weight: 400;
+  margin: 0;
+  box-shadow: none !important;
+}
+
+.dch-beg-spec-dd {
+  color: #f4f1ec;
+  font-weight: 500;
+  text-align: right;
+  margin: 0;
+  box-shadow: none !important;
+}
+
+[data-theme="light"] .dch-beg-spec-row {
+  border-bottom-color: rgba(0, 0, 0, 0.08) !important;
+}
+
+[data-theme="light"] .dch-beg-spec-dt {
+  color: rgba(0, 0, 0, 0.55) !important;
+}
+
+[data-theme="light"] .dch-beg-spec-dd {
+  color: #0f172a !important;
+}
+
 /* Quick Stats Bar (Fallback) */
 .dch-quick-stats-row {
   display: grid;
