@@ -149,8 +149,57 @@ export default function VehicleDetailClient({
   const isBrandNew = car.car_type === "BRAND_NEW";
   const isElectric = Boolean(
     (car.fuel_type && car.fuel_type.toUpperCase().includes("ELECTRIC")) ||
-    (car.engine_capacity && (car.engine_capacity.toLowerCase().includes("kwh") || car.engine_capacity.toLowerCase().includes("electric")))
+    (car.engine_capacity && (car.engine_capacity.toLowerCase().includes("kwh") || car.engine_capacity.toLowerCase().includes("electric"))) ||
+    (car.brand && car.brand.toUpperCase() === "BYD") ||
+    (car.name && (
+      car.name.toLowerCase().includes("g 580") ||
+      car.name.toLowerCase().includes("g580") ||
+      car.name.toLowerCase().includes("eqs") ||
+      car.name.toLowerCase().includes("eqe") ||
+      car.name.toLowerCase().includes("taycan") ||
+      car.name.toLowerCase().includes("tesla") ||
+      car.name.toLowerCase().includes("electric")
+    ))
   );
+
+  const evBattery = useMemo(() => {
+    if (!isElectric) return car.engine_capacity || "—";
+    if (car.engine_capacity && !car.engine_capacity.toLowerCase().includes("cc") && car.engine_capacity !== "0") {
+      return car.engine_capacity;
+    }
+    const nameLower = (car.name || "").toLowerCase();
+    if (nameLower.includes("g 580") || nameLower.includes("g580")) return "116 kWh";
+    if (nameLower.includes("eqs")) return "108 kWh";
+    if (nameLower.includes("eqe")) return "90 kWh";
+    if (nameLower.includes("taycan")) return "93.4 kWh";
+    if (nameLower.includes("seal")) return "82.5 kWh";
+    if (nameLower.includes("atto")) return "60.4 kWh";
+    if (nameLower.includes("model s") || nameLower.includes("model x")) return "100 kWh";
+    if (nameLower.includes("model 3") || nameLower.includes("model y")) return "75 kWh";
+    return car.engine_capacity || "EV Battery";
+  }, [isElectric, car.engine_capacity, car.name]);
+
+  const evRange = useMemo(() => {
+    if (!isElectric) return car.fuel_type || "Petrol";
+    if (car.fuel_type && (car.fuel_type.toLowerCase().includes("km") || car.fuel_type.toLowerCase().includes("wltp") || car.fuel_type.toLowerCase().includes("range"))) {
+      return car.fuel_type;
+    }
+    if (car.drivetrain && (car.drivetrain.toLowerCase().includes("km") || car.drivetrain.toLowerCase().includes("wltp"))) {
+      return car.drivetrain;
+    }
+    const nameLower = (car.name || "").toLowerCase();
+    if (nameLower.includes("g 580") || nameLower.includes("g580")) return "473 km (WLTP)";
+    if (nameLower.includes("eqs")) return "650 km (WLTP)";
+    if (nameLower.includes("eqe")) return "590 km (WLTP)";
+    if (nameLower.includes("taycan")) return "505 km (WLTP)";
+    if (nameLower.includes("seal")) return "570 km (NEDC)";
+    if (nameLower.includes("atto") || nameLower.includes("song")) return "420 km (NEDC)";
+    if (nameLower.includes("model s")) return "652 km (EPA)";
+    if (nameLower.includes("model x")) return "543 km (EPA)";
+    if (nameLower.includes("model 3")) return "513 km (WLTP)";
+    if (nameLower.includes("model y")) return "533 km (WLTP)";
+    return "450+ km (WLTP)";
+  }, [isElectric, car.fuel_type, car.drivetrain, car.name]);
   const displayPrice = formatVehiclePrice(
     car.price,
     car.is_call_for_price,
@@ -424,13 +473,13 @@ export default function VehicleDetailClient({
         </div>
 
         <div className="dch-beg-spec-item">
-          <span className="dch-beg-spec-label">Engine</span>
-          <p className="dch-beg-spec-val">{car.engine_capacity || "—"}</p>
+          <span className="dch-beg-spec-label">{isElectric ? "Battery" : "Engine"}</span>
+          <p className="dch-beg-spec-val">{isElectric ? evBattery : (car.engine_capacity || "—")}</p>
         </div>
 
         <div className="dch-beg-spec-item">
-          <span className="dch-beg-spec-label">Fuel</span>
-          <p className="dch-beg-spec-val">{car.fuel_type || "Petrol"}</p>
+          <span className="dch-beg-spec-label">{isElectric ? "Range" : "Fuel"}</span>
+          <p className="dch-beg-spec-val">{isElectric ? evRange : (car.fuel_type || "Petrol")}</p>
         </div>
       </div>
 
@@ -485,12 +534,12 @@ export default function VehicleDetailClient({
 
                 <div className="dch-spec-cell">
                   <span className="spec-label">{isElectric ? "BATTERY CAPACITY" : "ENGINE DISPLACEMENT"}</span>
-                  <span className="spec-value">{car.engine_capacity || "—"}</span>
+                  <span className="spec-value">{isElectric ? evBattery : (car.engine_capacity || "—")}</span>
                 </div>
 
                 <div className="dch-spec-cell">
-                  <span className="spec-label">PROPULSION ARCHITECTURE</span>
-                  <span className="spec-value">{car.fuel_type || "Petrol"}</span>
+                  <span className="spec-label">{isElectric ? "ESTIMATED RANGE" : "PROPULSION ARCHITECTURE"}</span>
+                  <span className="spec-value">{isElectric ? evRange : (car.fuel_type || "Petrol")}</span>
                 </div>
 
                 <div className="dch-spec-cell">
