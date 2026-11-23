@@ -636,6 +636,18 @@ function InventoryContent({
                 href={`/cars/${carSlug}/`}
                 prefetch={true}
                 key={car.id}
+                onMouseEnter={() => {
+                  if (typeof window !== "undefined" && car.image) {
+                    const img = new window.Image();
+                    img.src = car.image;
+                  }
+                }}
+                onTouchStart={() => {
+                  if (typeof window !== "undefined" && car.image) {
+                    const img = new window.Image();
+                    img.src = car.image;
+                  }
+                }}
                 className="group inventory-card-box block"
                 style={{ textDecoration: "none", color: "inherit" }}
               >

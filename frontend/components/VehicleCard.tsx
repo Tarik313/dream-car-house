@@ -43,11 +43,20 @@ export default function VehicleCard({
     );
   const engineLabel = isElectric ? "Battery" : "Engine";
 
+  const handlePrefetch = () => {
+    if (typeof window !== "undefined" && car.image) {
+      const img = new window.Image();
+      img.src = car.image;
+    }
+  };
+
   return (
-    <article className="pref-car-card group">
+    <article className="pref-car-card group" onMouseEnter={handlePrefetch} onTouchStart={handlePrefetch}>
       <Link
         href={`/cars/${carSlug}/`}
         prefetch={true}
+        onMouseEnter={handlePrefetch}
+        onTouchStart={handlePrefetch}
         className="pref-car-link-wrap"
         style={{ textDecoration: "none", color: "inherit", display: "block" }}
       >

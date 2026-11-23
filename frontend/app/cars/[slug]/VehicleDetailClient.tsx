@@ -51,19 +51,32 @@ function renderFormattedDescription(rawDesc?: string | null) {
     return <p className="dch-editorial-body">No description provided.</p>;
   }
 
-  // If text already contains HTML tags (like <p>, <ul>, <br>, <div>), render safely as HTML
-  if (/<(p|br|div|ul|ol|li|h[1-6]|span|strong|em)\b[^>]*>/i.test(rawDesc)) {
-    return (
-      <div
-        className="dch-editorial-body dch-editorial-rich"
-        dangerouslySetInnerHTML={{ __html: rawDesc }}
-      />
-    );
+  // Clean HTML entities first
+  const clean = decodeHtmlEntities(rawDesc.trim());
+
+  // Check if it has complex HTML (table, iframe, form, etc.)
+  const hasComplexHtml = /<(table|iframe|img|video|audio|form|svg)\b[^>]*>/i.test(clean);
+  if (!hasComplexHtml) {
+    // Normalize simple <p>, <br>, <li>, <div> tags into clean formatted text with linebreaks
+    const normalized = clean
+      .replace(/<br\s*\/?>/gi, "\n")
+      .replace(/<\/p>\s*<p[^>]*>/gi, "\n\n")
+      .replace(/<li[^>]*>/gi, "• ")
+      .replace(/<\/li>/gi, "\n")
+      .replace(/<\/?(p|div|ul|ol|span|strong|em|b|i|h[1-6])\b[^>]*>/gi, "")
+      .trim();
+
+    if (normalized) {
+      return <div className="dch-editorial-body">{normalized}</div>;
+    }
   }
 
-  // Plain text from dashboard textarea: decode entities and render line-by-line just like Beg Autos
-  const cleanText = decodeHtmlEntities(rawDesc);
-  return <div className="dch-editorial-body">{cleanText}</div>;
+  return (
+    <div
+      className="dch-editorial-body dch-editorial-rich"
+      dangerouslySetInnerHTML={{ __html: clean }}
+    />
+  );
 }
 
 export default function VehicleDetailClient({
@@ -168,6 +181,11 @@ export default function VehicleDetailClient({
   // Gallery list construction
   const galleryList = useMemo(() => {
     if (car.images && car.images.length > 0) {
+      // Ensure the feature image (which was shown on the card and is ALREADY downloaded by the browser) is the first image
+      const hasFeature = car.images.some((img) => img.url === car.image);
+      if (!hasFeature && car.image) {
+        return [{ url: car.image, caption: "Main Feature Exterior", tag: "EXTERIOR" }, ...car.images];
+      }
       return car.images;
     }
     return [

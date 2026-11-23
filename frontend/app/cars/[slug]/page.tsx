@@ -11,7 +11,7 @@ import { VEHICLE_DATA } from "@/lib/showroomData";
 import { buildCarSeo, cleanText, getPublicBaseUrl, normalizeCanonicalUrl } from "@/lib/seo";
 import VehicleDetailClient from "./VehicleDetailClient";
 
-export const revalidate = 10;
+export const revalidate = 86400;
 
 export async function generateStaticParams() {
   try {
@@ -201,6 +201,10 @@ export default async function CarDetailPage({ params }: PageProps) {
 
   return (
     <>
+      <link rel="preload" as="image" href={car.image} fetchPriority="high" />
+      {car.images && car.images[0] && car.images[0].url !== car.image ? (
+        <link rel="preload" as="image" href={car.images[0].url} fetchPriority="high" />
+      ) : null}
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(carSchema) }}
