@@ -167,7 +167,7 @@ export default function CarModal({
       category: "sedans",
       categoryLabel: selectedCar.brand,
       image: img.url,
-      desc: selectedCar.description,
+      desc: "",
     }));
     openGalleryLightbox(activeImgIdx, convertedPhotos);
   };

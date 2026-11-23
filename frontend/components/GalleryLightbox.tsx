@@ -285,14 +285,13 @@ export default function GalleryLightbox() {
         </div>
 
         {/* Bottom Caption Bar */}
-        <div className="lightbox-caption-bar" style={{ padding: "0.75rem 1.5rem", background: "rgba(0,0,0,0.85)", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
-          <h4 style={{ fontSize: "1rem", fontWeight: 600, color: "#ffffff", marginBottom: "0.25rem" }}>
-            {currentPhoto.title}
-          </h4>
-          <p style={{ fontSize: "0.82rem", color: "#9ca3af", margin: 0, maxWidth: "700px", marginInline: "auto" }}>
-            {currentPhoto.desc}
-          </p>
-        </div>
+        {currentPhoto.title ? (
+          <div className="lightbox-caption-bar" style={{ padding: "0.6rem 1.5rem", background: "rgba(0,0,0,0.85)", textAlign: "center", borderTop: "1px solid rgba(255,255,255,0.08)" }}>
+            <h4 style={{ fontSize: "0.95rem", fontWeight: 500, color: "#ffffff", margin: 0 }}>
+              {currentPhoto.title}
+            </h4>
+          </div>
+        ) : null}
       </div>
     </div>
   );

@@ -635,6 +635,7 @@ function InventoryContent({
               <Link
                 href={`/cars/${carSlug}/`}
                 prefetch={true}
+                scroll={true}
                 key={car.id}
                 onMouseEnter={() => {
                   if (typeof window !== "undefined" && car.image) {

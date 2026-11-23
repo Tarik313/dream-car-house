@@ -127,6 +127,13 @@ export default function VehicleDetailClient({
     [car.price, car.is_call_for_price]
   );
 
+  // Scroll to top immediately when vehicle page mounts or slug changes
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      window.scrollTo({ top: 0, left: 0, behavior: "instant" });
+    }
+  }, [car.slug, car.id]);
+
   const [customPrice, setCustomPrice] = useState<number>(() => {
     return parseVehiclePriceNumber(car.price, car.is_call_for_price) || 5000000;
   });
@@ -292,7 +299,7 @@ export default function VehicleDetailClient({
       category: "sedans",
       categoryLabel: car.brand,
       image: img.url,
-      desc: car.description,
+      desc: "",
     }));
     openGalleryLightbox(targetIdx, convertedPhotos);
   };

@@ -55,6 +55,7 @@ export default function VehicleCard({
       <Link
         href={`/cars/${carSlug}/`}
         prefetch={true}
+        scroll={true}
         onMouseEnter={handlePrefetch}
         onTouchStart={handlePrefetch}
         className="pref-car-link-wrap"
@@ -128,6 +129,7 @@ export default function VehicleCard({
           <Link
             href={`/cars/${carSlug}/`}
             prefetch={true}
+            scroll={true}
             style={{ textDecoration: "none", color: "inherit" }}
           >
             <span className="pref-price-val">{displayPrice}</span>
