@@ -235,40 +235,32 @@ export function PreferenceClient({
   };
 
   return (
-    <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "1.5rem 0" }}>
+    <div className="space-y-8 pb-16 max-w-5xl">
       {/* 1. Section Global Heading */}
-      <div
-        style={{
-          background: "var(--card-bg, #11141a)",
-          border: "1px solid var(--border-color, #1f2937)",
-          borderRadius: "10px",
-          padding: "1.75rem",
-          marginBottom: "2rem",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
-          <Layers size={20} color="#22c55e" />
-          <h2 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#ffffff", margin: 0 }}>
-            Preference Showcase Heading
-          </h2>
-        </div>
-        <p style={{ fontSize: "0.85rem", color: "#9ca3af", marginBottom: "1.5rem" }}>
-          Controls the main section heading shown above the vehicle segment switcher on the homepage.
-        </p>
-
-        <form onSubmit={handleSectionSave}>
-          <div style={{ marginBottom: "1.25rem" }}>
-            <FormField label="Main Section Heading *">
-              <Input
-                value={sectionData.heading}
-                onChange={(e) => setSectionData({ ...sectionData, heading: e.target.value })}
-                placeholder="Choose per your preference"
-                required
-              />
-            </FormField>
+      <div className="bg-surface border border-border rounded-xl p-6 space-y-6">
+        <div className="flex items-center gap-2 border-b border-border pb-4">
+          <Layers className="w-5 h-5 text-action-primary" />
+          <div>
+            <h2 className="text-base font-semibold text-text-primary">
+              Preference Showcase Heading
+            </h2>
+            <p className="text-xs text-text-secondary mt-0.5">
+              Controls the main section heading shown above the vehicle segment switcher on the homepage.
+            </p>
           </div>
+        </div>
 
-          <div style={{ display: "flex", justifyContent: "flex-end" }}>
+        <form onSubmit={handleSectionSave} className="space-y-4">
+          <FormField label="Main Section Heading *">
+            <Input
+              value={sectionData.heading}
+              onChange={(e) => setSectionData({ ...sectionData, heading: e.target.value })}
+              placeholder="Choose per your preference"
+              required
+            />
+          </FormField>
+
+          <div className="flex justify-end pt-2">
             <Button type="submit" isLoading={savingSection} disabled={!canChange}>
               <Save size={16} /> Save Section Heading
             </Button>
@@ -277,27 +269,21 @@ export function PreferenceClient({
       </div>
 
       {/* 2. Segment Switcher Tabs & Curated Vehicles Configuration */}
-      <div
-        style={{
-          background: "var(--card-bg, #11141a)",
-          border: "1px solid var(--border-color, #1f2937)",
-          borderRadius: "10px",
-          padding: "1.75rem",
-          marginBottom: "2rem",
-        }}
-      >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
-          <SlidersHorizontal size={20} color="#38bdf8" />
-          <h2 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#ffffff", margin: 0 }}>
-            Segment Switcher Tabs (Brand New, Reconditioned, Pre-Owned)
-          </h2>
+      <div className="bg-surface border border-border rounded-xl p-6 space-y-6">
+        <div className="flex items-center gap-2 border-b border-border pb-4">
+          <SlidersHorizontal className="w-5 h-5 text-action-primary" />
+          <div>
+            <h2 className="text-base font-semibold text-text-primary">
+              Segment Switcher Tabs (Brand New, Reconditioned, Pre-Owned)
+            </h2>
+            <p className="text-xs text-text-secondary mt-0.5">
+              Manage tab labels and curate the 3 vehicles showcased under each category on the homepage.
+            </p>
+          </div>
         </div>
-        <p style={{ fontSize: "0.85rem", color: "#9ca3af", marginBottom: "1.5rem" }}>
-          Manage tab labels and curate the 3 vehicles showcased under each category on the homepage.
-        </p>
 
         {/* Category Picker Tabs */}
-        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1.75rem", borderBottom: "1px solid #1f2937", paddingBottom: "1rem" }}>
+        <div className="flex flex-wrap gap-2 border-b border-border pb-3">
           {categories.map((cat) => {
             const isActive = cat.id === activeCatId;
             return (
@@ -305,23 +291,14 @@ export function PreferenceClient({
                 key={cat.id}
                 type="button"
                 onClick={() => setActiveCatId(cat.id)}
-                style={{
-                  background: isActive ? "#ffffff" : "#1f2937",
-                  color: isActive ? "#000000" : "#d1d5db",
-                  border: "none",
-                  borderRadius: "6px",
-                  padding: "0.6rem 1.25rem",
-                  fontSize: "0.9rem",
-                  fontWeight: 600,
-                  cursor: "pointer",
-                  transition: "all 0.2s ease",
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "0.5rem",
-                }}
+                className={`px-4 py-2 rounded-lg text-sm font-semibold transition-colors flex items-center gap-2 border ${
+                  isActive
+                    ? "bg-action-primary text-white border-action-primary"
+                    : "bg-surface-secondary text-text-secondary hover:text-text-primary border-border"
+                }`}
               >
                 <span>{catForms[cat.id]?.label || cat.label}</span>
-                <span style={{ fontSize: "0.75rem", opacity: 0.7, textTransform: "uppercase" }}>
+                <span className={`text-xs uppercase ${isActive ? "text-white/80" : "text-text-muted"}`}>
                   ({cat.category_key})
                 </span>
               </button>
@@ -330,48 +307,38 @@ export function PreferenceClient({
         </div>
 
         {activeCategory && currentForm && (
-          <form onSubmit={handleCategorySave}>
-            <div style={{ marginBottom: "1.5rem" }}>
-              <FormField label="Tab Display Label *" description="The text displayed on this tab button on the homepage.">
-                <Input
-                  value={currentForm.label}
-                  onChange={(e) =>
-                    setCatForms({
-                      ...catForms,
-                      [activeCategory.id]: { ...currentForm, label: e.target.value },
-                    })
-                  }
-                  required
-                />
-              </FormField>
-            </div>
+          <form onSubmit={handleCategorySave} className="space-y-6">
+            <FormField label="Tab Display Label *" description="The text displayed on this tab button on the homepage.">
+              <Input
+                value={currentForm.label}
+                onChange={(e) =>
+                  setCatForms({
+                    ...catForms,
+                    [activeCategory.id]: { ...currentForm, label: e.target.value },
+                  })
+                }
+                required
+              />
+            </FormField>
 
             {/* 3. Curated 3-Car Showcase Allocations */}
-            <div
-              style={{
-                background: "rgba(255, 255, 255, 0.02)",
-                border: "1px solid #1f2937",
-                borderRadius: "8px",
-                padding: "1.5rem",
-                marginBottom: "1.5rem",
-              }}
-            >
-              <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", marginBottom: "0.5rem" }}>
-                <div style={{ display: "flex", alignItems: "center", gap: "0.5rem" }}>
-                  <Car size={18} color="#eab308" />
-                  <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "#ffffff", margin: 0 }}>
+            <div className="bg-surface-secondary/40 border border-border rounded-lg p-5 space-y-4">
+              <div className="flex items-center justify-between">
+                <div className="flex items-center gap-2">
+                  <Car className="w-5 h-5 text-amber-600" />
+                  <h3 className="text-sm font-semibold text-text-primary">
                     Curated 3-Car Showcase (Homepage Display)
                   </h3>
                 </div>
-                <span style={{ fontSize: "0.75rem", color: "#9ca3af", background: "#1f2937", padding: "0.2rem 0.6rem", borderRadius: "4px" }}>
+                <span className="text-xs text-text-muted bg-surface px-2.5 py-1 rounded border border-border">
                   Exact Order: Left → Center → Right
                 </span>
               </div>
-              <p style={{ fontSize: "0.85rem", color: "#9ca3af", marginBottom: "1.25rem", lineHeight: 1.5 }}>
+              <p className="text-xs text-text-secondary leading-relaxed">
                 Manually pick which 3 vehicles appear under <strong>{currentForm.label}</strong>. If a slot is left on <em>Auto</em>, the website will automatically showcase the newest vehicle from this category.
               </p>
 
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(260px, 1fr))", gap: "1rem" }}>
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                 {[0, 1, 2].map((slotIdx) => {
                   const selectedId = currentForm.featured_vehicle_ids[slotIdx] || 0;
                   const selectedCar = getCarById(selectedId);
@@ -379,34 +346,19 @@ export function PreferenceClient({
                   return (
                     <div
                       key={slotIdx}
-                      style={{
-                        background: "#0d1117",
-                        border: selectedId ? "1px solid #3b82f6" : "1px solid #1f2937",
-                        borderRadius: "8px",
-                        padding: "1rem",
-                        display: "flex",
-                        flexDirection: "column",
-                        gap: "0.75rem",
-                      }}
+                      className={`bg-surface border rounded-lg p-3.5 flex flex-col gap-3 ${
+                        selectedId ? "border-action-primary ring-1 ring-action-primary/20" : "border-border"
+                      }`}
                     >
-                      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-                        <span style={{ fontSize: "0.8rem", fontWeight: 700, color: selectedId ? "#60a5fa" : "#9ca3af", textTransform: "uppercase", letterSpacing: "0.05em" }}>
-                          Slot 0{slotIdx + 1} {slotIdx === 0 ? "(Featured Left)" : slotIdx === 1 ? "(Featured Center)" : "(Featured Right)"}
+                      <div className="flex justify-between items-center">
+                        <span className={`text-xs font-bold uppercase tracking-wider ${selectedId ? "text-action-primary" : "text-text-muted"}`}>
+                          Slot 0{slotIdx + 1} {slotIdx === 0 ? "(Left)" : slotIdx === 1 ? "(Center)" : "(Right)"}
                         </span>
                         {selectedId > 0 && (
                           <button
                             type="button"
                             onClick={() => handleSlotClear(slotIdx)}
-                            style={{
-                              background: "transparent",
-                              border: "none",
-                              color: "#ef4444",
-                              cursor: "pointer",
-                              fontSize: "0.75rem",
-                              display: "flex",
-                              alignItems: "center",
-                              gap: "0.25rem",
-                            }}
+                            className="text-xs text-danger hover:underline flex items-center gap-1 cursor-pointer bg-transparent border-none p-0"
                           >
                             <X size={12} /> Clear
                           </button>
@@ -416,19 +368,9 @@ export function PreferenceClient({
                       <select
                         value={selectedId || ""}
                         onChange={(e) => handleSlotSelect(slotIdx, e.target.value)}
-                        style={{
-                          background: "#161b22",
-                          color: "#ffffff",
-                          border: "1px solid #30363d",
-                          borderRadius: "6px",
-                          padding: "0.6rem 0.75rem",
-                          fontSize: "0.85rem",
-                          width: "100%",
-                          cursor: "pointer",
-                          outline: "none",
-                        }}
+                        className="w-full bg-surface text-text-primary border border-border rounded-md px-3 py-2 text-xs focus:outline-none focus:border-action-primary cursor-pointer"
                       >
-                        <option value="">• Auto (Show latest published car) •</option>
+                        <option value="">• Auto (Latest published car) •</option>
                         {matchingCars.length > 0 && (
                           <optgroup label={`Matching Category (${activeCategory.label})`}>
                             {matchingCars.map((car) => (
@@ -451,39 +393,29 @@ export function PreferenceClient({
 
                       {/* Selected Preview Box */}
                       {selectedCar ? (
-                        <div
-                          style={{
-                            display: "flex",
-                            gap: "0.75rem",
-                            alignItems: "center",
-                            background: "rgba(59, 130, 246, 0.08)",
-                            padding: "0.6rem",
-                            borderRadius: "6px",
-                            border: "1px solid rgba(59, 130, 246, 0.2)",
-                          }}
-                        >
+                        <div className="flex items-center gap-2.5 bg-action-primary/5 border border-action-primary/20 rounded-md p-2">
                           {selectedCar.feature_image ? (
                             <img
                               src={selectedCar.feature_image}
                               alt={selectedCar.name}
-                              style={{ width: "50px", height: "38px", objectFit: "cover", borderRadius: "4px" }}
+                              className="w-12 h-9 object-cover rounded"
                             />
                           ) : (
-                            <div style={{ width: "50px", height: "38px", background: "#1f2937", borderRadius: "4px", display: "flex", alignItems: "center", justifyContent: "center" }}>
-                              <Car size={18} color="#6b7280" />
+                            <div className="w-12 h-9 bg-surface-secondary rounded flex items-center justify-center">
+                              <Car size={16} className="text-text-muted" />
                             </div>
                           )}
-                          <div style={{ flex: 1, minWidth: 0 }}>
-                            <div style={{ fontSize: "0.82rem", fontWeight: 600, color: "#ffffff", whiteSpace: "nowrap", overflow: "hidden", textOverflow: "ellipsis" }}>
+                          <div className="flex-1 min-w-0">
+                            <div className="text-xs font-semibold text-text-primary truncate">
                               {selectedCar.name}
                             </div>
-                            <div style={{ fontSize: "0.75rem", color: "#93c5fd" }}>
+                            <div className="text-xs text-action-primary font-medium">
                               {selectedCar.is_call_for_price ? "Call for Price" : selectedCar.price ? `${selectedCar.price} BDT` : "Published"}
                             </div>
                           </div>
                         </div>
                       ) : (
-                        <div style={{ fontSize: "0.78rem", color: "#6b7280", fontStyle: "italic", padding: "0.25rem 0" }}>
+                        <div className="text-xs text-text-muted italic py-1">
                           No specific car pinned. Auto-selecting latest.
                         </div>
                       )}
@@ -494,34 +426,23 @@ export function PreferenceClient({
             </div>
 
             {/* Clean Live Info Notice */}
-            <div
-              style={{
-                background: "rgba(56, 189, 248, 0.06)",
-                border: "1px solid rgba(56, 189, 248, 0.2)",
-                borderRadius: "8px",
-                padding: "1.25rem",
-                marginBottom: "1.5rem",
-                display: "flex",
-                gap: "1rem",
-                alignItems: "flex-start",
-              }}
-            >
-              <Info size={22} color="#38bdf8" style={{ flexShrink: 0, marginTop: "2px" }} />
+            <div className="bg-blue-50/70 border border-blue-200/80 rounded-lg p-4 flex gap-3 items-start text-blue-950">
+              <Info size={20} className="text-action-primary shrink-0 mt-0.5" />
               <div>
-                <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "#ffffff", margin: "0 0 0.35rem 0" }}>
+                <h4 className="text-sm font-semibold text-text-primary mb-1">
                   Live Luxury Showcase Behavior
                 </h4>
-                <p style={{ fontSize: "0.85rem", color: "#cbd5e1", margin: 0, lineHeight: 1.6 }}>
+                <p className="text-xs text-text-secondary leading-relaxed">
                   When visitors click <strong>{currentForm.label}</strong> on the homepage, the website will display your 3 curated showcase cars in exact order (Left → Center → Right).
                   <br />
-                  <span style={{ color: "#94a3b8", display: "inline-block", marginTop: "0.35rem" }}>
+                  <span className="text-text-muted inline-block mt-1">
                     • Any slot set to &quot;Auto&quot; will automatically pull from your newest published inventory.
                   </span>
                 </p>
               </div>
             </div>
 
-            <div style={{ display: "flex", justifyContent: "flex-end" }}>
+            <div className="flex justify-end pt-2">
               <Button type="submit" isLoading={savingCategory} disabled={!canChange}>
                 <CheckCircle2 size={16} /> Save Tab &amp; Showcase Allocations
               </Button>
