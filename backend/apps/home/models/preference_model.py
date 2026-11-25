@@ -83,8 +83,9 @@ class PreferenceSection(BaseModel):
 
 class PreferenceCategory(BaseModel):
     class CategoryKeyChoices(models.TextChoices):
-        BRAND_NEW = "BRAND_NEW", _("Brand New & Reconditioned")
-        PRE_OWNED = "PRE_OWNED", _("Certified Pre-Owned")
+        BRAND_NEW = "BRAND_NEW", _("Brand New")
+        RECONDITIONED = "RECONDITIONED", _("Reconditioned")
+        PRE_OWNED = "PRE_OWNED", _("Pre-Owned")
 
     section = models.ForeignKey(
         PreferenceSection,

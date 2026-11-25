@@ -37,6 +37,20 @@ export default function PreferenceSection({
 
   const headingText = sectionData?.heading || "Choose per your preference";
 
+  const brandNewCategory = sectionData?.categories?.find(
+    (c) => c.category_key === "BRAND_NEW"
+  );
+  const reconditionedCategory = sectionData?.categories?.find(
+    (c) => c.category_key === "RECONDITIONED"
+  );
+  const preOwnedCategory = sectionData?.categories?.find(
+    (c) => c.category_key === "PRE_OWNED"
+  );
+
+  const brandNewLabel = brandNewCategory?.label || "Brand New";
+  const reconditionedLabel = reconditionedCategory?.label || "Reconditioned";
+  const preOwnedLabel = preOwnedCategory?.label || "Pre-Owned";
+
   return (
     <section className="preference-section w-full">
       <div className="luxury-container px-4 sm:px-6 lg:px-8">
@@ -56,7 +70,7 @@ export default function PreferenceSection({
               role="tab"
               aria-selected={activeTab === "BRAND_NEW"}
             >
-              <span className="segment-label">Brand New</span>
+              <span className="segment-label">{brandNewLabel}</span>
               <span className="segment-count" id="count-brand-new">
                 {brandNewCars.length}
               </span>
@@ -68,7 +82,7 @@ export default function PreferenceSection({
               role="tab"
               aria-selected={activeTab === "RECONDITIONED"}
             >
-              <span className="segment-label">Reconditioned</span>
+              <span className="segment-label">{reconditionedLabel}</span>
               <span className="segment-count" id="count-reconditioned">
                 {reconditionedCars.length}
               </span>
@@ -80,7 +94,7 @@ export default function PreferenceSection({
               role="tab"
               aria-selected={activeTab === "PRE_OWNED"}
             >
-              <span className="segment-label">Pre-Owned</span>
+              <span className="segment-label">{preOwnedLabel}</span>
               <span className="segment-count" id="count-pre-owned">
                 {preOwnedCars.length}
               </span>
@@ -104,10 +118,10 @@ export default function PreferenceSection({
           >
             <span>
               {activeTab === "BRAND_NEW"
-                ? `Explore All Brand New Collection (${brandNewCars.length} Units)`
+                ? `Explore All ${brandNewLabel} Collection (${brandNewCars.length} Units)`
                 : activeTab === "PRE_OWNED"
-                  ? `Explore All Pre-Owned Collection (${preOwnedCars.length} Units)`
-                  : `Explore All Reconditioned Collection (${reconditionedCars.length} Units)`}
+                  ? `Explore All ${preOwnedLabel} Collection (${preOwnedCars.length} Units)`
+                  : `Explore All ${reconditionedLabel} Collection (${reconditionedCars.length} Units)`}
             </span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
