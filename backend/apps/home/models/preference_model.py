@@ -139,6 +139,12 @@ class PreferenceCategory(BaseModel):
         blank=True,
         verbose_name=_("Highlights / Trust Cards"),
     )
+    featured_vehicle_ids = models.JSONField(
+        default=list,
+        blank=True,
+        verbose_name=_("Featured Vehicle IDs (Max 3)"),
+        help_text=_("List of up to 3 Inventory IDs to showcase under this category on the homepage."),
+    )
     order = models.PositiveIntegerField(
         default=1,
         verbose_name=_("Display Order"),
@@ -147,6 +153,24 @@ class PreferenceCategory(BaseModel):
         default=True,
         verbose_name=_("Is Active?"),
     )
+
+    def get_featured_vehicles(self):
+        if not self.featured_vehicle_ids or not isinstance(self.featured_vehicle_ids, list):
+            return []
+        try:
+            from apps.inventory.models.inventory_model import Inventory
+            valid_ids = [vid for vid in self.featured_vehicle_ids if isinstance(vid, int) or (isinstance(vid, str) and vid.isdigit())]
+            if not valid_ids:
+                return []
+            int_ids = [int(vid) for vid in valid_ids][:3]
+            cars = Inventory.objects.filter(
+                id__in=int_ids,
+                status=BaseModel.StatusChoices.PUBLISHED
+            ).select_related('brand', 'branch').prefetch_related('inventory_images')
+            cars_dict = {car.id: car for car in cars}
+            return [cars_dict[vid] for vid in int_ids if vid in cars_dict]
+        except Exception:
+            return []
 
     class Meta:
         ordering = ["order", "id"]

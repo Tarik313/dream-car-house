@@ -679,7 +679,17 @@ export const getPreferenceSection = cache(async (): Promise<PublicPreferenceSect
     throw new Error("Invalid preference section response payload.");
   }
 
-  return json.data;
+  const rawData = json.data;
+  if (rawData && rawData.categories && Array.isArray(rawData.categories)) {
+    rawData.categories = rawData.categories.map((cat: any) => ({
+      ...cat,
+      featured_vehicles: Array.isArray(cat.featured_vehicles)
+        ? cat.featured_vehicles.map((v: any) => mapBackendCarToVehicle(v as Record<string, unknown>))
+        : [],
+    }));
+  }
+
+  return rawData;
 });
 
 /**

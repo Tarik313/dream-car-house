@@ -144,7 +144,7 @@ export interface PublicPreferenceHighlight {
 
 export interface PublicPreferenceCategory {
   id: number;
-  category_key: "BRAND_NEW" | "PRE_OWNED" | string;
+  category_key: "BRAND_NEW" | "PRE_OWNED" | "RECONDITIONED" | string;
   label: string;
   badge?: string | null;
   subtext?: string | null;
@@ -153,6 +153,8 @@ export interface PublicPreferenceCategory {
   cta_url: string;
   highlights: PublicPreferenceHighlight[];
   order: number;
+  featured_vehicle_ids?: number[];
+  featured_vehicles?: PublicVehicle[];
 }
 
 export interface PublicPreferenceSection {

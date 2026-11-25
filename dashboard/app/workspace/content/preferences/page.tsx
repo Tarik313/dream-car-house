@@ -1,6 +1,6 @@
 import { redirect } from "next/navigation";
 import { getManagementAccess } from "@/lib/server/api";
-import { getPreferenceSectionDashboard } from "@/lib/server/inventory";
+import { getPreferenceSectionDashboard, getInventoryList } from "@/lib/server/inventory";
 import { PageHeader } from "@/components/page-header";
 import { State } from "@/components/states";
 import { PreferenceClient } from "./preference-client";
@@ -23,7 +23,11 @@ export default async function PreferenceSectionPage() {
     );
   }
 
-  const res = await getPreferenceSectionDashboard();
+  const [res, invRes] = await Promise.all([
+    getPreferenceSectionDashboard(),
+    getInventoryList({ status: "PUBLISHED", page_size: 200 }).catch(() => null),
+  ]);
+
   if (!res.ok) {
     return (
       <>
@@ -35,13 +39,19 @@ export default async function PreferenceSectionPage() {
     );
   }
 
+  const publishedCars = invRes && invRes.ok ? invRes.data.results : [];
+
   return (
     <>
       <PageHeader
         href="/workspace/content/preferences"
-        description="Configure homepage Studio Preference Switcher: Section heading, badge, category labels, CTA targets, media banners, and trust guarantee cards."
+        description="Configure homepage Studio Preference Switcher: Section heading, category tab labels, and curated 3-car showcase allocations."
       />
-      <PreferenceClient initialData={res.data} userPermissions={access.data.user.permissions} />
+      <PreferenceClient
+        initialData={res.data}
+        inventoryCars={publishedCars}
+        userPermissions={access.data.user.permissions}
+      />
     </>
   );
 }

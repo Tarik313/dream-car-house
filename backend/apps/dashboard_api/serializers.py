@@ -1484,6 +1484,7 @@ class ShowroomBranchManagementSerializer(serializers.ModelSerializer):
 
 class PreferenceCategoryManagementSerializer(serializers.ModelSerializer, OptimizedImageSerializerMixin):
     image_url = serializers.SerializerMethodField()
+    featured_vehicles = serializers.SerializerMethodField()
 
     class Meta:
         model = PreferenceCategory
@@ -1499,15 +1500,34 @@ class PreferenceCategoryManagementSerializer(serializers.ModelSerializer, Optimi
             "cta_text",
             "cta_url",
             "highlights",
+            "featured_vehicle_ids",
+            "featured_vehicles",
             "order",
             "is_active",
             "created_at",
             "updated_at",
         ]
-        read_only_fields = ["id", "image_url", "created_at", "updated_at"]
+        read_only_fields = ["id", "image_url", "featured_vehicles", "created_at", "updated_at"]
 
     def get_image_url(self, obj):
         return self.get_optimized_image_url(obj, "image")
+
+    def get_featured_vehicles(self, obj):
+        ordered_cars = obj.get_featured_vehicles() if hasattr(obj, "get_featured_vehicles") else []
+        results = []
+        for car in ordered_cars:
+            results.append({
+                "id": car.id,
+                "name": car.name,
+                "slug": car.slug,
+                "price": float(car.price) if car.price is not None else None,
+                "is_call_for_price": car.is_call_for_price,
+                "feature_image": self.get_optimized_image_url(car, "feature_image"),
+                "car_type": car.car_type,
+                "condition": car.condition,
+                "year": car.year,
+            })
+        return results
 
     def validate_image(self, value):
         if value:
@@ -1529,6 +1549,17 @@ class PreferenceCategoryManagementSerializer(serializers.ModelSerializer, Optimi
                 raise serializers.ValidationError("Each highlight must specify a title.")
         return value
 
+    def validate_featured_vehicle_ids(self, value):
+        if value is None:
+            return []
+        if not isinstance(value, list):
+            raise serializers.ValidationError("Featured vehicle IDs must be a list of numbers.")
+        int_ids = []
+        for item in value:
+            if isinstance(item, int) or (isinstance(item, str) and item.isdigit()):
+                int_ids.append(int(item))
+        return int_ids[:3]
+
     def to_internal_value(self, data):
         if hasattr(data, "dict"):
             data = data.dict()
@@ -1538,6 +1569,11 @@ class PreferenceCategoryManagementSerializer(serializers.ModelSerializer, Optimi
             if "highlights" in data and isinstance(data["highlights"], str):
                 try:
                     data["highlights"] = json.loads(data["highlights"])
+                except Exception:
+                    pass
+            if "featured_vehicle_ids" in data and isinstance(data["featured_vehicle_ids"], str):
+                try:
+                    data["featured_vehicle_ids"] = json.loads(data["featured_vehicle_ids"])
                 except Exception:
                     pass
             if self.partial and "image" in data:

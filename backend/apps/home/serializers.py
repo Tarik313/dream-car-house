@@ -243,6 +243,7 @@ class PublicShowroomBranchSerializer(serializers.ModelSerializer):
 
 class PublicPreferenceCategorySerializer(serializers.ModelSerializer, OptimizedImageSerializerMixin):
     image = serializers.SerializerMethodField()
+    featured_vehicles = serializers.SerializerMethodField()
 
     class Meta:
         model = PreferenceCategory
@@ -256,11 +257,20 @@ class PublicPreferenceCategorySerializer(serializers.ModelSerializer, OptimizedI
             'cta_text',
             'cta_url',
             'highlights',
+            'featured_vehicle_ids',
+            'featured_vehicles',
             'order',
         ]
 
     def get_image(self, obj):
         return self.get_optimized_image_url(obj, 'image')
+
+    def get_featured_vehicles(self, obj):
+        ordered_cars = obj.get_featured_vehicles() if hasattr(obj, "get_featured_vehicles") else []
+        if not ordered_cars:
+            return []
+        from apps.inventory.serializers import InventoryListSerializer
+        return InventoryListSerializer(ordered_cars, many=True, context=self.context).data
 
 
 class PublicPreferenceSectionSerializer(serializers.ModelSerializer):

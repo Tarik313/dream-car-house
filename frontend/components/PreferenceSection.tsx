@@ -19,22 +19,6 @@ export default function PreferenceSection({
 
   const sourceCars = Array.isArray(vehicles) && vehicles.length > 0 ? vehicles : VEHICLE_DATA;
 
-  const brandNewCars = sourceCars.filter((c) => c.car_type === "BRAND_NEW");
-  const preOwnedCars = sourceCars.filter((c) => c.car_type === "PRE_OWNED");
-  const reconditionedCars = sourceCars.filter(
-    (c) =>
-      c.car_type === "RECONDITIONED" ||
-      (c.condition && c.condition.toUpperCase().includes("RECONDITION"))
-  );
-
-  const currentList =
-    activeTab === "BRAND_NEW"
-      ? brandNewCars
-      : activeTab === "PRE_OWNED"
-        ? preOwnedCars
-        : reconditionedCars;
-  const showcaseCars = currentList.slice(0, 3);
-
   const headingText = sectionData?.heading || "Choose per your preference";
 
   const brandNewCategory = sectionData?.categories?.find(
@@ -46,6 +30,33 @@ export default function PreferenceSection({
   const preOwnedCategory = sectionData?.categories?.find(
     (c) => c.category_key === "PRE_OWNED"
   );
+
+  const brandNewCars =
+    brandNewCategory?.featured_vehicles && brandNewCategory.featured_vehicles.length > 0
+      ? brandNewCategory.featured_vehicles
+      : sourceCars.filter((c) => c.car_type === "BRAND_NEW");
+
+  const reconditionedCars =
+    reconditionedCategory?.featured_vehicles && reconditionedCategory.featured_vehicles.length > 0
+      ? reconditionedCategory.featured_vehicles
+      : sourceCars.filter(
+          (c) =>
+            c.car_type === "RECONDITIONED" ||
+            (c.condition && c.condition.toUpperCase().includes("RECONDITION"))
+        );
+
+  const preOwnedCars =
+    preOwnedCategory?.featured_vehicles && preOwnedCategory.featured_vehicles.length > 0
+      ? preOwnedCategory.featured_vehicles
+      : sourceCars.filter((c) => c.car_type === "PRE_OWNED");
+
+  const currentList =
+    activeTab === "BRAND_NEW"
+      ? brandNewCars
+      : activeTab === "PRE_OWNED"
+        ? preOwnedCars
+        : reconditionedCars;
+  const showcaseCars = currentList.slice(0, 3);
 
   const brandNewLabel = brandNewCategory?.label || "Brand New";
   const reconditionedLabel = reconditionedCategory?.label || "Reconditioned";

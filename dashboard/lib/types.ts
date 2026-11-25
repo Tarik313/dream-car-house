@@ -484,7 +484,7 @@ export type PreferenceHighlightItem = {
 export type PreferenceCategoryItem = {
   id: number;
   section: number | null;
-  category_key: "BRAND_NEW" | "PRE_OWNED" | string;
+  category_key: "BRAND_NEW" | "PRE_OWNED" | "RECONDITIONED" | string;
   label: string;
   badge?: string;
   subtext?: string;
@@ -494,6 +494,18 @@ export type PreferenceCategoryItem = {
   cta_url: string;
   highlights: PreferenceHighlightItem[];
   order: number;
+  featured_vehicle_ids?: number[];
+  featured_vehicles?: {
+    id: number;
+    name: string;
+    slug: string;
+    price?: number | null;
+    is_call_for_price?: boolean;
+    feature_image?: string | null;
+    car_type?: string;
+    condition?: string;
+    year?: number | null;
+  }[];
   is_active: boolean;
   created_at?: string;
   updated_at?: string;
