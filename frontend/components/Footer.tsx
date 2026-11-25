@@ -196,9 +196,10 @@ export default function Footer({
             <div className="map-embed-wrapper-modern">
               <iframe
                 src={
-                  activeBranch === "kakrail"
+                  currentBranch?.embed_map ||
+                  (activeBranch === "kakrail"
                     ? "https://maps.google.com/maps?width=600&height=400&hl=en&q=Dream%20Car%20House%20Kakrail%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed"
-                    : "https://maps.google.com/maps?width=600&height=400&hl=en&q=Dream%20Car%20House%20Gulshan%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed"
+                    : "https://maps.google.com/maps?width=600&height=400&hl=en&q=Dream%20Car%20House%20Gulshan%20Dhaka&t=&z=15&ie=UTF8&iwloc=B&output=embed")
                 }
                 loading="lazy"
                 title={`DREAM CAR HOUSE Showroom Location - ${currentBranch.name}`}
@@ -224,9 +225,10 @@ export default function Footer({
             <div className="map-actions-row">
               <a
                 href={
-                  activeBranch === "kakrail"
+                  currentBranch?.map_link ||
+                  (activeBranch === "kakrail"
                     ? "https://maps.google.com/?q=Dream+Car+House+Kakrail+Dhaka"
-                    : "https://maps.google.com/?q=Dream+Car+House+Gulshan+Dhaka"
+                    : "https://maps.google.com/?q=Dream+Car+House+Gulshan+Dhaka")
                 }
                 target="_blank"
                 rel="noopener noreferrer"
