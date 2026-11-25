@@ -10,8 +10,8 @@ import {
   updatePreferenceSectionAction,
   updatePreferenceCategoryAction,
 } from "@/app/actions/preference";
-import type { PreferenceSectionItem, PreferenceCategoryItem } from "@/lib/types";
-import { Save, Layers, Upload, Image as ImageIcon } from "lucide-react";
+import type { PreferenceSectionItem } from "@/lib/types";
+import { Save, Layers, CheckCircle2, SlidersHorizontal, Info } from "lucide-react";
 
 interface PreferenceClientProps {
   initialData: PreferenceSectionItem;
@@ -46,7 +46,7 @@ export function PreferenceClient({
   const activeCategory =
     categories.find((c) => c.id === activeCatId) || categories[0];
 
-  // Category state map
+  // Category state map (preserves backend model fields to maintain API compatibility)
   const [catForms, setCatForms] = useState<
     Record<
       number,
@@ -68,18 +68,15 @@ export function PreferenceClient({
         label: c.label || "",
         badge: c.badge || "",
         subtext: c.subtext || "",
-        cta_text: c.cta_text || "",
-        cta_url: c.cta_url || "",
+        cta_text: c.cta_text || "/inventory",
+        cta_url: c.cta_url || "/inventory",
         highlights:
           Array.isArray(c.highlights) && c.highlights.length > 0
-            ? c.highlights.map((h) => ({
-                title: h.title || "",
-                description: h.description || "",
-              }))
+            ? c.highlights
             : [
-                { title: "", description: "" },
-                { title: "", description: "" },
-                { title: "", description: "" },
+                { title: "Zero Mileage Import", description: "Direct container delivery" },
+                { title: "Diagnostic Verified", description: "150+ point inspection" },
+                { title: "VIP Registration", description: "White-glove handover" },
               ],
         imageFile: null,
         imagePreview: c.image_url || c.image || null,
@@ -114,7 +111,7 @@ export function PreferenceClient({
         showToast({
           type: "success",
           title: "Section Saved",
-          message: "Preference section header and subtext updated.",
+          message: "Preference section heading updated.",
         });
         router.refresh();
       } else {
@@ -155,13 +152,9 @@ export function PreferenceClient({
     body.append("label", currentCatForm.label);
     body.append("badge", currentCatForm.badge);
     body.append("subtext", currentCatForm.subtext);
-    body.append("cta_text", currentCatForm.cta_text);
-    body.append("cta_url", currentCatForm.cta_url);
+    body.append("cta_text", currentCatForm.cta_text || "Explore All");
+    body.append("cta_url", currentCatForm.cta_url || "/inventory");
     body.append("highlights", JSON.stringify(currentCatForm.highlights));
-
-    if (currentCatForm.imageFile) {
-      body.append("image", currentCatForm.imageFile);
-    }
 
     try {
       const res = await updatePreferenceCategoryAction(activeCategory.id, body);
@@ -169,7 +162,7 @@ export function PreferenceClient({
         showToast({
           type: "success",
           title: "Category Saved",
-          message: `Category '${currentCatForm.label}' updated successfully.`,
+          message: `Tab label '${currentCatForm.label}' updated successfully.`,
         });
         router.refresh();
       } else {
@@ -194,7 +187,7 @@ export function PreferenceClient({
 
   return (
     <div style={{ maxWidth: "1000px", margin: "0 auto", padding: "1.5rem 0" }}>
-      {/* Section Global Settings */}
+      {/* 1. Section Global Heading */}
       <div
         style={{
           background: "var(--card-bg, #11141a)",
@@ -204,22 +197,18 @@ export function PreferenceClient({
           marginBottom: "2rem",
         }}
       >
-        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "1.25rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.75rem" }}>
           <Layers size={20} color="#22c55e" />
           <h2 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#ffffff", margin: 0 }}>
-            Section Heading & Context
+            Preference Showcase Heading
           </h2>
         </div>
+        <p style={{ fontSize: "0.85rem", color: "#9ca3af", marginBottom: "1.5rem" }}>
+          Controls the main section heading shown above the vehicle segment switcher on the homepage.
+        </p>
 
         <form onSubmit={handleSectionSave}>
-          <div style={{ display: "grid", gridTemplateColumns: "1fr 2fr", gap: "1rem", marginBottom: "1rem" }}>
-            <FormField label="Badge Tag">
-              <Input
-                value={sectionData.badge}
-                onChange={(e) => setSectionData({ ...sectionData, badge: e.target.value })}
-                placeholder="CURATED INVENTORY"
-              />
-            </FormField>
+          <div style={{ marginBottom: "1.25rem" }}>
             <FormField label="Main Section Heading *">
               <Input
                 value={sectionData.heading}
@@ -230,39 +219,36 @@ export function PreferenceClient({
             </FormField>
           </div>
 
-          <FormField label="Subtext Description">
-            <Input
-              value={sectionData.subtext}
-              onChange={(e) => setSectionData({ ...sectionData, subtext: e.target.value })}
-              placeholder="Toggle between factory-fresh zero mileage units and certified showroom pre-owned vehicles."
-            />
-          </FormField>
-
-          <div style={{ marginTop: "1.25rem", display: "flex", justifyContent: "flex-end" }}>
+          <div style={{ display: "flex", justifyContent: "flex-end" }}>
             <Button type="submit" isLoading={savingSection} disabled={!canChange}>
-              <Save size={16} /> Save Section Header
+              <Save size={16} /> Save Section Heading
             </Button>
           </div>
         </form>
       </div>
 
-      {/* Category Tabs & Editor */}
+      {/* 2. Segment Switcher Tabs Configuration */}
       <div
         style={{
           background: "var(--card-bg, #11141a)",
           border: "1px solid var(--border-color, #1f2937)",
           borderRadius: "10px",
           padding: "1.75rem",
+          marginBottom: "2rem",
         }}
       >
-        <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", marginBottom: "1.5rem" }}>
+        <div style={{ display: "flex", alignItems: "center", gap: "0.5rem", marginBottom: "0.5rem" }}>
+          <SlidersHorizontal size={20} color="#38bdf8" />
           <h2 style={{ fontSize: "1.2rem", fontWeight: 700, color: "#ffffff", margin: 0 }}>
-            Preference Categories Configuration
+            Segment Switcher Tabs (Brand New, Reconditioned, Pre-Owned)
           </h2>
         </div>
+        <p style={{ fontSize: "0.85rem", color: "#9ca3af", marginBottom: "1.5rem" }}>
+          Manage the tab labels shown on the homepage segment controller.
+        </p>
 
         {/* Category Picker Tabs */}
-        <div style={{ display: "flex", gap: "0.5rem", marginBottom: "1.75rem", borderBottom: "1px solid #1f2937", paddingBottom: "0.75rem" }}>
+        <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", marginBottom: "1.75rem", borderBottom: "1px solid #1f2937", paddingBottom: "1rem" }}>
           {categories.map((cat) => {
             const isActive = cat.id === activeCatId;
             return (
@@ -275,14 +261,20 @@ export function PreferenceClient({
                   color: isActive ? "#000000" : "#d1d5db",
                   border: "none",
                   borderRadius: "6px",
-                  padding: "0.5rem 1.25rem",
+                  padding: "0.6rem 1.25rem",
                   fontSize: "0.9rem",
                   fontWeight: 600,
                   cursor: "pointer",
                   transition: "all 0.2s ease",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
                 }}
               >
-                {cat.label} ({cat.category_key})
+                <span>{catForms[cat.id]?.label || cat.label}</span>
+                <span style={{ fontSize: "0.75rem", opacity: 0.7, textTransform: "uppercase" }}>
+                  ({cat.category_key})
+                </span>
               </button>
             );
           })}
@@ -290,8 +282,8 @@ export function PreferenceClient({
 
         {activeCategory && currentForm && (
           <form onSubmit={handleCategorySave}>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginBottom: "1rem" }}>
-              <FormField label="Category Label *">
+            <div style={{ marginBottom: "1.5rem" }}>
+              <FormField label="Tab Display Label *" description="The text displayed on this tab button on the homepage.">
                 <Input
                   value={currentForm.label}
                   onChange={(e) =>
@@ -303,164 +295,39 @@ export function PreferenceClient({
                   required
                 />
               </FormField>
-
-              <FormField label="Category Badge (Optional)">
-                <Input
-                  value={currentForm.badge}
-                  onChange={(e) =>
-                    setCatForms({
-                      ...catForms,
-                      [activeCategory.id]: { ...currentForm, badge: e.target.value },
-                    })
-                  }
-                  placeholder="e.g. ZERO METER"
-                />
-              </FormField>
             </div>
 
-            <div style={{ display: "grid", gridTemplateColumns: "2fr 1fr", gap: "1rem", marginBottom: "1.5rem" }}>
-              <FormField label="Call to Action Text *">
-                <Input
-                  value={currentForm.cta_text}
-                  onChange={(e) =>
-                    setCatForms({
-                      ...catForms,
-                      [activeCategory.id]: { ...currentForm, cta_text: e.target.value },
-                    })
-                  }
-                  required
-                />
-              </FormField>
-
-              <FormField label="CTA Destination URL *">
-                <Input
-                  value={currentForm.cta_url}
-                  onChange={(e) =>
-                    setCatForms({
-                      ...catForms,
-                      [activeCategory.id]: { ...currentForm, cta_url: e.target.value },
-                    })
-                  }
-                  required
-                />
-              </FormField>
-            </div>
-
-            {/* Category Banner Image Upload */}
-            <div style={{ marginBottom: "2rem", padding: "1.25rem", background: "#0a0c10", borderRadius: "8px", border: "1px dashed #374151" }}>
-              <label style={{ display: "block", fontSize: "0.9rem", fontWeight: 600, color: "#ffffff", marginBottom: "0.5rem" }}>
-                Category Banner / Showcase Image (Optional)
-              </label>
-              <p style={{ fontSize: "0.8rem", color: "#9ca3af", marginBottom: "1rem" }}>
-                Upload a showcase banner for this category (jpg, jpeg, png, webp up to 10MB).
-              </p>
-
-              <div style={{ display: "flex", alignItems: "center", gap: "1.5rem" }}>
-                {currentForm.imagePreview ? (
-                  <div style={{ width: "160px", height: "90px", borderRadius: "6px", overflow: "hidden", border: "1px solid #374151", position: "relative" }}>
-                    <img src={currentForm.imagePreview} alt="Preview" style={{ width: "100%", height: "100%", objectFit: "cover" }} />
-                  </div>
-                ) : (
-                  <div style={{ width: "160px", height: "90px", borderRadius: "6px", background: "#11141a", display: "flex", alignItems: "center", justifyContent: "center", color: "#6b7280" }}>
-                    <ImageIcon size={24} />
-                  </div>
-                )}
-
-                <div>
-                  <input
-                    type="file"
-                    id={`cat-file-${activeCategory.id}`}
-                    accept=".jpg,.jpeg,.png,.webp"
-                    style={{ display: "none" }}
-                    onChange={(e) => {
-                      const file = e.target.files?.[0];
-                      if (file) {
-                        if (file.size > 10 * 1024 * 1024) {
-                          alert("File size exceeds 10MB limit.");
-                          return;
-                        }
-                        const reader = new FileReader();
-                        reader.onload = (re) => {
-                          setCatForms({
-                            ...catForms,
-                            [activeCategory.id]: {
-                              ...currentForm,
-                              imageFile: file,
-                              imagePreview: re.target?.result as string,
-                            },
-                          });
-                        };
-                        reader.readAsDataURL(file);
-                      }
-                    }}
-                  />
-                  <Button
-                    type="button"
-                    variant="secondary"
-                    onClick={() => document.getElementById(`cat-file-${activeCategory.id}`)?.click()}
-                  >
-                    <Upload size={16} /> Choose Image
-                  </Button>
-                  {currentForm.imageFile && (
-                    <span style={{ marginLeft: "0.75rem", fontSize: "0.85rem", color: "#22c55e" }}>
-                      {currentForm.imageFile.name} ready to save
-                    </span>
-                  )}
-                </div>
+            {/* Clean Live Info Notice (Explains why legacy cards are removed) */}
+            <div
+              style={{
+                background: "rgba(56, 189, 248, 0.06)",
+                border: "1px solid rgba(56, 189, 248, 0.2)",
+                borderRadius: "8px",
+                padding: "1.25rem",
+                marginBottom: "1.5rem",
+                display: "flex",
+                gap: "1rem",
+                alignItems: "flex-start",
+              }}
+            >
+              <Info size={22} color="#38bdf8" style={{ flexShrink: 0, marginTop: "2px" }} />
+              <div>
+                <h4 style={{ fontSize: "0.95rem", fontWeight: 600, color: "#ffffff", margin: "0 0 0.35rem 0" }}>
+                  Live Luxury Showcase Behavior
+                </h4>
+                <p style={{ fontSize: "0.85rem", color: "#cbd5e1", margin: 0, lineHeight: 1.6 }}>
+                  When visitors click <strong>{currentForm.label}</strong> on the homepage, the website automatically displays the top 3 live cars from that category in your <strong>Inventory</strong>, complete with photo cards, live stock count, and direct links.
+                  <br />
+                  <span style={{ color: "#94a3b8", display: "inline-block", marginTop: "0.35rem" }}>
+                    • Legacy 3 guarantee text cards and banner image uploads have been retired from this dashboard view to ensure 100% parity with your clean live UI.
+                  </span>
+                </p>
               </div>
             </div>
 
-            {/* Highlights Editor (3 Cards) */}
-            <div style={{ marginBottom: "1.5rem" }}>
-              <h3 style={{ fontSize: "1rem", fontWeight: 600, color: "#ffffff", marginBottom: "0.75rem" }}>
-                Trust / Guarantee Highlights (3 Cards)
-              </h3>
-              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(280px, 1fr))", gap: "1rem" }}>
-                {currentForm.highlights.map((h, idx) => (
-                  <div key={idx} style={{ background: "#0a0c10", border: "1px solid #1f2937", borderRadius: "8px", padding: "1rem" }}>
-                    <span style={{ fontSize: "0.75rem", color: "#22c55e", fontWeight: 700, display: "block", marginBottom: "0.5rem" }}>
-                      CARD 0{idx + 1}
-                    </span>
-                    <div style={{ marginBottom: "0.75rem" }}>
-                      <label style={{ display: "block", fontSize: "0.8rem", color: "#9ca3af", marginBottom: "0.25rem" }}>Title</label>
-                      <Input
-                        value={h.title}
-                        onChange={(e) => {
-                          const nextH = [...currentForm.highlights];
-                          nextH[idx] = { title: e.target.value, description: nextH[idx]?.description ?? "" };
-                          setCatForms({
-                            ...catForms,
-                            [activeCategory.id]: { ...currentForm, highlights: nextH },
-                          });
-                        }}
-                        placeholder="Highlight Title"
-                        required
-                      />
-                    </div>
-                    <div>
-                      <label style={{ display: "block", fontSize: "0.8rem", color: "#9ca3af", marginBottom: "0.25rem" }}>Description</label>
-                      <Input
-                        value={h.description}
-                        onChange={(e) => {
-                          const nextH = [...currentForm.highlights];
-                          nextH[idx] = { title: nextH[idx]?.title ?? "", description: e.target.value };
-                          setCatForms({
-                            ...catForms,
-                            [activeCategory.id]: { ...currentForm, highlights: nextH },
-                          });
-                        }}
-                        placeholder="Short description snippet"
-                        required
-                      />
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            <div style={{ display: "flex", justifyContent: "flex-end", marginTop: "1.5rem" }}>
+            <div style={{ display: "flex", justifyContent: "flex-end" }}>
               <Button type="submit" isLoading={savingCategory} disabled={!canChange}>
-                <Save size={16} /> Save Category Details
+                <CheckCircle2 size={16} /> Save Tab Label
               </Button>
             </div>
           </form>
