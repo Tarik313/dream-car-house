@@ -31,31 +31,41 @@ export default function PreferenceSection({
     (c) => c.category_key === "PRE_OWNED"
   );
 
+  const fallbackBrandNew = VEHICLE_DATA.filter((c) => c.car_type === "BRAND_NEW");
+  const fallbackReconditioned = VEHICLE_DATA.filter((c) => c.car_type === "RECONDITIONED");
+  const fallbackPreOwned = VEHICLE_DATA.filter((c) => c.car_type === "PRE_OWNED");
+
+  const autoBrandNew = sourceCars.filter((c) => c.car_type === "BRAND_NEW");
+  const autoReconditioned = sourceCars.filter((c) => c.car_type === "RECONDITIONED");
+  const autoPreOwned = sourceCars.filter((c) => c.car_type === "PRE_OWNED");
+
   const brandNewCars =
     brandNewCategory?.featured_vehicles && brandNewCategory.featured_vehicles.length > 0
       ? brandNewCategory.featured_vehicles
-      : sourceCars.filter((c) => c.car_type === "BRAND_NEW");
+      : autoBrandNew.length > 0
+      ? autoBrandNew
+      : fallbackBrandNew;
 
   const reconditionedCars =
     reconditionedCategory?.featured_vehicles && reconditionedCategory.featured_vehicles.length > 0
       ? reconditionedCategory.featured_vehicles
-      : sourceCars.filter(
-          (c) =>
-            c.car_type === "RECONDITIONED" ||
-            (c.condition && c.condition.toUpperCase().includes("RECONDITION"))
-        );
+      : autoReconditioned.length > 0
+      ? autoReconditioned
+      : fallbackReconditioned;
 
   const preOwnedCars =
     preOwnedCategory?.featured_vehicles && preOwnedCategory.featured_vehicles.length > 0
       ? preOwnedCategory.featured_vehicles
-      : sourceCars.filter((c) => c.car_type === "PRE_OWNED");
+      : autoPreOwned.length > 0
+      ? autoPreOwned
+      : fallbackPreOwned;
 
   const currentList =
     activeTab === "BRAND_NEW"
       ? brandNewCars
-      : activeTab === "PRE_OWNED"
-        ? preOwnedCars
-        : reconditionedCars;
+      : activeTab === "RECONDITIONED"
+      ? reconditionedCars
+      : preOwnedCars;
   const showcaseCars = currentList.slice(0, 3);
 
   const brandNewLabel = brandNewCategory?.label || "Brand New";
@@ -130,9 +140,9 @@ export default function PreferenceSection({
             <span>
               {activeTab === "BRAND_NEW"
                 ? `Explore All ${brandNewLabel} Collection (${brandNewCars.length} Units)`
-                : activeTab === "PRE_OWNED"
-                  ? `Explore All ${preOwnedLabel} Collection (${preOwnedCars.length} Units)`
-                  : `Explore All ${reconditionedLabel} Collection (${reconditionedCars.length} Units)`}
+                : activeTab === "RECONDITIONED"
+                  ? `Explore All ${reconditionedLabel} Collection (${reconditionedCars.length} Units)`
+                  : `Explore All ${preOwnedLabel} Collection (${preOwnedCars.length} Units)`}
             </span>
             <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />

@@ -333,12 +333,23 @@ export function mapBackendCarToVehicle(car: Record<string, unknown>): PublicVehi
   const branchName = typeof branchRaw?.name === "string" ? branchRaw.name : "";
   const branchAddress = typeof branchRaw?.address === "string" ? branchRaw.address : "";
 
-  const carType: "BRAND_NEW" | "PRE_OWNED" | "RECONDITIONED" =
-    car.car_type === "RECONDITIONED" || car.condition === "RECONDITIONED"
-      ? "RECONDITIONED"
-      : car.car_type === "PRE_OWNED" || car.condition === "USED"
-      ? "PRE_OWNED"
-      : "BRAND_NEW";
+  const rawType = typeof car.car_type === "string" ? car.car_type.toUpperCase().trim() : "";
+  const rawCondition = typeof car.condition === "string" ? car.condition.toUpperCase().trim() : "";
+
+  let carType: "BRAND_NEW" | "PRE_OWNED" | "RECONDITIONED";
+  if (rawType === "BRAND_NEW") {
+    carType = "BRAND_NEW";
+  } else if (rawType === "RECONDITIONED" || rawCondition === "RECONDITIONED") {
+    carType = "RECONDITIONED";
+  } else if (rawType === "PRE_OWNED") {
+    carType = "PRE_OWNED";
+  } else if (rawCondition === "NEW") {
+    carType = "BRAND_NEW";
+  } else if (rawCondition === "USED") {
+    carType = "PRE_OWNED";
+  } else {
+    carType = "BRAND_NEW";
+  }
 
   const engineCapacity = formatEngineCapacity(car.engine_capacity);
 
