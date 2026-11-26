@@ -11,7 +11,7 @@ import {
   updatePreferenceCategoryAction,
 } from "@/app/actions/preference";
 import type { PreferenceSectionItem, InventoryListItem } from "@/lib/types";
-import { Save, Layers, CheckCircle2, SlidersHorizontal, Info, Car, X } from "lucide-react";
+import { Save, Layers, CheckCircle2, SlidersHorizontal, Info, Car, X, Sparkles, MapPin, ExternalLink } from "lucide-react";
 
 interface PreferenceClientProps {
   initialData: PreferenceSectionItem;
@@ -321,104 +321,206 @@ export function PreferenceClient({
               />
             </FormField>
 
-            {/* 3. Curated 3-Car Showcase Allocations */}
-            <div className="bg-surface-secondary/40 border border-border rounded-lg p-5 space-y-4">
-              <div className="flex items-center justify-between">
-                <div className="flex items-center gap-2">
-                  <Car className="w-5 h-5 text-amber-600" />
-                  <h3 className="text-sm font-semibold text-text-primary">
-                    Curated 3-Car Showcase (Homepage Display)
-                  </h3>
+            {/* 3. Curated 3-Car Showcase Cards */}
+            <div className="bg-surface-secondary/40 border border-border rounded-xl p-5 space-y-5">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-2 border-b border-border/80 pb-3">
+                <div className="flex items-center gap-2.5">
+                  <div className="w-8 h-8 rounded-lg bg-amber-500/10 border border-amber-500/20 flex items-center justify-center">
+                    <Car className="w-4 h-4 text-amber-600" />
+                  </div>
+                  <div>
+                    <h3 className="text-sm font-semibold text-text-primary">
+                      Curated 3-Car Showcase Cards
+                    </h3>
+                    <p className="text-xs text-text-secondary">
+                      Exact Homepage Layout: <strong>Slot 01 (Left)</strong> → <strong>Slot 02 (Center)</strong> → <strong>Slot 03 (Right)</strong>
+                    </p>
+                  </div>
                 </div>
-                <span className="text-xs text-text-muted bg-surface px-2.5 py-1 rounded border border-border">
-                  Exact Order: Left → Center → Right
-                </span>
+                <div className="flex items-center gap-2">
+                  <span className="text-[11px] font-medium text-text-muted bg-surface px-2.5 py-1 rounded-md border border-border">
+                    Active Tab: <strong className="text-text-primary">{currentForm.label}</strong>
+                  </span>
+                </div>
               </div>
+
               <p className="text-xs text-text-secondary leading-relaxed">
-                Manually pick which 3 vehicles appear under <strong>{currentForm.label}</strong>. If a slot is left on <em>Auto</em>, the website will automatically showcase the newest vehicle from this category.
+                Choose custom showcase vehicles for each position. If a slot is set to <strong>Auto</strong>, the homepage automatically displays the latest available vehicle from this category.
               </p>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+              {/* 3 Interactive Showcase Cards */}
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
                 {[0, 1, 2].map((slotIdx) => {
                   const selectedId = currentForm.featured_vehicle_ids[slotIdx] || 0;
                   const selectedCar = getCarById(selectedId);
+                  const isPinned = selectedId > 0 && !!selectedCar;
+                  const autoFallbackCar = matchingCars[slotIdx] || matchingCars[0] || null;
+                  const displayCar = selectedCar || autoFallbackCar;
 
                   return (
                     <div
                       key={slotIdx}
-                      className={`bg-surface border rounded-lg p-3.5 flex flex-col gap-3 ${
-                        selectedId ? "border-action-primary ring-1 ring-action-primary/20" : "border-border"
+                      className={`bg-surface border rounded-xl overflow-hidden flex flex-col transition-all duration-150 ${
+                        isPinned
+                          ? "border-action-primary ring-1 ring-action-primary/30"
+                          : "border-border hover:border-text-muted/40"
                       }`}
+                      style={{ boxShadow: "none" }}
                     >
-                      <div className="flex justify-between items-center">
-                        <span className={`text-xs font-bold uppercase tracking-wider ${selectedId ? "text-action-primary" : "text-text-muted"}`}>
-                          Slot 0{slotIdx + 1} {slotIdx === 0 ? "(Left)" : slotIdx === 1 ? "(Center)" : "(Right)"}
-                        </span>
-                        {selectedId > 0 && (
-                          <button
-                            type="button"
-                            onClick={() => handleSlotClear(slotIdx)}
-                            className="text-xs text-danger hover:underline flex items-center gap-1 cursor-pointer bg-transparent border-none p-0"
-                          >
-                            <X size={12} /> Clear
-                          </button>
+                      {/* Card Top Banner / Meta Header */}
+                      <div className="px-4 py-2.5 bg-surface-secondary/70 border-b border-border flex items-center justify-between">
+                        <div className="flex items-center gap-2">
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-text-primary text-white px-2 py-0.5 rounded">
+                            Slot 0{slotIdx + 1}
+                          </span>
+                          <span className="text-xs font-semibold text-text-primary">
+                            {slotIdx === 0 ? "Left Position" : slotIdx === 1 ? "Center Highlight" : "Right Position"}
+                          </span>
+                        </div>
+
+                        {isPinned ? (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-full">
+                            <CheckCircle2 size={12} className="text-emerald-600" /> Pinned
+                          </span>
+                        ) : (
+                          <span className="inline-flex items-center gap-1 text-[11px] font-semibold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-full">
+                            <Sparkles size={11} className="text-amber-600" /> Auto Live
+                          </span>
                         )}
                       </div>
 
-                      <select
-                        value={selectedId || ""}
-                        onChange={(e) => handleSlotSelect(slotIdx, e.target.value)}
-                        className="w-full bg-surface text-text-primary border border-border rounded-md px-3 py-2 text-xs focus:outline-none focus:border-action-primary cursor-pointer"
-                      >
-                        <option value="">• Auto (Latest published car) •</option>
-                        {matchingCars.length > 0 && (
-                          <optgroup label={`Matching Category (${activeCategory.label})`}>
-                            {matchingCars.map((car) => (
-                              <option key={car.id} value={car.id}>
-                                {car.name} ({car.year || "N/A"}) - {car.is_call_for_price ? "Call for Price" : car.price ? `${car.price} BDT` : "N/A"}
-                              </option>
-                            ))}
-                          </optgroup>
+                      {/* Vehicle Visual Showcase Box (Photo + Specs Overlays) */}
+                      <div className="relative aspect-[16/10] bg-surface-secondary overflow-hidden border-b border-border">
+                        {displayCar?.feature_image ? (
+                          <img
+                            src={displayCar.feature_image}
+                            alt={displayCar.name}
+                            className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
+                          />
+                        ) : (
+                          <div className="w-full h-full flex flex-col items-center justify-center gap-2 text-text-muted">
+                            <Car size={32} className="opacity-40" />
+                            <span className="text-xs">No image available</span>
+                          </div>
                         )}
-                        {otherCars.length > 0 && (
-                          <optgroup label="Other Available Vehicles">
-                            {otherCars.map((car) => (
-                              <option key={car.id} value={car.id}>
-                                [{car.car_type || "CAR"}] {car.name} ({car.year || "N/A"})
-                              </option>
-                            ))}
-                          </optgroup>
-                        )}
-                      </select>
 
-                      {/* Selected Preview Box */}
-                      {selectedCar ? (
-                        <div className="flex items-center gap-2.5 bg-action-primary/5 border border-action-primary/20 rounded-md p-2">
-                          {selectedCar.feature_image ? (
-                            <img
-                              src={selectedCar.feature_image}
-                              alt={selectedCar.name}
-                              className="w-12 h-9 object-cover rounded"
-                            />
-                          ) : (
-                            <div className="w-12 h-9 bg-surface-secondary rounded flex items-center justify-center">
-                              <Car size={16} className="text-text-muted" />
-                            </div>
+                        {/* Top Badge Overlay */}
+                        <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5 pointer-events-none">
+                          <span className="text-[10px] font-bold uppercase tracking-wider bg-black/80 backdrop-blur-sm text-white px-2 py-0.5 rounded">
+                            {displayCar?.car_type || activeCategory.category_key}
+                          </span>
+                          {displayCar?.year && (
+                            <span className="text-[10px] font-semibold bg-white/95 backdrop-blur-sm text-text-primary px-1.5 py-0.5 rounded">
+                              {displayCar.year}
+                            </span>
                           )}
-                          <div className="flex-1 min-w-0">
-                            <div className="text-xs font-semibold text-text-primary truncate">
-                              {selectedCar.name}
+                        </div>
+
+                        {/* Auto indicator pill overlay */}
+                        {!isPinned && displayCar && (
+                          <div className="absolute bottom-2.5 right-2.5 pointer-events-none">
+                            <span className="text-[10px] font-medium bg-amber-500/95 text-white px-2 py-0.5 rounded">
+                              Live Auto-Preview
+                            </span>
+                          </div>
+                        )}
+
+                        {/* Branch overlay if available */}
+                        {displayCar?.branch_name && (
+                          <div className="absolute bottom-2.5 left-2.5 pointer-events-none">
+                            <span className="text-[10px] font-medium bg-black/60 backdrop-blur-sm text-white/90 px-2 py-0.5 rounded flex items-center gap-1">
+                              <MapPin size={10} /> {displayCar.branch_name}
+                            </span>
+                          </div>
+                        )}
+                      </div>
+
+                      {/* Vehicle Presentation Details */}
+                      <div className="p-4 flex-1 flex flex-col justify-between gap-3">
+                        <div>
+                          <div className="flex items-start justify-between gap-2">
+                            <h4
+                              className="text-sm font-bold text-text-primary leading-tight line-clamp-1"
+                              title={displayCar?.name || "No vehicle assigned"}
+                            >
+                              {displayCar?.name || "No vehicle available in category"}
+                            </h4>
+                            {displayCar?.slug && (
+                              <a
+                                href={`/workspace/inventory/${displayCar.id}`}
+                                target="_blank"
+                                rel="noreferrer"
+                                className="text-text-muted hover:text-action-primary shrink-0 transition-colors p-0.5"
+                                title="Open in Inventory Workspace"
+                              >
+                                <ExternalLink size={13} />
+                              </a>
+                            )}
+                          </div>
+
+                          {/* Price and Specs Summary */}
+                          <div className="mt-1.5 flex items-baseline justify-between gap-2">
+                            <div className="text-sm font-bold text-action-primary">
+                              {displayCar
+                                ? displayCar.is_call_for_price
+                                  ? "Call for Price"
+                                  : displayCar.price
+                                  ? `${displayCar.price} BDT`
+                                  : "Price on Request"
+                                : "—"}
                             </div>
-                            <div className="text-xs text-action-primary font-medium">
-                              {selectedCar.is_call_for_price ? "Call for Price" : selectedCar.price ? `${selectedCar.price} BDT` : "Published"}
-                            </div>
+                            {displayCar?.fuel_type && (
+                              <span className="text-[11px] text-text-muted capitalize">
+                                {displayCar.fuel_type.toLowerCase()}
+                              </span>
+                            )}
                           </div>
                         </div>
-                      ) : (
-                        <div className="text-xs text-text-muted italic py-1">
-                          No specific car pinned. Auto-selecting latest.
+
+                        {/* Dropdown Selector Controller */}
+                        <div className="pt-2.5 border-t border-border/70 space-y-2">
+                          <div className="flex items-center justify-between">
+                            <label className="text-[11px] font-semibold text-text-secondary uppercase tracking-wider">
+                              Change Car:
+                            </label>
+                            {selectedId > 0 && (
+                              <button
+                                type="button"
+                                onClick={() => handleSlotClear(slotIdx)}
+                                className="text-[11px] text-rose-600 hover:text-rose-700 font-medium flex items-center gap-1 hover:underline cursor-pointer bg-transparent border-none p-0"
+                              >
+                                <X size={12} /> Reset to Auto
+                              </button>
+                            )}
+                          </div>
+
+                          <select
+                            value={selectedId || ""}
+                            onChange={(e) => handleSlotSelect(slotIdx, e.target.value)}
+                            className="w-full bg-surface text-text-primary border border-border rounded-lg px-2.5 py-2 text-xs focus:outline-none focus:border-action-primary focus:ring-1 focus:ring-action-primary cursor-pointer transition-colors"
+                          >
+                            <option value="">✨ Auto (Display latest {activeCategory.label})</option>
+                            {matchingCars.length > 0 && (
+                              <optgroup label={`Matching Category (${activeCategory.label})`}>
+                                {matchingCars.map((car) => (
+                                  <option key={car.id} value={car.id}>
+                                    {car.name} ({car.year || "N/A"}) - {car.is_call_for_price ? "Call for Price" : car.price ? `${car.price} BDT` : "N/A"}
+                                  </option>
+                                ))}
+                              </optgroup>
+                            )}
+                            {otherCars.length > 0 && (
+                              <optgroup label="Other Available Vehicles">
+                                {otherCars.map((car) => (
+                                  <option key={car.id} value={car.id}>
+                                    [{car.car_type || "CAR"}] {car.name} ({car.year || "N/A"})
+                                  </option>
+                                ))}
+                              </optgroup>
+                            )}
+                          </select>
                         </div>
-                      )}
+                      </div>
                     </div>
                   );
                 })}
