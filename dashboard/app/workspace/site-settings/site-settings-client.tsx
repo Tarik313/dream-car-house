@@ -981,7 +981,11 @@ export function SiteSettingsClient({
           </div>
 
           <div style={{ marginTop: "1rem" }}>
-            <FormField label="Hero Tagline (Brand Philosophy)" error={formErrors.tagline} description="Displayed on showroom hero banners and metadata previews.">
+            <FormField
+              label="Brand Motto / SEO Tagline"
+              error={formErrors.tagline}
+              description="Used for search engine SEO metadata and social link previews."
+            >
               <Input
                 name="tagline"
                 value={formData.tagline}
@@ -1109,12 +1113,16 @@ export function SiteSettingsClient({
           </FormField>
 
           <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "1rem", marginTop: "1rem" }}>
-            <FormField label="Footer Tagline" error={formErrors.footer_tagline}>
+            <FormField
+              label="Footer Tagline (Shown in Website Footer)"
+              error={formErrors.footer_tagline}
+              description="Directly displayed under the Dream Car House logo in the website Footer."
+            >
               <Input
                 name="footer_tagline"
                 value={formData.footer_tagline}
                 onChange={(e) => setFormData({ ...formData, footer_tagline: e.target.value })}
-                placeholder="Where Extraordinary Dreams Meet The Road • Kakrail & Gulshan, Dhaka."
+                placeholder="Where Extraordinary Dreams Meet The Road"
                 disabled={!canChange || submitting}
               />
             </FormField>

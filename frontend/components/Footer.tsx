@@ -171,7 +171,7 @@ export default function Footer({
                   unoptimized
                 />
               </Link>
-              <p className="footer-brand-tagline">Where Extraordinary Dreams Meet The Road</p>
+              <p className="footer-brand-tagline">{tagline}</p>
             </div>
 
             {/* Showroom Map Tabs (Kakrail Showroom & Gulshan Showroom - No Flagship text) */}
